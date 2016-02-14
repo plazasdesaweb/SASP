@@ -1,0 +1,355 @@
+﻿@model Suma2Lealtad.Models.BeneficiarioPrepagoSaldosMovimientos
+
+@{
+    ViewBag.Title = "SaldosMovimientos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<link href="css/style.css" rel="stylesheet">*@
+@*<link href="~/Content/style.css" rel="stylesheet" />*@
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #5e8262; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Cliente / Beneficiarios / Saldos y Movimientos</h3>
+        </div>
+
+        <div class="panel-body">
+
+            @Html.HiddenFor(model => model.Beneficiario.Cliente.idCliente)
+
+            <div class="editor-label col-md-4 control-label">
+                Cliente :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.Beneficiario.Cliente.nameCliente, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                RIF :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.Beneficiario.Cliente.rifCliente, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="editor-label col-md-4 control-label">
+                Teléfono :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.Beneficiario.Cliente.phoneCliente, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label"></div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Tipo de Afiliado :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.Beneficiario.Afiliado.type, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Nombre del Afiliado :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBox("name", @Model.Beneficiario.Afiliado.name + " " + @Model.Beneficiario.Afiliado.lastname1, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="editor-label col-md-4 control-label">
+                Número de Documento/Cédula :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBox("docnumber", @Model.Beneficiario.Afiliado.docnumber, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="editor-label col-md-4 control-label">
+                Número de Tarjeta :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBox("pan", @Model.Beneficiario.Afiliado.pan, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="editor-label col-md-4 control-label">
+                Estatus de Tarjeta :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBox("estatustarjeta", @Model.Beneficiario.Afiliado.estatustarjeta, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+            </div>
+
+            <div class="editor-field col-md-6">
+                <p class="text-left text-danger">
+                    Seleccione una cuenta para ver sus 3 últmos movimientos.
+                </p>
+            </div>
+
+            @*<table class="table table-striped custab">*@
+            <table id="cuentas" class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Tipo de Cuenta
+                        </th>
+                        <th>Número de Cuenta
+                        </th>
+                        <th>Saldo
+                        </th>
+                        <th>Denominación
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.SaldosMovimientos.Saldos)
+                    {                            
+                        <tr data-row-key="@item.accounttype">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.accountname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.accountnumber)
+                            </td>
+                            <td>
+                                @if (item.accounttype == "5")
+                                {
+                                    @Html.DisplayFor(modelItem => item.saldo)                                    
+                                }
+                                else
+                                {
+                                    @(String.Format("{0}", Math.Truncate(item.saldo)))
+                                }
+                            </td>
+                            <td>
+                                @if (item.accounttype == "5")
+                                {
+                                    @Model.denominacionPrepago;
+                                }
+                                else
+                                {
+                                    @Model.denominacionSuma;
+                                }
+                            </td>
+                        </tr>                            
+                    }
+                </tbody>
+
+            </table>
+
+            <!-- buttons -->
+            <div class="col-md-12 col-tabla-btn">
+                <div class="pull-right">
+                    <a href="@Url.Action("FilterReviewBeneficiarios", "ClientePrepago", new { id = Model.Beneficiario.Cliente.idCliente })" class="btn btn-danger btn-md">Regresar</a>
+                </div>
+            </div>
+            <!--// buttons -->
+
+        </div>
+    <!-- panel-body -->
+
+</div>
+<!-- panel -->
+
+</div>
+<!-- columns -->
+
+<div id="MovimientosPrepago" class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Movimientos de Cuenta Prepago</h3>
+        </div>
+        <div class="panel-body">
+
+            <table class="table table-striped custab">
+
+                <thead>
+                    <tr>
+                        <th>Fecha
+                        </th>
+                        <th>Referencia
+                        </th>
+                        <th>Descripción
+                        </th>
+                        <th>Número de Tarjeta
+                        </th>
+                        <th>Monto
+                        </th>
+                        <th>Tipo de Transacción
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.SaldosMovimientos.MovimientosPrepago)
+                    {                            
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.batchid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.isodescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.saldo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.transcode)-@Html.DisplayFor(modelItem => item.transname)
+                            </td>
+                        </tr>                            
+                    }
+                </tbody>
+
+            </table>
+
+            <!-- buttons -->
+            <div class="col-md-12 col-tabla-btn">
+                <div class="pull-right">
+                    <a href="javascript:OcultarMovimientos()" class="btn btn-success btn-md" role="button">Ocultar Movimientos</a>
+                </div>
+            </div>
+            <!--// buttons -->
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel -->
+
+</div>
+<!-- columns -->
+
+<div id="MovimientosSuma" class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Movimientos de Cuenta Suma</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <table class="table table-striped custab">
+
+                <thead>
+                    <tr>
+                        <th>Fecha 
+                        </th>
+                        <th>Referencia 
+                        </th>
+                        <th>Descripción
+                        </th>
+                        <th>Número de Tarjeta
+                        </th>
+                        <th>Monto
+                        </th>
+                        <th>Tipo de Transacción
+                        </th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.SaldosMovimientos.MovimientosSuma)
+                    {                            
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.batchid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.isodescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pan)
+                            </td>
+                            <td>
+                                @(String.Format("{0}", Math.Truncate(item.saldo)))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.transcode)-@Html.DisplayFor(modelItem => item.transname)
+                            </td>
+                        </tr>                            
+                    }
+                </tbody>
+
+            </table>
+
+            <!-- buttons -->
+            <div class="col-md-12 col-tabla-btn">
+                <div class="pull-right">
+                    <a href="javascript:OcultarMovimientos()" class="btn btn-success btn-md" role="button">Ocultar Movimientos</a>
+                </div>
+            </div>
+            <!--// buttons -->
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel -->
+
+</div>
+<!-- columns -->
+
+@*<script src="~/Scripts/jquery-2.1.3.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $("#MovimientosPrepago").hide();
+        $("#MovimientosSuma").hide();
+    });
+
+    $('#cuentas tr').click(function () {
+        var TipoCuenta;
+
+        $('.table tbody tr').removeClass("active");
+        $(this).addClass("active");
+        TipoCuenta = $(this).data("row-key");
+
+        if (TipoCuenta == "5") {
+            $("#MovimientosSuma").hide();
+            $("#MovimientosPrepago").show();
+        }
+        else if (TipoCuenta == "7") {
+            $("#MovimientosPrepago").hide();
+            $("#MovimientosSuma").show();
+        }
+        else {
+            alert("error tipo de cuenta no definido");
+        }
+    });
+
+    function OcultarMovimientos() {
+        $("#MovimientosSuma").hide();
+        $("#MovimientosPrepago").hide();
+    };
+</script>

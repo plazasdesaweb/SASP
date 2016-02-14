@@ -1,0 +1,181 @@
+﻿@model Suma2Lealtad.Models.Afiliado
+
+@{
+    ViewBag.Title = "Imprimir Tarjeta";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-2 col-md-8">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Afiliado / Operaciones con la Impresora / Imprimir Tarjeta</h3>
+                </div>
+
+                <div class="panel-body">
+                    @{ if (Model.type == "Suma")
+                       {
+                        @:<form action="@Url.Action("ImprimirTarjeta", "Afiliado")" name="form" method="post">
+               }
+                       else
+                       {
+                        @:<form action="@Url.Action("ImprimirTarjeta", "CompanyPrepago")" name="form" method="post">
+               }
+                    }
+
+                        @Html.HiddenFor(model => model.id)
+
+                        <div class="form-group">
+                            <div class="editor-label col-md-4 control-label">
+                                Tipo de Afiliado :
+                            </div>
+
+                            <div class="editor-field col-md-6">
+                                @Html.TextBoxFor(model => model.type, new { @class = "form-control", @readonly = "true" })
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                Nombre del Afiliado :
+                            </div>
+                            <div class="editor-form col-md-6">
+                                @Html.TextBox("name", @Model.name + " " + @Model.lastname1, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Número de Documento/Cédula :
+                            </div>
+                            <div class="editor-form col-md-6">
+                                @Html.TextBox("docnumber", @Model.docnumber, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Número de Tarjeta :
+                            </div>
+                            <div class="editor-form col-md-6">
+                                @Html.TextBox("pan", @Model.pan, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Estatus de Tarjeta :
+                            </div>
+                            <div class="editor-form col-md-6">
+                                @Html.TextBox("estatustarjeta", @Model.estatustarjeta, new { @class = "form-control", @readonly = "true" })
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                            </div>
+
+                            <div class="editor-field col-md-6">
+                                <p class="text-left text-danger">
+                                    Coloque una tarjeta en la impresora y presione el botón Imprimir Tarjeta.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- btn btn-success -->
+                        <div class="col-md-12 col-btn">
+                            <div class="text-center">
+                                <a href="javascript:ImprimirTarjeta()" class="btn btn-success btn-md" role="button">Imprimir Tarjeta</a>
+                                @*<a href="javascript:ReanudarImpresora()" class="btn btn-success btn-md" role="button">Reanudar Impresora</a>*@
+                                @*<a href="javascript:LimpiarErrores()" class="btn btn-success btn-md" role="button">Limpiar Errores Impresora</a>*@
+                            </div>
+                        </div>
+                        <!--// btn btn-success -->
+
+                        <!-- SilverLight -->
+
+                        @{Html.RenderPartial("SilverlightImpresora");}
+
+                        <!-- SECCION PARA VERIFICAR OPERACIONES Impresora-->
+                        <div class="col-md-12">
+                            <p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
+                        </div>
+
+                        <!-- SilverLight -->
+
+                        <!-- Sección pregunta modal -->
+                        <div class="source-code runnable">
+                            <!--BootstrapDialog.show({
+                            title: 'Impresora de Tarjetas',
+                            message: '¿La tarjeta fue impresa correctamente?',
+                            type: BootstrapDialog.TYPE_WARNING,
+                            closable: false,
+                            buttons: [{
+                                label: 'No',
+                                action: function(dialogRef) {
+                                    dialogRef.close();
+                                    $("#sl").show();  
+                                }
+                            }, {
+                                label: 'Si',
+                                action: function(dialogRef) {
+                                    dialogRef.close();
+                                    //$("#botonguardar").submit(); 
+                                    $("#submit").show();                             
+                                    $("#sl").show();
+                                }
+                            }]
+                        });-->
+                        </div>
+
+                        @*fin sección de dialogo modal*@
+
+                        <div class="col-md-12 col-btn">
+                            <div class="pull-right">
+                                <input id="submit" name="submit" type="submit" class="btn btn-success btn-md" value="Guardar" style="display: none" />
+                                <a href="@Url.Action("Index", "Afiliado", new { numdoc = @Model.docnumber })" class="btn btn-danger btn-md">Cancelar</a>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <!--// panel -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container -->
+
+@*<script src="~/Scripts/PruebaBS3Dialog/assets/jquery/jquery.min.js"></script>*@
+<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+@*<link href="~/Scripts/PruebaBS3Dialog/assets/bootstrap/css/bootstrap.css" rel="stylesheet" />*@
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<script src="~/Scripts/PruebaBS3Dialog/assets/bootstrap/js/bootstrap.js"></script>*@
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/PruebaBS3Dialog/assets/prettify/run_prettify.js"></script>
+<link href="~/Scripts/PruebaBS3Dialog/assets/bootstrap-dialog/css/bootstrap-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/PruebaBS3Dialog/assets/bootstrap-dialog/js/bootstrap-dialog.js"></script>
+
+<script type="text/javascript">
+    var Myinterval = setInterval(function () {
+        if (document.getElementById("ElementoControl").innerHTML == "Impresa") {
+            //clearInterval(Myinterval)
+            document.getElementById("ElementoControl").innerHTML = "ElementoControl";
+            ActivarDialogBox();
+        }
+    }, 1000);
+
+    function ActivarDialogBox() {
+        $('.source-code').each(function (index) {
+            var $section = $(this);
+            var code = $(this).html().replace('<!--', '').replace('-->', '');
+
+            // Run code
+            if ($section.hasClass('runnable')) {
+                $("#sl").hide();
+                eval(code);
+            }
+        });
+    }
+</script>
+

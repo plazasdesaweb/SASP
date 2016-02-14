@@ -1,0 +1,27 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+<div class="jumbotron">
+
+    <div class="container">
+
+        <h3><b>Ha ocurrido una excepción en el aplicativo.</b></h3>
+        <h5><b>Debe enviarnos a nuestro correo desaweb@elplazas.com toda la información que se muestra a continuación :</b></h5>
+    
+        <p style="font-size:12px;" id="foo">
+        @Model.Exception
+        </p>
+
+        <h5><b>Para mayor comodidad, haga clic en el botón 'Copiar Mensaje de Excepción' y luego pegue el contenido en su correo informativo.</b></h5>
+    
+        <br>
+
+        <a href="@Url.Action("Login", "Home")" class="btn btn-success btn-md" role="button">Continuar</a>
+        <button class="btn btn-success btn-md" data-clipboard-target="#foo">Copiar Mensaje de Excepción</button>
+
+    </div>
+
+</div>
+

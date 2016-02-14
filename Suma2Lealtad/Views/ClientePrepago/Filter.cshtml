@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Filter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Crear Cliente / Filtro de Búsqueda</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form action="@Url.Action("Filter", "ClientePrepago")" name="form" method="post" onsubmit="return validarDocumento();">
+
+                <div class="editor-label col-md-4 control-label">
+                    RIF :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="rif" name="rif" value="" maxlength="11" placeholder="J-123456789" class="form-control" required>
+                    <span id="field1"></span>
+                </div>
+
+               <div class="form-group">
+                    <div class="col-md-12 col-btn">
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-success btn-md" value="Buscar" />
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="editor-label col-md-4 control-label">
+                            <br />
+                        </div>
+                        <div class="editor-field col-md-8">
+                            <br />
+                        </div>*@
+            </form>
+
+        </div>
+        <!--// panel-body -->
+
+    </div>
+    <!--// panel -->
+
+</div>
+<!--// form-group -->
+
+<script type="text/javascript">
+    function validateRif() {
+        var rif = document.getElementById('rif').value;
+        if (rif.length != 0) {
+            var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
+            var RegExPattern2 = /^([VvEeJjGg]){1}(\d){9}$/;
+            if (RegExPattern.test(rif) == false && RegExPattern2.test(rif) == false) {
+                spanMessage('field1', '* Formato RIF Incorrecto. (J-123456789)');
+                document.getElementById('rif').value = " ";
+                document.getElementById('rif').focus();
+                return false;
+            }
+            else if (RegExPattern.test(rif) != false) {
+                document.getElementById('rif').value = rif.toUpperCase();
+            }
+            else if (RegExPattern2.test(rif) != false) {
+                document.getElementById('rif').value = rif.substring(0, 1).toUpperCase() + "-" + rif.substring(1).toUpperCase();
+            }
+            document.getElementById('field1').value = " ";
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function validarDocumento() {
+        if (validateRif()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>
+
+
+

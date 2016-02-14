@@ -1,0 +1,30 @@
+﻿@model Suma2Lealtad.Models.BeneficiarioPrepago
+
+@{
+    var InitParams = "CI=" + Model.Afiliado.docnumber.Substring(2);
+    InitParams = InitParams + "," + "CVV2=" + Model.Afiliado.cvv2;
+    InitParams = InitParams + "," + "idElementoHtmlControl=ElementoControl"; 
+}
+
+@Helpers.Silverlight(xapPath: "~/ClientBin/SumaPlazas.Dispositivos.PinPad.xap", slObjectId: "sl", divObjectWidth: "100%", divObjectHeight: "350px", customParams: @InitParams, divObjectClass: "col-md-12")
+
+<script type="text/javascript">
+    var slcontrol2 = document.getElementById("sl");
+    function CrearPin() {
+        if (slcontrol2) {
+            slcontrol2.Content.MainPage.CrearPin();
+        }
+    }
+
+    function CambiarPin() {
+        if (slcontrol2) {
+            slcontrol2.Content.MainPage.CambiarPin();
+        }
+    }
+
+    function ReiniciarPin() {
+        if (slcontrol2) {
+            slcontrol2.Content.MainPage.ReiniciarPin();
+        }
+    }
+</script>

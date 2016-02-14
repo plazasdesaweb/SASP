@@ -1,0 +1,192 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.ClientePrepago>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<link href="~/Content/style.css" rel="stylesheet" />*@
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #5e8262;
+        color: white;
+    }
+</style>
+
+<div class="form-group">
+@*<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-1 col-md-12">*@
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Prepago / Cliente / Lista de Registros </h3>
+                </div>
+
+                <div class="panel-body">
+
+                    @*<table class="table table-striped custab">*@
+                    <table id="clientes" class="table table-hover">
+                        <thead>
+
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Alias</th>
+                                <th>RIF</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr data-row-key="@item.idCliente">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.nameCliente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.aliasCliente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rifCliente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.phoneCliente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.emailCliente)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("FilterReviewBeneficiarios", "ClientePrepago", new { id = item.idCliente })" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "ClientePrepago", new { id = item.idCliente })" class="btn btn-info btn-sm">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Delete", "ClientePrepago", new { id = item.idCliente })" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                    <!-- buttons -->
+                    <div class="col-md-12 col-tabla-btn">
+                        <div class="pull-left">
+                            <a id="Ordenes" class="btn btn-success btn-md" role="button">Ver Órdenes de Recarga</a>
+                            <a id="Recarga" class="btn btn-success btn-md" role="button">Crear Orden de Recarga</a>
+                            <a id="RecargaArchivo" class="btn btn-success btn-md" role="button">Crear Orden de Recarga desde Archivo</a>
+                            <a id="SuspenderCliente" class="btn btn-success btn-md" role="button">Suspender Cliente</a>
+                            <a id="ReactivarCliente" class="btn btn-success btn-md" role="button">Reactivar Cliente</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="@Url.Action("Filter", "ClientePrepago")" class="btn btn-success btn-md">Agregar Cliente</a>
+                            <a href="@Url.Action("FilterReview", "ClientePrepago")" class="btn btn-danger btn-md">Regresar</a>
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                </div>
+                <!-- panel-body -->
+
+            </div>
+            <!-- panel -->
+
+        </div>
+        <!-- columns -->
+
+@*    </div>
+    <!-- row -->
+
+</div>
+<!-- container -->*@
+
+@*<script src="~/Scripts/jquery-2.1.3.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        var rowId;
+        var colId;
+
+        $("#Ordenes").hide();
+        $("#Recarga").hide();
+        $("#RecargaArchivo").hide();
+        $("#SuspenderCliente").hide();
+        $("#ReactivarCliente").hide();
+    });
+
+    $('.table tbody tr td:not(:nth-last-child(-n+3))').click(function () {
+        var filatabla = $(this).closest('tr');
+        rowId = $(filatabla).data("row-key");
+        $('.table tbody tr').removeClass("active");
+        $(filatabla).addClass("active");
+        $("#Ordenes").show();
+        $("#RecargaArchivo").show();
+        $("#Recarga").show();
+        $("#SuspenderCliente").show();
+        $("#ReactivarCliente").show();
+    });
+
+    $("#Ordenes").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "ClientePrepago");
+        href = href.replace("{action}", "FilterOrdenes");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#Recarga").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "ClientePrepago");
+        href = href.replace("{action}", "CreateOrdenRecarga");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#RecargaArchivo").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "ClientePrepago");
+        href = href.replace("{action}", "CargarArchivoRecarga");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#SuspenderCliente").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "ClientePrepago");
+        href = href.replace("{action}", "SuspenderCliente");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#ReactivarCliente").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "ClientePrepago");
+        href = href.replace("{action}", "ReactivarCliente");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+</script>
+

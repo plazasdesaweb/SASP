@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.PARROQUIA>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-2 col-md-8">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Parroquia / Listado de Registros </h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <table class="table table-striped custab">
+                        <thead>
+                        <tr>
+                        <th>Descripción</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            
+                        <tr>
+
+                        <td>@Html.DisplayFor(modelItem => item.DESCRIPC_PARROQUIA)</td>
+
+                        <td class="text-right">
+                            <a href="@Url.Action("Edit", "Parroquia", new { id = item.COD_PARROQUIA })" class="btn btn-info btn-xs">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a href="@Url.Action("Delete", "Parroquia", new { id = item.COD_PARROQUIA })" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                        </td>
+
+                        </tr>
+                            
+                        }
+
+                        </tbody>
+
+                    </table>
+
+                    <!-- buttons -->
+                    <div class="col-md-12 col-tabla-btn">
+                        <div class="pull-right">
+                            <a class="btn btn-success btn-md" href="@Url.Action("Create", "Parroquia")">Agregar Nuevo Registro</a>
+                            <a class="btn btn-danger btn-md" href="@Url.Action("FilterParroquia", "Parroquia")">Regresar</a>
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                </div>
+                <!-- panel-body -->
+
+            </div>
+            <!-- panel -->
+
+        </div>
+        <!-- columns -->
+
+    </div>
+    <!-- row -->
+
+</div>
+<!-- container -->

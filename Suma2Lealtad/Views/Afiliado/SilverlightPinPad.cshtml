@@ -1,0 +1,29 @@
+﻿@model Suma2Lealtad.Models.Afiliado
+
+@{
+    //DEBO SACAR LA INFO DEL NRO DEL DOCUMENTO DEL MODELO Y PASARLO COMO PARAMETRO AL HELPER SE SILVERLIGHT
+    var InitParams = "idElementoHtmlControl=ElementoControl";
+}
+
+@Helpers.Silverlight(xapPath: "~/ClientBin/SumaPlazas.Dispositivos.PinPad.xap", slObjectId: "sl", divObjectWidth: "100%", divObjectHeight: "350px", customParams: @InitParams, divObjectClass: "col-md-12")
+
+<script type="text/javascript">
+    var slcontrol2 = document.getElementById("sl");
+    function CrearPin() {
+        if (slcontrol2) {
+            slcontrol2.Content.MainPage.CrearPin();
+        }
+    }
+
+    function CambiarPin() {
+        if (slcontrol2) {
+            slcontrol2.Content.MainPage.CambiarPin();
+        }
+    }
+
+    function ReiniciarPin() {
+        if (slcontrol2) {
+            slcontrol2.Content.MainPage.ReiniciarPin();
+        }
+    }
+</script>

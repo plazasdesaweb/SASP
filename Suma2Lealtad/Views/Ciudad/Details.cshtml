@@ -1,0 +1,29 @@
+﻿@model Suma2Lealtad.Models.CIUDAD
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>CIUDAD</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.COD_CIUDAD)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.COD_CIUDAD)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DESCRIPC_CIUDAD)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DESCRIPC_CIUDAD)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

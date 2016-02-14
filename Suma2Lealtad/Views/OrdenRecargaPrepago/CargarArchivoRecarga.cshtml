@@ -1,0 +1,98 @@
+﻿@model IList<Suma2Lealtad.Models.DetalleOrdenRecargaPrepago>
+@{
+    ViewBag.Title = "CargarArchivoRecarga";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />*@
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #5e8262;
+        color: white;
+    }
+</style>
+
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Ordenes de Recarga / Cargar Archivo de Recargas</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form id="commentForm" method="post" action="@Url.Action("CreateArchivo", "OrdenRecargaPrepago", new { idCliente = Model.First().idCliente })" class="form-horizontal" enctype = "multipart/form-data">
+
+                <div class="form-group">
+
+                    <div class="editor-label col-md-4 control-label">
+                        Cliente :
+                    </div>
+
+                    <div class="editor-field col-md-6">
+                        @Html.TextBoxFor(model => model.First().nameCliente, new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label">
+                        RIF :
+                    </div>
+                    <div class="editor-form col-md-6">
+                        @Html.TextBoxFor(model => model.First().rifCliente, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="editor-label col-md-4 control-label">
+                        Teléfono :
+                    </div>
+                    <div class="editor-form col-md-6">
+                        @Html.TextBoxFor(model => model.First().phoneCliente, new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label">
+                        Seleccione Archivo :
+                    </div>
+
+                    <div class="editor-label col-md-6 control-label">
+                        <input type="file" class="filestyle" data-badge="true" id="file" name="file">
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label"></div>
+                    <div class="editor-field col-md-6">
+                        <br />
+                    </div>
+
+                </div>
+
+                <!-- SECCION PARA botones de operaciones -->
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-left">
+                        <a href="@Url.Action("DescargarArchivoFilePath", "OrdenRecargaPrepago")" class="btn btn-success btn-md">Descargar plantilla</a>
+                    </div>
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-md" value="Cargar Archivo" />
+                        <a href="@Url.Action("Filter", "OrdenRecargaPrepago", new { idCliente = Model.First().idCliente })" class="btn btn-danger btn-md">Regresar</a>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+    <!-- panel-body -->
+
+</div>
+<!-- panel -->

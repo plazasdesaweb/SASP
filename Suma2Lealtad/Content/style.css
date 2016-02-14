@@ -1,0 +1,206 @@
+﻿/*
+Nombre      : style.css
+Contenido   : Hoja de Estilos Automercados Plazas.
+Versión     : V.1.0.D 
+Fecha       : Octubre/2014
+*/
+
+div > .nav-gradient {
+    color:#fff;
+    background-color: #00a160;
+    border-color:#0F5410;
+    background-image:linear-gradient(to bottom, #0F5410 0%, #159909 43%);
+}
+
+a.disabled {
+pointer-events: none;
+cursor: default;
+}
+
+/* MENU PRINCIPAL - NAVBAR */
+.navbar, .dropdown-menu {
+background-color: #f7931e;
+border-color: #f7931e;
+border-radius: 0px;
+}
+
+.navbar-default .navbar-nav > li > a {
+color: #ffffff;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -35px;
+}
+
+.dropdown-menu > li > a {
+color: #fff;
+} 
+
+.row-plz {
+background-image: -webkit-gradient(
+linear,
+left top,
+left bottom,
+color-stop(0, #0F5410),
+color-stop(0.43, #159909)
+);
+background-image: -o-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: -moz-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: -webkit-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: -ms-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: linear-gradient(to bottom, #0F5410 0%, #159909 43%);
+
+padding: 30px 0px 30px 0px;
+color: #fafafa;
+margin: 0px;
+}
+
+.col-plz {
+padding: 50px 80px 0px 0px;
+}
+
+.font-plz {
+font-size : 30px;
+color : white;
+font-weight: bold;
+}
+
+.col-left{
+text-align: left;
+}
+
+.col-center{
+text-align: center;
+}
+
+.col-right{
+text-align: right;
+}
+
+.container-fluid{
+padding-left: 35px;
+padding-right: 65px;
+}
+
+/* Nueva Hoja de Estilo */
+
+.form-horizontal {
+padding-right: 40px;
+}
+
+.form-horizontal .legend {
+font-size: 18px;
+}
+
+.btn-success {
+background-color: #5F9D43;
+border-color: #5F9D43;
+color: white!important;
+font-size: 12px;
+border-radius: 0;
+margin-right: 0px;
+margin-left: 10px;
+}
+
+.btn-danger {
+border-color: #5F9D43;
+color: white!important;
+font-size: 12px;
+border-radius: 0;
+margin-right: 0px;
+margin-left: 10px;
+}
+
+.col-btn {
+padding-right: 0px;
+padding-left: 0px;
+padding-top: 30px;
+padding-bottom: 0px;
+margin-left: 0px;
+}
+
+.panel-primary , .panel-default {
+border-color: #00a160;
+}
+
+.panel-primary > .panel-heading , .panel-default > .panel-heading {
+color: #fff;
+background-color: #00a160;
+border-color: #0F5410; 
+}
+
+.panel-gradient {
+background-image: -webkit-gradient(
+linear,
+left top,
+left bottom,
+color-stop(0, #0F5410),
+color-stop(0.43, #159909)
+);
+background-image: -o-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: -moz-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: -webkit-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: -ms-linear-gradient(bottom, #0F5410 0%, #159909 43%);
+background-image: linear-gradient(to bottom, #0F5410 0%, #159909 43%);
+
+padding: 5px 0px 15px 0px;
+color: #fafafa;
+margin: 0px;
+}
+
+.panel-title {
+margin-top: 15px;
+margin-left: 10px;
+}
+
+/* Tabla */
+
+.col-tabla-btn {
+padding: 0px;
+margin-left: 0px;
+}
+
+.pagination > .active > a {
+background-color: #5F9D43;
+border-color: #5F9D43;
+}
+
+.pagination > li > a{
+color: #5F9D43;
+}
+
+.form-group > .col-md-6 > .pagination{
+margin: 0px;
+}
+
+.pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+background-color: #0DE940;
+border-color: #0DE940; 
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+color: #5F9D43;
+}
+
+.tabla-heading{
+margin-top: 20px;
+}
+
+/* Formulario */
+.control-label {
+text-align:right;
+}
+
+label {
+margin-top: 8px;
+}
+
+/* --- */
+.table-hover{
+cursor: pointer;
+}
+
+.table tbody tr.active td {
+background-color: #1C2B2B;
+color: white;
+}

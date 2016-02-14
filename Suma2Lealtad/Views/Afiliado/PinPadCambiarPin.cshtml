@@ -1,0 +1,118 @@
+﻿@model Suma2Lealtad.Models.Afiliado
+
+@{
+    ViewBag.Title = "Cambiar Pin";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-2 col-md-8">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Afiliado / Operaciones con el PinPad / Cambiar Pin</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="form-group">
+                        <div class="editor-label col-md-4 control-label">
+                            Tipo de Afiliado :
+                        </div>
+
+                        <div class="editor-field col-md-6">
+                            @Html.TextBoxFor(model => model.type, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label">
+                            Nombre del Afiliado :
+                        </div>
+                        <div class="editor-form col-md-6">
+                            @Html.TextBox("name", @Model.name + " " + @Model.lastname1, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="editor-label col-md-4 control-label">
+                            Número de Documento/Cédula :
+                        </div>
+                        <div class="editor-form col-md-6">
+                            @Html.TextBox("docnumber", @Model.docnumber, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="editor-label col-md-4 control-label">
+                            Número de Tarjeta :
+                        </div>
+                        <div class="editor-form col-md-6">
+                            @Html.TextBox("pan", @Model.pan, new { @class = "form-control", @readonly = "true" })
+                        </div>
+                        <div class="editor-label col-md-4 control-label">
+                            Estatus de Tarjeta :
+                        </div>
+                        <div class="editor-form col-md-6">
+                            @Html.TextBox("estatustarjeta", @Model.estatustarjeta, new { @class = "form-control", @readonly = "true" })
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label">
+                        </div>
+
+                        <div class="editor-field col-md-6">
+                            <p class="text-left text-danger">
+                                Presone el botón Activar PinPad, y siga las instrucciones en la pantalla del dispositivo.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- btn btn-success -->
+                    <div class="col-md-12 col-btn">
+                        <div class="text-center">
+                            <a href="javascript:CambiarPin()" class="btn btn-success btn-md" role="button">Activar PinPad</a>
+                        </div>
+                    </div>
+                    <!--// btn btn-success -->
+
+
+                    <!-- SilverLight -->
+
+                    @{Html.RenderPartial("SilverlightPinPad");}
+
+                    <!-- SECCION PARA VERIFICAR OPERACIONES PinPad-->
+                    <div class="col-md-12">
+                        @*<p class="text-left" id="ElementoControl" style="visibility: hidden">ElementoControl</p>*@
+                        <p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
+                    </div>
+
+                    <!-- SilverLight -->
+
+                    <div class="form-group">
+                        <div class="col-md-12 col-btn">
+                            <div class="pull-right">
+                                @{ if (Model.type == "Suma")
+                                   {
+                                    @:<a href="@Url.Action("Index", "Afiliado", new { numdoc = @Model.docnumber })" class="btn btn-danger btn-md">Cancelar</a>
+               }
+                                   else
+                                   {
+                                    @:<a href="@Url.Action("FilterBeneficiarios", "CompanyPrepago", new { companyid = Model.companyid })" class="btn btn-danger btn-md">Cancelar</a>
+               }
+                                }
+                                @*<input type="submit" class="btn btn-success btn-md" value="Continuar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />*@
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container -->
+

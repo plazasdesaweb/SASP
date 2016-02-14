@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.BeneficiarioPrepagoIndex>
+
+@{
+    ViewBag.Title = "Table";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Fuera de Línea - Crear Transacción de Compra / Listado de Beneficiarios</h3>
+        </div>
+
+        <div class="panel-body">
+
+        <div class="editor-label col-md-4 control-label"></div>
+        <div class="editor-field col-md-8"><br></div>
+
+        <table id="beneficiarios" class="table table-hover">
+
+        <thead>
+            <tr>
+            <th>Cliente</th>
+            <th>Número de Documento/Cédula</th>
+            <th>Nombre</th>
+            <th>Estatus de Afiliación</th>
+            <th>Número de Tarjeta</th>
+            <th>Estatus de Tarjeta</th>
+            <th class="text-center"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in Model)
+        {                            
+        <tr>
+            <td>
+            @Html.DisplayFor(modelItem => item.Cliente.nameCliente)
+            </td>
+            <td class="text-center">
+            @Html.DisplayFor(modelItem => item.Afiliado.docnumber)
+            </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.Afiliado.name) @Html.DisplayFor(modelItem => item.Afiliado.lastname1)
+            </td>
+            <td class="text-center">
+            @Html.DisplayFor(modelItem => item.Afiliado.estatus)
+            </td>
+            <td class="text-center">
+            @Html.DisplayFor(modelItem => item.Afiliado.pan)
+            </td>
+            <td class="text-center">
+            @Html.DisplayFor(modelItem => item.Afiliado.estatustarjeta)
+            </td>
+            <td>
+                <a href="@Url.Action("AddNew", "FueraLineaPrepago", new { id = item.Afiliado.id })" class="btn btn-info btn-sm">
+                    <span class="glyphicon glyphicon-usd"></span>
+                </a>
+            </td>
+        </tr>                 
+        }
+        </tbody>
+
+        </table>
+
+        <div class="col-md-12 col-btn">
+            <div class="pull-right">
+                <a href="@Url.Action("Filter", "FueraLineaPrepago")" class="btn btn-danger btn-md">Regresar</a>
+            </div>
+        </div>
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel -->
+
+</div>
+
+<!--Html.Raw( Model.Count() ) -->

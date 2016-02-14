@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.Company>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-1 col-md-10">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Compañía / Lista de Registros </h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <table class="table table-striped custab">
+
+                        <thead>
+
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Alias</th>
+                            <th>RIF</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th class="text-center"></th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ALIAS)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.rif)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.email)
+                        </td>
+                        <td class="text-right">
+                            <a href="@Url.Action("Edit", "Company", new { id = item.id })" class="btn btn-info btn-xs">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a href="@Url.Action("Delete", "Company", new { id = item.id })" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                        </td>
+                        </tr>
+                        }
+
+                        </tbody>
+
+                    </table>
+
+                    <!-- buttons -->
+                    <div class="col-md-12 col-tabla-btn">
+                        <div class="pull-right">
+                            <a href="@Url.Action("Create", "Company")" class="btn btn-success btn-md">Agregar Nuevo Registro</a>
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                </div>
+                <!-- panel-body -->
+
+            </div>
+            <!-- panel -->
+
+        </div>
+        <!-- columns -->
+
+    </div>
+    <!-- row -->
+
+</div>
+<!-- container -->

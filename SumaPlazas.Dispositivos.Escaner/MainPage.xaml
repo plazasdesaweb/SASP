@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="SumaPlazas.Dispositivos.Escaner.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="400" d:DesignWidth="600">
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Image x:Name="scannedImage" Height="280" VerticalAlignment="Top" Margin="140,10,140,0" />
+        <ListBox x:Name="listBox1" Margin="10"/>
+    </Grid>
+</UserControl>

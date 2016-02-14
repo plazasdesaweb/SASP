@@ -1,0 +1,47 @@
+﻿@model Suma2Lealtad.Models.AfiliadoWeb
+
+<!-- btn btn-success -->
+<div class="col-md-12 col-btn">
+    <div class="text-center">
+        <a href="javascript:ImprimirTarjeta()" class="btn btn-success btn-md" role="button">Imprimir Tarjeta</a>
+        @*<a href="javascript:ReanudarImpresora()" class="btn btn-success btn-md" role="button">Reanudar Impresora</a>*@
+        @*<a href="javascript:LimpiarErrores()" class="btn btn-success btn-md" role="button">Limpiar Errores Impresora</a>*@
+   </div>
+</div>
+<!--// btn btn-success -->
+
+@{
+    //DEBO SACAR LA INFO DEL NRO DEL DOCUMENTO DEL MODELO Y PASARLO COMO PARAMETRO AL HELPER SE SILVERLIGHT
+    var InitParams = "Nombre=" + "NombrePrueba";
+    InitParams = InitParams + "," + "Apellido=" + "ApellidoPrueba";
+    InitParams = InitParams + "," + "NroTarjeta=" + "99999999999999999";
+    InitParams = InitParams + "," + "Track1=" + "B99999999999999999^AUTOMERC_PLAZAS^99120000";
+    InitParams = InitParams + "," + "Track2=" + "99999999999999999=99120000";
+    InitParams = InitParams + "," + "TipoTarjeta=" + "Suma";
+    InitParams = InitParams + "," + "Corporacion=" + "Corporacion";
+    InitParams = InitParams + "," + "FechaVencimiento=" + "12-99";  
+    InitParams = InitParams + "," + "idElementoHtmlControl=ElementoControl";   
+}
+
+@Helpers.Silverlight(xapPath: "~/ClientBin/SumaPlazas.Dispositivos.Impresora.xap", slObjectId: "sl", divObjectWidth: "100%", divObjectHeight: "350px", customParams: @InitParams, divObjectClass: "col-md-12")
+
+<script type="text/javascript">
+    var slcontrol3 = document.getElementById("sl");
+    function ImprimirTarjeta() {
+        if (slcontrol3) {
+            slcontrol3.Content.MainPage.ImprimirTarjeta();
+        }
+    }
+
+    //function ReanudarImpresora() {
+    //    if (slcontrol3) {
+    //        slcontrol3.Content.MainPage.ReanudarImpresora();
+    //    }
+    //}
+
+    //function LimpiarErrores() {
+    //    if (slcontrol3) {
+    //        slcontrol3.Content.MainPage.LimpiarErrores();
+    //    }
+    //}
+</script>

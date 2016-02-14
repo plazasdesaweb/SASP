@@ -1,0 +1,63 @@
+﻿@model Suma2Lealtad.Models.Company
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-3 col-md-6">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Compañía / Eliminar Registro</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-push-2 col-md-8 text-center">
+                            ¿ Esta Ud. seguro de eliminar este registro ?
+                        </div>
+
+                        <div class="col-md-push-2 col-md-8 text-center">
+                            <br />
+                            <div class="display-field">
+                                @Html.DisplayFor(model => model.name)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- buttons -->
+                    <div class="form-group">
+                        <div class="col-md-12 col-btn text-center">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                <p>
+                                    <input type="submit" class="btn btn-success" value="Aceptar" />
+                                    <a href="@Url.Action("Index", "Company")" class="btn btn-danger btn-md" role="button">Cancelar</a>
+                                </p>
+                            }
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container -->

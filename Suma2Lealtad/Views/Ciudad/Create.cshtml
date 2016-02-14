@@ -1,0 +1,71 @@
+﻿@model Suma2Lealtad.Models.CIUDAD
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Ciudad / Agregar Nuevo Registro</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        @Html.HiddenFor(model => model.COD_CIUDAD)
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+
+                                <div class="editor-label col-md-4 control-label">
+                                    Ciudad :
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.DESCRIPC_CIUDAD, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.DESCRIPC_CIUDAD)
+                                </div>
+
+                            </div>
+
+                            <!-- buttons -->
+                            <div class="form-group">
+                                <div class="col-md-12 col-btn">
+                                    <div class="pull-right">
+                                        <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                                        <a class="btn btn-danger btn-md" href="@Url.Action("FilterCiudad", "Ciudad")">Cancelar</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--// buttons -->
+
+                        </form>
+                
+                    }
+
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel panel-default -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container row -->

@@ -1,0 +1,150 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.OrdenRecargaPrepago>
+@{
+    ViewBag.Title = "Ordenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<link href="css/style.css" rel="stylesheet">*@
+@*<link href="~/Content/style.css" rel="stylesheet" />*@
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #5e8262; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Cliente / Ordenes de Recarga / Listado de Registros</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Cliente :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Cliente.nameCliente, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                RIF :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.First().Cliente.rifCliente, new { @class = "form-control", @readonly = "true" })
+            </div>
+            <div class="editor-label col-md-4 control-label">
+                Teléfono :
+            </div>
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.First().Cliente.phoneCliente, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label"></div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <table id="ordenes" class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Nro. de Orden</th>
+                        <th>Fecha de Creación</th>
+                        <th>Estatus</th>
+                        <th>Comentarios</th>
+                        <th>Documento de Referencia</th>
+                        <th>Monto Total</th>
+                        <th class="text-center"></th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.First().id != 0)
+                    {
+                        foreach (var item in Model)
+                        {                            
+                        <tr data-row-key="@item.id" >
+
+                            @Html.HiddenFor(modelItem => item.statusOrden)
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.id)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.creationdateOrden)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.statusOrden)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tipoOrden)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.documento)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.montoOrden)
+                            </td>
+
+                            <td>
+                                <a href="@Url.Action("DetalleOrden", "ClientePrepago", new { id = item.Cliente.idCliente, idOrden = item.id })" class="btn btn-success btn-sm" >
+                                    <span class="glyphicon glyphicon-zoom-in"></span>
+                                </a>
+                            </td>
+
+                            <td>
+                                @{if (item.statusOrden == "Aprobada")
+                                  {
+                                    <a href="@Url.Action("ProcesarOrden", "ClientePrepago", new { id = item.Cliente.idCliente, idOrden = item.id })" class="btn btn-info btn-sm" >
+                                        <span class="glyphicon glyphicon-usd"></span>
+                                    </a>
+                                  }
+                                }
+
+                            </td>
+
+                        </tr>                 
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+            <div class="col-md-12 col-btn">
+                <div class="pull-right">
+                    <a href="@Url.Action("FilterOrdenes", "ClientePrepago", new { id = Model.First().Cliente.idCliente })" class="btn btn-danger btn-md">Regresar</a>
+                </div>
+            </div>
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel -->
+
+</div>

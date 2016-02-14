@@ -1,0 +1,126 @@
+﻿@model Suma2Lealtad.Models.Afiliado
+
+@{
+    ViewBag.Title = "Acreditar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-2 col-md-8">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Afiliado / Acreditar más</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    @{ if (Model.type == "Suma")
+                       {
+                        @: <form action="@Url.Action("Acreditar", "Afiliado")" name="form" method="post" onsubmit="return ValidarMonto();">
+               }
+                       else
+                       {
+                        @:<form action="@Url.Action("Acreditar", "CompanyPrepago")" name="form" method="post" onsubmit="return ValidarMonto();">
+               }
+                    }
+                            @Html.HiddenFor(model => model.id)
+
+                    <div class="form-group">
+                            <div class="editor-label col-md-4 control-label">
+                                Tipo de Afiliado :
+                            </div>
+
+                            <div class="editor-field col-md-6">
+                                @Html.TextBoxFor(model => model.type, new { @class = "form-control", @readonly = "true" })
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                Nombre del Afiliado :
+                            </div>
+                            <div class="editor-form col-md-6">
+                                @Html.TextBox("name", @Model.name + " " + @Model.lastname1, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Número de Documento/Cédula :
+                            </div>
+                            <div class="editor-form col-md-6">
+                                @Html.TextBox("docnumber", @Model.docnumber, new { @class = "form-control", @readonly = "true" })
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                Monto :
+                            </div>
+                            <div class="editor-field col-md-6">
+                                @Html.TextBox("Monto", "", new { @class = "form-control" })
+                                <span id="monto"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label"></div>
+                        <div class="editor-field col-md-6">
+                            <br />
+                        </div>
+
+                        <!-- buttons -->
+                        <div class="col-md-12 col-tabla-btn">
+                            <div class="pull-right">
+                                <input type="submit" class="btn btn-success btn-md" value="Acreditar" />
+                                <a href="@Url.Action("Index", "Afiliado", new { numdoc = @Model.docnumber })" class="btn btn-danger btn-md">Cancelar</a>                                
+                            </div>
+                        </div>
+                        <!--// buttons -->
+                    </form>
+
+                </div>
+                <!-- panel-body -->
+
+            </div>
+            <!-- panel -->
+
+        </div>
+        <!-- columns -->
+
+    </div>
+    <!-- row -->
+
+</div>
+<!-- container -->
+<script type="text/javascript">
+    document.getElementById("Monto").focus();
+
+    function ValidarMonto() {
+        var valor = document.getElementById('Monto').value;
+        var RegExPattern = /^(\d){1,3}$/;
+
+        if (RegExPattern.test(valor) == false) {
+            spanMessage();
+            document.getElementById('Monto').value = "";
+            document.form.Monto.focus();
+            return false;
+        }
+        else {
+            if (valor <= 0) {
+                spanMessage();
+                document.getElementById('Monto').value = "";
+                document.form.Monto.focus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function spanMessage() {
+        var span = document.getElementById('monto');
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode("* Formato Monto Incorrecto: Sólo números, máximo 3 dígitos, mayor que cero (0)"));
+    }
+</script>
+

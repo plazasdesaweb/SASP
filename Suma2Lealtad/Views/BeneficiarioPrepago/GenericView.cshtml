@@ -1,0 +1,22 @@
+﻿@model Suma2Lealtad.Models.ViewModel
+@{
+    ViewBag.Title = "GenericView";
+}
+<div class="jumbotron">
+    <div class="container">
+        <h3><b>@Model.Title</b></h3>
+        <p>@Model.Message</p>
+    </div>
+</div>
+
+<form id="commentForm" action="@Url.Action(@Model.ActionName, @Model.ControllerName, new { id = @Model.RouteValues })" class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-12 col-btn">
+            <div class="pull-right">
+                <input type="submit" class="btn btn-success btn-md" value="Continuar" />
+            </div>
+        </div>
+    </div>
+</form>
+
+

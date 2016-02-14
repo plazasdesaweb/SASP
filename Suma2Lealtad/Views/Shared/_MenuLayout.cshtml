@@ -1,0 +1,50 @@
+﻿@{ var menusList = Session["menu"] as IEnumerable<Suma2Lealtad.Models.CMenu>; }
+
+@if (menusList != null)
+{
+   @* 
+   @Html.Raw("<ul class='nav navbar-nav'>")
+    foreach (var parentMenu in menusList)
+    {
+
+        if (@parentMenu.parentid == 0)
+        {
+            
+    @Html.Raw("<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>")
+    @Html.Raw(parentMenu.name)
+    @Html.Raw("<span class='caret'></span></a>")
+
+        }
+        else
+        {
+
+    @Html.Raw("<ul class='dropdown-menu' role='menu'>")
+            foreach (var item in menusList.Where(item => @item.parentid == @parentMenu.parentid))
+            { 
+    @Html.Raw("<li>" + @Html.ActionLink(item.name, item.actions, item.controller) + "</li>")
+            }                
+    @Html.Raw("</ul></li>")
+            
+        }
+
+    }
+    @Html.Raw("</ul>")
+   *@
+
+    @Html.Raw("<ul class='nav navbar-nav'>")
+    foreach (var parentMenu in menusList.Where(x => @x.parentid == 0))
+    {                  
+        @Html.Raw("<li class='dropdown'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>")
+        @Html.Raw(parentMenu.name)
+        @Html.Raw("<span class='caret'></span></a>")
+        @Html.Raw("<ul class='dropdown-menu' role='menu'>")
+        foreach (var item in menusList.Where(item => @item.parentid == @parentMenu.id))
+        { 
+            @Html.Raw("<li>" + @Html.ActionLink(item.name, item.actions, item.controller) + "</li>")
+        }                
+        @Html.Raw("</ul></li>")            
+    }
+    @Html.Raw("</ul>")
+     
+}
+

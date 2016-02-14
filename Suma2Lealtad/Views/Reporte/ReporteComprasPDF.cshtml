@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.ReportePrepago>
+
+@{
+    ViewBag.Title = "Prepago / Reportes / Reporte de Compras";
+    Layout = "";
+}
+
+@{
+    int TotalTransacciones = 0;
+    decimal MontoTotalTransacciones = 0;
+}
+
+@*<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Reportes / Reporte de Compras</h3>
+        </div>
+        <div class="panel-body">*@
+
+@*<div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Nombre del Reporte :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.nombreReporte, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div id="TipoConsulta" class="editor-label col-md-4 control-label">
+                Tipo de Consulta :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.tipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label numdoc">
+                Número de Documento / Cédula :
+            </div>
+
+            <div class="editor-label col-md-4 control-label idCliente">
+                Cliente :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.parametrotipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Fecha desde :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.fechainicioReporte, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Fecha hasta :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.fechafinReporte, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Modalidad de Transacciones :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.modotransaccionReporte, new { @class = "form-control", @readonly = "true" })
+            </div>*@
+
+<div class="editor-label col-md-4 control-label">
+    <br />
+</div>
+
+<div class="editor-field col-md-8">
+    <br />
+</div>
+
+<div class="editor-field col-md-12">
+    @(String.Format("{0} {1}", "Nombre del Reporte: ", Model.First().Encabezado.nombreReporte))
+</div>
+<div class="editor-field col-md-12">
+    @(String.Format("{0} {1}", "Tipo de Consulta: ", Model.First().Encabezado.tipoconsultaReporte))
+</div>
+
+@if (Model.First().Encabezado.tipoconsultaReporte == "Por Cliente")
+{
+    <div class="editor-field col-md-12">
+        @(String.Format("{0} {1}", "Cliente: ", Model.First().Encabezado.parametrotipoconsultaReporte))
+    </div>
+}
+else
+{
+    <div class="editor-field col-md-12">
+        @(String.Format("{0} {1}", "Beneficiario: ", Model.First().Encabezado.parametrotipoconsultaReporte))
+    </div>
+}
+<div class="editor-field col-md-12">
+    @(String.Format("{0} {1}", "Fecha desde: ", Model.First().Encabezado.fechainicioReporte))
+</div>
+<div class="editor-field col-md-12">
+    @(String.Format("{0} {1}", "Fecha hasta: ", Model.First().Encabezado.fechafinReporte))
+</div>
+<div class="editor-field col-md-12">
+    @(String.Format("{0} {1}", "Modalidad de Transacciones: ", Model.First().Encabezado.modotransaccionReporte))
+</div>
+
+<div class="editor-label col-md-4 control-label"></div>
+<div class="editor-field col-md-8">
+    <br />
+</div>
+
+<table id="detalleReporte" class="table table-striped custab">
+
+    <thead>
+        <tr>
+            <th>Cliente
+            </th>
+            <th>Beneficiario
+            </th>
+            <th>Fecha
+            </th>
+            <th>Referencia
+            </th>
+            <th>Descripción
+            </th>
+            <th>Número de Tarjeta
+            </th>
+            <th>Monto
+            </th>
+            <th>Tipo de Transacción
+            </th>
+        </tr>
+    </thead>
+
+    <tbody style="font-size: 12px">
+        @if (Model.Count() != 0)
+        {
+            foreach (var item in Model)
+            {
+                TotalTransacciones = TotalTransacciones + 1;
+                MontoTotalTransacciones = MontoTotalTransacciones + item.monto;                 
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beneficiario.Cliente.nameCliente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.name) @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.lastname1)
+                </td>
+                <td>
+                    @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
+                </td>
+                <td>
+                    @(String.Format("{0}", "------"))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.detalle)
+                </td>
+                <td>
+                    @(String.Format("{0}", Math.Truncate(item.numerotarjeta)))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.monto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipo)
+                </td>
+            </tr>                            
+            }
+        }
+    </tbody>
+
+</table>
+
+<div class="editor-label col-md-4 control-label">
+    Total Transacciones : @TotalTransacciones
+</div>
+
+<div class="editor-label col-md-4 control-label">
+    Monto Total Transacciones : @MontoTotalTransacciones
+</div>
+
+
+@*</div>
+        <!-- panel-body -->
+
+</div>
+    <!-- panel -->
+
+</div>*@

@@ -1,0 +1,110 @@
+﻿@model Suma2Lealtad.Models.BeneficiarioPrepago
+
+@{
+    ViewBag.Title = "BloquearTarjeta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Cliente / Beneficiario / Bloquear Tarjeta</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <form action="@Url.Action("BloquearTarjeta", "ClientePrepago", new { id = @Model.Cliente.idCliente, idBeneficiario = @Model.Afiliado.id })" name="form" method="post">
+
+                @Html.HiddenFor(model => model.Cliente.idCliente)
+
+                <div class="editor-label col-md-4 control-label">
+                    Cliente :
+                </div>
+                <div class="editor-field col-md-6">
+                    @Html.TextBoxFor(model => model.Cliente.nameCliente, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    RIF :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.Cliente.rifCliente, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="editor-label col-md-4 control-label">
+                    Teléfono :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.Cliente.phoneCliente, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Tipo de Afiliado :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    @Html.TextBoxFor(model => model.Afiliado.type, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Nombre del Afiliado :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBox("name", @Model.Afiliado.name + " " + @Model.Afiliado.lastname1, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Número de Documento/Cédula :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBox("docnumber", @Model.Afiliado.docnumber, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Número de Tarjeta :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBox("pan", @Model.Afiliado.pan, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Estatus de Tarjeta :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBox("estatustarjeta", @Model.Afiliado.estatustarjeta, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="col-md-12 col-btn">
+                    <div class="text-center">
+                        <p class="text-danger">
+                            Advertencia: Esta operación bloqueará la tarjeta actual y generará una nueva tarjeta.
+                        </p>
+                        <input type="submit" class="btn btn-success btn-md" value="Bloquear" />
+                    </div>
+                </div>
+                <!--// btn btn-success -->
+
+                <!-- buttons -->
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-right">
+                        <a href="@Url.Action("FilterReviewBeneficiarios", "ClientePrepago", new { id = Model.Cliente.idCliente })" class="btn btn-danger btn-md">Regresar</a>
+                    </div>
+                </div>
+                <!--// buttons -->
+            </form>
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel -->
+
+</div>
+<!-- columns -->
+

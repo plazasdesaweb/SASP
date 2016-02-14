@@ -1,0 +1,57 @@
+﻿@model Suma2Lealtad.Models.Auditing
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Auditing</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.objectid)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.objectid)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.operationsid)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.operationsid)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.userid)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.userid)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.creationdate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.creationdate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.originaldata)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.originaldata)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.changedata)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.changedata)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

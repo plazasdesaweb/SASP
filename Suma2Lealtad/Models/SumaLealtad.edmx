@@ -1,0 +1,2103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SumaLealtad.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="SumaLealtadStoreContainer">
+          <EntitySet Name="Affiliate" EntityType="SumaLealtad.Store.Affiliate" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AffiliateAud" EntityType="SumaLealtad.Store.AffiliateAud" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Auditing" EntityType="SumaLealtad.Store.Auditing" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Channel" EntityType="SumaLealtad.Store.Channel" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CIUDAD" EntityType="SumaLealtad.Store.CIUDAD" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CIUDAD_MUNICIPIO" EntityType="SumaLealtad.Store.CIUDAD_MUNICIPIO" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CLIENTE" EntityType="SumaLealtad.Store.CLIENTE" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Company" EntityType="SumaLealtad.Store.Company" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanyAffiliate" EntityType="SumaLealtad.Store.CompanyAffiliate" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CreditLimit" EntityType="SumaLealtad.Store.CreditLimit" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomerInterest" EntityType="SumaLealtad.Store.CustomerInterest" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ESTADO" EntityType="SumaLealtad.Store.ESTADO" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ESTADO_CIUDAD" EntityType="SumaLealtad.Store.ESTADO_CIUDAD" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FACTURA" EntityType="SumaLealtad.Store.FACTURA" store:Type="Tables" store:Schema="dbo" store:Name="FACTURA">
+            <DefiningQuery>SELECT 
+      [FACTURA].[NRO_TARJETA] AS [NRO_TARJETA], 
+      [FACTURA].[SUCURSAL] AS [SUCURSAL], 
+      [FACTURA].[POS] AS [POS], 
+      [FACTURA].[FACTURA] AS [FACTURA], 
+      [FACTURA].[FECHA] AS [FECHA], 
+      [FACTURA].[HORA] AS [HORA], 
+      [FACTURA].[MONTO_FACTURA] AS [MONTO_FACTURA], 
+      [FACTURA].[FECHA_REGISTRO] AS [FECHA_REGISTRO], 
+      [FACTURA].[PUNTOS_ACRED] AS [PUNTOS_ACRED], 
+      [FACTURA].[PUNTOS_CANJE] AS [PUNTOS_CANJE], 
+      [FACTURA].[TIPO_DOCUMENTO] AS [TIPO_DOCUMENTO], 
+      [FACTURA].[NRO_DOCUMENTO] AS [NRO_DOCUMENTO]
+      FROM [dbo].[FACTURA] AS [FACTURA]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Interest" EntityType="SumaLealtad.Store.Interest" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Menu" EntityType="SumaLealtad.Store.Menu" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MUNICIPIO" EntityType="SumaLealtad.Store.MUNICIPIO" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MUNICIPIO_PARROQUIA" EntityType="SumaLealtad.Store.MUNICIPIO_PARROQUIA" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Object" EntityType="SumaLealtad.Store.Object" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Operations" EntityType="SumaLealtad.Store.Operations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Orders" EntityType="SumaLealtad.Store.Orders" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrdersDetail" EntityType="SumaLealtad.Store.OrdersDetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrdersHistory" EntityType="SumaLealtad.Store.OrdersHistory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PAIS" EntityType="SumaLealtad.Store.PAIS" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PAIS_ESTADO" EntityType="SumaLealtad.Store.PAIS_ESTADO" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Parameters" EntityType="SumaLealtad.Store.Parameters" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PARAMETROS" EntityType="SumaLealtad.Store.PARAMETROS" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PARROQUIA" EntityType="SumaLealtad.Store.PARROQUIA" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PARROQUIA_URBANIZACION" EntityType="SumaLealtad.Store.PARROQUIA_URBANIZACION" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Photos_Affiliate" EntityType="SumaLealtad.Store.Photos_Affiliate" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PrepaidBeneficiary" EntityType="SumaLealtad.Store.PrepaidBeneficiary" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PrepaidCustomer" EntityType="SumaLealtad.Store.PrepaidCustomer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Reasons" EntityType="SumaLealtad.Store.Reasons" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RESTRICCIONES" EntityType="SumaLealtad.Store.RESTRICCIONES" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Role" EntityType="SumaLealtad.Store.Role" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SecurityLevel" EntityType="SumaLealtad.Store.SecurityLevel" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SecurityMenu" EntityType="SumaLealtad.Store.SecurityMenu" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SumaStatus" EntityType="SumaLealtad.Store.SumaStatus" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="SumaLealtad.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TARJETA" EntityType="SumaLealtad.Store.TARJETA" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Type" EntityType="SumaLealtad.Store.Type" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="URBANIZACION" EntityType="SumaLealtad.Store.URBANIZACION" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="SumaLealtad.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserRol" EntityType="SumaLealtad.Store.UserRol" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Affiliate_Channel" Association="SumaLealtad.Store.FK_Affiliate_Channel">
+            <End Role="Channel" EntitySet="Channel" />
+            <End Role="Affiliate" EntitySet="Affiliate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Affiliate_SumaStatus" Association="SumaLealtad.Store.FK_Affiliate_SumaStatus">
+            <End Role="SumaStatus" EntitySet="SumaStatus" />
+            <End Role="Affiliate" EntitySet="Affiliate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CIUDAD_MUNICIPIO_CIUDAD" Association="SumaLealtad.Store.FK_CIUDAD_MUNICIPIO_CIUDAD">
+            <End Role="CIUDAD" EntitySet="CIUDAD" />
+            <End Role="CIUDAD_MUNICIPIO" EntitySet="CIUDAD_MUNICIPIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CIUDAD_MUNICIPIO_MUNICIPIO" Association="SumaLealtad.Store.FK_CIUDAD_MUNICIPIO_MUNICIPIO">
+            <End Role="MUNICIPIO" EntitySet="MUNICIPIO" />
+            <End Role="CIUDAD_MUNICIPIO" EntitySet="CIUDAD_MUNICIPIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerInterest_Interest" Association="SumaLealtad.Store.FK_CustomerInterest_Interest">
+            <End Role="Interest" EntitySet="Interest" />
+            <End Role="CustomerInterest" EntitySet="CustomerInterest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ESTADO_CIUDAD_CIUDAD" Association="SumaLealtad.Store.FK_ESTADO_CIUDAD_CIUDAD">
+            <End Role="CIUDAD" EntitySet="CIUDAD" />
+            <End Role="ESTADO_CIUDAD" EntitySet="ESTADO_CIUDAD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ESTADO_CIUDAD_ESTADO" Association="SumaLealtad.Store.FK_ESTADO_CIUDAD_ESTADO">
+            <End Role="ESTADO" EntitySet="ESTADO" />
+            <End Role="ESTADO_CIUDAD" EntitySet="ESTADO_CIUDAD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MUNICIPIO_PARROQUIA_MUNICIPIO" Association="SumaLealtad.Store.FK_MUNICIPIO_PARROQUIA_MUNICIPIO">
+            <End Role="MUNICIPIO" EntitySet="MUNICIPIO" />
+            <End Role="MUNICIPIO_PARROQUIA" EntitySet="MUNICIPIO_PARROQUIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MUNICIPIO_PARROQUIA_PARROQUIA" Association="SumaLealtad.Store.FK_MUNICIPIO_PARROQUIA_PARROQUIA">
+            <End Role="PARROQUIA" EntitySet="PARROQUIA" />
+            <End Role="MUNICIPIO_PARROQUIA" EntitySet="MUNICIPIO_PARROQUIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_PrepaidCustomer" Association="SumaLealtad.Store.FK_Orders_PrepaidCustomer">
+            <End Role="PrepaidCustomer" EntitySet="PrepaidCustomer" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_SumaStatus" Association="SumaLealtad.Store.FK_Orders_SumaStatus">
+            <End Role="SumaStatus" EntitySet="SumaStatus" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersDetail_Order" Association="SumaLealtad.Store.FK_OrdersDetail_Order">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrdersDetail" EntitySet="OrdersDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersDetail_SumaStatus" Association="SumaLealtad.Store.FK_OrdersDetail_SumaStatus">
+            <End Role="SumaStatus" EntitySet="SumaStatus" />
+            <End Role="OrdersDetail" EntitySet="OrdersDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PARROQUIA_URBANIZACION_PARROQUIA" Association="SumaLealtad.Store.FK_PARROQUIA_URBANIZACION_PARROQUIA">
+            <End Role="PARROQUIA" EntitySet="PARROQUIA" />
+            <End Role="PARROQUIA_URBANIZACION" EntitySet="PARROQUIA_URBANIZACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PARROQUIA_URBANIZACION_URBANIZACION" Association="SumaLealtad.Store.FK_PARROQUIA_URBANIZACION_URBANIZACION">
+            <End Role="URBANIZACION" EntitySet="URBANIZACION" />
+            <End Role="PARROQUIA_URBANIZACION" EntitySet="PARROQUIA_URBANIZACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PBeneficiary_PCustomer" Association="SumaLealtad.Store.FK_PBeneficiary_PCustomer">
+            <End Role="PrepaidCustomer" EntitySet="PrepaidCustomer" />
+            <End Role="PrepaidBeneficiary" EntitySet="PrepaidBeneficiary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_SumaStatus" Association="SumaLealtad.Store.FK_User_SumaStatus">
+            <End Role="SumaStatus" EntitySet="SumaStatus" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Affiliate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="customerid" Type="int" Nullable="false" />
+          <Property Name="docnumber" Type="varchar" Nullable="false" MaxLength="16" />
+          <Property Name="clientid" Type="int" Nullable="false" />
+          <Property Name="storeid" Type="int" Nullable="false" />
+          <Property Name="channelid" Type="int" Nullable="false" />
+          <Property Name="typeid" Type="int" Nullable="false" />
+          <Property Name="affiliatedate" Type="datetime" Nullable="false" />
+          <Property Name="typedelivery" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="storeiddelivery" Type="int" />
+          <Property Name="estimateddatedelivery" Type="date" Nullable="false" />
+          <Property Name="creationdate" Type="datetime" Nullable="false" />
+          <Property Name="creationuserid" Type="int" Nullable="false" />
+          <Property Name="modifieduserid" Type="int" Nullable="false" />
+          <Property Name="modifieddate" Type="datetime" Nullable="false" />
+          <Property Name="reasonsid" Type="int" />
+          <Property Name="twitter_account" Type="varchar" MaxLength="120" />
+          <Property Name="facebook_account" Type="varchar" MaxLength="120" />
+          <Property Name="instagram_account" Type="varchar" MaxLength="120" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+          <Property Name="sumastatusid" Type="int" />
+        </EntityType>
+        <EntityType Name="AffiliateAud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="affiliateid" Type="int" Nullable="false" />
+          <Property Name="modifieduserid" Type="int" Nullable="false" />
+          <Property Name="modifieddate" Type="datetime" Nullable="false" />
+          <Property Name="statusid" Type="int" Nullable="false" />
+          <Property Name="reasonsid" Type="int" Nullable="false" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+        </EntityType>
+        <EntityType Name="Auditing">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="objectid" Type="int" Nullable="false" />
+          <Property Name="operationsid" Type="int" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="creationdate" Type="datetime" Nullable="false" />
+          <Property Name="originaldata" Type="xml" Nullable="false" />
+          <Property Name="changedata" Type="xml" Nullable="false" />
+          <Property Name="ipaddress" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Channel">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="CIUDAD">
+          <Key>
+            <PropertyRef Name="COD_CIUDAD" />
+          </Key>
+          <Property Name="COD_CIUDAD" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="DESCRIPC_CIUDAD" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CIUDAD_MUNICIPIO">
+          <Key>
+            <PropertyRef Name="COD_CIUDAD" />
+            <PropertyRef Name="COD_MUNICIPIO" />
+          </Key>
+          <Property Name="COD_CIUDAD" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="COD_MUNICIPIO" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="TIPO_DOCUMENTO" />
+            <PropertyRef Name="NRO_DOCUMENTO" />
+          </Key>
+          <Property Name="TIPO_DOCUMENTO" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="NRO_DOCUMENTO" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="NACIONALIDAD" Type="varchar" MaxLength="50" />
+          <Property Name="NOMBRE_CLIENTE1" Type="varchar" MaxLength="100" />
+          <Property Name="NOMBRE_CLIENTE2" Type="varchar" MaxLength="100" />
+          <Property Name="APELLIDO_CLIENTE1" Type="varchar" MaxLength="100" />
+          <Property Name="APELLIDO_CLIENTE2" Type="varchar" MaxLength="100" />
+          <Property Name="FECHA_NACIMIENTO" Type="datetime" />
+          <Property Name="SEXO" Type="varchar" MaxLength="1" />
+          <Property Name="EDO_CIVIL" Type="varchar" MaxLength="1" />
+          <Property Name="OCUPACION" Type="varchar" MaxLength="30" />
+          <Property Name="TELEFONO_HAB" Type="varchar" MaxLength="15" />
+          <Property Name="TELEFONO_OFIC" Type="varchar" MaxLength="15" />
+          <Property Name="TELEFONO_CEL" Type="varchar" MaxLength="15" />
+          <Property Name="E_MAIL" Type="varchar" MaxLength="100" />
+          <Property Name="COD_SUCURSAL" Type="int" />
+          <Property Name="COD_ESTADO" Type="varchar" MaxLength="12" />
+          <Property Name="COD_CIUDAD" Type="varchar" MaxLength="12" />
+          <Property Name="COD_MUNICIPIO" Type="varchar" MaxLength="12" />
+          <Property Name="COD_PARROQUIA" Type="varchar" MaxLength="12" />
+          <Property Name="COD_URBANIZACION" Type="varchar" MaxLength="12" />
+          <Property Name="FECHA_CREACION" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="ALIAS" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="rif" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="address" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="phone" Type="varchar" MaxLength="25" />
+          <Property Name="email" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="creationdate" Type="datetime" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyAffiliate">
+          <Key>
+            <PropertyRef Name="affiliateid" />
+            <PropertyRef Name="companyid" />
+          </Key>
+          <Property Name="affiliateid" Type="int" Nullable="false" />
+          <Property Name="companyid" Type="int" Nullable="false" />
+          <Property Name="begindate" Type="date" Nullable="false" />
+          <Property Name="enddate" Type="date" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="CreditLimit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="companyid" Type="int" Nullable="false" />
+          <Property Name="credit" Type="money" Nullable="false" />
+          <Property Name="balance" Type="money" Nullable="false" />
+          <Property Name="creationdate" Type="datetime" />
+          <Property Name="creationuserid" Type="int" Nullable="false" />
+          <Property Name="modifieddate" Type="datetime" Nullable="false" />
+          <Property Name="modifieduserid" Type="int" Nullable="false" />
+          <Property Name="activecredit" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerInterest">
+          <Key>
+            <PropertyRef Name="customerid" />
+            <PropertyRef Name="interestid" />
+          </Key>
+          <Property Name="customerid" Type="int" Nullable="false" />
+          <Property Name="interestid" Type="int" Nullable="false" />
+          <Property Name="comments" Type="varchar" Nullable="false" MaxLength="120" />
+        </EntityType>
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="COD_ESTADO" />
+          </Key>
+          <Property Name="COD_ESTADO" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="DESCRIPC_ESTADO" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ESTADO_CIUDAD">
+          <Key>
+            <PropertyRef Name="COD_ESTADO" />
+            <PropertyRef Name="COD_CIUDAD" />
+          </Key>
+          <Property Name="COD_ESTADO" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="COD_CIUDAD" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'SumaLealtad.dbo.FACTURA' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="FACTURA">
+          <Key>
+            <PropertyRef Name="NRO_TARJETA" />
+            <PropertyRef Name="SUCURSAL" />
+            <PropertyRef Name="POS" />
+            <PropertyRef Name="FACTURA" />
+            <PropertyRef Name="FECHA" />
+            <PropertyRef Name="HORA" />
+            <PropertyRef Name="TIPO_DOCUMENTO" />
+            <PropertyRef Name="NRO_DOCUMENTO" />
+          </Key>
+          <Property Name="NRO_TARJETA" Type="numeric" Nullable="false" />
+          <Property Name="SUCURSAL" Type="int" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="FACTURA" Type="numeric" Nullable="false" />
+          <Property Name="FECHA" Type="datetime" Nullable="false" />
+          <Property Name="HORA" Type="char" Nullable="false" MaxLength="8" />
+          <Property Name="MONTO_FACTURA" Type="money" />
+          <Property Name="FECHA_REGISTRO" Type="datetime" />
+          <Property Name="PUNTOS_ACRED" Type="int" />
+          <Property Name="PUNTOS_CANJE" Type="int" />
+          <Property Name="TIPO_DOCUMENTO" Type="varchar" Nullable="false" MaxLength="1" />
+          <Property Name="NRO_DOCUMENTO" Type="varchar" Nullable="false" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Interest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="parentid" Type="int" Nullable="false" />
+          <Property Name="controller" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="actions" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="order_no" Type="int" Nullable="false" />
+          <Property Name="tooltips" Type="varchar" MaxLength="120" />
+        </EntityType>
+        <EntityType Name="MUNICIPIO">
+          <Key>
+            <PropertyRef Name="COD_MUNICIPIO" />
+          </Key>
+          <Property Name="COD_MUNICIPIO" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="DESCRIPC_MUNICIPIO" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MUNICIPIO_PARROQUIA">
+          <Key>
+            <PropertyRef Name="COD_MUNICIPIO" />
+            <PropertyRef Name="COD_PARROQUIA" />
+          </Key>
+          <Property Name="COD_MUNICIPIO" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="COD_PARROQUIA" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="Object">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="type" Type="varchar" Nullable="false" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="Operations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="prepaidcustomerid" Type="int" Nullable="false" />
+          <Property Name="totalamount" Type="money" Nullable="false" />
+          <Property Name="paymenttype" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="creationdate" Type="datetime" Nullable="false" />
+          <Property Name="creationuserid" Type="int" Nullable="false" />
+          <Property Name="processdate" Type="datetime" Nullable="false" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+          <Property Name="sumastatusid" Type="int" Nullable="false" />
+          <Property Name="documento" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OrdersDetail">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="orderid" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="orderid" Type="int" Nullable="false" />
+          <Property Name="customerid" Type="int" Nullable="false" />
+          <Property Name="amount" Type="money" Nullable="false" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+          <Property Name="cardsresponse" Type="varchar" MaxLength="300" />
+          <Property Name="sumastatusid" Type="int" />
+        </EntityType>
+        <EntityType Name="OrdersHistory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="estatusid" Type="int" Nullable="false" />
+          <Property Name="creationdate" Type="datetime" Nullable="false" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+          <Property Name="orderid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PAIS">
+          <Key>
+            <PropertyRef Name="COD_PAIS" />
+          </Key>
+          <Property Name="COD_PAIS" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="DESCRIPC_PAIS" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PAIS_ESTADO">
+          <Key>
+            <PropertyRef Name="COD_PAIS" />
+            <PropertyRef Name="COD_ESTADO" />
+          </Key>
+          <Property Name="COD_PAIS" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="COD_ESTADO" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="Parameters">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="value" Type="varchar" Nullable="false" MaxLength="30" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PARAMETROS">
+          <Key>
+            <PropertyRef Name="ID_PARAM" />
+            <PropertyRef Name="NOMBRE_PARAM" />
+          </Key>
+          <Property Name="ID_PARAM" Type="int" Nullable="false" />
+          <Property Name="NOMBRE_PARAM" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="DESCRIPCION" Type="varchar" MaxLength="50" />
+          <Property Name="MTO_CANJE" Type="int" />
+          <Property Name="PTS_CANJE" Type="int" />
+          <Property Name="MTO_ACR" Type="int" />
+          <Property Name="PTS_ACR" Type="int" />
+          <Property Name="TIPO_PRE" Type="int" />
+          <Property Name="TIPO_SUMA" Type="int" />
+          <Property Name="FECHA_ACT_PARAM" Type="datetime" />
+          <Property Name="FECHA_DESAC_PARAM" Type="datetime" />
+          <Property Name="FECHA" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PARROQUIA">
+          <Key>
+            <PropertyRef Name="COD_PARROQUIA" />
+          </Key>
+          <Property Name="COD_PARROQUIA" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="DESCRIPC_PARROQUIA" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PARROQUIA_URBANIZACION">
+          <Key>
+            <PropertyRef Name="COD_PARROQUIA" />
+            <PropertyRef Name="COD_URBANIZACION" />
+          </Key>
+          <Property Name="COD_PARROQUIA" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="COD_URBANIZACION" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="Photos_Affiliate">
+          <Key>
+            <PropertyRef Name="photo_id" />
+          </Key>
+          <Property Name="photo_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="photo" Type="image" Nullable="false" />
+          <Property Name="photo_type" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="Affiliate_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PrepaidBeneficiary">
+          <Key>
+            <PropertyRef Name="affiliateid" />
+            <PropertyRef Name="prepaidcustomerid" />
+          </Key>
+          <Property Name="affiliateid" Type="int" Nullable="false" />
+          <Property Name="prepaidcustomerid" Type="int" Nullable="false" />
+          <Property Name="begindate" Type="datetime" />
+          <Property Name="enddate" Type="datetime" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="PrepaidCustomer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="120" />
+          <Property Name="alias" Type="varchar" MaxLength="50" />
+          <Property Name="rif" Type="varchar" MaxLength="20" />
+          <Property Name="address" Type="varchar" MaxLength="120" />
+          <Property Name="phone" Type="varchar" MaxLength="25" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="creationdate" Type="datetime" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reasons">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="type" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="RESTRICCIONES">
+          <Key>
+            <PropertyRef Name="COD_RESTRICCION" />
+          </Key>
+          <Property Name="COD_RESTRICCION" Type="int" Nullable="false" />
+          <Property Name="FECHA_ACT_REST" Type="datetime" />
+          <Property Name="FECHA_DESAC_REST" Type="datetime" />
+          <Property Name="MINTRAN_ACR" Type="tinyint" />
+          <Property Name="MAXTRAN_ACR" Type="tinyint" />
+          <Property Name="MINMONTO_ACR" Type="money" />
+          <Property Name="MAXMONTO_ACR" Type="money" />
+          <Property Name="MINTRAN_RED" Type="tinyint" />
+          <Property Name="MAXTRAN_RED" Type="tinyint" />
+          <Property Name="MINMONTO_RED" Type="money" />
+          <Property Name="MAXMONTO_RED" Type="money" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SecurityLevel">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="comments" Type="varchar" MaxLength="120" />
+        </EntityType>
+        <EntityType Name="SecurityMenu">
+          <Key>
+            <PropertyRef Name="roleid" />
+            <PropertyRef Name="menuid" />
+            <PropertyRef Name="securitylevelid" />
+          </Key>
+          <Property Name="roleid" Type="int" Nullable="false" />
+          <Property Name="menuid" Type="int" Nullable="false" />
+          <Property Name="securitylevelid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SumaStatus">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="tablename" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="value" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TARJETA">
+          <Key>
+            <PropertyRef Name="NRO_TARJETA" />
+          </Key>
+          <Property Name="NRO_TARJETA" Type="numeric" Nullable="false" />
+          <Property Name="NRO_AFILIACION" Type="int" Nullable="false" />
+          <Property Name="TIPO_DOCUMENTO" Type="varchar" MaxLength="1" />
+          <Property Name="NRO_DOCUMENTO" Type="varchar" MaxLength="15" />
+          <Property Name="ESTATUS_TARJETA" Type="varchar" MaxLength="10" />
+          <Property Name="SALDO_PUNTOS" Type="numeric" Precision="19" Scale="4" />
+          <Property Name="OBSERVACIONES" Type="varchar" MaxLength="50" />
+          <Property Name="COD_USUARIO" Type="int" />
+          <Property Name="TRACK1" Type="varchar" MaxLength="255" />
+          <Property Name="TRACK2" Type="varchar" MaxLength="255" />
+          <Property Name="CVV2" Type="varchar" MaxLength="3" />
+          <Property Name="FECHA_CREACION" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="URBANIZACION">
+          <Key>
+            <PropertyRef Name="COD_URBANIZACION" />
+          </Key>
+          <Property Name="COD_URBANIZACION" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="DESCRIPC_URBANIZACION" Type="varchar" Nullable="false" MaxLength="40" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="varchar" Nullable="false" MaxLength="32" />
+          <Property Name="passw" Type="varchar" Nullable="false" MaxLength="250" />
+          <Property Name="firstname" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="lastname" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="email" Type="varchar" Nullable="false" MaxLength="80" />
+          <Property Name="typeid" Type="int" Nullable="false" />
+          <Property Name="sumastatusid" Type="int" />
+        </EntityType>
+        <EntityType Name="UserRol">
+          <Key>
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="roleid" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Affiliate_Channel">
+          <End Role="Channel" Type="SumaLealtad.Store.Channel" Multiplicity="1" />
+          <End Role="Affiliate" Type="SumaLealtad.Store.Affiliate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Affiliate">
+              <PropertyRef Name="channelid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Affiliate_SumaStatus">
+          <End Role="SumaStatus" Type="SumaLealtad.Store.SumaStatus" Multiplicity="0..1" />
+          <End Role="Affiliate" Type="SumaLealtad.Store.Affiliate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Affiliate">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CIUDAD_MUNICIPIO_CIUDAD">
+          <End Role="CIUDAD" Type="SumaLealtad.Store.CIUDAD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CIUDAD_MUNICIPIO" Type="SumaLealtad.Store.CIUDAD_MUNICIPIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CIUDAD">
+              <PropertyRef Name="COD_CIUDAD" />
+            </Principal>
+            <Dependent Role="CIUDAD_MUNICIPIO">
+              <PropertyRef Name="COD_CIUDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CIUDAD_MUNICIPIO_MUNICIPIO">
+          <End Role="MUNICIPIO" Type="SumaLealtad.Store.MUNICIPIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CIUDAD_MUNICIPIO" Type="SumaLealtad.Store.CIUDAD_MUNICIPIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUNICIPIO">
+              <PropertyRef Name="COD_MUNICIPIO" />
+            </Principal>
+            <Dependent Role="CIUDAD_MUNICIPIO">
+              <PropertyRef Name="COD_MUNICIPIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerInterest_Interest">
+          <End Role="Interest" Type="SumaLealtad.Store.Interest" Multiplicity="1" />
+          <End Role="CustomerInterest" Type="SumaLealtad.Store.CustomerInterest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Interest">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CustomerInterest">
+              <PropertyRef Name="interestid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ESTADO_CIUDAD_CIUDAD">
+          <End Role="CIUDAD" Type="SumaLealtad.Store.CIUDAD" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ESTADO_CIUDAD" Type="SumaLealtad.Store.ESTADO_CIUDAD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CIUDAD">
+              <PropertyRef Name="COD_CIUDAD" />
+            </Principal>
+            <Dependent Role="ESTADO_CIUDAD">
+              <PropertyRef Name="COD_CIUDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ESTADO_CIUDAD_ESTADO">
+          <End Role="ESTADO" Type="SumaLealtad.Store.ESTADO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ESTADO_CIUDAD" Type="SumaLealtad.Store.ESTADO_CIUDAD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADO">
+              <PropertyRef Name="COD_ESTADO" />
+            </Principal>
+            <Dependent Role="ESTADO_CIUDAD">
+              <PropertyRef Name="COD_ESTADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MUNICIPIO_PARROQUIA_MUNICIPIO">
+          <End Role="MUNICIPIO" Type="SumaLealtad.Store.MUNICIPIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MUNICIPIO_PARROQUIA" Type="SumaLealtad.Store.MUNICIPIO_PARROQUIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUNICIPIO">
+              <PropertyRef Name="COD_MUNICIPIO" />
+            </Principal>
+            <Dependent Role="MUNICIPIO_PARROQUIA">
+              <PropertyRef Name="COD_MUNICIPIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MUNICIPIO_PARROQUIA_PARROQUIA">
+          <End Role="PARROQUIA" Type="SumaLealtad.Store.PARROQUIA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MUNICIPIO_PARROQUIA" Type="SumaLealtad.Store.MUNICIPIO_PARROQUIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PARROQUIA">
+              <PropertyRef Name="COD_PARROQUIA" />
+            </Principal>
+            <Dependent Role="MUNICIPIO_PARROQUIA">
+              <PropertyRef Name="COD_PARROQUIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_PrepaidCustomer">
+          <End Role="PrepaidCustomer" Type="SumaLealtad.Store.PrepaidCustomer" Multiplicity="1" />
+          <End Role="Orders" Type="SumaLealtad.Store.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrepaidCustomer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="prepaidcustomerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_SumaStatus">
+          <End Role="SumaStatus" Type="SumaLealtad.Store.SumaStatus" Multiplicity="1" />
+          <End Role="Orders" Type="SumaLealtad.Store.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersDetail_Order">
+          <End Role="Orders" Type="SumaLealtad.Store.Orders" Multiplicity="1" />
+          <End Role="OrdersDetail" Type="SumaLealtad.Store.OrdersDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdersDetail">
+              <PropertyRef Name="orderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersDetail_SumaStatus">
+          <End Role="SumaStatus" Type="SumaLealtad.Store.SumaStatus" Multiplicity="0..1" />
+          <End Role="OrdersDetail" Type="SumaLealtad.Store.OrdersDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdersDetail">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PARROQUIA_URBANIZACION_PARROQUIA">
+          <End Role="PARROQUIA" Type="SumaLealtad.Store.PARROQUIA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PARROQUIA_URBANIZACION" Type="SumaLealtad.Store.PARROQUIA_URBANIZACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PARROQUIA">
+              <PropertyRef Name="COD_PARROQUIA" />
+            </Principal>
+            <Dependent Role="PARROQUIA_URBANIZACION">
+              <PropertyRef Name="COD_PARROQUIA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PARROQUIA_URBANIZACION_URBANIZACION">
+          <End Role="URBANIZACION" Type="SumaLealtad.Store.URBANIZACION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PARROQUIA_URBANIZACION" Type="SumaLealtad.Store.PARROQUIA_URBANIZACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="URBANIZACION">
+              <PropertyRef Name="COD_URBANIZACION" />
+            </Principal>
+            <Dependent Role="PARROQUIA_URBANIZACION">
+              <PropertyRef Name="COD_URBANIZACION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PBeneficiary_PCustomer">
+          <End Role="PrepaidCustomer" Type="SumaLealtad.Store.PrepaidCustomer" Multiplicity="1" />
+          <End Role="PrepaidBeneficiary" Type="SumaLealtad.Store.PrepaidBeneficiary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrepaidCustomer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PrepaidBeneficiary">
+              <PropertyRef Name="prepaidcustomerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_SumaStatus">
+          <End Role="SumaStatus" Type="SumaLealtad.Store.SumaStatus" Multiplicity="0..1" />
+          <End Role="User" Type="SumaLealtad.Store.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SumaLealtad" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="LealtadEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Affiliates" EntityType="SumaLealtad.Affiliate" />
+          <EntitySet Name="AffiliateAuds" EntityType="SumaLealtad.AffiliateAud" />
+          <EntitySet Name="Auditings" EntityType="SumaLealtad.Auditing" />
+          <EntitySet Name="Channels" EntityType="SumaLealtad.Channel" />
+          <EntitySet Name="CIUDADES" EntityType="SumaLealtad.CIUDAD" />
+          <EntitySet Name="CLIENTES" EntityType="SumaLealtad.CLIENTE" />
+          <EntitySet Name="Companies" EntityType="SumaLealtad.Company" />
+          <EntitySet Name="CompanyAffiliates" EntityType="SumaLealtad.CompanyAffiliate" />
+          <EntitySet Name="CreditLimits" EntityType="SumaLealtad.CreditLimit" />
+          <EntitySet Name="CustomerInterests" EntityType="SumaLealtad.CustomerInterest" />
+          <EntitySet Name="ESTADOS" EntityType="SumaLealtad.ESTADO" />
+          <EntitySet Name="FACTURAS" EntityType="SumaLealtad.FACTURA" />
+          <EntitySet Name="Interests" EntityType="SumaLealtad.Interest" />
+          <EntitySet Name="Menus" EntityType="SumaLealtad.Menu" />
+          <EntitySet Name="MUNICIPIOS" EntityType="SumaLealtad.MUNICIPIO" />
+          <EntitySet Name="Objects" EntityType="SumaLealtad.Object" />
+          <EntitySet Name="Operations" EntityType="SumaLealtad.Operation" />
+          <EntitySet Name="OrdersDetails" EntityType="SumaLealtad.OrdersDetail" />
+          <EntitySet Name="OrdersHistories" EntityType="SumaLealtad.OrdersHistory" />
+          <EntitySet Name="PAISES" EntityType="SumaLealtad.PAIS" />
+          <EntitySet Name="PAIS_ESTADOS" EntityType="SumaLealtad.PAIS_ESTADO" />
+          <EntitySet Name="Parameters" EntityType="SumaLealtad.Parameter" />
+          <EntitySet Name="PARAMETROS" EntityType="SumaLealtad.PARAMETRO" />
+          <EntitySet Name="PARROQUIAS" EntityType="SumaLealtad.PARROQUIA" />
+          <EntitySet Name="Photos_Affiliates" EntityType="SumaLealtad.Photos_Affiliate" />
+          <EntitySet Name="Reasons" EntityType="SumaLealtad.Reason" />
+          <EntitySet Name="RESTRICCIONES" EntityType="SumaLealtad.RESTRICCION" />
+          <EntitySet Name="Roles" EntityType="SumaLealtad.Role" />
+          <EntitySet Name="SecurityLevels" EntityType="SumaLealtad.SecurityLevel" />
+          <EntitySet Name="SecurityMenus" EntityType="SumaLealtad.SecurityMenu" />
+          <EntitySet Name="sysdiagrams" EntityType="SumaLealtad.sysdiagram" />
+          <EntitySet Name="TARJETAS" EntityType="SumaLealtad.TARJETA" />
+          <EntitySet Name="Types" EntityType="SumaLealtad.Type" />
+          <EntitySet Name="URBANIZACIONES" EntityType="SumaLealtad.URBANIZACION" />
+          <EntitySet Name="Users" EntityType="SumaLealtad.User" />
+          <EntitySet Name="UserRols" EntityType="SumaLealtad.UserRol" />
+          <AssociationSet Name="FK_Affiliate_Channel" Association="SumaLealtad.FK_Affiliate_Channel">
+            <End Role="Channel" EntitySet="Channels" />
+            <End Role="Affiliate" EntitySet="Affiliates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerInterest_Interest" Association="SumaLealtad.FK_CustomerInterest_Interest">
+            <End Role="Interest" EntitySet="Interests" />
+            <End Role="CustomerInterest" EntitySet="CustomerInterests" />
+          </AssociationSet>
+          <AssociationSet Name="CIUDAD_MUNICIPIO" Association="SumaLealtad.CIUDAD_MUNICIPIO">
+            <End Role="CIUDAD" EntitySet="CIUDADES" />
+            <End Role="MUNICIPIO" EntitySet="MUNICIPIOS" />
+          </AssociationSet>
+          <AssociationSet Name="ESTADO_CIUDAD" Association="SumaLealtad.ESTADO_CIUDAD">
+            <End Role="CIUDAD" EntitySet="CIUDADES" />
+            <End Role="ESTADO" EntitySet="ESTADOS" />
+          </AssociationSet>
+          <AssociationSet Name="MUNICIPIO_PARROQUIA" Association="SumaLealtad.MUNICIPIO_PARROQUIA">
+            <End Role="MUNICIPIO" EntitySet="MUNICIPIOS" />
+            <End Role="PARROQUIA" EntitySet="PARROQUIAS" />
+          </AssociationSet>
+          <AssociationSet Name="PARROQUIA_URBANIZACION" Association="SumaLealtad.PARROQUIA_URBANIZACION">
+            <End Role="PARROQUIA" EntitySet="PARROQUIAS" />
+            <End Role="URBANIZACION" EntitySet="URBANIZACIONES" />
+          </AssociationSet>
+          <EntitySet Name="Orders" EntityType="SumaLealtad.Order" />
+          <AssociationSet Name="FK_OrdersDetail_Order" Association="SumaLealtad.FK_OrdersDetail_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrdersDetail" EntitySet="OrdersDetails" />
+          </AssociationSet>
+          <EntitySet Name="PrepaidBeneficiaries" EntityType="SumaLealtad.PrepaidBeneficiary" />
+          <EntitySet Name="PrepaidCustomers" EntityType="SumaLealtad.PrepaidCustomer" />
+          <EntitySet Name="SumaStatuses" EntityType="SumaLealtad.SumaStatus" />
+          <AssociationSet Name="FK_Affiliate_SumaStatus" Association="SumaLealtad.FK_Affiliate_SumaStatus">
+            <End Role="SumaStatu" EntitySet="SumaStatuses" />
+            <End Role="Affiliate" EntitySet="Affiliates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_PrepaidCustomer" Association="SumaLealtad.FK_Orders_PrepaidCustomer">
+            <End Role="PrepaidCustomer" EntitySet="PrepaidCustomers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_SumaStatus" Association="SumaLealtad.FK_Orders_SumaStatus">
+            <End Role="SumaStatu" EntitySet="SumaStatuses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersDetail_SumaStatus" Association="SumaLealtad.FK_OrdersDetail_SumaStatus">
+            <End Role="SumaStatu" EntitySet="SumaStatuses" />
+            <End Role="OrdersDetail" EntitySet="OrdersDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PBeneficiary_PCustomer" Association="SumaLealtad.FK_PBeneficiary_PCustomer">
+            <End Role="PrepaidCustomer" EntitySet="PrepaidCustomers" />
+            <End Role="PrepaidBeneficiary" EntitySet="PrepaidBeneficiaries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_SumaStatus" Association="SumaLealtad.FK_User_SumaStatus">
+            <End Role="SumaStatu" EntitySet="SumaStatuses" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Affiliate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="customerid" Type="Int32" Nullable="false" />
+          <Property Name="docnumber" Type="String" Nullable="false" MaxLength="16" Unicode="false" FixedLength="false" />
+          <Property Name="clientid" Type="Int32" Nullable="false" />
+          <Property Name="storeid" Type="Int32" Nullable="false" />
+          <Property Name="channelid" Type="Int32" Nullable="false" />
+          <Property Name="typeid" Type="Int32" Nullable="false" />
+          <Property Name="affiliatedate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="typedelivery" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="storeiddelivery" Type="Int32" />
+          <Property Name="estimateddatedelivery" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="creationdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="creationuserid" Type="Int32" Nullable="false" />
+          <Property Name="modifieduserid" Type="Int32" Nullable="false" />
+          <Property Name="modifieddate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="reasonsid" Type="Int32" />
+          <Property Name="twitter_account" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="facebook_account" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="instagram_account" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="comments" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="sumastatusid" Type="Int32" />
+          <NavigationProperty Name="Channel" Relationship="SumaLealtad.FK_Affiliate_Channel" FromRole="Affiliate" ToRole="Channel" />
+          <NavigationProperty Name="SumaStatu" Relationship="SumaLealtad.FK_Affiliate_SumaStatus" FromRole="Affiliate" ToRole="SumaStatu" />
+        </EntityType>
+        <EntityType Name="AffiliateAud">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="affiliateid" Type="Int32" Nullable="false" />
+          <Property Name="modifieduserid" Type="Int32" Nullable="false" />
+          <Property Name="modifieddate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="statusid" Type="Int32" Nullable="false" />
+          <Property Name="reasonsid" Type="Int32" Nullable="false" />
+          <Property Name="comments" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Auditing">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="objectid" Type="Int32" Nullable="false" />
+          <Property Name="operationsid" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="creationdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="originaldata" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="changedata" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ipaddress" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Channel">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Affiliates" Relationship="SumaLealtad.FK_Affiliate_Channel" FromRole="Channel" ToRole="Affiliate" />
+        </EntityType>
+        <EntityType Name="CIUDAD">
+          <Key>
+            <PropertyRef Name="COD_CIUDAD" />
+          </Key>
+          <Property Name="COD_CIUDAD" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPC_CIUDAD" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="MUNICIPIOS" Relationship="SumaLealtad.CIUDAD_MUNICIPIO" FromRole="CIUDAD" ToRole="MUNICIPIO" />
+          <NavigationProperty Name="ESTADOS" Relationship="SumaLealtad.ESTADO_CIUDAD" FromRole="CIUDAD" ToRole="ESTADO" />
+        </EntityType>
+        <EntityType Name="CLIENTE">
+          <Key>
+            <PropertyRef Name="TIPO_DOCUMENTO" />
+            <PropertyRef Name="NRO_DOCUMENTO" />
+          </Key>
+          <Property Name="TIPO_DOCUMENTO" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="NRO_DOCUMENTO" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="NACIONALIDAD" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="NOMBRE_CLIENTE1" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="NOMBRE_CLIENTE2" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="APELLIDO_CLIENTE1" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="APELLIDO_CLIENTE2" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="FECHA_NACIMIENTO" Type="DateTime" Precision="3" />
+          <Property Name="SEXO" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="EDO_CIVIL" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="OCUPACION" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="TELEFONO_HAB" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="TELEFONO_OFIC" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="TELEFONO_CEL" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="E_MAIL" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="COD_SUCURSAL" Type="Int32" />
+          <Property Name="COD_ESTADO" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="COD_CIUDAD" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="COD_MUNICIPIO" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="COD_PARROQUIA" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="COD_URBANIZACION" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="FECHA_CREACION" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="ALIAS" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="rif" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="address" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="phone" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="creationdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyAffiliate">
+          <Key>
+            <PropertyRef Name="affiliateid" />
+            <PropertyRef Name="companyid" />
+          </Key>
+          <Property Name="affiliateid" Type="Int32" Nullable="false" />
+          <Property Name="companyid" Type="Int32" Nullable="false" />
+          <Property Name="begindate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="enddate" Type="DateTime" Precision="0" />
+          <Property Name="comments" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="CreditLimit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="companyid" Type="Int32" Nullable="false" />
+          <Property Name="credit" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="balance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="creationdate" Type="DateTime" Precision="3" />
+          <Property Name="creationuserid" Type="Int32" Nullable="false" />
+          <Property Name="modifieddate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modifieduserid" Type="Int32" Nullable="false" />
+          <Property Name="activecredit" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerInterest">
+          <Key>
+            <PropertyRef Name="customerid" />
+            <PropertyRef Name="interestid" />
+          </Key>
+          <Property Name="customerid" Type="Int32" Nullable="false" />
+          <Property Name="interestid" Type="Int32" Nullable="false" />
+          <Property Name="comments" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Interest" Relationship="SumaLealtad.FK_CustomerInterest_Interest" FromRole="CustomerInterest" ToRole="Interest" />
+        </EntityType>
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="COD_ESTADO" />
+          </Key>
+          <Property Name="COD_ESTADO" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPC_ESTADO" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="CIUDADES" Relationship="SumaLealtad.ESTADO_CIUDAD" FromRole="ESTADO" ToRole="CIUDAD" />
+        </EntityType>
+        <EntityType Name="FACTURA">
+          <Key>
+            <PropertyRef Name="NRO_TARJETA" />
+            <PropertyRef Name="SUCURSAL" />
+            <PropertyRef Name="POS" />
+            <PropertyRef Name="FACTURA1" />
+            <PropertyRef Name="FECHA" />
+            <PropertyRef Name="HORA" />
+            <PropertyRef Name="TIPO_DOCUMENTO" />
+            <PropertyRef Name="NRO_DOCUMENTO" />
+          </Key>
+          <Property Name="NRO_TARJETA" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="SUCURSAL" Type="Int32" Nullable="false" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="FACTURA1" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="FECHA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HORA" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="true" />
+          <Property Name="MONTO_FACTURA" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="FECHA_REGISTRO" Type="DateTime" Precision="3" />
+          <Property Name="PUNTOS_ACRED" Type="Int32" />
+          <Property Name="PUNTOS_CANJE" Type="Int32" />
+          <Property Name="TIPO_DOCUMENTO" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="NRO_DOCUMENTO" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Interest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CustomerInterests" Relationship="SumaLealtad.FK_CustomerInterest_Interest" FromRole="Interest" ToRole="CustomerInterest" />
+        </EntityType>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="parentid" Type="Int32" Nullable="false" />
+          <Property Name="controller" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="actions" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="order_no" Type="Int32" Nullable="false" />
+          <Property Name="tooltips" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="MUNICIPIO">
+          <Key>
+            <PropertyRef Name="COD_MUNICIPIO" />
+          </Key>
+          <Property Name="COD_MUNICIPIO" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPC_MUNICIPIO" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="CIUDADES" Relationship="SumaLealtad.CIUDAD_MUNICIPIO" FromRole="MUNICIPIO" ToRole="CIUDAD" />
+          <NavigationProperty Name="PARROQUIAS" Relationship="SumaLealtad.MUNICIPIO_PARROQUIA" FromRole="MUNICIPIO" ToRole="PARROQUIA" />
+        </EntityType>
+        <EntityType Name="Object">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Operation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="OrdersDetail">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="orderid" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="orderid" Type="Int32" Nullable="false" />
+          <Property Name="customerid" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="comments" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Name="cardsresponse" Type="String" MaxLength="300" Unicode="false" FixedLength="false" />
+          <Property Name="sumastatusid" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="SumaLealtad.FK_OrdersDetail_Order" FromRole="OrdersDetail" ToRole="Order" />
+          <NavigationProperty Name="SumaStatu" Relationship="SumaLealtad.FK_OrdersDetail_SumaStatus" FromRole="OrdersDetail" ToRole="SumaStatu" />
+        </EntityType>
+        <EntityType Name="OrdersHistory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="estatusid" Type="Int32" Nullable="false" />
+          <Property Name="creationdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="comments" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+          <Property Type="Int32" Name="orderid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PAIS">
+          <Key>
+            <PropertyRef Name="COD_PAIS" />
+          </Key>
+          <Property Name="COD_PAIS" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPC_PAIS" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PAIS_ESTADO">
+          <Key>
+            <PropertyRef Name="COD_PAIS" />
+            <PropertyRef Name="COD_ESTADO" />
+          </Key>
+          <Property Name="COD_PAIS" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="COD_ESTADO" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Parameter">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="value" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PARAMETRO">
+          <Key>
+            <PropertyRef Name="ID_PARAM" />
+            <PropertyRef Name="NOMBRE_PARAM" />
+          </Key>
+          <Property Name="ID_PARAM" Type="Int32" Nullable="false" />
+          <Property Name="NOMBRE_PARAM" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="MTO_CANJE" Type="Int32" />
+          <Property Name="PTS_CANJE" Type="Int32" />
+          <Property Name="MTO_ACR" Type="Int32" />
+          <Property Name="PTS_ACR" Type="Int32" />
+          <Property Name="TIPO_PRE" Type="Int32" />
+          <Property Name="TIPO_SUMA" Type="Int32" />
+          <Property Name="FECHA_ACT_PARAM" Type="DateTime" Precision="3" />
+          <Property Name="FECHA_DESAC_PARAM" Type="DateTime" Precision="3" />
+          <Property Name="FECHA" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="PARROQUIA">
+          <Key>
+            <PropertyRef Name="COD_PARROQUIA" />
+          </Key>
+          <Property Name="COD_PARROQUIA" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPC_PARROQUIA" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="MUNICIPIOS" Relationship="SumaLealtad.MUNICIPIO_PARROQUIA" FromRole="PARROQUIA" ToRole="MUNICIPIO" />
+          <NavigationProperty Name="URBANIZACIONES" Relationship="SumaLealtad.PARROQUIA_URBANIZACION" FromRole="PARROQUIA" ToRole="URBANIZACION" />
+        </EntityType>
+        <EntityType Name="Photos_Affiliate">
+          <Key>
+            <PropertyRef Name="photo_id" />
+          </Key>
+          <Property Name="photo_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="photo" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="photo_type" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="Affiliate_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reason">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="RESTRICCION">
+          <Key>
+            <PropertyRef Name="COD_RESTRICCION" />
+          </Key>
+          <Property Name="COD_RESTRICCION" Type="Int32" Nullable="false" />
+          <Property Name="FECHA_ACT_REST" Type="DateTime" Precision="3" />
+          <Property Name="FECHA_DESAC_REST" Type="DateTime" Precision="3" />
+          <Property Name="MINTRAN_ACR" Type="Byte" />
+          <Property Name="MAXTRAN_ACR" Type="Byte" />
+          <Property Name="MINMONTO_ACR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MAXMONTO_ACR" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MINTRAN_RED" Type="Byte" />
+          <Property Name="MAXTRAN_RED" Type="Byte" />
+          <Property Name="MINMONTO_RED" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MAXMONTO_RED" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="level" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SecurityLevel">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="comments" Type="String" MaxLength="120" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SecurityMenu">
+          <Key>
+            <PropertyRef Name="roleid" />
+            <PropertyRef Name="menuid" />
+            <PropertyRef Name="securitylevelid" />
+          </Key>
+          <Property Name="roleid" Type="Int32" Nullable="false" />
+          <Property Name="menuid" Type="Int32" Nullable="false" />
+          <Property Name="securitylevelid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TARJETA">
+          <Key>
+            <PropertyRef Name="NRO_TARJETA" />
+          </Key>
+          <Property Name="NRO_TARJETA" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="NRO_AFILIACION" Type="Int32" Nullable="false" />
+          <Property Name="TIPO_DOCUMENTO" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <Property Name="NRO_DOCUMENTO" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="ESTATUS_TARJETA" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="SALDO_PUNTOS" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OBSERVACIONES" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="COD_USUARIO" Type="Int32" />
+          <Property Name="TRACK1" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="TRACK2" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="CVV2" Type="String" MaxLength="3" Unicode="false" FixedLength="false" />
+          <Property Name="FECHA_CREACION" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="URBANIZACION">
+          <Key>
+            <PropertyRef Name="COD_URBANIZACION" />
+          </Key>
+          <Property Name="COD_URBANIZACION" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="DESCRIPC_URBANIZACION" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="PARROQUIAS" Relationship="SumaLealtad.PARROQUIA_URBANIZACION" FromRole="URBANIZACION" ToRole="PARROQUIA" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" Nullable="false" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="passw" Type="String" Nullable="false" MaxLength="250" Unicode="false" FixedLength="false" />
+          <Property Name="firstname" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="lastname" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+          <Property Name="sumastatusid" Type="Int32" />
+          <Property Type="Int32" Name="typeid" Nullable="false" />
+          <NavigationProperty Name="SumaStatu" Relationship="SumaLealtad.FK_User_SumaStatus" FromRole="User" ToRole="SumaStatu" />
+        </EntityType>
+        <EntityType Name="UserRol">
+          <Key>
+            <PropertyRef Name="userid" />
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="roleid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Affiliate_Channel">
+          <End Role="Channel" Type="SumaLealtad.Channel" Multiplicity="1" />
+          <End Role="Affiliate" Type="SumaLealtad.Affiliate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Affiliate">
+              <PropertyRef Name="channelid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerInterest_Interest">
+          <End Role="Interest" Type="SumaLealtad.Interest" Multiplicity="1" />
+          <End Role="CustomerInterest" Type="SumaLealtad.CustomerInterest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Interest">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CustomerInterest">
+              <PropertyRef Name="interestid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CIUDAD_MUNICIPIO">
+          <End Role="CIUDAD" Type="SumaLealtad.CIUDAD" Multiplicity="*" />
+          <End Role="MUNICIPIO" Type="SumaLealtad.MUNICIPIO" Multiplicity="*" />
+        </Association>
+        <Association Name="ESTADO_CIUDAD">
+          <End Role="CIUDAD" Type="SumaLealtad.CIUDAD" Multiplicity="*" />
+          <End Role="ESTADO" Type="SumaLealtad.ESTADO" Multiplicity="*" />
+        </Association>
+        <Association Name="MUNICIPIO_PARROQUIA">
+          <End Role="MUNICIPIO" Type="SumaLealtad.MUNICIPIO" Multiplicity="*" />
+          <End Role="PARROQUIA" Type="SumaLealtad.PARROQUIA" Multiplicity="*" />
+        </Association>
+        <Association Name="PARROQUIA_URBANIZACION">
+          <End Role="PARROQUIA" Type="SumaLealtad.PARROQUIA" Multiplicity="*" />
+          <End Role="URBANIZACION" Type="SumaLealtad.URBANIZACION" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="prepaidcustomerid" Nullable="false" />
+          <Property Type="Decimal" Name="totalamount" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="String" Name="paymenttype" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="DateTime" Name="creationdate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="creationuserid" Nullable="false" />
+          <Property Type="DateTime" Name="processdate" Nullable="false" Precision="3" />
+          <Property Type="String" Name="comments" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="sumastatusid" Nullable="false" />
+          <NavigationProperty Name="OrdersDetails" Relationship="SumaLealtad.FK_OrdersDetail_Order" FromRole="Order" ToRole="OrdersDetail" />
+          <NavigationProperty Name="PrepaidCustomer" Relationship="SumaLealtad.FK_Orders_PrepaidCustomer" FromRole="Order" ToRole="PrepaidCustomer" />
+          <NavigationProperty Name="SumaStatu" Relationship="SumaLealtad.FK_Orders_SumaStatus" FromRole="Order" ToRole="SumaStatu" />
+          <Property Type="String" Name="documento" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_OrdersDetail_Order">
+          <End Type="SumaLealtad.Order" Role="Order" Multiplicity="1" />
+          <End Type="SumaLealtad.OrdersDetail" Role="OrdersDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdersDetail">
+              <PropertyRef Name="orderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PrepaidBeneficiary">
+          <Key>
+            <PropertyRef Name="affiliateid" />
+            <PropertyRef Name="prepaidcustomerid" />
+          </Key>
+          <Property Type="Int32" Name="affiliateid" Nullable="false" />
+          <Property Type="Int32" Name="prepaidcustomerid" Nullable="false" />
+          <Property Type="DateTime" Name="begindate" Precision="3" />
+          <Property Type="DateTime" Name="enddate" Precision="3" />
+          <Property Type="String" Name="comments" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="active" />
+          <NavigationProperty Name="PrepaidCustomer" Relationship="SumaLealtad.FK_PBeneficiary_PCustomer" FromRole="PrepaidBeneficiary" ToRole="PrepaidCustomer" />
+        </EntityType>
+        <EntityType Name="PrepaidCustomer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="alias" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="rif" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="address" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="phone" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="email" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="creationdate" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="userid" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="SumaLealtad.FK_Orders_PrepaidCustomer" FromRole="PrepaidCustomer" ToRole="Order" />
+          <NavigationProperty Name="PrepaidBeneficiaries" Relationship="SumaLealtad.FK_PBeneficiary_PCustomer" FromRole="PrepaidCustomer" ToRole="PrepaidBeneficiary" />
+        </EntityType>
+        <EntityType Name="SumaStatus">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="tablename" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="value" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="active" />
+          <NavigationProperty Name="Affiliates" Relationship="SumaLealtad.FK_Affiliate_SumaStatus" FromRole="SumaStatu" ToRole="Affiliate" />
+          <NavigationProperty Name="Orders" Relationship="SumaLealtad.FK_Orders_SumaStatus" FromRole="SumaStatu" ToRole="Order" />
+          <NavigationProperty Name="OrdersDetails" Relationship="SumaLealtad.FK_OrdersDetail_SumaStatus" FromRole="SumaStatu" ToRole="OrdersDetail" />
+          <NavigationProperty Name="Users" Relationship="SumaLealtad.FK_User_SumaStatus" FromRole="SumaStatu" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Affiliate_SumaStatus">
+          <End Type="SumaLealtad.SumaStatus" Role="SumaStatu" Multiplicity="0..1" />
+          <End Type="SumaLealtad.Affiliate" Role="Affiliate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Affiliate">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_PrepaidCustomer">
+          <End Type="SumaLealtad.PrepaidCustomer" Role="PrepaidCustomer" Multiplicity="1" />
+          <End Type="SumaLealtad.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrepaidCustomer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="prepaidcustomerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_SumaStatus">
+          <End Type="SumaLealtad.SumaStatus" Role="SumaStatu" Multiplicity="1" />
+          <End Type="SumaLealtad.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersDetail_SumaStatus">
+          <End Type="SumaLealtad.SumaStatus" Role="SumaStatu" Multiplicity="0..1" />
+          <End Type="SumaLealtad.OrdersDetail" Role="OrdersDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrdersDetail">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PBeneficiary_PCustomer">
+          <End Type="SumaLealtad.PrepaidCustomer" Role="PrepaidCustomer" Multiplicity="1" />
+          <End Type="SumaLealtad.PrepaidBeneficiary" Role="PrepaidBeneficiary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrepaidCustomer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PrepaidBeneficiary">
+              <PropertyRef Name="prepaidcustomerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_SumaStatus">
+          <End Type="SumaLealtad.SumaStatus" Role="SumaStatu" Multiplicity="0..1" />
+          <End Type="SumaLealtad.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SumaStatu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="sumastatusid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SumaLealtadStoreContainer" CdmEntityContainer="LealtadEntities">
+          <EntitySetMapping Name="Affiliates">
+            <EntityTypeMapping TypeName="SumaLealtad.Affiliate">
+              <MappingFragment StoreEntitySet="Affiliate">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="docnumber" ColumnName="docnumber" />
+                <ScalarProperty Name="clientid" ColumnName="clientid" />
+                <ScalarProperty Name="storeid" ColumnName="storeid" />
+                <ScalarProperty Name="channelid" ColumnName="channelid" />
+                <ScalarProperty Name="typeid" ColumnName="typeid" />
+                <ScalarProperty Name="affiliatedate" ColumnName="affiliatedate" />
+                <ScalarProperty Name="typedelivery" ColumnName="typedelivery" />
+                <ScalarProperty Name="storeiddelivery" ColumnName="storeiddelivery" />
+                <ScalarProperty Name="estimateddatedelivery" ColumnName="estimateddatedelivery" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="creationuserid" ColumnName="creationuserid" />
+                <ScalarProperty Name="modifieduserid" ColumnName="modifieduserid" />
+                <ScalarProperty Name="modifieddate" ColumnName="modifieddate" />
+                <ScalarProperty Name="reasonsid" ColumnName="reasonsid" />
+                <ScalarProperty Name="twitter_account" ColumnName="twitter_account" />
+                <ScalarProperty Name="facebook_account" ColumnName="facebook_account" />
+                <ScalarProperty Name="instagram_account" ColumnName="instagram_account" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="sumastatusid" ColumnName="sumastatusid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AffiliateAuds">
+            <EntityTypeMapping TypeName="SumaLealtad.AffiliateAud">
+              <MappingFragment StoreEntitySet="AffiliateAud">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="affiliateid" ColumnName="affiliateid" />
+                <ScalarProperty Name="modifieduserid" ColumnName="modifieduserid" />
+                <ScalarProperty Name="modifieddate" ColumnName="modifieddate" />
+                <ScalarProperty Name="statusid" ColumnName="statusid" />
+                <ScalarProperty Name="reasonsid" ColumnName="reasonsid" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Auditings">
+            <EntityTypeMapping TypeName="SumaLealtad.Auditing">
+              <MappingFragment StoreEntitySet="Auditing">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="objectid" ColumnName="objectid" />
+                <ScalarProperty Name="operationsid" ColumnName="operationsid" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="originaldata" ColumnName="originaldata" />
+                <ScalarProperty Name="changedata" ColumnName="changedata" />
+                <ScalarProperty Name="ipaddress" ColumnName="ipaddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Channels">
+            <EntityTypeMapping TypeName="SumaLealtad.Channel">
+              <MappingFragment StoreEntitySet="Channel">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CIUDADES">
+            <EntityTypeMapping TypeName="SumaLealtad.CIUDAD">
+              <MappingFragment StoreEntitySet="CIUDAD">
+                <ScalarProperty Name="COD_CIUDAD" ColumnName="COD_CIUDAD" />
+                <ScalarProperty Name="DESCRIPC_CIUDAD" ColumnName="DESCRIPC_CIUDAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTES">
+            <EntityTypeMapping TypeName="SumaLealtad.CLIENTE">
+              <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="TIPO_DOCUMENTO" ColumnName="TIPO_DOCUMENTO" />
+                <ScalarProperty Name="NRO_DOCUMENTO" ColumnName="NRO_DOCUMENTO" />
+                <ScalarProperty Name="NACIONALIDAD" ColumnName="NACIONALIDAD" />
+                <ScalarProperty Name="NOMBRE_CLIENTE1" ColumnName="NOMBRE_CLIENTE1" />
+                <ScalarProperty Name="NOMBRE_CLIENTE2" ColumnName="NOMBRE_CLIENTE2" />
+                <ScalarProperty Name="APELLIDO_CLIENTE1" ColumnName="APELLIDO_CLIENTE1" />
+                <ScalarProperty Name="APELLIDO_CLIENTE2" ColumnName="APELLIDO_CLIENTE2" />
+                <ScalarProperty Name="FECHA_NACIMIENTO" ColumnName="FECHA_NACIMIENTO" />
+                <ScalarProperty Name="SEXO" ColumnName="SEXO" />
+                <ScalarProperty Name="EDO_CIVIL" ColumnName="EDO_CIVIL" />
+                <ScalarProperty Name="OCUPACION" ColumnName="OCUPACION" />
+                <ScalarProperty Name="TELEFONO_HAB" ColumnName="TELEFONO_HAB" />
+                <ScalarProperty Name="TELEFONO_OFIC" ColumnName="TELEFONO_OFIC" />
+                <ScalarProperty Name="TELEFONO_CEL" ColumnName="TELEFONO_CEL" />
+                <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
+                <ScalarProperty Name="COD_SUCURSAL" ColumnName="COD_SUCURSAL" />
+                <ScalarProperty Name="COD_ESTADO" ColumnName="COD_ESTADO" />
+                <ScalarProperty Name="COD_CIUDAD" ColumnName="COD_CIUDAD" />
+                <ScalarProperty Name="COD_MUNICIPIO" ColumnName="COD_MUNICIPIO" />
+                <ScalarProperty Name="COD_PARROQUIA" ColumnName="COD_PARROQUIA" />
+                <ScalarProperty Name="COD_URBANIZACION" ColumnName="COD_URBANIZACION" />
+                <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="SumaLealtad.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="ALIAS" ColumnName="ALIAS" />
+                <ScalarProperty Name="rif" ColumnName="rif" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyAffiliates">
+            <EntityTypeMapping TypeName="SumaLealtad.CompanyAffiliate">
+              <MappingFragment StoreEntitySet="CompanyAffiliate">
+                <ScalarProperty Name="affiliateid" ColumnName="affiliateid" />
+                <ScalarProperty Name="companyid" ColumnName="companyid" />
+                <ScalarProperty Name="begindate" ColumnName="begindate" />
+                <ScalarProperty Name="enddate" ColumnName="enddate" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CreditLimits">
+            <EntityTypeMapping TypeName="SumaLealtad.CreditLimit">
+              <MappingFragment StoreEntitySet="CreditLimit">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="companyid" ColumnName="companyid" />
+                <ScalarProperty Name="credit" ColumnName="credit" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="creationuserid" ColumnName="creationuserid" />
+                <ScalarProperty Name="modifieddate" ColumnName="modifieddate" />
+                <ScalarProperty Name="modifieduserid" ColumnName="modifieduserid" />
+                <ScalarProperty Name="activecredit" ColumnName="activecredit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerInterests">
+            <EntityTypeMapping TypeName="SumaLealtad.CustomerInterest">
+              <MappingFragment StoreEntitySet="CustomerInterest">
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="interestid" ColumnName="interestid" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESTADOS">
+            <EntityTypeMapping TypeName="SumaLealtad.ESTADO">
+              <MappingFragment StoreEntitySet="ESTADO">
+                <ScalarProperty Name="COD_ESTADO" ColumnName="COD_ESTADO" />
+                <ScalarProperty Name="DESCRIPC_ESTADO" ColumnName="DESCRIPC_ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FACTURAS">
+            <EntityTypeMapping TypeName="SumaLealtad.FACTURA">
+              <MappingFragment StoreEntitySet="FACTURA">
+                <ScalarProperty Name="NRO_TARJETA" ColumnName="NRO_TARJETA" />
+                <ScalarProperty Name="SUCURSAL" ColumnName="SUCURSAL" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="FACTURA1" ColumnName="FACTURA" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="HORA" ColumnName="HORA" />
+                <ScalarProperty Name="MONTO_FACTURA" ColumnName="MONTO_FACTURA" />
+                <ScalarProperty Name="FECHA_REGISTRO" ColumnName="FECHA_REGISTRO" />
+                <ScalarProperty Name="PUNTOS_ACRED" ColumnName="PUNTOS_ACRED" />
+                <ScalarProperty Name="PUNTOS_CANJE" ColumnName="PUNTOS_CANJE" />
+                <ScalarProperty Name="TIPO_DOCUMENTO" ColumnName="TIPO_DOCUMENTO" />
+                <ScalarProperty Name="NRO_DOCUMENTO" ColumnName="NRO_DOCUMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Interests">
+            <EntityTypeMapping TypeName="SumaLealtad.Interest">
+              <MappingFragment StoreEntitySet="Interest">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Menus">
+            <EntityTypeMapping TypeName="SumaLealtad.Menu">
+              <MappingFragment StoreEntitySet="Menu">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="parentid" ColumnName="parentid" />
+                <ScalarProperty Name="controller" ColumnName="controller" />
+                <ScalarProperty Name="actions" ColumnName="actions" />
+                <ScalarProperty Name="order_no" ColumnName="order_no" />
+                <ScalarProperty Name="tooltips" ColumnName="tooltips" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MUNICIPIOS">
+            <EntityTypeMapping TypeName="SumaLealtad.MUNICIPIO">
+              <MappingFragment StoreEntitySet="MUNICIPIO">
+                <ScalarProperty Name="COD_MUNICIPIO" ColumnName="COD_MUNICIPIO" />
+                <ScalarProperty Name="DESCRIPC_MUNICIPIO" ColumnName="DESCRIPC_MUNICIPIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Objects">
+            <EntityTypeMapping TypeName="SumaLealtad.Object">
+              <MappingFragment StoreEntitySet="Object">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operations">
+            <EntityTypeMapping TypeName="SumaLealtad.Operation">
+              <MappingFragment StoreEntitySet="Operations">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdersDetails">
+            <EntityTypeMapping TypeName="SumaLealtad.OrdersDetail">
+              <MappingFragment StoreEntitySet="OrdersDetail">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="orderid" ColumnName="orderid" />
+                <ScalarProperty Name="customerid" ColumnName="customerid" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="cardsresponse" ColumnName="cardsresponse" />
+                <ScalarProperty Name="sumastatusid" ColumnName="sumastatusid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrdersHistories">
+            <EntityTypeMapping TypeName="SumaLealtad.OrdersHistory">
+              <MappingFragment StoreEntitySet="OrdersHistory">
+                <ScalarProperty Name="orderid" ColumnName="orderid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="estatusid" ColumnName="estatusid" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAISES">
+            <EntityTypeMapping TypeName="SumaLealtad.PAIS">
+              <MappingFragment StoreEntitySet="PAIS">
+                <ScalarProperty Name="COD_PAIS" ColumnName="COD_PAIS" />
+                <ScalarProperty Name="DESCRIPC_PAIS" ColumnName="DESCRIPC_PAIS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAIS_ESTADOS">
+            <EntityTypeMapping TypeName="SumaLealtad.PAIS_ESTADO">
+              <MappingFragment StoreEntitySet="PAIS_ESTADO">
+                <ScalarProperty Name="COD_PAIS" ColumnName="COD_PAIS" />
+                <ScalarProperty Name="COD_ESTADO" ColumnName="COD_ESTADO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parameters">
+            <EntityTypeMapping TypeName="SumaLealtad.Parameter">
+              <MappingFragment StoreEntitySet="Parameters">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PARAMETROS">
+            <EntityTypeMapping TypeName="SumaLealtad.PARAMETRO">
+              <MappingFragment StoreEntitySet="PARAMETROS">
+                <ScalarProperty Name="ID_PARAM" ColumnName="ID_PARAM" />
+                <ScalarProperty Name="NOMBRE_PARAM" ColumnName="NOMBRE_PARAM" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="MTO_CANJE" ColumnName="MTO_CANJE" />
+                <ScalarProperty Name="PTS_CANJE" ColumnName="PTS_CANJE" />
+                <ScalarProperty Name="MTO_ACR" ColumnName="MTO_ACR" />
+                <ScalarProperty Name="PTS_ACR" ColumnName="PTS_ACR" />
+                <ScalarProperty Name="TIPO_PRE" ColumnName="TIPO_PRE" />
+                <ScalarProperty Name="TIPO_SUMA" ColumnName="TIPO_SUMA" />
+                <ScalarProperty Name="FECHA_ACT_PARAM" ColumnName="FECHA_ACT_PARAM" />
+                <ScalarProperty Name="FECHA_DESAC_PARAM" ColumnName="FECHA_DESAC_PARAM" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PARROQUIAS">
+            <EntityTypeMapping TypeName="SumaLealtad.PARROQUIA">
+              <MappingFragment StoreEntitySet="PARROQUIA">
+                <ScalarProperty Name="COD_PARROQUIA" ColumnName="COD_PARROQUIA" />
+                <ScalarProperty Name="DESCRIPC_PARROQUIA" ColumnName="DESCRIPC_PARROQUIA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Photos_Affiliates">
+            <EntityTypeMapping TypeName="SumaLealtad.Photos_Affiliate">
+              <MappingFragment StoreEntitySet="Photos_Affiliate">
+                <ScalarProperty Name="photo_id" ColumnName="photo_id" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="photo_type" ColumnName="photo_type" />
+                <ScalarProperty Name="Affiliate_id" ColumnName="Affiliate_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reasons">
+            <EntityTypeMapping TypeName="SumaLealtad.Reason">
+              <MappingFragment StoreEntitySet="Reasons">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RESTRICCIONES">
+            <EntityTypeMapping TypeName="SumaLealtad.RESTRICCION">
+              <MappingFragment StoreEntitySet="RESTRICCIONES">
+                <ScalarProperty Name="COD_RESTRICCION" ColumnName="COD_RESTRICCION" />
+                <ScalarProperty Name="FECHA_ACT_REST" ColumnName="FECHA_ACT_REST" />
+                <ScalarProperty Name="FECHA_DESAC_REST" ColumnName="FECHA_DESAC_REST" />
+                <ScalarProperty Name="MINTRAN_ACR" ColumnName="MINTRAN_ACR" />
+                <ScalarProperty Name="MAXTRAN_ACR" ColumnName="MAXTRAN_ACR" />
+                <ScalarProperty Name="MINMONTO_ACR" ColumnName="MINMONTO_ACR" />
+                <ScalarProperty Name="MAXMONTO_ACR" ColumnName="MAXMONTO_ACR" />
+                <ScalarProperty Name="MINTRAN_RED" ColumnName="MINTRAN_RED" />
+                <ScalarProperty Name="MAXTRAN_RED" ColumnName="MAXTRAN_RED" />
+                <ScalarProperty Name="MINMONTO_RED" ColumnName="MINMONTO_RED" />
+                <ScalarProperty Name="MAXMONTO_RED" ColumnName="MAXMONTO_RED" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SumaLealtad.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="level" ColumnName="level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SecurityLevels">
+            <EntityTypeMapping TypeName="SumaLealtad.SecurityLevel">
+              <MappingFragment StoreEntitySet="SecurityLevel">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SecurityMenus">
+            <EntityTypeMapping TypeName="SumaLealtad.SecurityMenu">
+              <MappingFragment StoreEntitySet="SecurityMenu">
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+                <ScalarProperty Name="menuid" ColumnName="menuid" />
+                <ScalarProperty Name="securitylevelid" ColumnName="securitylevelid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SumaLealtad.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TARJETAS">
+            <EntityTypeMapping TypeName="SumaLealtad.TARJETA">
+              <MappingFragment StoreEntitySet="TARJETA">
+                <ScalarProperty Name="NRO_TARJETA" ColumnName="NRO_TARJETA" />
+                <ScalarProperty Name="NRO_AFILIACION" ColumnName="NRO_AFILIACION" />
+                <ScalarProperty Name="TIPO_DOCUMENTO" ColumnName="TIPO_DOCUMENTO" />
+                <ScalarProperty Name="NRO_DOCUMENTO" ColumnName="NRO_DOCUMENTO" />
+                <ScalarProperty Name="ESTATUS_TARJETA" ColumnName="ESTATUS_TARJETA" />
+                <ScalarProperty Name="SALDO_PUNTOS" ColumnName="SALDO_PUNTOS" />
+                <ScalarProperty Name="OBSERVACIONES" ColumnName="OBSERVACIONES" />
+                <ScalarProperty Name="COD_USUARIO" ColumnName="COD_USUARIO" />
+                <ScalarProperty Name="TRACK1" ColumnName="TRACK1" />
+                <ScalarProperty Name="TRACK2" ColumnName="TRACK2" />
+                <ScalarProperty Name="CVV2" ColumnName="CVV2" />
+                <ScalarProperty Name="FECHA_CREACION" ColumnName="FECHA_CREACION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Types">
+            <EntityTypeMapping TypeName="SumaLealtad.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="URBANIZACIONES">
+            <EntityTypeMapping TypeName="SumaLealtad.URBANIZACION">
+              <MappingFragment StoreEntitySet="URBANIZACION">
+                <ScalarProperty Name="COD_URBANIZACION" ColumnName="COD_URBANIZACION" />
+                <ScalarProperty Name="DESCRIPC_URBANIZACION" ColumnName="DESCRIPC_URBANIZACION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SumaLealtad.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="typeid" ColumnName="typeid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="passw" ColumnName="passw" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="sumastatusid" ColumnName="sumastatusid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRols">
+            <EntityTypeMapping TypeName="SumaLealtad.UserRol">
+              <MappingFragment StoreEntitySet="UserRol">
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CIUDAD_MUNICIPIO" TypeName="SumaLealtad.CIUDAD_MUNICIPIO" StoreEntitySet="CIUDAD_MUNICIPIO">
+            <EndProperty Name="CIUDAD">
+              <ScalarProperty Name="COD_CIUDAD" ColumnName="COD_CIUDAD" />
+            </EndProperty>
+            <EndProperty Name="MUNICIPIO">
+              <ScalarProperty Name="COD_MUNICIPIO" ColumnName="COD_MUNICIPIO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ESTADO_CIUDAD" TypeName="SumaLealtad.ESTADO_CIUDAD" StoreEntitySet="ESTADO_CIUDAD">
+            <EndProperty Name="CIUDAD">
+              <ScalarProperty Name="COD_CIUDAD" ColumnName="COD_CIUDAD" />
+            </EndProperty>
+            <EndProperty Name="ESTADO">
+              <ScalarProperty Name="COD_ESTADO" ColumnName="COD_ESTADO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MUNICIPIO_PARROQUIA" TypeName="SumaLealtad.MUNICIPIO_PARROQUIA" StoreEntitySet="MUNICIPIO_PARROQUIA">
+            <EndProperty Name="MUNICIPIO">
+              <ScalarProperty Name="COD_MUNICIPIO" ColumnName="COD_MUNICIPIO" />
+            </EndProperty>
+            <EndProperty Name="PARROQUIA">
+              <ScalarProperty Name="COD_PARROQUIA" ColumnName="COD_PARROQUIA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PARROQUIA_URBANIZACION" TypeName="SumaLealtad.PARROQUIA_URBANIZACION" StoreEntitySet="PARROQUIA_URBANIZACION">
+            <EndProperty Name="PARROQUIA">
+              <ScalarProperty Name="COD_PARROQUIA" ColumnName="COD_PARROQUIA" />
+            </EndProperty>
+            <EndProperty Name="URBANIZACION">
+              <ScalarProperty Name="COD_URBANIZACION" ColumnName="COD_URBANIZACION" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="SumaLealtad.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="sumastatusid" ColumnName="sumastatusid" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="processdate" ColumnName="processdate" />
+                <ScalarProperty Name="creationuserid" ColumnName="creationuserid" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="paymenttype" ColumnName="paymenttype" />
+                <ScalarProperty Name="totalamount" ColumnName="totalamount" />
+                <ScalarProperty Name="prepaidcustomerid" ColumnName="prepaidcustomerid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrepaidBeneficiaries">
+            <EntityTypeMapping TypeName="SumaLealtad.PrepaidBeneficiary">
+              <MappingFragment StoreEntitySet="PrepaidBeneficiary">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="enddate" ColumnName="enddate" />
+                <ScalarProperty Name="begindate" ColumnName="begindate" />
+                <ScalarProperty Name="prepaidcustomerid" ColumnName="prepaidcustomerid" />
+                <ScalarProperty Name="affiliateid" ColumnName="affiliateid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrepaidCustomers">
+            <EntityTypeMapping TypeName="SumaLealtad.PrepaidCustomer">
+              <MappingFragment StoreEntitySet="PrepaidCustomer">
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="creationdate" ColumnName="creationdate" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="rif" ColumnName="rif" />
+                <ScalarProperty Name="alias" ColumnName="alias" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SumaStatuses">
+            <EntityTypeMapping TypeName="SumaLealtad.SumaStatus">
+              <MappingFragment StoreEntitySet="SumaStatus">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="tablename" ColumnName="tablename" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

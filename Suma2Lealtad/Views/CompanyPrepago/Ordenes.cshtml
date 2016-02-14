@@ -1,0 +1,167 @@
+﻿@model Suma2Lealtad.Models.PrepagoCompanyAffiliattes
+
+@{
+    ViewBag.Title = "Ordenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+@*<link href="css/style.css" rel="stylesheet">*@
+<link href="~/Content/style.css" rel="stylesheet" />
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #1C2B2B; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Compañia / Recargas / Listado de Órdenes</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="form-group">
+
+                @Html.HiddenFor(model => model.companyid)
+
+                <div class="editor-label col-md-4 control-label">
+                    Compañia :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    @Html.TextBoxFor(model => model.namecompañia, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    RIF :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.rif, new { @class = "form-control", @readonly = "true" })
+                </div>
+                <div class="editor-label col-md-4 control-label">
+                    Teléfono :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.phone, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-6">
+                    <br />
+                </div>
+
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-right">
+                        @*
+                        <a href="@Url.Action("FilterBeneficiarios", "CompanyPrepago", new { companyid = Model.companyid })" class="btn btn-success btn-md">Filtrar Beneficiarios</a>
+                        *@
+                        <a href="@Url.Action("Index", "CompanyPrepago", new { rif = Model.rif })" class="btn btn-danger btn-md">Regresar</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="editor-field col-md-6">
+                <br />
+            </div>
+
+            @*<table class="table table-striped custab">*@
+            <table id="Ordenes" class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Nro. de Orden</th>
+                        <th>Fecha de Creación</th>
+                        <th>Estatus</th>
+                        <th>Monto Total</th>
+                        <th class="text-center"></th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.Ordenes)
+                    {                            
+                        <tr data-row-key="@item.id" >
+
+                            @Html.HiddenFor(modelItem => item.status)
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.id)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.creationdate)
+                            </td>
+
+                            <td>
+                                @{if (item.status == "N")
+                                  {
+                                    <p>Nueva</p>
+                                  }
+                                  else if (item.status == "A")
+                                  {
+                                    <p>Aprobada</p>
+                                  }
+                                  else if (item.status == "R")
+                                  {
+                                    <p>Rechazada</p>
+                                  }
+                                  else if (item.status == "E")
+                                  {
+                                    <p>Efectiva/Procesada</p>
+                                  }
+                                  else
+                                  {
+                                    <p>No definido</p>
+                                  }
+                                }
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.totalamount)
+                            </td>
+
+                            <td>
+                                <a href="@Url.Action("DetalleOrden", "CompanyPrepago", new { companyid = Model.companyid, id = item.id })" class="btn btn-success btn-sm" >
+                                    <span class="glyphicon glyphicon-zoom-in"></span>
+                                </a>
+                            </td>
+
+                            <td>
+                                @{if (item.status == "A")
+                                  {
+                                    <a href="@Url.Action("ProcesarOrden", "CompanyPrepago", new { companyid = Model.companyid, id = item.id })" class="btn btn-info btn-sm" >
+                                        <span class="glyphicon glyphicon-usd"></span>
+                                    </a>
+                                  }
+                                }
+
+                            </td>
+
+
+                        </tr>                 
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel -->
+
+</div>

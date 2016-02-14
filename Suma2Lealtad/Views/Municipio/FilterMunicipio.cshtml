@@ -1,0 +1,62 @@
+﻿@model Suma2Lealtad.Models.MUNICIPIO
+
+@{
+    ViewBag.Title = "FilterMunicipio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Buscar / Municipio</h3>
+                </div>
+
+                <div class="panel-body">
+                    
+                    <form action="@Url.Action("Index", "Municipio")" method="post" class="form-horizontal" role="form">
+
+                            <div class="form-group">
+
+                                <div class="editor-label col-md-4 control-label">
+                                    Municipio :
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.DESCRIPC_MUNICIPIO, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.DESCRIPC_MUNICIPIO)
+                                </div>
+
+                            </div>
+
+                            <!-- buttons -->
+                            <div class="form-group">
+                                <div class="col-md-12 col-btn">
+                                    <div class="pull-right">
+                                        <input type="submit" class="btn btn-success btn-md" value="Buscar" />
+                                        <a class="btn btn-success btn-md" href="@Url.Action("Create", "Municipio")">Agregar Nuevo</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--// buttons -->
+
+                        </form>
+
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel panel-default -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container row -->

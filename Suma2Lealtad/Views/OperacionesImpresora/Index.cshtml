@@ -1,0 +1,132 @@
+﻿@model Suma2Lealtad.Models.AfiliadoWeb
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Afiliado / Operaciones con la Impresora</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <!-- SilverLight -->
+
+                    @{Html.RenderPartial("SilverlightImpresora");}
+
+                    <!-- SECCION PARA VERIFICAR OPERACIONES Impresora-->
+                    <div class="col-md-12">
+                        <input name="ElementoControl" type="text" class="text-left" id="ElementoControl" style="visibility: visible" value="ElementoControl">
+                    </div>
+
+                    <div id="dialog-confirm" title="Empty the recycle bin?">
+                        <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>¿Se imprimió correctamente la tarjeta?</p>
+                    </div>
+
+                    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+                    
+                    <script>
+                        var Myinterval = setInterval(function () {
+                            if (document.getElementById("ElementoControl").value == "Impresa") {
+                                alert("me toca mostrar el dialogbox");
+                                clearInterval(Myinterval)
+                                /* aqui debo meter el dialogo modal
+                                $("#dialog-confirm").dialog({
+                                    resizable: false,
+                                    height: 140,
+                                    modal: true,
+                                    buttons: {
+                                        "Si": function () {
+                                            $(this).dialog("close");
+                                        },
+                                        "No": function () {
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });*/
+                            }
+                        }, 1000);
+
+                        //$(document).ready(function () {
+                        //    $("#seccion2").hide();
+                        //    $("#seccion3").hide();
+                        //    $("#boton2").hide();
+                        //    $("#boton3").hide();
+                        //});
+
+                        //function Siguiente() {
+                        //    $("#seccion1").hide();
+                        //    $("#seccion2").show();
+                        //    $("#boton1").hide();
+                        //    $("#boton2").show();
+                        //}
+
+                        //function Siguiente2() {
+                        //    if (VerificarElementoControl("ElementoControl", "Escaneada") == true) {
+                        //        //alert("Error: Debe escanear el documento de identificación para continuar.");
+                        //        alert("Error: Debe seleccionar el archivo para cargarlo en el servidor.");
+                        //    }
+                        //        //else if (VerificarElementoControl("ElementoControl", "Seleccionada") == true) {
+                        //        //    //alert("Error: Debe seleccionar el archivo para cargarlo en el servidor.");
+                        //        //    alert("Error: Debe escanear el documento de identificación para continuar.");
+                        //        //}
+                        //    else if (VerificarElementoControl("ElementoControl", "Seleccionada") == true) {
+                        //        $("#seccion2").hide();
+                        //        $("#seccion3").show();
+                        //        $("#boton2").hide();
+                        //        $("#boton3").show();
+                        //    }
+                        //    else {
+                        //        alert("Error: Debe completar Paso 1 y Paso 2 para continuar.");
+                        //    }
+                        //}
+
+                        //function VerificarElementoControl(ElementoControl, ValorDeControl) {
+                        //    if (document.getElementById(ElementoControl).innerHTML == ValorDeControl)
+                        //        return true;
+                        //    else
+                        //        return false;
+                        //}
+
+                        //function ActualizaElementoControl(ElementoControl, ValorDeControl) {
+                        //    document.getElementById(ElementoControl).innerHTML = ValorDeControl;
+                        //}
+                    </script>
+                    @*FIN SECCION PARA VERIFICAR OPERACIONES *@
+
+                    <!-- SilverLight -->
+                    <div class="form-group">
+                        <div class="col-md-12 col-btn">
+                            <div class="pull-right">
+                                @*<a id="boton1" href="javascript:Siguiente()" class="btn btn-success btn-md" role="button">Siguiente</a>
+                                    <a id="boton2" href="javascript:Siguiente2()" class="btn btn-success btn-md" role="button">Siguiente</a>*@
+                                @*<a id="boton3" href="@Url.Action("", "")" class="btn btn-success btn-md" role="button">Guardar</a>*@
+                                @*<input id="boton3" type="submit" class="btn btn-success btn-md" value="Guardar" />*@
+                                <a id="boton4" href="@Url.Action("", "")" class="btn btn-danger btn-md" role="button">Salir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container -->
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e4651b8165f842c6ad365bba15983f5e" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="SumaLealtad.Affiliate" Width="1.5" PointX="5.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.AffiliateAud" Width="1.5" PointX="3.375" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Auditing" Width="1.5" PointX="14.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Channel" Width="1.5" PointX="5.75" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.CIUDAD" Width="1.5" PointX="0.875" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.CLIENTE" Width="1.5" PointX="12.25" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Company" Width="1.5" PointX="20.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.CompanyAffiliate" Width="1.5" PointX="20.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.CreditLimit" Width="1.5" PointX="10" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.CustomerInterest" Width="1.5" PointX="3.375" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.ESTADO" Width="1.5" PointX="0.875" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.FACTURA" Width="1.5" PointX="16" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Interest" Width="1.5" PointX="3.375" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Menu" Width="1.5" PointX="16.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.MUNICIPIO" Width="1.5" PointX="0.875" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Object" Width="1.5" PointX="14.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Operation" Width="1.5" PointX="14.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.OrdersDetail" Width="1.5" PointX="8" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.OrdersHistory" Width="1.5" PointX="10" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.PAIS" Width="1.5" PointX="0.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.PAIS_ESTADO" Width="1.5" PointX="0.875" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Parameter" Width="1.5" PointX="12" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.PARAMETRO" Width="1.5" PointX="14.125" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.PARROQUIA" Width="1.5" PointX="0.875" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Photos_Affiliate" Width="1.5" PointX="5.75" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Reason" Width="1.5" PointX="3.375" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.RESTRICCION" Width="1.5" PointX="19.625" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Role" Width="1.5" PointX="18.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.SecurityLevel" Width="1.5" PointX="18.625" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.SecurityMenu" Width="1.5" PointX="16.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.sysdiagram" Width="1.5" PointX="10.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.TARJETA" Width="1.5" PointX="17.875" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.Type" Width="1.5" PointX="3.375" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.URBANIZACION" Width="1.5" PointX="0.875" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.User" Width="1.5" PointX="3.375" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SumaLealtad.UserRol" Width="1.5" PointX="18.5" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="SumaLealtad.FK_Affiliate_Channel" ManuallyRouted="false" />
+        <AssociationConnector Association="SumaLealtad.FK_CustomerInterest_Interest" ManuallyRouted="false" />
+        <AssociationConnector Association="SumaLealtad.CIUDAD_MUNICIPIO" ManuallyRouted="false" />
+        <AssociationConnector Association="SumaLealtad.ESTADO_CIUDAD" ManuallyRouted="false" />
+        <AssociationConnector Association="SumaLealtad.MUNICIPIO_PARROQUIA" ManuallyRouted="false" />
+        <AssociationConnector Association="SumaLealtad.PARROQUIA_URBANIZACION" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SumaLealtad.Order" Width="1.5" PointX="8.125" PointY="6.375" />
+        <AssociationConnector Association="SumaLealtad.FK_OrdersDetail_Order" />
+        <EntityTypeShape EntityType="SumaLealtad.PrepaidBeneficiary" Width="1.5" PointX="8" PointY="13.625" />
+        <EntityTypeShape EntityType="SumaLealtad.PrepaidCustomer" Width="1.5" PointX="8.125" PointY="10.125" />
+        <EntityTypeShape EntityType="SumaLealtad.SumaStatus" Width="1.5" PointX="5.75" PointY="2.875" />
+        <AssociationConnector Association="SumaLealtad.FK_Affiliate_SumaStatus" />
+        <AssociationConnector Association="SumaLealtad.FK_Orders_PrepaidCustomer" />
+        <AssociationConnector Association="SumaLealtad.FK_Orders_SumaStatus" />
+        <AssociationConnector Association="SumaLealtad.FK_OrdersDetail_SumaStatus" />
+        <AssociationConnector Association="SumaLealtad.FK_PBeneficiary_PCustomer" />
+        <AssociationConnector Association="SumaLealtad.FK_User_SumaStatus" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

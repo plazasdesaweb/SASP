@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Suma2Lealtad", "Suma2Lealtad\Suma2Lealtad.csproj", "{C19A5786-A2AF-493D-91D8-C28DD2FEB875}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumaPlazas.Dispositivos.Escaner", "SumaPlazas.Dispositivos.Escaner\SumaPlazas.Dispositivos.Escaner.csproj", "{113CD0B4-91A8-4E2B-BE5F-ABF0944A7FC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumaPlazas.Dispositivos.Impresora", "SumaPlazas.Dispositivos.Impresora\SumaPlazas.Dispositivos.Impresora.csproj", "{4532CE2F-CF80-4B5C-8002-02B3D4A623DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SumaPlazas.Dispositivos.PinPad", "SumaPlazas.Dispositivos.PinPad\SumaPlazas.Dispositivos.PinPad.csproj", "{A4D70A80-CCBE-43FB-A0B8-0B9B1D697E56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C19A5786-A2AF-493D-91D8-C28DD2FEB875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19A5786-A2AF-493D-91D8-C28DD2FEB875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19A5786-A2AF-493D-91D8-C28DD2FEB875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19A5786-A2AF-493D-91D8-C28DD2FEB875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113CD0B4-91A8-4E2B-BE5F-ABF0944A7FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113CD0B4-91A8-4E2B-BE5F-ABF0944A7FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113CD0B4-91A8-4E2B-BE5F-ABF0944A7FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113CD0B4-91A8-4E2B-BE5F-ABF0944A7FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4532CE2F-CF80-4B5C-8002-02B3D4A623DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4532CE2F-CF80-4B5C-8002-02B3D4A623DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4532CE2F-CF80-4B5C-8002-02B3D4A623DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4532CE2F-CF80-4B5C-8002-02B3D4A623DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D70A80-CCBE-43FB-A0B8-0B9B1D697E56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D70A80-CCBE-43FB-A0B8-0B9B1D697E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D70A80-CCBE-43FB-A0B8-0B9B1D697E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D70A80-CCBE-43FB-A0B8-0B9B1D697E56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

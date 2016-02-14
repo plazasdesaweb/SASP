@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.PrepagoCompanyAffiliattes>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+@*<link href="css/style.css" rel="stylesheet">*@
+<link href="~/Content/style.css" rel="stylesheet" />
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #1C2B2B; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-1 col-md-10">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Prepago / Compañía / Lista de Registros </h3>
+                </div>
+
+                <div class="panel-body">
+
+                    @*<table class="table table-striped custab">*@
+                    <table id="compañias" class="table table-hover">
+                        <thead>
+
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Alias</th>
+                                <th>RIF</th>
+                                <th>Dirección</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                                <th class="text-center"></th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr data-row-key="@item.companyid">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.namecompañia)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.alias)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rif)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.address)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.phone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.email)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("FilterBeneficiarios", "CompanyPrepago", new { companyid = item.companyid })" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "CompanyPrepago", new { id = item.companyid })" class="btn btn-info btn-sm">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Delete", "CompanyPrepago", new { id = item.companyid })" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                    <!-- buttons -->
+                    <div class="col-md-12 col-tabla-btn">
+                        <div class="pull-left">
+                            <a id="Ordenes" class="btn btn-success btn-md" role="button">Órdenes de Recarga</a>
+                            <a id="RecargaIndividual" class="btn btn-success btn-md" role="button">Recarga Individual</a>
+                            <a id="RecargaMasiva" class="btn btn-success btn-md" role="button">Recarga Masiva</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="@Url.Action("Create", "CompanyPrepago")" class="btn btn-success btn-md">Agregar Nueva Compañia</a>
+                            <a href="@Url.Action("FilterCompany", "CompanyPrepago")" class="btn btn-danger btn-md">Regresar</a>
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                </div>
+                <!-- panel-body -->
+
+            </div>
+            <!-- panel -->
+
+        </div>
+        <!-- columns -->
+
+    </div>
+    <!-- row -->
+
+</div>
+<!-- container -->
+
+<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var rowId;
+        var colId;
+
+        $("#Ordenes").hide();
+        $("#RecargaIndividual").hide();
+        $("#RecargaMasiva").hide();
+    });
+
+    $('.table tbody tr td:not(:last-child)').click(function () {
+        var filatabla = $(this).closest('tr');
+        rowId = $(filatabla).data("row-key");
+        $('.table tbody tr').removeClass("active");
+        $(filatabla).addClass("active");
+        $("#Ordenes").show();
+        $("#RecargaIndividual").show();
+        $("#RecargaMasiva").show();
+    });
+
+    $("#Ordenes").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "CompanyPrepago");
+        href = href.replace("{action}", "Ordenes");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#RecargaIndividual").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "CompanyPrepago");
+        href = href.replace("{action}", "Recargas");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#RecargaMasiva").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "CompanyPrepago");
+        href = href.replace("{action}", "RecargaMasiva");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+</script>

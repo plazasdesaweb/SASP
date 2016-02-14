@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "SessionExpired";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron">
+  <div class="container">
+    <h3><b>Su sesión ha expirado</b></h3>
+    <p>Disculpe, la sesión ha expirado.</p>
+    <p>Esto usualmente ocurre cuando no ha realizado ninguna acción, es necesario ingresar nuevamente con sus credenciales.</p>
+    <a href="@Url.Action("Login", "Home")" class="btn btn-success btn-md" role="button">Continuar</a>
+  </div>
+</div>

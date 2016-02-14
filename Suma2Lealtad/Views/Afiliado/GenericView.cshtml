@@ -1,0 +1,28 @@
+﻿@model Suma2Lealtad.Models.ViewModel
+@{
+    ViewBag.Title = "GenericView";
+}
+<div class="jumbotron">
+    <div class="container">
+        <h3><b>@Model.Title</b></h3>
+        <p>@Model.Message</p>
+    </div>
+</div>
+<div class="col-md-12 col-btn">
+    <form id="commentForm" method="post" action="@Url.Action(@Model.ActionName, @Model.ControllerName)" class="form-horizontal">
+        @*@Html.HiddenFor(model => model.RouteValues)*@
+        @Html.TextBox("numdoc", @Model.RouteValues, new { style="visibility:hidden", @class = "form-control" })
+        <input type="submit" class="btn btn-success btn-md" value="Continuar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />
+    </form>
+</div>
+
+@*<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+<script>
+    $("#boton").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")'
+        href = href.replace("{controller}", "@Model.ControllerName");
+        href = href.replace("{action}", "@Model.ActionName");
+        href = href.replace("{params}", @Model.RouteValues);
+        window.location.href = href;
+    });
+</script>*@

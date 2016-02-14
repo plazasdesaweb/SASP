@@ -1,0 +1,796 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C19A5786-A2AF-493D-91D8-C28DD2FEB875}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Suma2Lealtad</RootNamespace>
+    <AssemblyName>Suma2Lealtad</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SilverlightApplicationList>{113CD0B4-91A8-4E2B-BE5F-ABF0944A7FC8}|..\SumaPlazas.Dispositivos.Escaner\SumaPlazas.Dispositivos.Escaner.csproj|ClientBin|False,{4532CE2F-CF80-4B5C-8002-02B3D4A623DB}|..\SumaPlazas.Dispositivos.Impresora\SumaPlazas.Dispositivos.Impresora.csproj|ClientBin|False,{A4D70A80-CCBE-43FB-A0B8-0B9B1D697E56}|..\SumaPlazas.Dispositivos.PinPad\SumaPlazas.Dispositivos.PinPad.csproj|ClientBin|False</SilverlightApplicationList>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqToExcel, Version=1.10.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=x86">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\LinqToExcel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Data.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rotativa">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.20710.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.20710.0\lib\net40\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.0\lib\net40\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuditingController.cs" />
+    <Compile Include="Controllers\ChannelController.cs" />
+    <Compile Include="Controllers\CiudadController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\EstadoController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InterestController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\MunicipioController.cs" />
+    <Compile Include="Controllers\ParroquiaController.cs" />
+    <Compile Include="Controllers\Prepago\AfiliadoSumaController.cs" />
+    <Compile Include="Controllers\Prepago\BeneficiarioPrepagoController.cs" />
+    <Compile Include="Controllers\Prepago\ClientePrepagoController.cs" />
+    <Compile Include="Controllers\Prepago\FueraLineaPrepagoController.cs" />
+    <Compile Include="Controllers\Prepago\OrdenRecargaPrepagoController.cs" />
+    <Compile Include="Controllers\ReasonsBlockController.cs" />
+    <Compile Include="Controllers\ReasonsController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SecurityLevelController.cs" />
+    <Compile Include="Controllers\TypeController.cs" />
+    <Compile Include="Controllers\UrbanizacionController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\AuditingFilter.cs" />
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Affiliate.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AffiliateAud.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AfiliadoSuma.cs" />
+    <Compile Include="Models\AfiliadoSumaIndex.cs" />
+    <Compile Include="Models\Auditing.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BeneficiarioPrepago.cs" />
+    <Compile Include="Models\BeneficiarioPrepagoIndex.cs" />
+    <Compile Include="Models\BeneficiarioPrepagoViewModel.cs" />
+    <Compile Include="Models\Channel.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CIUDAD.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLIENTE.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Company.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CompanyAffiliate.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParametrosReporteSuma.cs" />
+    <Compile Include="Models\EncabezadoReporteSuma.cs" />
+    <Compile Include="Models\ReporteSuma.cs" />
+    <Compile Include="Models\CreditLimit.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomerInterest.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DetalleOrdenRecargaPrepago.cs" />
+    <Compile Include="Models\EncabezadoReporte.cs" />
+    <Compile Include="Models\ESTADO.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FACTURA.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Interest.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Menu.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MUNICIPIO.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Object.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Operation.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrdenRecargaPrepago.cs" />
+    <Compile Include="Models\Order.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrdersDetail.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrdersHistory.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PAIS.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PAIS_ESTADO.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Parameter.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PARAMETRO.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ParametrosReporte.cs" />
+    <Compile Include="Models\PARROQUIA.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Photos_Affiliate.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PrepaidBeneficiary.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PrepaidCustomer.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reason.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReportePrepago.cs" />
+    <Compile Include="Models\Repositorios\AfiliadoSumaRepository.cs" />
+    <Compile Include="Models\AfiliadoSumaSaldosMovimientos.cs" />
+    <Compile Include="Models\Repositorios\BeneficiarioPrepagoRepository.cs" />
+    <Compile Include="Models\BeneficiarioPrepagoSaldosMovimientos.cs" />
+    <Compile Include="Models\ClienteCards.cs" />
+    <Compile Include="Models\ClientePrepago.cs" />
+    <Compile Include="Models\Repositorios\ClientePrepagoRepository.cs" />
+    <Compile Include="Models\ClienteWebPlazas.cs" />
+    <Compile Include="Models\CMenu.cs" />
+    <Compile Include="Models\ExceptionJSON.cs" />
+    <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Movimiento.cs" />
+    <Compile Include="Models\Repositorios\OrdenRecargaPrepagoRepository.cs" />
+    <Compile Include="Models\RespuestaCards.cs" />
+    <Compile Include="Models\RespuestaWebPlazas.cs" />
+    <Compile Include="Models\RESTRICCION.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RoleMenus.cs" />
+    <Compile Include="Models\Saldo.cs" />
+    <Compile Include="Models\SaldosMovimientos.cs" />
+    <Compile Include="Models\SecurityLevel.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityMenu.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SumaLealtad.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SumaLealtad.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SumaLealtad.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SumaLealtad.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SumaLealtad.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SumaStatus.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TARJETA.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TSource.cs" />
+    <Compile Include="Models\Type.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\URBANIZACION.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRol.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRols.cs" />
+    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="Modules\AppModule.cs" />
+    <Compile Include="Modules\AppSession.cs" />
+    <Compile Include="Modules\Tarjeta.cs" />
+    <Compile Include="Modules\WSL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientBin\SumaPlazas.Dispositivos.Escaner.xap" />
+    <Content Include="ClientBin\SumaPlazas.Dispositivos.Impresora.xap" />
+    <Content Include="ClientBin\SumaPlazas.Dispositivos.PinPad.xap" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Icon.png" />
+    <Content Include="Images\conectado.jpg" />
+    <Content Include="Images\conectadoPrepago.jpg" />
+    <Content Include="Images\conectadoSuma.jpg" />
+    <Content Include="Images\plzlogo.jpg" />
+    <Content Include="Images\principal.jpg" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\html5shiv.min.js" />
+    <Content Include="App_Code\Helpers.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <EntityDeploy Include="Models\SumaLealtad.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SumaLealtad.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SumaLealtad.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SumaLealtad.edmx</DependentUpon>
+      <LastGenOutput>SumaLealtad.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SumaLealtad.edmx.diagram">
+      <DependentUpon>SumaLealtad.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\SumaLealtad.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SumaLealtad.edmx</DependentUpon>
+      <LastGenOutput>SumaLealtad.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_Data\Plantilla.xls" />
+    <Content Include="App_Browsers\qt.browser" />
+    <None Include="Properties\PublishProfiles\Suma2-Desarrollo.pubxml" />
+    <None Include="Properties\PublishProfiles\Suma2.pubxml" />
+    <None Include="Scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="Scripts\clipboard.js" />
+    <Content Include="Scripts\jquery-2.1.3.js" />
+    <Content Include="Scripts\jquery-2.1.3.min.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery.bootstrap.wizard.js" />
+    <Content Include="Scripts\jquery.bootstrap.wizard.min.js" />
+    <Content Include="Scripts\jquery.bootstrap.wizard.min.js.map" />
+    <Content Include="Scripts\jquery.bootstrap.wizard.js.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\css\bootstrap-dialog.css" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\css\bootstrap-dialog.min.css" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\js\bootstrap-dialog.js" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\js\bootstrap-dialog.min.js" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\prettify\prettify.css" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\prettify\run_prettify.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Interest\Index.cshtml" />
+    <Content Include="Views\Interest\Create.cshtml" />
+    <Content Include="Views\Interest\Edit.cshtml" />
+    <Content Include="Views\Interest\Delete.cshtml" />
+    <Content Include="Views\Reasons\Index.cshtml" />
+    <Content Include="Views\Reasons\Create.cshtml" />
+    <Content Include="Views\Reasons\Edit.cshtml" />
+    <Content Include="Views\Reasons\Delete.cshtml" />
+    <Content Include="Views\ReasonsBlock\Index.cshtml" />
+    <Content Include="Views\ReasonsBlock\Create.cshtml" />
+    <Content Include="Views\ReasonsBlock\Edit.cshtml" />
+    <Content Include="Views\ReasonsBlock\Delete.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\Delete.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\Create.cshtml" />
+    <Content Include="Views\Company\Edit.cshtml" />
+    <Content Include="Views\Company\Delete.cshtml" />
+    <Content Include="Views\Channel\Index.cshtml" />
+    <Content Include="Views\Channel\Create.cshtml" />
+    <Content Include="Views\Channel\Edit.cshtml" />
+    <Content Include="Views\Channel\Delete.cshtml" />
+    <Content Include="Views\Type\Index.cshtml" />
+    <Content Include="Views\Type\Create.cshtml" />
+    <Content Include="Views\Type\Edit.cshtml" />
+    <Content Include="Views\Type\Delete.cshtml" />
+    <Content Include="Views\Auditing\Index.cshtml" />
+    <Content Include="Views\Auditing\Details.cshtml" />
+    <Content Include="Views\Auditing\Create.cshtml" />
+    <Content Include="Views\Auditing\Edit.cshtml" />
+    <Content Include="Views\Auditing\Delete.cshtml" />
+    <Content Include="Views\SecurityLevel\Index.cshtml" />
+    <Content Include="Views\SecurityLevel\Create.cshtml" />
+    <Content Include="Views\SecurityLevel\Edit.cshtml" />
+    <Content Include="Views\SecurityLevel\Delete.cshtml" />
+    <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Menu\Create.cshtml" />
+    <Content Include="Views\Menu\Edit.cshtml" />
+    <Content Include="Views\Menu\Delete.cshtml" />
+    <Content Include="Views\Shared\_MenuLayout.cshtml" />
+    <Content Include="Views\Error\Error404.cshtml" />
+    <Content Include="Views\Error\SessionExpired.cshtml" />
+    <Content Include="Views\User\Roles.cshtml" />
+    <Content Include="Views\Role\Menus.cshtml" />
+    <Content Include="Scripts\jquery-2.1.3.min.map" />
+    <Content Include="Views\ClientePrepago\PinPadReiniciarPin.cshtml" />
+    <Content Include="Views\ClientePrepago\PinPadCambiarPin.cshtml" />
+    <Content Include="Views\Municipio\Create.cshtml" />
+    <Content Include="Views\Municipio\Delete.cshtml" />
+    <Content Include="Views\Municipio\Details.cshtml" />
+    <Content Include="Views\Municipio\Edit.cshtml" />
+    <Content Include="Views\Municipio\Index.cshtml" />
+    <Content Include="Views\Ciudad\Create.cshtml" />
+    <Content Include="Views\Ciudad\Delete.cshtml" />
+    <Content Include="Views\Ciudad\Details.cshtml" />
+    <Content Include="Views\Ciudad\Edit.cshtml" />
+    <Content Include="Views\Ciudad\Index.cshtml" />
+    <Content Include="Views\Estado\Create.cshtml" />
+    <Content Include="Views\Estado\Delete.cshtml" />
+    <Content Include="Views\Estado\Details.cshtml" />
+    <Content Include="Views\Estado\Edit.cshtml" />
+    <Content Include="Views\Estado\Index.cshtml" />
+    <Content Include="Views\Parroquia\Create.cshtml" />
+    <Content Include="Views\Parroquia\Delete.cshtml" />
+    <Content Include="Views\Parroquia\Details.cshtml" />
+    <Content Include="Views\Parroquia\Edit.cshtml" />
+    <Content Include="Views\Parroquia\Index.cshtml" />
+    <Content Include="Views\Urbanizacion\Create.cshtml" />
+    <Content Include="Views\Urbanizacion\Delete.cshtml" />
+    <Content Include="Views\Urbanizacion\Details.cshtml" />
+    <Content Include="Views\Urbanizacion\Edit.cshtml" />
+    <Content Include="Views\Urbanizacion\Index.cshtml" />
+    <Content Include="Views\Ciudad\FilterCiudad.cshtml" />
+    <Content Include="Views\Municipio\FilterMunicipio.cshtml" />
+    <Content Include="Views\Parroquia\FilterParroquia.cshtml" />
+    <Content Include="Views\Urbanizacion\FilterUrbanizacion.cshtml" />
+    <Content Include="Views\ClientePrepago\Index.cshtml" />
+    <Content Include="Views\ClientePrepago\FilterReview.cshtml" />
+    <Content Include="Views\ClientePrepago\Create.cshtml" />
+    <Content Include="Views\ClientePrepago\Delete.cshtml" />
+    <Content Include="Views\ClientePrepago\Edit.cshtml" />
+    <Content Include="Views\ClientePrepago\Filter.cshtml" />
+    <Content Include="Views\ClientePrepago\FilterReviewBeneficiarios.cshtml" />
+    <Content Include="Views\ClientePrepago\FilterOrdenes.cshtml" />
+    <Content Include="Views\ClientePrepago\IndexBeneficiarios.cshtml" />
+    <Content Include="Views\ClientePrepago\GenericView.cshtml" />
+    <Content Include="Views\ClientePrepago\FilterBeneficiario.cshtml" />
+    <Content Include="Views\ClientePrepago\IndexOrdenes.cshtml" />
+    <Content Include="Views\ClientePrepago\CreateBeneficiario.cshtml" />
+    <Content Include="Views\ClientePrepago\EditBeneficiario.cshtml" />
+    <Content Include="Views\ClientePrepago\SilverlightEscaner.cshtml" />
+    <Content Include="Views\ClientePrepago\SaldosMovimientos.cshtml" />
+    <Content Include="Views\ClientePrepago\Acreditar.cshtml" />
+    <Content Include="Views\ClientePrepago\PinPadCrearPin.cshtml" />
+    <Content Include="Views\ClientePrepago\SilverlightPinPad.cshtml" />
+    <Content Include="Views\ClientePrepago\SuspenderTarjeta.cshtml" />
+    <Content Include="Views\ClientePrepago\ReactivarTarjeta.cshtml" />
+    <Content Include="Views\ClientePrepago\BloquearTarjeta.cshtml" />
+    <Content Include="Views\ClientePrepago\SilverlightImpresora.cshtml" />
+    <Content Include="Views\ClientePrepago\ImpresoraImprimirTarjeta.cshtml" />
+    <Content Include="Views\ClientePrepago\DetalleOrden.cshtml" />
+    <Content Include="Views\ClientePrepago\CreateOrdenRecarga.cshtml" />
+    <Content Include="Views\ClientePrepago\CargarArchivoRecarga.cshtml" />
+    <Content Include="Views\Reporte\ReporteCompras.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\FilterReview.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\Index.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\Filter.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\Create.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\Edit.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\SilverlightEscaner.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\FilterReview.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\Index.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\Create.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\Filter.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\GenericView.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\PinPadCambiarPin.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\PinPadCrearPin.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\PinPadReiniciarPin.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\ReactivarTarjeta.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\SaldosMovimientos.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\SilverlightImpresora.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\SilverlightPinPad.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\SuspenderTarjeta.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\ImpresoraImprimirTarjeta.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\Acreditar.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\BloquearTarjeta.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\DetalleOrden.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\CargarArchivoRecarga.cshtml" />
+    <Content Include="Views\AfiliadoSuma\Filter.cshtml" />
+    <Content Include="Views\AfiliadoSuma\FilterReview.cshtml" />
+    <Content Include="Views\AfiliadoSuma\Create.cshtml" />
+    <Content Include="Views\AfiliadoSuma\Edit.cshtml" />
+    <Content Include="Views\AfiliadoSuma\GenericView.cshtml" />
+    <Content Include="Views\AfiliadoSuma\Index.cshtml" />
+    <Content Include="Views\AfiliadoSuma\ImpresoraImprimirTarjeta.cshtml" />
+    <Content Include="Views\AfiliadoSuma\SilverlightImpresora.cshtml" />
+    <Content Include="Views\AfiliadoSuma\SilverlightPinPad.cshtml" />
+    <Content Include="Views\AfiliadoSuma\SilverlightEscaner.cshtml" />
+    <Content Include="Views\AfiliadoSuma\PinPadCambiarPin.cshtml" />
+    <Content Include="Views\AfiliadoSuma\PinPadCrearPin.cshtml" />
+    <Content Include="Views\AfiliadoSuma\PinPadReiniciarPin.cshtml" />
+    <Content Include="Views\AfiliadoSuma\BloquearTarjeta.cshtml" />
+    <Content Include="Views\AfiliadoSuma\SuspenderTarjeta.cshtml" />
+    <Content Include="Views\AfiliadoSuma\ReactivarTarjeta.cshtml" />
+    <Content Include="Views\AfiliadoSuma\SaldosMovimientos.cshtml" />
+    <Content Include="Views\AfiliadoSuma\Acreditar.cshtml" />
+    <Content Include="Views\ClientePrepago\SuspenderCliente.cshtml" />
+    <Content Include="Views\ClientePrepago\ReactivarCliente.cshtml" />
+    <Content Include="Views\FueraLineaPrepago\Filter.cshtml" />
+    <Content Include="Views\FueraLineaPrepago\Table.cshtml" />
+    <Content Include="Views\FueraLineaPrepago\AddNew.cshtml" />
+    <Content Include="Views\FueraLineaPrepago\GenericView.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\GenericView.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteCompras.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteRecargas.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteTarjetas.cshtml" />
+    <Content Include="Views\Reporte\ReporteComprasPDF.cshtml" />
+    <Content Include="Views\Reporte\ReporteRecargas.cshtml" />
+    <Content Include="Views\Reporte\ReporteRecargasPDF.cshtml" />
+    <Content Include="Views\Reporte\ReporteTarjetas.cshtml" />
+    <Content Include="Views\Reporte\ReporteTarjetasPDF.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteTransacciones.cshtml" />
+    <Content Include="Views\Reporte\ReporteTransacciones.cshtml" />
+    <Content Include="Views\Reporte\ReporteTransaccionesPDF.cshtml" />
+    <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\less\bootstrap-dialog.less" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>6973</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:53702/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,30 @@
+﻿@model Suma2Lealtad.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form name="login" method="post" action="@Url.Action("Index", "Home")" class="form-horizontal" role="form">
+
+    <div class="form-group">
+
+        <div class="panel-heading clearfix">
+
+            <div class="editor-label col-md-7 ">
+                <img src="~/Images/principal.jpg">
+            </div>
+
+            <div class="editor-field col-md-4" style="margin-top: 80px;" aria-required="true">
+                <input class="form-control" placeholder="Usuario" name="username" value="" type="text" required="">
+                <br>
+                <input class="form-control" placeholder="Contraseña" name="password" value="" type="password" required="">
+                <br>
+                <input type="submit" class="btn btn-success btn-md" value="Iniciar Sesión">
+            </div>
+
+        </div>
+
+    </div>
+
+</form>

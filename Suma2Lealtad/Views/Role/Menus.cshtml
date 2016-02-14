@@ -1,0 +1,89 @@
+﻿@model Suma2Lealtad.Models.RoleMenus
+
+@{
+    ViewBag.Title = "RoleMenus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+
+            <div class="panel-heading clearfix panel-gradient">
+                <h3 class="panel-title">Rol / Asociar Opciones de Menú</h3>
+            </div>
+
+            <div class="panel-body">
+
+            <form action="@Url.Action("CreateRoles", "Role")" method="post" class="form-horizontal" role="form">
+
+                <div class="form-group">
+
+                    @Html.HiddenFor(model => model.RoleID)
+
+                    <div class="col-md-10">
+
+                        <div class="row">
+                            <br />
+                        </div>
+
+                        <div class="row">
+                            <div class="editor-label col-md-6 col-right">
+                                <b>Rol :</b>
+                            </div>
+                            <div class="editor-field col-md-6">
+                                @Html.DisplayFor(model => model.RoleName, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <br />
+                        </div>
+
+                        <div class="row">
+
+                            <div class="editor-label col-md-6 col-right">
+                                <b>Menú / Opciones :</b>
+                            </div>
+                            <div class="editor-field col-md-6">
+                                @for (int i = 0; i < Model.Menus.Count; i++)
+                                {
+                                    @Html.CheckBoxFor(m => m.Menus[i].Checked, new { id = i })
+                                    @Html.HiddenFor(m => m.Menus[i].MenuId)
+                                    @Html.DisplayFor(m => m.Menus[i].MenuName)
+                                    <br />
+                                }
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- buttons -->
+                <div class="form-group">
+                    <div class="col-md-12 col-btn">
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                            <a class="btn btn-danger btn-md" href="@Url.Action("Index", "Role")">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+                <!--// buttons -->
+
+            </form>
+
+            </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

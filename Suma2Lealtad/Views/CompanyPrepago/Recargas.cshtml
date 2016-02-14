@@ -1,0 +1,245 @@
+﻿@model IList<Suma2Lealtad.Models.CompanyAfiliadoRecarga>
+
+@{
+    ViewBag.Title = "Recargas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+@*<link href="css/style.css" rel="stylesheet">*@
+<link href="~/Content/style.css" rel="stylesheet" />
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #1C2B2B; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Compañia / Beneficiarios / Recargas</h3>
+            @*<input type="submit" class="btn btn-success btn-md" value="Regresar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />*@
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                Compañia :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBox("1", Model.FirstOrDefault().namecompañia, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                RIF :
+            </div>
+
+            <div class="editor-form col-md-6">
+                @Html.TextBox("2", Model.FirstOrDefault().rif, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Teléfono :
+            </div>
+
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.FirstOrDefault().phone, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label"></div>
+            <div class="editor-field col-md-6">
+                <br />
+            </div>
+
+            <form id="commentForm" method="post" action="@Url.Action("Recargas", "CompanyPrepago")" class="form-horizontal" onsubmit="return verificarforma();">
+
+            <div class="col-md-12 col-tabla-btn">
+                <div class="pull-right">
+                        @*<a href="@Url.Action("", "")" class="btn btn-success btn-md">Órdenes de Recarga</a>
+                        <a href="@Url.Action("", "")" class="btn btn-success btn-md">Recarga Individual</a>
+                        <a href="@Url.Action("", "")" class="btn btn-success btn-md">Recarga Masiva</a>
+                        <a href="@Url.Action("Filter", "CompanyPrepago", new { companyid = Model.companyid })" class="btn btn-success btn-md">Agregar Nuevo Beneficiario</a>*@
+                        <a href="@Url.Action("FilterBeneficiariosRecargas", "CompanyPrepago", new { companyid = Model.FirstOrDefault().companyid })" class="btn btn-success btn-md">Filtrar Beneficiarios</a>
+                        @*<a href="@Url.Action("FilterCompany", "CompanyPrepago")" class="btn btn-danger btn-md">Cancelar</a>*@
+                        <a href="@Url.Action("Index", "CompanyPrepago", new { rif = Model.FirstOrDefault().rif })" class="btn btn-danger btn-md">Regresar</a>
+                </div>
+            </div>
+
+            <div class="editor-field col-md-6">
+                <br />
+            </div>
+
+                @*<table class="table table-striped custab">*@
+                <table id="beneficiarios" class="table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Número de Documento/Cédula</th>
+                            <th>Nombre</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @for (int i = 0; i < Model.Count; i++)
+                        {     
+                            <tr data-row-key="@Model[i].Afiliadoid">
+                                
+                                @Html.HiddenFor(modelItem => Model[i].companyid)
+                                @Html.HiddenFor(modelItem => Model[i].rif)
+                                @Html.HiddenFor(modelItem => Model[i].Afiliadoid)
+                                
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model[i].type, new { @class = "form-control" })
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model[i].docnumber, new { @class = "form-control" })
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model[i].name) @Html.DisplayFor(modelItem => Model[i].lastname1)
+                                </td>
+
+                                <td class="text-right">
+                                    @Html.TextBoxFor(modelItem => Model[i].MontoRecarga, new { @class = "form-control Monto" })
+                                    <span id="field_@Model[i].Afiliadoid"></span>
+                                </td>
+                            </tr>                 
+                        }
+                    </tbody>
+
+                </table>
+
+                <div class="editor-label col-md-6 control-label">
+                    Total Recargas :
+                </div>
+
+                <div class="editor-field col-md-4">
+                    <input type="text" id="TotalRecargas" name="TotalRecargas" value="" maxlength="10" class="form-control" readonly="true">
+                </div>
+
+                <div class="editor-label col-md-6 control-label">
+                    Monto Total Recargas :
+                </div>
+
+                <div class="editor-field col-md-4">
+                    <input type="text" id="MontoTotalRecargas" name="MontoTotalRecargas" value="" maxlength="10" class="form-control" readonly="true">
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <br />
+                </div>
+
+                <!-- SECCION PARA botones de operaciones -->
+
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-md" value="Procesar" />
+                        @*<a href="@Url.Action("FilterBeneficiarios", "CompanyPrepago", new { companyid = Model.FirstOrDefault().companyid })" class="btn btn-danger btn-md">Regresar</a>*@
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+        <!-- SECCION PARA botones de operaciones -->
+
+    </div>
+    <!-- panel-body -->
+
+</div>
+<!-- panel -->
+
+<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+<script>
+    var Myinterval = setInterval(function () {
+        ValidarMontos()
+    }, 500);
+
+    function ValidarMontos() {
+        var TotalRecargas = 0;
+        var MontoTotalRecargas = 0;
+        var resultado = true;
+
+        $("#beneficiarios tbody tr").each(function (index) {
+            var RegExPattern = /^(\d){2,10}$/;
+            var idrow = $(this).data("row-key");
+            var campo1, campo2, campo3;
+            var campo4 = 0;
+            $(this).children("td").each(function (index2) {
+                switch (index2) {
+                    //case 0: campo1 = $(this).text();
+                    //    break;
+                    //case 1: campo2 = $(this).text();
+                    //    break;
+                    //case 2: campo3 = $(this).text();
+                    //    break;
+                    case 3: campo4 = $(this).find('.Monto').val();
+                        break;
+                }
+            });
+            LimpiarSpanMessage('field_' + idrow);
+            if (campo4 == 0) {
+                spanMessage('field_' + idrow, '* No incluye recarga');
+            }
+            else if (RegExPattern.test(campo4) == false) {
+                spanMessage('field_' + idrow, '* Monto invalido (' + campo4 + ')');
+                resultado = false;
+            }
+            else if (campo4 > 5000) {
+                spanMessage('field_' + idrow, '* El monto excede el valor máximo permitido (500)');
+                resultado = false;
+            }
+            else {
+                TotalRecargas = TotalRecargas + 1;
+                MontoTotalRecargas = MontoTotalRecargas + parseInt(campo4);
+            }
+            document.getElementById('TotalRecargas').value = TotalRecargas;
+            document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas;
+        });
+        return resultado;
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function LimpiarSpanMessage(idelemento) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+    }
+
+    function verificarforma() {
+        if (!ValidarMontos()) {
+            alert("Hay campos invalidos, verifique.");
+            return false;
+        }
+        if (document.getElementById('MontoTotalRecargas').value == 0) {
+            alert("Debe incluir al menos una recarga.");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+

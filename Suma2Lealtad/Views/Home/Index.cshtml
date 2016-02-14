@@ -1,0 +1,31 @@
+﻿@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+   @* <form class="form-horizontal" role="form">*@
+
+        <div class="form-group">
+
+            <div class="panel-heading clearfix">
+
+                <div class="editor-label" align="center">
+                     @if (Session["type"].ToString() == "Prepago")
+                       {
+                        <img src="@Url.Content("~/Images/conectadoPrepago.jpg")" />
+                       }
+                       else
+                       {
+                        <img src="@Url.Content("~/Images/conectadoSuma.jpg")" />
+                       }
+                </div>
+
+            </div>
+
+        </div>
+
+    @*</form>*@  
+      
+    @*<a href="@Url.Action("FilterCompany", "CompanyPrepago")" class="btn btn-success btn-sm">Pruebas Prepago</a>*@
+    
+}

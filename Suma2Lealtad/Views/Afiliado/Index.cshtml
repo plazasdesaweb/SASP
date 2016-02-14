@@ -1,0 +1,268 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.Afiliado>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+@*<link href="css/style.css" rel="stylesheet">*@
+<link href="~/Content/style.css" rel="stylesheet" />
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #1C2B2B; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Afiliado / Lista de Afiliaciones</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <table id="afiliados" class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Número de Documento/Cédula</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Estatus de Afiliación</th>
+                        <th>Número de Tarjeta</th>
+                        <th>Estatus de Tarjeta</th>
+                        <th class="text-center"></th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr data-row-key="@item.id" data-statusafiliacion="@item.estatus" data-statustarjeta="@item.estatustarjeta">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.type)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.docnumber)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name) @Html.DisplayFor(modelItem => item.lastname1)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.email)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.estatus)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pan)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.estatustarjeta)
+                            </td>
+
+                            <td>
+                                @{if (item.estatus == "Nueva")
+                                  {
+                                    <a id="@(item.id)_approve" href="@Url.Action("Aprobar", "Afiliado", new { id = item.id })" class="btn btn-success btn-sm" >
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </a>
+                                  }
+                                }
+                            </td>
+
+                            <td class="text-right">
+                                <a id="@(item.id)_edit" href="@Url.Action("Edit", "Afiliado", new { id = item.id })" class="btn btn-info btn-sm" >
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <!-- SECCION PARA botones de operaciones -->
+            <div class="col-md-12 col-btn">
+                <div class="pull-left">
+                    <a id="CrearPin" class="btn btn-success btn-md" role="button">Crear Pin</a>
+                    <a id="CambiarPin" class="btn btn-success btn-md" role="button">Cambiar Pin</a>
+                    <a id="ReiniciarPin" class="btn btn-success btn-md" role="button">Reiniciar Pin</a>
+                    <a id="ImprimirTarjeta" class="btn btn-success btn-md" role="button">Imprimir Tarjeta</a>
+                    <a id="BloquearTarjeta" class="btn btn-success btn-md" role="button">Bloquear Tarjeta</a>
+                    <a id="SuspenderTarjeta" class="btn btn-success btn-md" role="button">Suspender Tarjeta</a>
+                    <a id="ReactivarTarjeta" class="btn btn-success btn-md" role="button">Reactivar Tarjeta</a>
+                    <a id="SaldosMovimientos" class="btn btn-success btn-md" role="button">Saldos y Movimientos</a>
+                    <a id="Acreditar" class="btn btn-success btn-md" role="button">Acreditar</a>
+                </div>
+                <div class="pull-right">
+                    <a href="@Url.Action("FilterReview", "Afiliado")" class="btn btn-danger btn-md">Regresar</a>
+                </div>
+            </div>
+
+            <script src="~/Scripts/jquery-2.1.3.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    var rowId;
+                    var colId;
+                    var docNumber;
+                    var statusAfiliacion;
+                    var statusTarjeta;
+
+                    $("#CrearPin").hide();
+                    $("#CambiarPin").hide();
+                    $("#ReiniciarPin").hide();
+                    $("#ImprimirTarjeta").hide();
+                    $("#BloquearTarjeta").hide();
+                    $("#SuspenderTarjeta").hide();
+                    $("#ReactivarTarjeta").hide();
+                    $("#SaldosMovimientos").hide();
+                    $("#Acreditar").hide();
+                });
+
+                $('.table tbody tr td:not(:last-child)').click(function () {
+                    var filatabla = $(this).closest('tr');
+                    rowId = $(filatabla).data("row-key");
+                    statusAfiliacion = $(filatabla).data("statusafiliacion");
+                    statusTarjeta = $(filatabla).data("statustarjeta");
+                    $('.table tbody tr').removeClass("active");
+                    $(filatabla).addClass("active");
+
+                    $("#CrearPin").hide();
+                    $("#CambiarPin").hide();
+                    $("#ReiniciarPin").hide();
+                    $("#ImprimirTarjeta").hide();
+                    $("#BloquearTarjeta").hide();
+                    $("#SuspenderTarjeta").hide();
+                    $("#ReactivarTarjeta").hide();
+                    $("#SaldosMovimientos").hide();
+                    $("#Acreditar").hide();
+
+                    if (statusAfiliacion == "Nueva") {
+                    }
+                    else if (statusAfiliacion == "Activa" && statusTarjeta == "Nueva") {
+                        $("#ImprimirTarjeta").show();
+                        $("#SaldosMovimientos").show();
+                    }
+                    else if (statusAfiliacion == "Activa" && statusTarjeta == "Activa") {
+                        $("#CrearPin").show();
+                        $("#CambiarPin").show();
+                        $("#ReiniciarPin").show();
+                        $("#BloquearTarjeta").show();
+                        $("#SuspenderTarjeta").show();
+                        $("#SaldosMovimientos").show();
+                        $("#Acreditar").show();
+                    }
+                    else if (statusAfiliacion == "Activa" && statusTarjeta == "Suspendida") {
+                        $("#CrearPin").show();
+                        $("#CambiarPin").show();
+                        $("#ReiniciarPin").show();
+                        $("#BloquearTarjeta").show();
+                        $("#ReactivarTarjeta").show();
+                        $("#SaldosMovimientos").show();
+                    }
+                });
+
+                $("#CrearPin").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "CrearPin");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#CambiarPin").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "CambiarPin");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#ReiniciarPin").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "ReiniciarPin");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#ImprimirTarjeta").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "ImprimirTarjeta");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#BloquearTarjeta").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "BloquearTarjeta");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#SuspenderTarjeta").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "SuspenderTarjeta");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#ReactivarTarjeta").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "ReactivarTarjeta");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#SaldosMovimientos").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "SaldosMovimientos");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+
+                $("#Acreditar").click(function () {
+                    var href = '@Url.Content("~/{controller}/{action}/{params}")';
+                    href = href.replace("{controller}", "Afiliado");
+                    href = href.replace("{action}", "Acreditar");
+                    href = href.replace("{params}", rowId);
+                    window.location.href = href;
+                });
+            </script>
+            <!-- SECCION PARA botones de operaciones -->
+
+        </div>
+        <!-- panel-body -->
+
+    </div>
+    <!-- panel panel-default -->
+
+</div>
+<!-- form-group -->

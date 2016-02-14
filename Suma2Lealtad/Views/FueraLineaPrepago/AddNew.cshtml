@@ -1,0 +1,104 @@
+﻿@model Suma2Lealtad.Models.BeneficiarioPrepagoViewModel
+
+@{
+    ViewBag.Title = "AddNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Fuera de Línea / Crear Transacción de Compra</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br>
+            </div>
+            <div class="editor-field col-md-8">
+                <br>
+            </div>
+
+            <form id="form" method="post" action="@Url.Action("AddNew", "FueraLineaPrepago")" class="form-horizontal" onsubmit ="return ValidarMontos();">
+
+                <div class="form-group">
+
+                    <div class="editor-label col-md-4 control-label">
+                        Número de Documento/Cédula :
+                    </div>
+                    <div class="editor-form col-md-6">
+                        @Html.TextBoxFor(model => model.numdoc, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="editor-label col-md-4 control-label">
+                        Beneficiario :
+                    </div>
+                    <div class="editor-field col-md-6">
+                        @Html.TextBoxFor(model => model.beneficiario, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="editor-label col-md-4 control-label">
+                        Saldo Actual BsF:
+                    </div>
+                    <div class="editor-field col-md-6">
+                        @Html.TextBoxFor(model => model.saldo, new { @class = "form-control", @readonly = "true" })
+                    </div>
+                    <div class="editor-label col-md-4 control-label">
+                        * Monto de Transacción :
+                    </div>
+                    <div class="editor-form col-md-6">
+                        @Html.TextBoxFor(model => model.monto, new { @class = "form-control Monto" })
+                        @Html.ValidationMessageFor(model => model.monto)
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label"></div>
+                    <div class="editor-field col-md-6">
+                        <br>
+                    </div>
+
+                    @Html.HiddenFor(model => model.saldo)
+                    @Html.HiddenFor(model => model.saldoactual)
+
+                </div>
+
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-md" value="Procesar Compra" />
+                        <a href="@Url.Action("Filter", "FueraLineaPrepago")" class="btn btn-danger btn-md">Cancelar</a>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+    <!-- panel-body -->
+
+</div>
+<!-- panel -->
+
+@*<script src="~/Scripts/jquery-2.1.3.min.js"></script>*@
+<script>
+    //$(document).ready(function () {
+    //    ValidarMontos()
+    //});
+
+    //var Myinterval = setInterval(function () {
+    //    ValidarMontos()
+    //}, 2500);
+
+    function ValidarMontos() {
+        var valor = document.getElementById('monto').value;
+        //alert("antes" + valor);
+        valor = valor.toString().replace(",", ".");
+        valor = parseFloat(valor);
+        valor = valor.toFixed(2);
+        valor = valor.toString().replace(".", ",");
+        //alert("despues" + valor);
+        document.getElementById('monto').value = valor;
+        return true;
+    }
+
+</script>

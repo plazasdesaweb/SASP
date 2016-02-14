@@ -1,0 +1,89 @@
+﻿@model Suma2Lealtad.Models.UserRols
+
+@{
+    ViewBag.Title = "UserRols";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Usuario / Asociar Roles</h3>
+                </div>
+
+
+                <div class="panel-body">
+
+                    <form action="@Url.Action("CreateRoles", "User")" method="post" class="form-horizontal" role="form">
+
+                        <div class="form-group">
+
+                            @Html.HiddenFor(model => model.UserID)
+
+                            <div class="col-md-10">
+
+                                <div class="row">
+                                    <br />
+                                </div>
+
+                                <div class="row">
+                                    <div class="editor-label col-md-6 col-right">
+                                        <b>Usuario :</b>
+                                    </div>
+                                    <div class="editor-field col-md-6">
+                                        @Html.DisplayFor(model => model.UserName, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <br />
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="editor-label col-md-6 col-right">
+                                        <b>Roles :</b>
+                                    </div>
+                                    <div class="editor-field col-md-6">
+                                    @for (int i = 0; i < Model.Roles.Count; i++)
+                                    {
+                                        @Html.CheckBoxFor(m => m.Roles[i].Checked, new { id = i })
+                                        @Html.HiddenFor(m => m.Roles[i].RolID)
+                                        @Html.DisplayFor(m => m.Roles[i].RolName)
+                                        <br />
+                                    }
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- buttons -->
+                        <div class="form-group">
+                            <div class="col-md-12 col-btn">
+                                <div class="pull-right">
+                                    <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                                    <a class="btn btn-danger btn-md" href="@Url.Action("Index", "User")">Cancelar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--// buttons -->
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

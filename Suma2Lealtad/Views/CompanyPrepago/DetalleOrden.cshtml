@@ -1,0 +1,246 @@
+﻿@model IList<Suma2Lealtad.Models.CompanyAfiliadoRecarga>
+
+@{
+    ViewBag.Title = "DetalleOrden";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+@*<link href="css/style.css" rel="stylesheet">*@
+<link href="~/Content/style.css" rel="stylesheet" />
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #1C2B2B; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Compañia / Recargas / Detalle de la Orden</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                Compañia :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBox("1", Model.FirstOrDefault().namecompañia, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                RIF :
+            </div>
+
+            <div class="editor-form col-md-6">
+                @Html.TextBox("2", Model.FirstOrDefault().rif, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Teléfono :
+            </div>
+
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.FirstOrDefault().phone, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label"></div>
+            <div class="editor-field col-md-6">
+                <br />
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Nro. de Orden :
+            </div>
+
+            <div class="editor-form col-md-6">
+                @Html.TextBoxFor(model => model.FirstOrDefault().Orderid, new { @class = "form-control", @readonly = "true" })
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                Estatus de la Orden :
+            </div>
+
+            <div class="editor-form col-md-6">
+                @Html.HiddenFor(model => model.FirstOrDefault().Orderstatus)
+                @{if (Model.FirstOrDefault().Orderstatus == "N")
+                  {
+                    @Html.TextBox("Nueva","Nueva", new { @class = "form-control", @readonly = "true" })               
+                  }
+                  else if (Model.FirstOrDefault().Orderstatus == "A")
+                  {
+                    @Html.TextBox("Aprobada", "Aprobada", new { @class = "form-control", @readonly = "true" })  
+                  }
+                  else if (Model.FirstOrDefault().Orderstatus == "R")
+                  {
+                    @Html.TextBox("Rechazada", "Rechazada", new { @class = "form-control", @readonly = "true" })  
+                  }
+                  else if (Model.FirstOrDefault().Orderstatus == "E")
+                  {
+                    @Html.TextBox("Efectiva/Procesada", "Efectiva/Procesada", new { @class = "form-control", @readonly = "true" })  
+                  }
+                  else
+                  {
+                    @Html.TextBox("No definido", "No definido", new { @class = "form-control", @readonly = "true" })  
+                  }
+                }
+            </div>
+
+            <div class="editor-field col-md-6">
+                <br />
+            </div>
+
+            <div class="col-md-12 col-tabla-btn">
+                <div class="pull-right">
+                    @*<a href="@Url.Action("", "")" class="btn btn-success btn-md">Órdenes de Recarga</a>
+                        <a href="@Url.Action("", "")" class="btn btn-success btn-md">Recarga Individual</a>
+                        <a href="@Url.Action("", "")" class="btn btn-success btn-md">Recarga Masiva</a>
+                        <a href="@Url.Action("Filter", "CompanyPrepago", new { companyid = Model.companyid })" class="btn btn-success btn-md">Agregar Nuevo Beneficiario</a>
+                        <a href="@Url.Action("FilterBeneficiariosRecargas", "CompanyPrepago", new { companyid = Model.FirstOrDefault().companyid })" class="btn btn-success btn-md">Filtrar Beneficiarios</a>
+                        <a href="@Url.Action("FilterCompany", "CompanyPrepago")" class="btn btn-danger btn-md">Cancelar</a>*@
+                    <a href="@Url.Action("Ordenes", "CompanyPrepago", new { id = Model.FirstOrDefault().companyid })" class="btn btn-danger btn-md">Regresar</a>
+                </div>
+            </div>
+
+            @*<table class="table table-striped custab">*@
+            <table id="beneficiarios" class="table table-hover">
+
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Número de Documento/Cédula</th>
+                        <th>Nombre</th>
+                        <th>Monto</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (int i = 0; i < Model.Count; i++)
+                    {     
+                        <tr data-row-key="@Model[i].Afiliadoid">
+
+                            @Html.HiddenFor(modelItem => Model[i].companyid)
+                            @Html.HiddenFor(modelItem => Model[i].Afiliadoid)
+
+                            <td>
+                                @Html.DisplayFor(modelItem => Model[i].type, new { @class = "form-control" })
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => Model[i].docnumber, new { @class = "form-control" })
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => Model[i].name) @Html.DisplayFor(modelItem => Model[i].lastname1)
+                            </td>
+
+                            <td class="text-right">
+                                @Html.DisplayFor(modelItem => Model[i].MontoRecarga, new { @class = "form-control Monto" })
+                            </td>
+                        </tr>                 
+                    }
+                </tbody>
+
+            </table>
+
+            <div class="editor-label col-md-6 control-label">
+                Total Recargas :
+            </div>
+
+            <div class="editor-field col-md-4">
+                <input type="text" id="TotalRecargas" name="TotalRecargas" value="" maxlength="10" class="form-control" readonly="true">
+            </div>
+
+            <div class="editor-label col-md-6 control-label">
+                Monto Total Recargas :
+            </div>
+
+            <div class="editor-field col-md-4">
+                <input type="text" id="MontoTotalRecargas" name="MontoTotalRecargas" value="" maxlength="10" class="form-control" readonly="true">
+            </div>
+
+            <div class="editor-field col-md-6">
+                <br />
+            </div>
+
+            @{if (Model[0].Orderstatus == "N")
+              {
+                <!-- SECCION PARA botones de operaciones -->
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-right">
+                        @*<input type="submit" class="btn btn-success btn-md" value="Procesar" />*@
+                        <a href="@Url.Action("AprobarOrden", "CompanyPrepago", new { companyid = Model.FirstOrDefault().companyid, id = Model.FirstOrDefault().Orderid })" class="btn btn-success btn-md">Aprobar Orden</a>
+                        <a href="@Url.Action("RechazarOrden", "CompanyPrepago", new { companyid = Model.FirstOrDefault().companyid, id = Model.FirstOrDefault().Orderid })" class="btn btn-danger btn-md">Rechazar Orden</a>
+                    </div>
+                </div>
+              }
+            }
+
+            @{if (Model[0].Orderstatus == "A")
+              {
+                <!-- SECCION PARA botones de operaciones -->
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="pull-right">
+                        @*<input type="submit" class="btn btn-success btn-md" value="Procesar" />*@
+                        <a href="@Url.Action("ProcesarOrden", "CompanyPrepago", new { companyid = Model.FirstOrDefault().companyid, id = Model.FirstOrDefault().Orderid })" class="btn btn-success btn-md">Procesar Orden</a>
+                    </div>
+                </div>
+              }
+            }
+
+        </div>
+        <!-- SECCION PARA botones de operaciones -->
+
+    </div>
+    <!-- panel-body -->
+
+</div>
+<!-- panel -->
+
+<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var TotalRecargas = 0;
+        var MontoTotalRecargas = 0;
+
+        $("#beneficiarios tbody tr").each(function (index) {
+            var RegExPattern = /^(\d){2,10}$/;
+            var idrow = $(this).data("row-key");
+            var campo1, campo2, campo3;
+            var campo4 = 0;
+            $(this).children("td").each(function (index2) {
+                switch (index2) {
+                    case 0:
+                        campo1 = $(this).text();
+                        break;
+                    case 1:
+                        campo2 = $(this).text();
+                        break;
+                    case 2:
+                        campo3 = $(this).text();
+                        break;
+                    case 3:
+                        campo4 = $(this).text();
+                        break;
+                }
+            });
+            TotalRecargas = TotalRecargas + 1;
+            MontoTotalRecargas = MontoTotalRecargas + parseInt(campo4);
+            document.getElementById('TotalRecargas').value = TotalRecargas;
+            document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas;
+        });
+    });
+</script>

@@ -1,0 +1,170 @@
+﻿@model Suma2Lealtad.Models.OrdenRecargaPrepago
+
+@{
+    ViewBag.Title = "FilterReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Órdenes de Recarga / Filtro de Búsqueda</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form action="@Url.Action("FilterReview", "OrdenRecargaPrepago")" name="FilterForm" id="FilterForm" method="post" onsubmit="return validateForm();">
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Número de Orden :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="numero" name="numero" maxlength="10" placeholder="Ingrese un número" class="form-control">
+                    <span id="field0"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Fecha de Creación :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="fecha" name="fecha" maxlength="10" placeholder="dd/mm/aaaa" class="form-control">
+                    <span id="field1"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Estado de la Orden :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    @Html.DropDownList("estadoOrden",
+                                       new SelectList(Model.EstadoDeOrdenOptions,
+                                       "id",
+                                       "estado",
+                                       Model.EstadoDeOrdenOptions),
+                                       new { @class = "form-control" }
+                                       )
+                    <span id="field4"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Documento de Referencia :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="Referencia" name="Referencia" maxlength="10" placeholder="Ingrese un número" class="form-control">
+                    <span id="field5"></span>
+                </div>
+
+                <br />
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <span id="fields"></span>
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-12 col-btn">
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-success btn-md" value="Buscar Ordenes" />
+                        </div>
+                    </div>
+                </div>
+                <!-- form-group -->
+
+            </form>
+
+        </div>
+        <!--// panel-body -->
+
+    </div>
+    <!--// panel -->
+
+</div>
+<!--// container -->
+
+<script>
+
+    function validateNumero() {
+        var numero = document.getElementById('numero').value;
+        if (numero.length == 0) {
+            return true;
+        }
+        var RegExPattern = /^([0-9])*$/;
+        if (RegExPattern.test(numero) == false) {
+            spanMessage('field0', '* Formato Incorrecto. Debe ingresar un número.');
+            document.getElementById('numero').value = "";
+            document.getElementById('numero').focus();
+            return false;
+        }
+        document.getElementById('field0').value = "";
+        return true;
+    }
+
+    function validateFecha() {
+        var fecha = document.getElementById('fecha').value;
+        if (fecha.length == 0) {
+            return true;
+        }
+        var RegExPattern = /^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])(\/)(\d{4})$/
+        if (RegExPattern.test(fecha) == false ) {
+            spanMessage('field1', '* Formato Fecha Incorrecto. (dd/mm/aaaa)');
+            document.getElementById('fecha').value = "";
+            document.getElementById('fecha').focus();
+            return false;
+        }
+        document.getElementById('field1').value = "";
+        return true;
+    }
+
+    function validateReferencia() {
+        var Referencia = document.getElementById('Referencia').value;
+        if (Referencia.length == 0) {
+            return true;
+        }
+        //var RegExPattern = /^([0-9])*$/;
+        //if (RegExPattern.test(Referencia) == false) {
+        //    spanMessage('field5', '* Formato Incorrecto. Debe ingresar un número.');
+        //    document.getElementById('Referencia').value = "";
+        //    document.getElementById('Referencia').focus();
+        //    return false;
+        //}
+        document.getElementById('field5').value = "";
+        return true;
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function validateForm() {
+        if (validateNumero() && validateFecha() && validateReferencia()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>
+
+

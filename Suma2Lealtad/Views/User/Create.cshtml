@@ -1,0 +1,101 @@
+﻿@model Suma2Lealtad.Models.User
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Usuario / Agregar Nuevo Registro</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+
+                        <div class="editor-label col-md-4 control-label">
+                            Login :
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.login, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.login)
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label">
+                            Nombres :
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.firstname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.firstname)
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label">
+                            Apellidos :
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.lastname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.lastname)
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label">
+                            Clave :
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.passw, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.passw)
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label">
+                            Email :
+                        </div>
+                        <div class="editor-field col-md-8">
+                            @Html.TextBoxFor(model => model.email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.email)
+                        </div>
+
+                    </div>
+
+                    <!-- buttons -->
+                    <div class="form-group">
+                        <div class="col-md-12 col-btn">
+                            <div class="pull-right">
+                                <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                                <a class="btn btn-danger btn-md" href="@Url.Action("Index", "User")">Cancelar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                    </form>
+                
+                    }
+
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel panel-default -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container row -->

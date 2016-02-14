@@ -1,0 +1,110 @@
+﻿@model Suma2Lealtad.Models.Afiliado
+
+@{
+    ViewBag.Title = "Filter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Crear Afiliación / Filtro de Búsqueda</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form action="@Url.Action("Find", "Afiliado")" name="form" method="post" onsubmit="return validarDocumento();">
+
+                <div class="editor-label col-md-4 control-label">
+                    Número de Documento/Cédula :
+                </div>
+
+                <div class="editor-field col-md-8">
+                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="10" placeholder="V-12345678" class="form-control" required>
+                    <span id="someID"></span>
+                </div>
+
+                @*<div class="editor-label col-md-4 control-label">
+                            <br />
+                        </div>
+                        <div class="editor-field col-md-8">
+                            <br />
+                        </div>*@
+
+                <div class="form-group">
+                    <div class="col-md-12 col-btn">
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-success btn-lg" value="Buscar" />
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="editor-label col-md-4 control-label">
+                            <br />
+                        </div>
+                        <div class="editor-field col-md-8">
+                            <br />
+                        </div>*@
+
+            </form>
+
+        </div>
+        <!--// panel-body -->
+
+    </div>
+    <!--// panel -->
+
+</div>
+<!--// columns -->
+
+<script type="text/javascript">
+    function validarDocumento() {
+        var valor = document.getElementById('numdoc').value.trim();
+        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
+        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
+
+        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false) {
+            spanMessage();
+            document.getElementById('numdoc').value = " ";
+            document.form.numdoc.focus();
+            return false;
+        }
+        else if (RegExPattern.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            return true;
+        }
+        else if (RegExPattern2.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            return true;
+        }
+        else if (RegExPattern3.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            return true;
+        }
+        else if (RegExPattern4.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            return true;
+        }
+    }
+
+    function spanMessage() {
+        var span = document.getElementById('someID');
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode("* Formato Número de Documento/Cédula Incorrecto. (V-12345678)"));
+    }
+</script>
+

@@ -1,0 +1,36 @@
+﻿@model Suma2Lealtad.Models.Afiliado
+
+@{
+    var InitParams = "Nombre=" + Model.name;
+    InitParams = InitParams + "," + "Apellido=" + Model.lastname1;
+    InitParams = InitParams + "," + "NroTarjeta=" + Model.pan;
+    InitParams = InitParams + "," + "Track1=" + Model.trackI;
+    InitParams = InitParams + "," + "Track2=" + Model.trackII;
+    InitParams = InitParams + "," + "TipoTarjeta=" + Model.type;
+    InitParams = InitParams + "," + "Corporacion=" + "Corporacion";
+    InitParams = InitParams + "," + "FechaVencimiento=" + "12-99";
+    InitParams = InitParams + "," + "idElementoHtmlControl=ElementoControl";   
+}
+
+@Helpers.Silverlight(xapPath: "~/ClientBin/SumaPlazas.Dispositivos.Impresora.xap", slObjectId: "sl", divObjectWidth: "100%", divObjectHeight: "350px", customParams: @InitParams, divObjectClass: "col-md-12")
+
+<script type="text/javascript">
+    var slcontrol3 = document.getElementById("sl");
+    function ImprimirTarjeta() {
+        if (slcontrol3) {
+            slcontrol3.Content.MainPage.ImprimirTarjeta();
+        }
+    }
+
+    //function ReanudarImpresora() {
+    //    if (slcontrol3) {
+    //        slcontrol3.Content.MainPage.ReanudarImpresora();
+    //    }
+    //}
+
+    //function LimpiarErrores() {
+    //    if (slcontrol3) {
+    //        slcontrol3.Content.MainPage.LimpiarErrores();
+    //    }
+    //}
+</script>

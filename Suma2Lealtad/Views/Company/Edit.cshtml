@@ -1,0 +1,111 @@
+﻿@model Suma2Lealtad.Models.Company
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7 col-md-offset-2">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Compañía / Editar Registro</h3>
+                </div>
+
+                <div class="panel-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        @Html.HiddenFor(model => model.id)
+
+                        <form class="form-horizontal" role="form">
+
+                            <div class="form-group">
+
+                                <div class="editor-label col-md-4 control-label">
+                                    Nombre:
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.name)
+                                </div>
+
+                                <div class="editor-label col-md-4 control-label">
+                                    Alias:
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.ALIAS, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ALIAS)
+                                </div>
+
+                                <div class="editor-label  col-md-4 control-label">
+                                    RIF :
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.rif, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.rif)
+                                </div>
+
+                                <div class="editor-label  col-md-4 control-label">
+                                    Dirección :
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.address, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.address)
+                                </div>
+
+                                <div class="editor-label  col-md-4 control-label">
+                                    Teléfono :
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.phone, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.phone)
+                                </div>
+
+                                <div class="editor-label  col-md-4 control-label">
+                                    Correo Electrónico :
+                                </div>
+                                <div class="editor-field col-md-8">
+                                    @Html.TextBoxFor(model => model.email, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.email)
+                                </div>
+
+                            </div>
+
+                            <!-- buttons -->
+                            <div class="form-group">
+                                <div class="col-md-12 col-btn">
+                                    <div class="pull-right">
+                                        <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                                        <a class="btn btn-danger btn-md" href="@Url.Action("Index", "Company")">Cancelar</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--// buttons -->
+
+                        </form>
+                
+                    }
+
+                </div>
+                <!--// panel-body -->
+
+            </div>
+            <!--// panel -->
+
+        </div>
+        <!--// columns -->
+
+    </div>
+    <!--// row -->
+
+</div>
+<!--// container -->
