@@ -418,6 +418,8 @@ namespace Suma2Lealtad.Models
                             monto = Convert.ToDecimal(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
+                            numerotarjeta = Convert.ToDecimal(m.pan),
+                            batchid = m.batchid,
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -473,6 +475,8 @@ namespace Suma2Lealtad.Models
                                 monto = Convert.ToDecimal(m.saldo),
                                 detalle = m.isodescription,
                                 tipo = m.transcode + "-" + m.transname,
+                                numerotarjeta = Convert.ToDecimal(m.pan),
+                                batchid = m.batchid,
                                 Encabezado = encabezado
                             };
                             if (modotrans == "En Linea")
@@ -549,6 +553,8 @@ namespace Suma2Lealtad.Models
                             monto = Convert.ToDecimal(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
+                            numerotarjeta = Convert.ToDecimal(m.pan),
+                            batchid = m.batchid,
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -600,6 +606,8 @@ namespace Suma2Lealtad.Models
                             monto = Convert.ToDecimal(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
+                            numerotarjeta = Convert.ToDecimal(m.pan),
+                            batchid = m.batchid,
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")

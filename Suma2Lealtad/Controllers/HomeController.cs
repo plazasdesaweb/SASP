@@ -17,6 +17,8 @@ namespace Suma2Lealtad.Controllers
             Session["login"] = null;
             //PARA GUARDAR EL AMBIENTE DE CORRIDA CONFIGURADO EN EL WEBCONFIG
             Session["ambiente"] = ConfigurationManager.AppSettings["AMBIENTE"].ToString();
+            //PARA GUARDAR LA VERSION CONFIGURADO EN EL WEBCONFIG
+            Session["version"] = ConfigurationManager.AppSettings["VERSION"].ToString();
             return View();
         }
 

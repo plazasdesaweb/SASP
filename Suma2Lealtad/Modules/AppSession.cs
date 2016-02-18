@@ -35,6 +35,7 @@ namespace Suma2Lealtad.Modules
         public int RoleLevel { get { return _rolelevel; } }
 
         public string Ambiente { get; set; }
+        public string Version { get; set; }
 
         public IList<CMenu> MenuList { get { return _menu; } }
         public string UserName { get { return _username; } }

@@ -119,7 +119,7 @@
                                 @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
                             </td>
                             <td>
-                                @(String.Format("{0}", "------"))
+                                @Html.DisplayFor(modelItem => item.batchid)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.detalle)
