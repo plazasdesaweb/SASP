@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Suma2Lealtad.Modules;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Suma2Lealtad.Models
@@ -17,7 +18,7 @@ namespace Suma2Lealtad.Models
 
             using (LealtadEntities db = new LealtadEntities())
             {
-
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 Role role = db.Roles.Find(id);
 
                 RoleID = role.id;
@@ -47,7 +48,7 @@ namespace Suma2Lealtad.Models
 
             using (LealtadEntities db = new LealtadEntities())
             {
-
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 foreach (var m in db.SecurityMenus.Where(f => f.roleid == RoleID))
                 {
                     db.SecurityMenus.Remove(m);

@@ -1,4 +1,5 @@
 ﻿using Suma2Lealtad.Models;
+using Suma2Lealtad.Modules;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,6 +24,7 @@ namespace Suma2Lealtad.Filters
             {
                 using (LealtadEntities db = new LealtadEntities())
                 {
+                    db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                     int idlog;
                     if (db.Auditings.Count() > 0)
                     {

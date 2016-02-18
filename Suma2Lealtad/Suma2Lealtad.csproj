@@ -506,8 +506,9 @@
     </Content>
     <Content Include="App_Data\Plantilla.xls" />
     <Content Include="App_Browsers\qt.browser" />
-    <None Include="Properties\PublishProfiles\Suma2-Desarrollo.pubxml" />
-    <None Include="Properties\PublishProfiles\Suma2.pubxml" />
+    <None Include="Properties\PublishProfiles\Suma-Calidad.pubxml" />
+    <None Include="Properties\PublishProfiles\Suma-Desarrollo.pubxml" />
+    <None Include="Properties\PublishProfiles\Suma-Produccion.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />

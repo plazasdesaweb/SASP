@@ -47,6 +47,23 @@ namespace Suma2Lealtad.Modules
             } 
         }
 
+        /* retornar el connection string para el EF */
+        public static string ConnectionString()
+        {
+            if (ConfigurationManager.AppSettings["AMBIENTE"] == "PRODUCCION")
+            {
+                return ConfigurationManager.AppSettings["CS_PRODUCCION"];
+            }
+            else if (ConfigurationManager.AppSettings["AMBIENTE"] == "DESARROLLO")
+            {
+                return ConfigurationManager.AppSettings["CS_DESARROLLO"];
+            }
+            else
+            {
+                return ConfigurationManager.AppSettings["CS_CALIDAD"];
+            }
+        }
+
         /*
          * IsValidEncrypt : Validar el password plain text vs. password encriptado.
          * Parámetros     : string pwdplain , string pwdencrypt

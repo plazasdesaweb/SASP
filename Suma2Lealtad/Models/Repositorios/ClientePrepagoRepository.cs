@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Suma2Lealtad.Modules;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+
 
 namespace Suma2Lealtad.Models
 {
@@ -12,6 +14,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (db.PrepaidCustomers.Count() == 0)
                     return 1;
                 return (db.PrepaidCustomers.Max(c => c.id) + 1);
@@ -23,6 +26,7 @@ namespace Suma2Lealtad.Models
             ClientePrepago cliente;
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 cliente = (from c in db.PrepaidCustomers
                            where c.rif.Equals(rif)
                            select new ClientePrepago()
@@ -43,6 +47,7 @@ namespace Suma2Lealtad.Models
             List<ClientePrepago> clientes;
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (name == "")
                 {
                     name = null;
@@ -86,6 +91,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 ClientePrepago cliente;
                 cliente = (from c in db.PrepaidCustomers
                            where c.id.Equals(id)
@@ -107,6 +113,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 ClientePrepago cliente;
                 cliente = (from c in db.PrepaidCustomers
                            join b in db.PrepaidBeneficiaries on c.id equals b.prepaidcustomerid
@@ -130,6 +137,7 @@ namespace Suma2Lealtad.Models
             List<BeneficiarioPrepagoIndex> beneficiarios = new List<BeneficiarioPrepagoIndex>();
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (numdoc == "")
                 {
                     numdoc = null;
@@ -452,6 +460,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 var Cliente = new PrepaidCustomer()
                 {
                     id = ClientePrepagoID(),
@@ -474,6 +483,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 PrepaidCustomer Cliente = db.PrepaidCustomers.FirstOrDefault(c => c.id == cliente.idCliente);
                 if (Cliente != null)
                 {
@@ -492,6 +502,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 PrepaidCustomer Cliente = db.PrepaidCustomers.FirstOrDefault(c => c.id == id);
                 if (Cliente != null)
                 {

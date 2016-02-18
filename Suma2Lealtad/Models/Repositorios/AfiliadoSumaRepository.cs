@@ -26,6 +26,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 Photos_Affiliate photo_affiliate = db.Photos_Affiliates.FirstOrDefault(p => p.Affiliate_id == id);
                 if (photo_affiliate != null)
                 {
@@ -100,6 +101,7 @@ namespace Suma2Lealtad.Models
             //Segundo se buscan los datos del AFILIADO en SumaPlazas
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 //Entidad Affiliate                
                 afiliado.id = (from a in db.Affiliates
                                where a.docnumber.Equals(afiliado.docnumber)
@@ -129,6 +131,7 @@ namespace Suma2Lealtad.Models
             List<AfiliadoSumaIndex> afiliados = new List<AfiliadoSumaIndex>();
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (numdoc == "")
                 {
                     numdoc = null;
@@ -345,6 +348,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 AfiliadoSuma afiliado = (from a in db.Affiliates
                                          join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
                                          join s in db.SumaStatuses on a.sumastatusid equals s.id
@@ -488,6 +492,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 //ENTIDAD Affiliatte                   
                 var Affiliate = new Affiliate()
                 {
@@ -633,6 +638,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 // Entidad: Affiliate
                 Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
                 if (affiliate != null)
@@ -788,6 +794,7 @@ namespace Suma2Lealtad.Models
             RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (RespuestaCards.excode == "0" || RespuestaCards.excode == "7")
                 {
                     //Se buscan los datos de Tarjeta del AFILIADO en Cards
@@ -859,6 +866,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 // Entidad TARJETA
                 var dpan = Convert.ToDecimal(pan);
                 TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_TARJETA.Equals(dpan));
@@ -1043,6 +1051,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 Affiliate afiliate = db.Affiliates.FirstOrDefault(a => a.docnumber == afiliado.docnumber);
                 afiliate.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
                 db.SaveChanges();
@@ -1208,6 +1217,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 return db.Interests.Where(x => x.active == true).ToList();
             }
         }
@@ -1216,7 +1226,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 List<customerInterest> records = (from i in db.CustomerInterests
                                                   where i.customerid == customerID
                                                   select new customerInterest()
@@ -1253,6 +1263,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (db.Affiliates.Count() == 0)
                     return 1;
                 return (db.Affiliates.Max(a => a.id) + 1);
@@ -1263,6 +1274,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (db.AffiliateAuds.Count() == 0)
                     return 1;
                 return (db.AffiliateAuds.Max(a => a.id) + 1);
@@ -1279,6 +1291,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 return db.ESTADOS.OrderBy(u => u.DESCRIPC_ESTADO).ToList();
             }
         }
@@ -1288,8 +1301,8 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 var query = db.CIUDADES.Where(a => a.ESTADOS.Select(b => b.COD_ESTADO).Contains(id));
-
                 return query.ToList(); //.ToArray();
             }
         }
@@ -1299,8 +1312,8 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 var query = db.MUNICIPIOS.Where(a => a.CIUDADES.Select(b => b.COD_CIUDAD).Contains(id));
-
                 return query.ToList();
             }
         }
@@ -1310,8 +1323,8 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 var query = db.PARROQUIAS.Where(a => a.MUNICIPIOS.Select(b => b.COD_MUNICIPIO).Contains(id));
-
                 return query.ToList();
             }
         }
@@ -1321,8 +1334,8 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 var query = db.URBANIZACIONES.Where(a => a.PARROQUIAS.Select(b => b.COD_PARROQUIA).Contains(id));
-
                 return query.ToList();
             }
         }

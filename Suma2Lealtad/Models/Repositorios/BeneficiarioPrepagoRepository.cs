@@ -20,6 +20,7 @@ namespace Suma2Lealtad.Models
             List<BeneficiarioPrepagoIndex> beneficiarios = new List<BeneficiarioPrepagoIndex>();
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 if (numdoc == "")
                 {
                     numdoc = null;
@@ -350,6 +351,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 Affiliate afiliado = db.Affiliates.FirstOrDefault(a => a.docnumber == beneficiario.Afiliado.docnumber);
                 //ENTIDAD PrepaidBeneficiary
                 var prepaidbeneficiary = new PrepaidBeneficiary()
@@ -369,6 +371,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 //ENTIDAD PrepaidBeneficiary
                 PrepaidBeneficiary prepaidbeneficiary = db.PrepaidBeneficiaries.FirstOrDefault(b => b.affiliateid == beneficiario.Afiliado.id && b.prepaidcustomerid == beneficiario.Cliente.idCliente);
                 db.PrepaidBeneficiaries.Remove(prepaidbeneficiary);
@@ -381,6 +384,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
                 return db.PrepaidCustomers.OrderBy(u => u.name).ToList();
             }
         }
@@ -648,6 +652,7 @@ namespace Suma2Lealtad.Models
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 #region Por Cliente específico
                 if (tiporeporte == "uno")
                 {
@@ -875,6 +880,7 @@ namespace Suma2Lealtad.Models
             string textoparametro;
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 #region Por Beneficiario específico
                 if (tiporeporte == "uno")
                 {
@@ -1105,6 +1111,7 @@ namespace Suma2Lealtad.Models
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 #region Por Cliente específico
                 if (tiporeporte == "uno")
                 {
@@ -1323,6 +1330,7 @@ namespace Suma2Lealtad.Models
             string textoparametro;
             using (LealtadEntities db = new LealtadEntities())
             {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 #region Por Beneficiario específico
                 if (tiporeporte == "uno")
                 {
