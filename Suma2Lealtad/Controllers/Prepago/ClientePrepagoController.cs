@@ -123,7 +123,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         {
             ViewModel viewmodel = new ViewModel();
             ClientePrepago cliente = repCliente.Find(id);
-            List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(id, "", "", "", "", "").ToList();
+            List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(id,"", "", "", "", "").ToList();
             if (beneficiarios.Count != 0)
             {
                 viewmodel.Title = "Prepapago / Cliente / Eliminar";
@@ -213,7 +213,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else
             {
                 //ES Beneficiario PrepagoPlazas de el cliente
-                beneficiario = repBeneficiario.Find(beneficiarioIndex.Afiliado.id);
+                beneficiario = repBeneficiario.Find(beneficiarioIndex.Afiliado.id);                
                 if (beneficiario.Cliente.idCliente == id)
                 {
                     //beneficiario.Afiliado = repAfiliado.Find(beneficiario.Afiliado.id);
@@ -486,9 +486,21 @@ namespace Suma2Lealtad.Controllers.Prepago
                 Afiliado = repAfiliado.Find(idBeneficiario),
                 Cliente = repCliente.Find(id)
             };
-            if (repAfiliado.BloquearTarjeta(beneficiario.Afiliado))
+            if (repAfiliado.ImprimirTarjeta(beneficiario.Afiliado))
             {
-                return View("ImpresoraImprimirTarjeta", beneficiario);
+                if (repAfiliado.BloquearTarjeta(beneficiario.Afiliado))
+                {
+                    return View("ImpresoraImprimirTarjeta", beneficiario);
+                }
+                else
+                {
+                    viewmodel.Title = "Prepago / Cliente / Beneficiario / ReImprimir Tarjeta";
+                    viewmodel.Message = "Falló el proceso de reimpresión de la Tarjeta";
+                    viewmodel.ControllerName = "ClientePrepago";
+                    viewmodel.ActionName = "FilterReviewBeneficiarios";
+                    viewmodel.RouteValues = id.ToString();
+                    return RedirectToAction("GenericView", viewmodel);
+                }
             }
             else
             {
@@ -501,12 +513,13 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
         }
 
-
         [HttpPost]
         public ActionResult ImprimirTarjeta(int id, int idBeneficiario, string mode = "post")
         {
             ViewModel viewmodel = new ViewModel();
             AfiliadoSuma afiliado = repAfiliado.Find(idBeneficiario);
+            afiliado.trackI = Tarjeta.ConstruirTrackI(afiliado.pan);
+            afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
             if (repAfiliado.ImprimirTarjeta(afiliado))
             {
                 viewmodel.Title = "Prepago / Cliente / Beneficiario / Operaciones con la Impresora / Imprimir Tarjeta";
@@ -815,7 +828,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             if (resultado != null)
             {
                 viewmodel.Title = "Prepago / Cliente / Beneficiario / Acreditar";
-                viewmodel.Message = "Acreditación exitosa. Clave de aprobación: " + resultado;
+                viewmodel.Message = "Acreditación exitosa. Clave de aprobación: "+ resultado;
                 viewmodel.ControllerName = "ClientePrepago";
                 viewmodel.ActionName = "FilterReviewBeneficiarios";
                 viewmodel.RouteValues = id.ToString();
