@@ -648,7 +648,7 @@ namespace Suma2Lealtad.Models
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return null;
             }            

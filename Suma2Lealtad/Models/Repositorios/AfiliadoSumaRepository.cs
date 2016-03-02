@@ -301,7 +301,7 @@ namespace Suma2Lealtad.Models
                                      email = q.email,
                                      estatus = s.name,
                                      type = ty.name
-                                 }).ToList();                    
+                                 }).ToList();
                 }
                 //BUSCAR TODOS
                 else if (numdoc == null && name == null && email == null && estadoAfiliacion == null && estadoTarjeta == null)
@@ -338,7 +338,7 @@ namespace Suma2Lealtad.Models
                                      email = q.email,
                                      estatus = s.name,
                                      type = ty.name
-                                 }).ToList();         
+                                 }).ToList();
                 }
             }
             return afiliados;
@@ -456,6 +456,10 @@ namespace Suma2Lealtad.Models
                         {
                             afiliado.cvv2 = "";
                         }
+                        afiliado.trackII = (from t in db.TARJETAS
+                                            where t.NRO_AFILIACION.Equals(afiliado.id)
+                                            select t.TRACK2
+                                            ).SingleOrDefault();
                     }
                     //ENTIDAD Photos_Affiliate 
                     afiliado.picture = GetPhoto(afiliado.id);
@@ -469,7 +473,7 @@ namespace Suma2Lealtad.Models
                     afiliado.usuarioAfiliacion = (from a in db.Affiliates
                                                   join u in db.Users on a.creationuserid equals u.id
                                                   where a.id == afiliado.id
-                                                  select u.firstname + " " + u.lastname + "(" + u.login + ")"
+                                                  select u.firstname + " " + u.lastname + " (" + u.login + ")"
                                                   ).SingleOrDefault();
                 }
                 return afiliado;
@@ -808,9 +812,9 @@ namespace Suma2Lealtad.Models
                     afiliado.pan = clienteCards.pan;
                     afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                     afiliado.estatustarjeta = clienteCards.tarjeta;
-                    afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_ACTIVA) && (s.tablename == "Affiliatte")).id;
                     afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
-                    afiliado.cvv2 = "123";
+                    afiliado.cvv2 = "123";                    
+                    afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_ACTIVA) && (s.tablename == "Affiliatte")).id;
                     return SaveChanges(afiliado);
                 }
                 else
@@ -854,7 +858,9 @@ namespace Suma2Lealtad.Models
                 afiliado.pan = clienteCards.pan;
                 afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                 afiliado.estatustarjeta = clienteCards.tarjeta;
-                return SaveChanges(afiliado);
+                afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
+                afiliado.cvv2 = "123";
+                return SaveChanges(afiliado);                               
             }
             else
             {
@@ -906,6 +912,8 @@ namespace Suma2Lealtad.Models
                     afiliado.pan = clienteCards.pan;
                     afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                     afiliado.estatustarjeta = clienteCards.tarjeta;
+                    afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
+                    afiliado.cvv2 = "123";                
                     return SaveChanges(afiliado);
                 }
                 else
@@ -941,6 +949,8 @@ namespace Suma2Lealtad.Models
                 afiliado.pan = clienteCards.pan;
                 afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                 afiliado.estatustarjeta = clienteCards.tarjeta;
+                afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
+                afiliado.cvv2 = "123";                
                 return SaveChanges(afiliado);
             }
             else
@@ -970,6 +980,8 @@ namespace Suma2Lealtad.Models
                 afiliado.pan = clienteCards.pan;
                 afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                 afiliado.estatustarjeta = clienteCards.tarjeta;
+                afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
+                afiliado.cvv2 = "123";                
                 return SaveChanges(afiliado);
             }
             else
@@ -1291,7 +1303,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 return db.ESTADOS.OrderBy(u => u.DESCRIPC_ESTADO).ToList();
             }
         }
@@ -1301,7 +1313,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 var query = db.CIUDADES.Where(a => a.ESTADOS.Select(b => b.COD_ESTADO).Contains(id));
                 return query.ToList(); //.ToArray();
             }
@@ -1312,7 +1324,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 var query = db.MUNICIPIOS.Where(a => a.CIUDADES.Select(b => b.COD_CIUDAD).Contains(id));
                 return query.ToList();
             }
@@ -1323,7 +1335,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 var query = db.PARROQUIAS.Where(a => a.MUNICIPIOS.Select(b => b.COD_MUNICIPIO).Contains(id));
                 return query.ToList();
             }
@@ -1334,7 +1346,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 var query = db.URBANIZACIONES.Where(a => a.PARROQUIAS.Select(b => b.COD_PARROQUIA).Contains(id));
                 return query.ToList();
             }
