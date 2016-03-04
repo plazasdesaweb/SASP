@@ -456,6 +456,7 @@ namespace Suma2Lealtad.Models
                         {
                             afiliado.cvv2 = "";
                         }
+                        afiliado.trackI = Tarjeta.ConstruirTrackI(afiliado.pan);
                         afiliado.trackII = (from t in db.TARJETAS
                                             where t.NRO_AFILIACION.Equals(afiliado.id)
                                             select t.TRACK2
