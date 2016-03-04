@@ -20,13 +20,17 @@ namespace Suma2Lealtad.Models
         private const int ID_ESTATUS_DETALLEORDEN_APROBADO = 1;
         private const int ID_ESTATUS_DETALLEORDEN_EXCLUIDO = 2;
         private const int ID_ESTATUS_DETALLEORDEN_PROCESADO = 3;
+
+        private const int ID_ESTATUS_DETALLEORDEN_ANULADO = 4;
+
         private const string TRANSCODE_RECARGA_PREPAGO = "200";
+        private const string TRANSCODE_ANULACION_RECARGA_PREPAGO = "201";
 
         private int OrderId()
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (db.Orders.Count() == 0)
                     return 1;
                 return (db.Orders.Max(c => c.id) + 1);
@@ -37,10 +41,10 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (db.OrdersDetails.Count() == 0)
                     return 1;
-                return (db.OrdersDetails.Max(c => c.id) + 1);
+                return (db.OrdersDetails.Max(c => c.id));
             }
         }
 
@@ -48,19 +52,19 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (db.OrdersHistories.Count() == 0)
                     return 1;
                 return (db.OrdersHistories.Max(c => c.id) + 1);
             }
         }
 
-        public List<OrdenRecargaPrepago> Find(string fecha, string estadoOrden, string Referencia)
+        public List<OrdenRecargaPrepago> Find(string fecha, string estadoOrden, string Referencia, string claseOrden)
         {
             List<OrdenRecargaPrepago> ordenes;
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (fecha == "")
                 {
                     fecha = null;
@@ -73,117 +77,244 @@ namespace Suma2Lealtad.Models
                 {
                     Referencia = null;
                 }
-                //BUSCAR POR estadoOrden
+                if (claseOrden == "")
+                {
+                    claseOrden = null;
+                }
+                //BUSCAR POR estadoOrden 
                 if (estadoOrden != null)
                 {
-                    ordenes = (from o in db.Orders
-                               join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
-                               join s in db.SumaStatuses on o.sumastatusid equals s.id
-                               where s.name == estadoOrden
-                               select new OrdenRecargaPrepago()
-                               {
-                                   id = o.id,
-                                   statusOrden = s.name,
-                                   montoOrden = o.totalamount,
-                                   creationdateOrden = o.creationdate,
-                                   tipoOrden = o.comments,
-                                   documento = o.documento,
-                                   Cliente = new ClientePrepago()
+                    if (claseOrden != null)
+                    {
+                        ordenes = (from o in db.Orders
+                                   where o.comments.Equals(claseOrden)
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   where s.name == estadoOrden
+                                   select new OrdenRecargaPrepago()
                                    {
-                                       idCliente = c.id,
-                                       nameCliente = c.name,
-                                       aliasCliente = c.alias,
-                                       rifCliente = c.rif,
-                                       addressCliente = c.address,
-                                       phoneCliente = c.phone,
-                                       emailCliente = c.email
-                                   }
-                               }).OrderBy(x => x.id).ToList();
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).OrderBy(x => x.id).ToList();
+                    }
+                    else
+                    {
+                        ordenes = (from o in db.Orders
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   where s.name == estadoOrden
+                                   select new OrdenRecargaPrepago()
+                                   {
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).OrderBy(x => x.id).ToList();
+                    }
                 }
                 //BUSCAR POR fecha
                 else if (fecha != null)
                 {
                     DateTime f = DateTime.ParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    ordenes = (from o in db.Orders
-                               join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
-                               join s in db.SumaStatuses on o.sumastatusid equals s.id
-                               select new OrdenRecargaPrepago()
-                               {
-                                   id = o.id,
-                                   statusOrden = s.name,
-                                   montoOrden = o.totalamount,
-                                   creationdateOrden = o.creationdate,
-                                   tipoOrden = o.comments,
-                                   documento = o.documento,
-                                   Cliente = new ClientePrepago()
+                    if (claseOrden != null)
+                    {
+                        ordenes = (from o in db.Orders
+                                   where o.comments.Equals(claseOrden)
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   select new OrdenRecargaPrepago()
                                    {
-                                       idCliente = c.id,
-                                       nameCliente = c.name,
-                                       aliasCliente = c.alias,
-                                       rifCliente = c.rif,
-                                       addressCliente = c.address,
-                                       phoneCliente = c.phone,
-                                       emailCliente = c.email
-                                   }
-                               }).ToList()
-                               .Where(q => q.creationdateOrden.Date == f.Date)
-                               .OrderBy(x => x.id)
-                               .ToList();
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).ToList()
+                                   .Where(q => q.creationdateOrden.Date == f.Date)
+                                   .OrderBy(x => x.id)
+                                   .ToList();
+                    }
+                    else
+                    {
+                        ordenes = (from o in db.Orders
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   select new OrdenRecargaPrepago()
+                                   {
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).ToList()
+                                   .Where(q => q.creationdateOrden.Date == f.Date)
+                                   .OrderBy(x => x.id)
+                                   .ToList();
+                    }
                 }
                 //BUSCAR POR Referencia
                 else if (Referencia != null)
                 {
-                    ordenes = (from o in db.Orders
-                               join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
-                               join s in db.SumaStatuses on o.sumastatusid equals s.id
-                               where o.documento == Referencia
-                               select new OrdenRecargaPrepago()
-                               {
-                                   id = o.id,
-                                   statusOrden = s.name,
-                                   montoOrden = o.totalamount,
-                                   creationdateOrden = o.creationdate,
-                                   tipoOrden = o.comments,
-                                   documento = o.documento,
-                                   Cliente = new ClientePrepago()
+                    if (claseOrden != null)
+                    {
+                        ordenes = (from o in db.Orders
+                                   where o.comments.Equals(claseOrden)
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   where o.documento == Referencia
+                                   select new OrdenRecargaPrepago()
                                    {
-                                       idCliente = c.id,
-                                       nameCliente = c.name,
-                                       aliasCliente = c.alias,
-                                       rifCliente = c.rif,
-                                       addressCliente = c.address,
-                                       phoneCliente = c.phone,
-                                       emailCliente = c.email
-                                   }
-                               }).ToList()
-                               .OrderBy(x => x.id)
-                               .ToList();
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).ToList()
+                                   .OrderBy(x => x.id)
+                                   .ToList();
+                    }
+                    else
+                    {
+                        ordenes = (from o in db.Orders
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   where o.documento == Referencia
+                                   select new OrdenRecargaPrepago()
+                                   {
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).ToList()
+                                   .OrderBy(x => x.id)
+                                   .ToList();
+                    }
                 }
                 //BUSCAR TODAS                
                 else
                 {
-                    ordenes = (from o in db.Orders
-                               join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
-                               join s in db.SumaStatuses on o.sumastatusid equals s.id
-                               select new OrdenRecargaPrepago()
-                               {
-                                   id = o.id,
-                                   statusOrden = s.name,
-                                   montoOrden = o.totalamount,
-                                   creationdateOrden = o.creationdate,
-                                   tipoOrden = o.comments,
-                                   documento = o.documento,
-                                   Cliente = new ClientePrepago()
+                    if (claseOrden != null)
+                    {
+                        ordenes = (from o in db.Orders
+                                   where o.comments.Equals(claseOrden)
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   select new OrdenRecargaPrepago()
                                    {
-                                       idCliente = c.id,
-                                       nameCliente = c.name,
-                                       aliasCliente = c.alias,
-                                       rifCliente = c.rif,
-                                       addressCliente = c.address,
-                                       phoneCliente = c.phone,
-                                       emailCliente = c.email
-                                   }
-                               }).OrderBy(x => x.id).ToList();
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).OrderBy(x => x.id).ToList();
+                    }
+                    else
+                    {
+                        ordenes = (from o in db.Orders
+                                   join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
+                                   join s in db.SumaStatuses on o.sumastatusid equals s.id
+                                   select new OrdenRecargaPrepago()
+                                   {
+                                       id = o.id,
+                                       statusOrden = s.name,
+                                       montoOrden = o.totalamount,
+                                       creationdateOrden = o.creationdate,
+                                       tipoOrden = o.comments,
+                                       documento = o.documento,
+                                       Cliente = new ClientePrepago()
+                                       {
+                                           idCliente = c.id,
+                                           nameCliente = c.name,
+                                           aliasCliente = c.alias,
+                                           rifCliente = c.rif,
+                                           addressCliente = c.address,
+                                           phoneCliente = c.phone,
+                                           emailCliente = c.email
+                                       }
+                                   }).OrderBy(x => x.id).ToList();
+                    }
                 }
             }
             return ordenes;
@@ -253,7 +384,8 @@ namespace Suma2Lealtad.Models
                                     montoRecarga = od.amount,
                                     resultadoRecarga = od.cardsresponse,
                                     observacionesExclusion = od.comments,
-                                    statusDetalleOrden = s.name
+                                    statusDetalleOrden = s.name,
+                                    batchid = od.comments
                                 }).OrderBy(x => x.docnumberAfiliado).ToList();
             }
             return detalleorden;
@@ -410,36 +542,103 @@ namespace Suma2Lealtad.Models
             return (intentos < 3);
         }
 
+        private bool Anular(DetalleOrdenRecargaPrepago detalleorden)
+        {
+            int intentos;
+            //Se intenta la operación 3 veces, antes de fallar
+            for (intentos = 0; intentos <= 3; intentos++)
+            {
+                //Se llama al servicio para verificar q este activo
+                //SERVICIO WSL.Cards.getClient !
+                string clienteCardsJson = WSL.Cards.getClient(detalleorden.docnumberAfiliado.Substring(2));
+                if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
+                {
+                    intentos++;
+                }
+                else
+                {
+                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), TRANSCODE_ANULACION_RECARGA_PREPAGO, detalleorden.batchid, "NULL");
+                    if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                    {
+                        ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
+                        detalleorden.resultadoRecarga = exceptionJson.detail + "-" + exceptionJson.source;
+                        intentos++;
+                    }
+                    else
+                    {
+                        RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
+                        if ((Convert.ToDecimal(RespuestaCards.excode) < 0))
+                        {
+                            detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                            return false;
+                        }
+                        else
+                        {
+                            detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                            return true;
+                        }
+                    }
+                }
+            }
+            return (intentos < 3);
+        }
+
         public bool ProcesarOrden(int id)
         {
             List<DetalleOrdenRecargaPrepago> detalleOrden = FindDetalleOrden(id);
             using (LealtadEntities db = new LealtadEntities())
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString();
-                //Recargar y Actualizar estatus detalleorden
-                foreach (DetalleOrdenRecargaPrepago item in detalleOrden)
+                Order orden = db.Orders.Find(id);
+                //PROCESAR ORDENES DE RECARGA
+                if (orden.comments.Contains("Orden de Recarga"))
                 {
-                    OrdersDetail ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
-                    if (item.statusDetalleOrden == "Aprobado")
+                    //Recargar y Actualizar estatus detalleorden
+                    foreach (DetalleOrdenRecargaPrepago item in detalleOrden)
                     {
-                        ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                        if (Recargar(item))
+                        OrdersDetail ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
+                        if (item.statusDetalleOrden == "Aprobado")
                         {
-                            ordersdetail.comments = "Recarga efectiva";
-                            ordersdetail.cardsresponse = item.resultadoRecarga;
+                            ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            if (Recargar(item))
+                            {
+                                ordersdetail.comments = "Recarga efectiva";
+                                ordersdetail.cardsresponse = item.resultadoRecarga;
+                            }
+                            else
+                            {
+                                ordersdetail.comments = "Recarga fallida";
+                                ordersdetail.cardsresponse = item.resultadoRecarga;
+                            }
                         }
-                        else
+                        db.SaveChanges();
+                    }                                        
+                }
+                //PROCESAR ORDENES DE ANULACION
+                else
+                {
+                    //Anular y Actualizar estatus detalleorden
+                    foreach (DetalleOrdenRecargaPrepago item in detalleOrden)
+                    {
+                        OrdersDetail ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
+                        if (item.statusDetalleOrden == "Aprobado")
                         {
-                            ordersdetail.comments = "Recarga fallida";
-                            ordersdetail.cardsresponse = item.resultadoRecarga;
+                            ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            if (Anular(item))
+                            {
+                                ordersdetail.comments = "Anulación efectiva " + ordersdetail.comments;
+                                ordersdetail.cardsresponse = item.resultadoRecarga;
+                            }
+                            else
+                            {
+                                ordersdetail.comments = "Anulación fallida " + ordersdetail.comments;
+                                ordersdetail.cardsresponse = item.resultadoRecarga;
+                            }
                         }
+                        db.SaveChanges();
                     }
-                    db.SaveChanges();
-                    //Forzo espera de 1 seg antes de volver a invocar el servicio
-                    //System.Threading.Thread.Sleep(2000);
                 }
                 //Actualizar estatus de la Orden
-                Order orden = db.Orders.Find(detalleOrden.First().idOrden);
                 orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Order")).id;
                 orden.documento = detalleOrden.First().documentoOrden;
                 orden.processdate = DateTime.Now;
@@ -458,7 +657,7 @@ namespace Suma2Lealtad.Models
                 db.SaveChanges();
                 return true;
             }
-        }
+        }        
 
         public List<DetalleOrdenRecargaPrepago> DetalleParaOrden(ClientePrepago cliente, List<BeneficiarioPrepagoIndex> beneficiarios)
         {
@@ -520,6 +719,59 @@ namespace Suma2Lealtad.Models
             return detalleOrden;
         }
 
+        public List<DetalleOrdenRecargaPrepago> DetalleParaOrdenAnulacion(string batchid)
+        {
+            List<DetalleOrdenRecargaPrepago> detalleorden = new List<DetalleOrdenRecargaPrepago>();
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                //verificar que ese batchid no tenga orden de anulación
+                var query = (from od in db.OrdersDetails
+                             where od.comments.Equals(batchid) || od.comments.Equals("Anulación efectiva " + batchid)
+                             select od).ToList();
+                if (query.Count > 0)
+                {
+                    DetalleOrdenRecargaPrepago d = new DetalleOrdenRecargaPrepago()
+                    {
+                        batchid = "Ya tiene Anulación"
+                    };
+                    detalleorden.Add(d);
+                    return detalleorden;
+                }
+                //busacr detalle para crear orden de anulación
+                else
+                {
+                    detalleorden = (from od in db.OrdersDetails
+                                    where od.cardsresponse.Contains(batchid)
+                                    join o in db.Orders on od.orderid equals o.id
+                                    join pc in db.PrepaidCustomers on o.prepaidcustomerid equals pc.id
+                                    join a in db.Affiliates on od.customerid equals a.id
+                                    join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                                    join s in db.SumaStatuses on od.sumastatusid equals s.id
+                                    join t in db.Types on a.typeid equals t.id
+                                    select new DetalleOrdenRecargaPrepago()
+                                    {
+                                        idCliente = pc.id,
+                                        nameCliente = pc.name,
+                                        rifCliente = pc.rif,
+                                        phoneCliente = pc.phone,
+                                        tipoOrden = "Orden de Anulación",
+                                        batchid = batchid,
+                                        statusOrden = "",
+                                        idAfiliado = a.id,
+                                        docnumberAfiliado = a.docnumber,
+                                        nameAfiliado = c.NOMBRE_CLIENTE1,
+                                        lastname1Afiliado = c.APELLIDO_CLIENTE1,
+                                        montoRecarga = od.amount,
+                                        resultadoRecarga = od.cardsresponse,
+                                        observacionesExclusion = od.comments,
+                                        statusDetalleOrden = s.name
+                                    }).ToList();
+                    return detalleorden;
+                }                
+            }
+        }
+
         public int CrearOrden(int idCliente, List<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas)
         {
             int idOrden = 0;
@@ -556,6 +808,10 @@ namespace Suma2Lealtad.Models
                         amount = item.montoRecarga,
                         sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
                     };
+                    if (Order.comments.Contains("Orden de Anulación"))
+                    {
+                        OrderDetail.comments = item.batchid;
+                    }
                     db.OrdersDetails.Add(OrderDetail);
                 }
                 //Entidad OrderHistory
@@ -590,7 +846,7 @@ namespace Suma2Lealtad.Models
                     var RegExPattern3 = @"^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$";
                     //var RegExPattern4 = @"^([Pp]){1}([A-Za-z0-9]){3,10}$";
                     var RegExPattern5 = @"^(\d|-)?(\d|,)*\.?\d*$";
-                    if (item.docnumberAfiliado == null) 
+                    if (item.docnumberAfiliado == null)
                     {
                         //si no cumple la validación, lo saco de la lista
                         detalleOrdenArchivo.Remove(item);
@@ -627,11 +883,11 @@ namespace Suma2Lealtad.Models
                 //convertir lo leido en DetalleOrdenRecargaPrepago                
                 foreach (var item in resultado)
                 {
-                    string cedula = item[0]; 
+                    string cedula = item[0];
                     string monto = item[1];
                     if (cedula != "" && monto != "")
                     {
-                        DetalleOrdenRecargaPrepago registro = new DetalleOrdenRecargaPrepago() 
+                        DetalleOrdenRecargaPrepago registro = new DetalleOrdenRecargaPrepago()
                         {
                             docnumberAfiliado = cedula,
                             montoRecarga = Convert.ToDecimal(monto)
@@ -648,17 +904,17 @@ namespace Suma2Lealtad.Models
                     return null;
                 }
             }
-            catch 
+            catch
             {
                 return null;
-            }            
+            }
         }
 
         public List<PrepaidCustomer> GetClientes()
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 return db.PrepaidCustomers.OrderBy(u => u.name).ToList();
             }
         }

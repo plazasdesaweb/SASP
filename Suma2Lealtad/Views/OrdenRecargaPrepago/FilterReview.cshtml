@@ -48,6 +48,21 @@
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
+                    Clase de la Orden :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    @Html.DropDownList("claseOrden",
+                                       new SelectList(Model.ClaseDeOrdenOptions,
+                                       "id",
+                                       "clase",
+                                       Model.ClaseDeOrdenOptions),
+                                       new { @class = "form-control" }
+                                       )
+                    <span id="field2"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
                     Estado de la Orden :
                 </div>
 

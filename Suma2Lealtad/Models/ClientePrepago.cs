@@ -17,6 +17,23 @@ namespace Suma2Lealtad.Models
 
         public List<PrepaidCustomer> ListaClientes { get; set; }
 
+        #region Lista_ClaseDeOrden
+        public class ClaseDeOrden
+        {
+            public string id { get; set; }
+            public string clase { get; set; }
+        }
+
+        public IEnumerable<ClaseDeOrden> ClaseDeOrdenOptions =
+            new List<ClaseDeOrden>
+        {
+              new ClaseDeOrden { id = "", clase = "Seleccione..."          },
+              new ClaseDeOrden { id = "Orden de Recarga", clase = "Orden de Recarga" },
+              new ClaseDeOrden { id = "Orden de Recarga desde Archivo", clase = "Orden de Recarga desde Archivo"  } ,
+              new ClaseDeOrden { id = "Orden de Anulación", clase = "Orden de Anulación"  }
+        };
+        #endregion
+
         #region Lista_EstadoDeAfiliacion
         public class EstadoDeAfiliacion
         {

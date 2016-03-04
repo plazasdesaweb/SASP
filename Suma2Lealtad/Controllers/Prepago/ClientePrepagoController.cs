@@ -983,7 +983,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult FilterOrdenes(int id, string numero, string fecha, string estadoOrden, string Referencia)
+        public ActionResult FilterOrdenes(int id, string numero, string fecha, string estadoOrden, string Referencia, string claseOrden)
         {
             List<OrdenRecargaPrepago> ordenes = new List<OrdenRecargaPrepago>();
             OrdenRecargaPrepago orden;
@@ -997,7 +997,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
             else
             {
-                ordenes = repOrden.Find(fecha, estadoOrden, Referencia).Where(o => o.Cliente.idCliente == id).ToList();
+                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden).Where(o => o.Cliente.idCliente == id).ToList();
             }
             if (ordenes.Count > 0)
             {

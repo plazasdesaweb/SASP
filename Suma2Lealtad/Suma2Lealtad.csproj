@@ -744,6 +744,8 @@
     <Content Include="Views\Reporte\ReporteTransacciones.cshtml" />
     <Content Include="Views\Reporte\ReporteTransaccionesPDF.cshtml" />
     <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\less\bootstrap-dialog.less" />
+    <Content Include="Views\OrdenRecargaPrepago\FilterAnulacion.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\CreateAnulacion.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
