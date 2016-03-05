@@ -983,7 +983,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult FilterOrdenes(int id, string numero, string fecha, string estadoOrden, string Referencia, string claseOrden)
+        public ActionResult FilterOrdenes(int id, string numero, string fecha, string estadoOrden, string Referencia, string claseOrden, string Observaciones)
         {
             List<OrdenRecargaPrepago> ordenes = new List<OrdenRecargaPrepago>();
             OrdenRecargaPrepago orden;
@@ -997,7 +997,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
             else
             {
-                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden).Where(o => o.Cliente.idCliente == id).ToList();
+                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones).Where(o => o.Cliente.idCliente == id).ToList();
             }
             if (ordenes.Count > 0)
             {
@@ -1021,10 +1021,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult AprobarOrden(int id, int idOrden, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia)
+        public ActionResult AprobarOrden(int id, int idOrden, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia, string Observaciones)
         {
             ViewModel viewmodel = new ViewModel();
             detalleOrden.First().documentoOrden = DocumentoReferencia;
+            detalleOrden.First().observacionesOrden = Observaciones;
             if (indicadorGuardar == "Aprobar")
             {
                 if (repOrden.AprobarOrden(detalleOrden.ToList(), MontoTotalRecargas))

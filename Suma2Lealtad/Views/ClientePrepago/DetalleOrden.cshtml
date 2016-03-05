@@ -4,11 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<link href="css/bootstrap.css" rel="stylesheet">*@
-@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
-@*<link href="css/style.css" rel="stylesheet">*@
-@*<link href="~/Content/style.css" rel="stylesheet" />*@
-
 <style type="text/css" media="screen">
     .table-hover {
         cursor: pointer;
@@ -101,7 +96,7 @@
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
-                    Comentarios :
+                    Clase de Orden :
                 </div>
 
                 <div class="editor-form col-md-6">
@@ -114,6 +109,14 @@
 
                 <div class="editor-form col-md-6">
                     @Html.TextBoxFor(model => model.First().documentoOrden, new { @class = "form-control Referencia" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Observaciones :
+                </div>
+
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.First().observacionesOrden, new { @class = "form-control Obseervaciones2" })
                 </div>
 
                 <div class="editor-field col-md-6">
@@ -235,6 +238,10 @@
 
                 <div class="editor-form col-md-6">
                     <input type="text" id="DocumentoReferencia" name="DocumentoReferencia" value="" maxlength="10" class="form-control" style="visibility: hidden">
+                </div>
+
+                <div class="editor-form col-md-6">
+                    <input type="text" id="Observaciones" name="Observaciones" value="" maxlength="100" class="form-control" style="visibility: hidden">
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
@@ -383,6 +390,7 @@
         document.getElementById('TotalRecargas').value = TotalRecargas;
         document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas.toFixed(2).toString().replace(".", ",");
         document.getElementById('DocumentoReferencia').value = $(".Referencia").val();
+        document.getElementById('Observaciones').value = $(".Observaciones2").val();
         return true;
     };
 

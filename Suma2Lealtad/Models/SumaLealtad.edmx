@@ -390,6 +390,7 @@
           <Property Name="comments" Type="varchar" MaxLength="120" />
           <Property Name="sumastatusid" Type="int" Nullable="false" />
           <Property Name="documento" Type="varchar" MaxLength="50" />
+          <Property Name="observaciones" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="OrdersDetail">
           <Key>
@@ -1429,6 +1430,7 @@
           <NavigationProperty Name="PrepaidCustomer" Relationship="SumaLealtad.FK_Orders_PrepaidCustomer" FromRole="Order" ToRole="PrepaidCustomer" />
           <NavigationProperty Name="SumaStatu" Relationship="SumaLealtad.FK_Orders_SumaStatus" FromRole="Order" ToRole="SumaStatu" />
           <Property Type="String" Name="documento" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="observaciones" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_OrdersDetail_Order">
           <End Type="SumaLealtad.Order" Role="Order" Multiplicity="1" />
@@ -2027,6 +2029,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="SumaLealtad.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
                 <ScalarProperty Name="documento" ColumnName="documento" />
                 <ScalarProperty Name="sumastatusid" ColumnName="sumastatusid" />
                 <ScalarProperty Name="comments" ColumnName="comments" />

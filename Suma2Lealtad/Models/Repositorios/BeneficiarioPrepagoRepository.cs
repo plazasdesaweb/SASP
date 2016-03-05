@@ -11,8 +11,6 @@ namespace Suma2Lealtad.Models
 {
     public class BeneficiarioPrepagoRepository
     {
-        private const int ID_ESTATUS_AFILIACION_INICIAL = 0;
-        private const String TRANSCODE_COMPRA_PREPAGO = "145";
         private ClientePrepagoRepository repCliente = new ClientePrepagoRepository();        
 
         public List<BeneficiarioPrepagoIndex> Find(string numdoc, string name, string email, string estadoAfiliacion, string estadoTarjeta)
@@ -407,7 +405,7 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), Globals.TRANSCODE_COMPRA_PREPAGO);
                     if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                     {
                         return null;
@@ -464,7 +462,7 @@ namespace Suma2Lealtad.Models
                     List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(c.idCliente, "", "", "", "", "").OrderBy(x => x.Afiliado.id).ToList();
                     foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                     {
-                        string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                        string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), Globals.TRANSCODE_COMPRA_PREPAGO);
                         if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                         {
                             return null;
@@ -542,7 +540,7 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), Globals.TRANSCODE_COMPRA_PREPAGO);
                     if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                     {
                         return null;
@@ -595,7 +593,7 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), Globals.TRANSCODE_COMPRA_PREPAGO);
                     if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                     {
                         return null;
@@ -1556,7 +1554,7 @@ namespace Suma2Lealtad.Models
         public string CompraFueraLinea(string numdoc, string monto)
         {
             //string montoSinSeparador = Math.Truncate(Convert.ToDecimal(monto) * 100).ToString();
-            string RespuestaCardsJson = WSL.Cards.addBatch(numdoc, monto, TRANSCODE_COMPRA_PREPAGO, (string)HttpContext.Current.Session["login"]);
+            string RespuestaCardsJson = WSL.Cards.addBatch(numdoc, monto, Globals.TRANSCODE_COMPRA_PREPAGO, (string)HttpContext.Current.Session["login"]);
             if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
             {
                 return null;

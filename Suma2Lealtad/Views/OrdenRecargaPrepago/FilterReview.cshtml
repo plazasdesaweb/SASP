@@ -86,6 +86,15 @@
                     <span id="field5"></span>
                 </div>
 
+                <div class="editor-label col-md-4 control-label">
+                    Observaciones :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="Observaciones" name="Observaciones" maxlength="100" placeholder="Escriba la observación" class="form-control">
+                    <span id="field6"></span>
+                </div>
+
                 <br />
                 <div class="editor-label col-md-4 control-label"></div>
                 <div class="editor-field col-md-8">
@@ -152,14 +161,23 @@
         if (Referencia.length == 0) {
             return true;
         }
-        //var RegExPattern = /^([0-9])*$/;
-        //if (RegExPattern.test(Referencia) == false) {
-        //    spanMessage('field5', '* Formato Incorrecto. Debe ingresar un número.');
-        //    document.getElementById('Referencia').value = "";
-        //    document.getElementById('Referencia').focus();
-        //    return false;
-        //}
+        var RegExPattern = /^([0-9])*$/;
+        if (RegExPattern.test(Referencia) == false) {
+            spanMessage('field5', '* Formato Incorrecto. Debe ingresar sólo números.');
+            document.getElementById('Referencia').value = "";
+            document.getElementById('Referencia').focus();
+            return false;
+        }
         document.getElementById('field5').value = "";
+        return true;
+    }
+
+    function validateObservaciones() {
+        var Observaciones = document.getElementById('Observaciones').value;
+        if (Observaciones.length == 0) {
+            return true;
+        }
+        document.getElementById('field6').value = "";
         return true;
     }
 
@@ -172,7 +190,7 @@
     }
 
     function validateForm() {
-        if (validateNumero() && validateFecha() && validateReferencia()) {
+        if (validateNumero() && validateFecha() && validateReferencia() && validateObservaciones()) {
             return true;
         }
         else {

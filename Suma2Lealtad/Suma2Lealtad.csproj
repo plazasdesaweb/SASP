@@ -421,6 +421,7 @@
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Modules\AppModule.cs" />
     <Compile Include="Modules\AppSession.cs" />
+    <Compile Include="Modules\Globals.cs" />
     <Compile Include="Modules\Tarjeta.cs" />
     <Compile Include="Modules\WSL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

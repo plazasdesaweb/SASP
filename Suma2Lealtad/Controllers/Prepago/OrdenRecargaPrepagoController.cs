@@ -132,7 +132,6 @@ namespace Suma2Lealtad.Controllers.Prepago
                 viewmodel.ActionName = "FilterAnulacion";
                 return RedirectToAction("GenericView", viewmodel);
             }
-            return View();
         }
 
         public ActionResult CargarArchivoRecarga(int idCliente)
@@ -232,10 +231,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult AprobarOrden(int id, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia)
+        public ActionResult AprobarOrden(int id, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia, string Observaciones)
         {
             ViewModel viewmodel = new ViewModel();
             detalleOrden.First().documentoOrden = DocumentoReferencia;
+            detalleOrden.First().observacionesOrden = Observaciones;
             if (indicadorGuardar == "Aprobar")
             {
                 if (repOrden.AprobarOrden(detalleOrden.ToList(), MontoTotalRecargas))
@@ -339,7 +339,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult FilterReview(string numero, string fecha, string estadoOrden, string Referencia, string claseOrden)
+        public ActionResult FilterReview(string numero, string fecha, string estadoOrden, string Referencia, string claseOrden, string Observaciones)
         {
             List<OrdenRecargaPrepago> ordenes = new List<OrdenRecargaPrepago>();
             OrdenRecargaPrepago orden;
@@ -353,7 +353,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
             else
             {
-                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden).OrderBy(x => x.Cliente.nameCliente).ThenBy(y => y.id).ToList();                
+                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones).OrderBy(x => x.Cliente.nameCliente).ThenBy(y => y.id).ToList();                
             }
             return View("Index", ordenes);
         }

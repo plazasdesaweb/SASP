@@ -10,17 +10,6 @@ namespace Suma2Lealtad.Models
 {
     public class AfiliadoSumaRepository
     {
-        private const int ID_TYPE_SUMA = 1;
-        private const int ID_TYPE_PREPAGO = 2;
-        private const string WEB_TYPE = "1";
-        private const int ID_ESTATUS_AFILIACION_INICIAL = 0;
-        private const int ID_ESTATUS_AFILIACION_ACTIVA = 2;
-        private const string ID_ESTATUS_TARJETA_SUSPENDIDA = "6";
-        private const int ID_REASONS_INICIAL = 1;
-        private const string TRANSCODE_ACREDITACION_SUMA = "318";
-        private const string TIPO_CUENTA_SUMA = "7";
-        private const string TIPO_CUENTA_PREPAGO = "5";
-
         //retorna el ojeto Photos_Affiliate a partr del id del afiliado
         private Photos_Affiliate GetPhoto(int id)
         {
@@ -467,7 +456,7 @@ namespace Suma2Lealtad.Models
                     //POR AHORA NO HAY COLUMNA EN NINGUNA ENTIDAD PARA ALMACENAR ESTE DATO QUE VIENE DE LA WEB
                     if (afiliado.WebType == null)
                     {
-                        afiliado.WebType = WEB_TYPE;
+                        afiliado.WebType = Globals.WEB_TYPE;
                     }
                     //TEMPORAL CARGAR FECHA Y USUARIO DE AFILIACION
                     afiliado.fechaAfiliacion = db.Affiliates.FirstOrDefault(x => x.id == afiliado.id).creationdate;
@@ -516,7 +505,7 @@ namespace Suma2Lealtad.Models
                     creationuserid = (int)HttpContext.Current.Session["userid"],
                     modifieddate = DateTime.Now,
                     modifieduserid = (int)HttpContext.Current.Session["userid"],
-                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id,
+                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id,
                     reasonsid = null,
                     twitter_account = afiliado.twitter_account,
                     facebook_account = afiliado.facebook_account,
@@ -622,7 +611,7 @@ namespace Suma2Lealtad.Models
                     modifieduserid = (int)HttpContext.Current.Session["userid"],
                     modifieddate = System.DateTime.Now,
                     statusid = Affiliate.sumastatusid.Value,
-                    reasonsid = ID_REASONS_INICIAL,
+                    reasonsid = Globals.ID_REASONS_INICIAL,
                     comments = afiliado.comments
                 };
                 db.AffiliateAuds.Add(affiliateauditoria);
@@ -750,7 +739,7 @@ namespace Suma2Lealtad.Models
                         modifieduserid = (int)HttpContext.Current.Session["userid"],
                         modifieddate = DateTime.Now,
                         statusid = afiliado.sumastatusid,
-                        reasonsid = ID_REASONS_INICIAL,
+                        reasonsid = Globals.ID_REASONS_INICIAL,
                         comments = afiliado.comments
                     };
                     db.AffiliateAuds.Add(affiliateAuditoria);
@@ -814,8 +803,8 @@ namespace Suma2Lealtad.Models
                     afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                     afiliado.estatustarjeta = clienteCards.tarjeta;
                     afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
-                    afiliado.cvv2 = "123";                    
-                    afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_ACTIVA) && (s.tablename == "Affiliatte")).id;
+                    afiliado.cvv2 = "123";
+                    afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_ACTIVA) && (s.tablename == "Affiliatte")).id;
                     return SaveChanges(afiliado);
                 }
                 else
@@ -931,7 +920,7 @@ namespace Suma2Lealtad.Models
 
         public bool SuspenderTarjeta(AfiliadoSuma afiliado)
         {
-            string RespuestaCardsJson = WSL.Cards.cardStatus(afiliado.docnumber.Substring(2), ID_ESTATUS_TARJETA_SUSPENDIDA);
+            string RespuestaCardsJson = WSL.Cards.cardStatus(afiliado.docnumber.Substring(2), Globals.ID_ESTATUS_TARJETA_SUSPENDIDA);
             if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
             {
                 return false;
@@ -1001,7 +990,7 @@ namespace Suma2Lealtad.Models
                 return null;
             }
             SaldosMovimientos.Saldos = (List<Saldo>)JsonConvert.DeserializeObject<List<Saldo>>(saldosJson);
-            string movimientosPrepagoJson = WSL.Cards.getBatch(TIPO_CUENTA_PREPAGO, SaldosMovimientos.DocId.Substring(2));
+            string movimientosPrepagoJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_PREPAGO, SaldosMovimientos.DocId.Substring(2));
             if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
             {
                 return null;
@@ -1012,8 +1001,12 @@ namespace Suma2Lealtad.Models
             foreach (Movimiento mov in SaldosMovimientos.MovimientosPrepago)
             {
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
+                if (mov.transcode == Globals.TRANSCODE_ANULACION_RECARGA_PREPAGO)
+                {
+                    mov.isodescription = mov.isodescription + " (" + mov.b037 + ")";
+                }
             }
-            string movimientosLealtadJson = WSL.Cards.getBatch(TIPO_CUENTA_SUMA, SaldosMovimientos.DocId.Substring(2));
+            string movimientosLealtadJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_SUMA, SaldosMovimientos.DocId.Substring(2));
             if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
             {
                 return null;
@@ -1030,7 +1023,7 @@ namespace Suma2Lealtad.Models
 
         public string Acreditar(AfiliadoSuma afiliado, string monto)
         {
-            string RespuestaCardsJson = WSL.Cards.addBatch(afiliado.docnumber.Substring(2), monto, TRANSCODE_ACREDITACION_SUMA, "NULL");
+            string RespuestaCardsJson = WSL.Cards.addBatch(afiliado.docnumber.Substring(2), monto, Globals.TRANSCODE_ACREDITACION_SUMA, "NULL");
             if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
             {
                 return null;
@@ -1049,14 +1042,14 @@ namespace Suma2Lealtad.Models
         public AfiliadoSuma CambiarASuma(AfiliadoSuma afiliado)
         {
             afiliado.type = "Suma";
-            afiliado.typeid = ID_TYPE_SUMA;
+            afiliado.typeid = Globals.ID_TYPE_SUMA;
             return afiliado;
         }
 
         public AfiliadoSuma CambiarAPrepago(AfiliadoSuma afiliado)
         {
             afiliado.type = "Prepago";
-            afiliado.typeid = ID_TYPE_PREPAGO;
+            afiliado.typeid = Globals.ID_TYPE_PREPAGO;
             return afiliado;
         }
 
@@ -1066,10 +1059,10 @@ namespace Suma2Lealtad.Models
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 Affiliate afiliate = db.Affiliates.FirstOrDefault(a => a.docnumber == afiliado.docnumber);
-                afiliate.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
+                afiliate.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
                 db.SaveChanges();
                 afiliado.estatus = "Nueva";
-                afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
+                afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
                 return afiliado;
             }
         }
@@ -1091,7 +1084,7 @@ namespace Suma2Lealtad.Models
                 encabezado.tipotransaccionReporte = tipotrans;
                 foreach (AfiliadoSumaIndex a in afiliados)
                 {
-                    string movimientosLealtadJson = WSL.Cards.getBatch(TIPO_CUENTA_SUMA, a.docnumber.Substring(2));
+                    string movimientosLealtadJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_SUMA, a.docnumber.Substring(2));
                     if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
                     {
                         return null;
@@ -1132,7 +1125,7 @@ namespace Suma2Lealtad.Models
                 encabezado.tipotransaccionReporte = tipotrans;
                 foreach (AfiliadoSumaIndex a in afiliados)
                 {
-                    string movimientosLealtadJson = WSL.Cards.getBatch(TIPO_CUENTA_SUMA, a.docnumber.Substring(2));
+                    string movimientosLealtadJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_SUMA, a.docnumber.Substring(2));
                     if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
                     {
                         return null;
