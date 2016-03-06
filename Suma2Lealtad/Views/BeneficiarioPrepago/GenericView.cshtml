@@ -9,7 +9,15 @@
     </div>
 </div>
 
-<form id="commentForm" action="@Url.Action(@Model.ActionName, @Model.ControllerName, new { id = @Model.RouteValues })" class="form-horizontal">
+<div class="form-group">
+    <div class="col-md-12 col-btn">
+        <div class="pull-right">
+            <a id="Continuar" class="btn btn-success btn-md" role="button">Continuar</a>
+        </div>
+    </div>
+</div>
+
+@*<form id="commentForm" action="@Url.Action(@Model.ActionName, @Model.ControllerName, new { id = @Model.RouteValues })" class="form-horizontal">
     <div class="form-group">
         <div class="col-md-12 col-btn">
             <div class="pull-right">
@@ -17,6 +25,13 @@
             </div>
         </div>
     </div>
-</form>
-
-
+</form>*@
+<script>
+    $("#Continuar").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")'
+        href = href.replace("{controller}", "@Model.ControllerName");
+        href = href.replace("{action}", "@Model.ActionName");
+        href = href.replace("{params}", "@Model.RouteValues");
+        window.location.href = href;
+    });
+</script>

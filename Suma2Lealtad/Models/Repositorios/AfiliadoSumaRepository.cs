@@ -36,6 +36,30 @@ namespace Suma2Lealtad.Models
             };
             //SE CALCULA LA SUCURSAL DE AFILIACION EN FUNCION A LA DIRECCION IP DEL CLIENTE
             afiliado.storeid = DeterminarSucursalAfiliacion();
+            //INCLUSION: Se determina si el número de documento ya tiene tarjeta en Cards
+            //Se buscan los datos de Tarjeta del AFILIADO en Cards
+            //SERVICIO WSL.Cards.getClient !
+            string clienteCardsJson = WSL.Cards.getClient(numdoc.Substring(2));
+            ClienteCards clienteCards;
+            if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
+            {
+                //return null;
+                clienteCards = null;
+            }
+            else
+            {
+                clienteCards = (ClienteCards)JsonConvert.DeserializeObject<ClienteCards>(clienteCardsJson);
+            }
+            if (clienteCards == null)
+            {
+                //No está en Cards o no se pudo leer desde Cards
+                afiliado.pan = "0";
+            }
+            else
+            {
+                afiliado.pan = clienteCards.pan;
+                afiliado.estatustarjeta = clienteCards.tarjeta;
+            }
             //Primero se buscan los datos de CLIENTE en WebPlazas
             //SERVICIO WSL.WebPlazas.getClientByNumDoc 
             string clienteWebPlazasJson = WSL.WebPlazas.getClientByNumDoc(afiliado.docnumber);
@@ -47,7 +71,15 @@ namespace Suma2Lealtad.Models
             }
             else
             {
-                clienteWebPlazas = (ClienteWebPlazas)JsonConvert.DeserializeObject<ClienteWebPlazas>(clienteWebPlazasJson);
+                if (clienteWebPlazasJson.Contains("\"id\":null"))
+                {
+                    //no se pudo leer desde la web
+                    clienteWebPlazas = null;
+                }
+                else
+                {
+                    clienteWebPlazas = (ClienteWebPlazas)JsonConvert.DeserializeObject<ClienteWebPlazas>(clienteWebPlazasJson);
+                }
             }
             if (clienteWebPlazas == null)
             {
@@ -850,7 +882,7 @@ namespace Suma2Lealtad.Models
                 afiliado.estatustarjeta = clienteCards.tarjeta;
                 afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
                 afiliado.cvv2 = "123";
-                return SaveChanges(afiliado);                               
+                return SaveChanges(afiliado);
             }
             else
             {
@@ -903,7 +935,7 @@ namespace Suma2Lealtad.Models
                     afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                     afiliado.estatustarjeta = clienteCards.tarjeta;
                     afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
-                    afiliado.cvv2 = "123";                
+                    afiliado.cvv2 = "123";
                     return SaveChanges(afiliado);
                 }
                 else
@@ -940,7 +972,7 @@ namespace Suma2Lealtad.Models
                 afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                 afiliado.estatustarjeta = clienteCards.tarjeta;
                 afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
-                afiliado.cvv2 = "123";                
+                afiliado.cvv2 = "123";
                 return SaveChanges(afiliado);
             }
             else
@@ -971,7 +1003,7 @@ namespace Suma2Lealtad.Models
                 afiliado.printed = clienteCards.printed == null ? null : clienteCards.printed.Substring(6, 2) + "/" + clienteCards.printed.Substring(4, 2) + "/" + clienteCards.printed.Substring(0, 4);
                 afiliado.estatustarjeta = clienteCards.tarjeta;
                 afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
-                afiliado.cvv2 = "123";                
+                afiliado.cvv2 = "123";
                 return SaveChanges(afiliado);
             }
             else

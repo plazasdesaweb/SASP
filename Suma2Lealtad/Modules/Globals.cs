@@ -31,7 +31,8 @@ namespace Suma2Lealtad.Modules
         public const string TIPO_CUENTA_SUMA = "7";
         public const string TIPO_CUENTA_PREPAGO = "5";
         public const string ID_ESTATUS_TARJETA_SUSPENDIDA = "6";        
-        public const string TRANSCODE_ACREDITACION_SUMA = "318";        
+        public const string TRANSCODE_ACREDITACION_SUMA = "318";
+        public const string TRANSCODE_CANJE_SUMA = "319";
         public const string TRANSCODE_RECARGA_PREPAGO = "200";
         public const string TRANSCODE_ANULACION_RECARGA_PREPAGO = "161";
         public const string TRANSCODE_COMPRA_PREPAGO = "145";

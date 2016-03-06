@@ -1,7 +1,6 @@
 ﻿using Suma2Lealtad.Filters;
 using Suma2Lealtad.Models;
 using Suma2Lealtad.Modules;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,7 +12,6 @@ namespace Suma2Lealtad.Controllers.Prepago
     [HandleError]
     public class AfiliadoSumaController : Controller
     {
-        private const int ID_TYPE_SUMA = 1;
         private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
 
         public ActionResult Filter()
@@ -28,11 +26,25 @@ namespace Suma2Lealtad.Controllers.Prepago
             if (afiliado.id == 0)
             {
                 //NO ESTA EN SUMA
-                afiliado.typeid = ID_TYPE_SUMA;
+                afiliado.typeid = Globals.ID_TYPE_SUMA;
                 afiliado.type = "Suma";
                 //CARGO VALOR POR DEFECTO EN LISTA DE ESTADOS
                 afiliado.ListaEstados.Insert(0, new ESTADO { COD_ESTADO = " ", DESCRIPC_ESTADO = "Seleccione un Estado" });
-                return View("Create", afiliado);
+                //verifico si tiene tarjeta en Cards
+                if (afiliado.pan != "0" && afiliado.estatustarjeta == "Activa")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Afiliado / Crear Afiliación";
+                    viewmodel.Message = "El número de documento indicado ya posee una Tarjea Activa con el número " + afiliado.pan;
+                    viewmodel.ControllerName = "AfiliadoSuma";
+                    viewmodel.ActionName = "CreateConTarjeta";
+                    viewmodel.RouteValues = "?numdoc="+numdoc;
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else
+                {
+                    return View("Create", afiliado);
+                }
             }
             else
             {
@@ -52,6 +64,51 @@ namespace Suma2Lealtad.Controllers.Prepago
                 viewmodel.Message = "Solicitud de afiliación creada exitosamente.";
                 viewmodel.ControllerName = "AfiliadoSuma";
                 viewmodel.ActionName = "FilterReview";
+            }
+            else
+            {
+                viewmodel.Title = "Afiliado / Crear Afiliación";
+                viewmodel.Message = "Error de aplicacion: No se pudo crear solicitud de afiliación.";
+                viewmodel.ControllerName = "AfiliadoSuma";
+                viewmodel.ActionName = "FilterReview";
+            }
+            return RedirectToAction("GenericView", viewmodel);
+        }
+
+        public ActionResult CreateConTarjeta(string numdoc)
+        {
+            AfiliadoSuma afiliado = repAfiliado.Find(numdoc);
+            //NO ESTA EN SUMA
+            afiliado.typeid = Globals.ID_TYPE_SUMA;
+            afiliado.type = "Suma";
+            //CARGO VALOR POR DEFECTO EN LISTA DE ESTADOS
+            afiliado.ListaEstados.Insert(0, new ESTADO { COD_ESTADO = " ", DESCRIPC_ESTADO = "Seleccione un Estado" });
+            //verifico si tiene tarjeta en Cards
+            return View("Create", afiliado);
+        }
+
+        [HttpPost]
+        public ActionResult CreateConTarjeta(AfiliadoSuma afiliado, HttpPostedFileBase file)
+        {
+            ViewModel viewmodel = new ViewModel();
+            if (repAfiliado.Save(afiliado, file))
+            {
+                int idafiliado = repAfiliado.Find(afiliado.docnumber, "", "", "", "").First().id;
+                afiliado = repAfiliado.Find(idafiliado);
+                if (repAfiliado.Aprobar(afiliado))
+                {
+                    viewmodel.Title = "Afiliado / Crear Afiliación";
+                    viewmodel.Message = "Solicitud de afiliación creada y aprobada exitosamente.";
+                    viewmodel.ControllerName = "AfiliadoSuma";
+                    viewmodel.ActionName = "FilterReview";
+                }
+                else
+                {
+                    viewmodel.Title = "Afiliado / Crear Afiliación";
+                    viewmodel.Message = "Solicitud de afiliación creada, pero no se pudo aprobar automáticamente.";
+                    viewmodel.ControllerName = "AfiliadoSuma";
+                    viewmodel.ActionName = "FilterReview";
+                }
             }
             else
             {

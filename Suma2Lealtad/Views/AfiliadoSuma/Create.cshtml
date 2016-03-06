@@ -11,9 +11,17 @@
 
         <div class="panel-body col-md-offset-1 col-md-10">
 
-            <form id="commentForm" method="post" action="@Url.Action("Create", "AfiliadoSuma")" class="form-horizontal" enctype = "multipart/form-data">
+            @{if (Model.pan != "0" && Model.estatustarjeta == "Activa")
+              {
+                @:<form id="commentForm" method="post" action="@Url.Action("CreateConTarjeta", "AfiliadoSuma")" class="form-horizontal" enctype = "multipart/form-data">
+              }
+              else
+              {
+                @:<form id="commentForm" method="post" action="@Url.Action("Create", "AfiliadoSuma")" class="form-horizontal" enctype = "multipart/form-data">
+              }
+            }
 
-                @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
 
                 <div id="rootwizard">
@@ -41,7 +49,6 @@
                             @Html.HiddenFor(model => model.clientid)
                             @Html.HiddenFor(model => model.typeid)
                             @Html.HiddenFor(model => model.WebType)
-
 
                             <div class="editor-label col-md-4 control-label">
                                 * Tipo de Afiliado :
@@ -310,9 +317,9 @@
                             <div class="editor-field col-md-6">
                                 @Html.DropDownListFor(m => m.cod_estado,
                                                       new SelectList(Model.ListaEstados,
-                                                      "COD_ESTADO", 
+                                                      "COD_ESTADO",
                                                       "DESCRIPC_ESTADO",
-                                                      Model.ListaEstados), 
+                                                      Model.ListaEstados),
                                                       new { @class = "form-control" }
                                                       )
                             </div>
@@ -365,9 +372,9 @@
                             <div class="editor-field col-md-6">
                                 @Html.DropDownListFor(m => m.channelid,
                                                       new SelectList(Model.ChannelOptions,
-                                                      "id", 
+                                                      "id",
                                                       "channel",
-                                                      Model.ChannelOptions), 
+                                                      Model.ChannelOptions),
                                                       new { @class = "form-control" }
                                                       )
                             </div>
@@ -380,7 +387,7 @@
                                 @Html.DropDownListFor(m => m.storeid,
                                 new SelectList(Model.StoreOptions,
                                 "id", "sucursal",
-                                Model.StoreOptions), new { @class = "form-control" , @disabled = "disabled" })
+                                Model.StoreOptions), new { @class = "form-control", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.storeid)
                             </div>
 
