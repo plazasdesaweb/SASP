@@ -84,13 +84,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult FilterDestino(Transferencia transferencia)
-        {
-            return View(transferencia);
-        }
-
-        [HttpPost]
-        public ActionResult DetalleTransferencia(Transferencia transferencia, string numdoc)
+        public ActionResult DetalleTransferencia(Transferencia transferencia, string numdoc = "")
         {
             AfiliadoSumaIndex a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
             if (a == null)

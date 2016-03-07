@@ -38,8 +38,10 @@
 
         @{if (Model.docnumberAfiliadoDestino == null)
           {
-            @:<form id="commentForm" method="post" action="@Url.Action("FilterDestino", "Transferencia")" class="form-horizontal">
-                }
+@*@:<form id="commentForm" method="post" action="@Url.Action("FilterDestino", "Transferencia")" class="form-horizontal">*@
+            @:<form id="form"  name="form" method="post" action="@Url.Action("DetalleTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return validarDocumento();">
+
+          }
           else
           {
             @:<form id="commentForm" method="post" action="@Url.Action("ProcesarTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return verificarTransferencia();">                
@@ -101,8 +103,6 @@
                             </th>
                             <th>Denominación
                             </th>
-                            <th>Seleccionada</th>
-                            <th></th>
                         </tr>
                     </thead>
 
@@ -119,29 +119,14 @@
                                 @Html.HiddenFor(modelItem => Model.datosCuentaSumaOrigen.accountnumber)
                                 @Html.DisplayFor(modelItem => Model.datosCuentaSumaOrigen.accountnumber)
                             </td>
-                            <td>
+                            <td id="sos">
                                 @Html.HiddenFor(modelItem => Model.datosCuentaSumaOrigen.saldo)
                                 @(String.Format("{0}", Math.Truncate(Model.datosCuentaSumaOrigen.saldo)))
                             </td>
                             <td>
                                 @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenSuma)
                                 @Model.DenominacionCuentaOrigenSuma
-                            </td>
-                            @{if (indicadorMostrar != "Ocultar")
-                              {
-                                  @:<td id="seleccionadasumaorigen">No</td>
-                                  @:<td id="botonsuma" class="text-right" onclick="IncluirSuma(this)">
-                                  @:      <a class="btn btn-success btn-sm">
-                                  @:          <span class="glyphicon glyphicon-plus"></span>
-                                  @:      </a>
-                                  @:</td>                                  
-                              }
-                              else
-                              {
-                                  @:<td id="seleccionadasumaorigen"></td>
-                                  @:<td></td>
-                              }
-                            }
+                            </td>                           
                         </tr>
 
                         <tr data-row-key="@Model.datosCuentaPrepagoOrigen.accounttype">
@@ -155,29 +140,14 @@
                                 @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoOrigen.accountnumber)
                                 @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoOrigen.accountnumber)
                             </td>
-                            <td>
+                            <td id="sop">
                                 @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoOrigen.saldo)
                                 @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoOrigen.saldo)
                             </td>
                             <td>
                                 @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenPrepago)
                                 @Model.DenominacionCuentaOrigenPrepago
-                            </td>
-                            @{if (indicadorMostrar != "Ocultar")
-                              {
-                                  @:<td id="seleccionadaprepagoorigen">No</td>
-                                  @:<td id="botonprepago" class="text-right" onclick="IncluirPrepago(this)">
-                                  @:      <a class="btn btn-success btn-sm">
-                                  @:          <span class="glyphicon glyphicon-plus"></span>
-                                  @:      </a>
-                                  @:</td>                                  
-                              }
-                              else
-                              {
-                                  @:<td id="seleccionadaprepagoorigen"></td>
-                                  @:<td></td>
-                              }
-                            }                          
+                            </td>                                                
                         </tr>
 
                     </tbody>
@@ -188,7 +158,31 @@
                 <h3 class="panel-title">Operaciones / Transferencia de Saldo / Datos de Destino </h3>
             </div>*@
 
-@{if (indicadorMostrar != "Ocultar")
+@{if (indicadorMostrar == "Ocultar")
+  {
+                @:<div class="col-md-12 col-tabla-btn">
+                @:    <div class="text-center">
+                @:        <p class="text-danger">
+                @:            Datos de Destino
+                @:        </p>
+                @:    </div>
+                @:</div>
+                @:<div class="editor-label col-md-4 control-label"></div>
+                @:<div class="editor-field col-md-8">
+                @:    <br />
+                @:</div>
+
+                @:<div class="editor-label col-md-4 control-label">
+                @:    Número de Documento/Cédula :
+                @:</div>
+
+                @:<div class="editor-field col-md-8">
+                @:    <input type="text" id="numdoc" name="numdoc" value="" maxlength="11" placeholder="V-12345678" class="form-control" required>
+                @:    <span id="someID"></span>
+                @:</div>
+    
+  }
+  else
   {
       @*
       @:</div>
@@ -239,8 +233,6 @@
                 @:            </th>
                 @:            <th>Denominación
                 @:            </th>
-                @:            <th>Seleccionada</th>
-                @:            <th></th>
                 @:        </tr>
                 @:    </thead>
 
@@ -257,7 +249,7 @@
                 @:                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accountnumber)
                 @:                @Html.DisplayFor(modelItem => Model.datosCuentaSumaDestino.accountnumber)
                 @:            </td>
-                @:            <td>
+                @:            <td id="sds">
                 @:                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.saldo)
                 @:                @(String.Format("{0}", Math.Truncate(Model.datosCuentaSumaDestino.saldo)))
                 @:            </td>
@@ -265,8 +257,6 @@
                 @:                @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenSuma)
                 @:                @Model.DenominacionCuentaOrigenSuma
                 @:            </td>
-                @:            <td id="seleccionadasumadestino"></td>
-                @:            <td></td>
                 @:        </tr>
 
                 @:        <tr data-row-key="@Model.datosCuentaPrepagoDestino.accounttype">
@@ -280,16 +270,13 @@
                 @:                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accountnumber)
                 @:                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.accountnumber)
                 @:            </td>
-                @:            <td>
+                @:            <td id="sdp">
                 @:                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.saldo)
                 @:                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.saldo)
                 @:            </td>
                 @:            <td>
                 @:                @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenPrepago)
                 @:                @Model.DenominacionCuentaOrigenPrepago
-                @:            </td>
-                @:            <td id="seleccionadaprepagodestino"></td>
-                @:            <td></td>
                 @:        </tr>
 
                 @:    </tbody>
@@ -334,17 +321,19 @@
                 @*<div class="col-md-12 col-tabla-btn">*@
             <div class="col-md-12 col-btn">
                     <div class="pull-right">
-                        @{if (Model.docnumberAfiliadoDestino == null)
+                         @{if (Model.docnumberAfiliadoDestino == null)
                           {
-                              @:<input id="Continuar" type="submit" class="btn btn-success btn-md" value="Continuar" />
+                              @:<input id="Buscar" type="submit" class="btn btn-success btn-md" value="Buscar" />
                         
                           }
                           else
                           {
+                              @:<a id="Transferir" class="btn btn-success btn-md" role="button">Transferir</a>                         
                               @:<input id="Procesar" type="submit" class="btn btn-success btn-md" value="Procesar" />
                         
                           }
-                        }<a href="@Url.Action("FilterOrigen", "Transferencia")" class="btn btn-danger btn-md">Regresar</a>
+                        }
+                        <a href="@Url.Action("FilterOrigen", "Transferencia")" class="btn btn-danger btn-md">Cancelar</a>
                         @*<a href="@Url.Action("FilterReview", "AfiliadoSuma")" class="btn btn-danger btn-md">Regresar</a>*@
                     </div>
                 </div>
@@ -362,55 +351,72 @@
 <!-- columns -->
 
 <script>
-    function IncluirSuma(elemento) {
-        if ($('#datosCuentaSumaOrigen_saldo').val() == "0") {
-            alert("La cuenta no posee saldo disponible para transferir.");
+    $("#Transferir").click(function () {
+        var saldosumaorigen = parseInt($('#datosCuentaSumaOrigen_saldo').val());
+        var saldosumadestino = parseInt($('#datosCuentaSumaDestino_saldo').val());
+        var saldoprepagoorigen = parseFloat($('#datosCuentaPrepagoOrigen_saldo').val());
+        var saldoprepagodestino = parseFloat($('#datosCuentaPrepagoDestino_saldo').val());
+        var nuevosuma = saldosumadestino + saldosumaorigen;
+        var nuevoprepago = saldoprepagodestino + saldoprepagoorigen;
+        $('#ResumenTransferenciaPrepago').val($('#datosCuentaPrepagoOrigen_saldo').val());
+        $('#ResumenTransferenciaSuma').val($('#datosCuentaSumaOrigen_saldo').val());
+        $('#datosCuentaSumaDestino_saldo').val(nuevosuma);
+        $('#sds').html(nuevosuma);
+        $('#datosCuentaPrepagoDestino_saldo').val(nuevoprepago.toFixed(2).toString().replace(".", ","));
+        $('#sdp').html(nuevoprepago.toFixed(2).toString().replace(".", ","));
+        $('#datosCuentaSumaOrigen_saldo').val("0");
+        $('#sos').html("0");
+        $('#datosCuentaPrepagoOrigen_saldo').val("0,00");
+        $('#sop').html("0,00");
+        $("#Transferir").hide();
+     });
+
+    function verificarTransferencia() {
+        if ($('#ResumenTransferenciaSuma').val() == "0" && $('#ResumenTransferenciaPrepago').val() == "0,00") {
+            alert("Debe selecionar al menos una cuenta para realizar transferencia.");
+            return false;
         }
         else {
-            $('#seleccionadasumaorigen').text('Si');
-            $('#seleccionadasumadestino').text('Si');
-            $('#ResumenTransferenciaSuma').val($('#datosCuentaSumaOrigen_saldo').val());
-            $('#botonsuma').attr("onclick", "ExcluirSuma(this)");
-            $('#botonsuma').html('<a class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></a>');
+            return true;
         }
-}
-
-function ExcluirSuma(elemento) {
-    $('#seleccionadasumaorigen').text('No');
-    $('#seleccionadasumadestino').text('No');
-    $('#ResumenTransferenciaSuma').val("0");
-    $('#botonsuma').attr("onclick", "IncluirSuma(this)");
-    $('#botonsuma').html('<a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span></a>');
-}
-
-function IncluirPrepago(elemento) {
-    if ($('#datosCuentaPrepagoOrigen_saldo').val() == "0,00") {
-        alert("La cuenta no posee saldo disponible para transferir.");
     }
-    else {
-        $('#seleccionadaprepagoorigen').text('Si');
-        $('#seleccionadaprepagodestino').text('Si');
-        $('#ResumenTransferenciaPrepago').val($('#datosCuentaPrepagoOrigen_saldo').val());
-        $('#botonprepago').attr("onclick", "ExcluirPrepago(this)");
-        $('#botonprepago').html('<a class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></a>');
-    }
-}
 
-function ExcluirPrepago(elemento) {
-    $('#seleccionadaprepagoorigen').text('No');
-    $('#seleccionadaprepagodestino').text('No');
-    $('#ResumenTransferenciaPrepago').val("0,00");
-    $('#botonprepago').attr("onclick", "IncluirPrepago(this)");
-    $('#botonprepago').html('<a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span></a>');
-}
+    function validarDocumento() {
+        var valor = document.getElementById('numdoc').value.trim();
+        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
+        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
 
-function verificarTransferencia() {
-    if ($('#ResumenTransferenciaSuma').val() == "0" && $('#ResumenTransferenciaPrepago').val() == "0,00") {
-        alert("Debe selecionar al menos una cuenta para realizar transferencia.");
-        return false;
+        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false) {
+            spanMessage();
+            document.getElementById('numdoc').value = " ";
+            document.form.numdoc.focus();
+            return false;
+        }
+        else if (RegExPattern.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            return true;
+        }
+        else if (RegExPattern2.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            return true;
+        }
+        else if (RegExPattern3.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            return true;
+        }
+        else if (RegExPattern4.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            return true;
+        }
     }
-    else{
-        return true;
+
+    function spanMessage() {
+        var span = document.getElementById('someID');
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode("* Formato Número de Documento/Cédula Incorrecto. (V-12345678)"));
     }
-}
 </script>

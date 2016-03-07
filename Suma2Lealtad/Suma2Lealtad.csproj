@@ -753,7 +753,6 @@
     <Content Include="Views\Transferencia\GenericView.cshtml" />
     <Content Include="Views\Transferencia\DetalleTransferencia.cshtml" />
     <Content Include="Views\Transferencia\FilterTransferencia.cshtml" />
-    <Content Include="Views\Transferencia\FilterDestino.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
