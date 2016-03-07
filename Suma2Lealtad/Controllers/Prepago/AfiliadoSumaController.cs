@@ -352,7 +352,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 AfiliadoSumaSaldosMovimientos AfiliadoSaldosMovimientos = new AfiliadoSumaSaldosMovimientos()
                 {
                     denominacionPrepago = "Bs.",
-                    denominacionSuma = "Más.",
+                    denominacionSuma = "Más",
                     Afiliado = afiliado,
                     SaldosMovimientos = SaldosMovimientos
                 };

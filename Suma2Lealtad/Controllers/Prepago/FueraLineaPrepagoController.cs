@@ -14,7 +14,7 @@ namespace Suma2Lealtad.Controllers.Prepago
     public class FueraLineaPrepagoController : Controller
     {
         BeneficiarioPrepagoRepository repBeneficiario = new BeneficiarioPrepagoRepository();
-        private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
+        AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
 
         //
         // GET: /FueraLineaPrepago/Filter/
