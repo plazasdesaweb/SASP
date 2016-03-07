@@ -11,8 +11,16 @@ namespace Suma2Lealtad.Models.Repositorios
     {
         public string Transferir(string numdocOrigen, string numdocDestino, string tipoCuenta, string monto)
         {
-            //string montoSinSeparador = Math.Truncate(Convert.ToDecimal(monto) * 100).ToString();
-            string RespuestaCardsJson = WSL.Cards.addTransfer(numdocOrigen, numdocDestino, monto, tipoCuenta);
+            string montoSinSeparador;
+            if (tipoCuenta == Globals.TIPO_CUENTA_PREPAGO)
+            {
+                montoSinSeparador = Math.Truncate(Convert.ToDecimal(monto) * 100).ToString();
+            }
+            else
+            {
+                montoSinSeparador = monto;
+            }
+            string RespuestaCardsJson = WSL.Cards.addTransfer(numdocOrigen, numdocDestino, montoSinSeparador, tipoCuenta, (string)HttpContext.Current.Session["login"]);
             if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
             {
                 return null;

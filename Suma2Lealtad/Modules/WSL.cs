@@ -15,7 +15,7 @@ namespace Suma2Lealtad.Modules
         private const string WSL_CARDS_ADDCLIENT = "addclient/{numdoc}/{name}/{phone}/{address}";
         private const string WSL_CARDS_ADDBATCH = "addbatch/{numdoc}/{transcode}/{monto}/{factoracred}/{factorcanje}/{usuario}";
         private const string WSL_CARDS_ADDBATCH_ANULACION = "addbatch/{numdoc}/{transcode}/{batchid}/{factoracred}/{factorcanje}/{usuario}";
-        private const string WSL_CARDS_ADDTRANSFER = "addbatch/{numdocOrigen}/{numdocDestino}/{monto}/{accounttype}";
+        private const string WSL_CARDS_ADDTRANSFER = "addtransfer/{numdocOrigen}/{numdocDestino}/{monto}/{accounttype}/{usuario}";
         private const string WSL_CARDS_GETCLIENT = "getclient/{numdoc}";
         private const string WSL_CARDS_GETBALANCE = "getbalance/{numdoc}";
         private const string WSL_CARDS_GETBATCH = "getbatch/{accounttype}/{numdoc}";
@@ -123,13 +123,14 @@ namespace Suma2Lealtad.Modules
                 return ConsumirServicioCards(req);
             }
 
-            public static string addTransfer(string numdocOrigen, string numdocDestino, string monto, string accounttype)
+            public static string addTransfer(string numdocOrigen, string numdocDestino, string monto, string accounttype, string usuario)
             {
                 string req = WSL_CARDS_ADDTRANSFER;
                 req = req.Replace("{numdocOrigen}", numdocOrigen);
                 req = req.Replace("{numdocDestino}", numdocDestino);
                 req = req.Replace("{monto}", monto);
                 req = req.Replace("{accounttype}", accounttype);
+                req = req.Replace("{usuario}", usuario);
                 return ConsumirServicioCards(req);
             }
 
