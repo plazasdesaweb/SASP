@@ -121,30 +121,43 @@ namespace Suma2Lealtad.Controllers.Prepago
         {
             string respuestaSuma = "";
             string respuestaPrepago = "";
-            string mensaje;
+            string mensaje = "";
             //realizar transferencias
             if (transferencia.ResumenTransferenciaSuma != "0")
             {
-                respuestaSuma = repOperaciones.Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_SUMA, transferencia.ResumenTransferenciaSuma);                    
+                respuestaSuma = repOperaciones.Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_SUMA, transferencia.ResumenTransferenciaSuma);
+                long number1 = 0;
+                bool canConvert = long.TryParse(respuestaSuma, out number1);
+                if (canConvert == false)
+                {
+                    mensaje = "Falló transferencia Suma (" + respuestaSuma + "). ";
+                }
+                else
+                {
+                    mensaje = "Transferencia Suma exitosa con clave " + respuestaSuma + ". ";
+                }
             }
             if (transferencia.ResumenTransferenciaPrepago != "0,00")
             {
                 respuestaPrepago = repOperaciones.Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_PREPAGO, transferencia.ResumenTransferenciaPrepago);
+                long number1 = 0;
+                bool canConvert = long.TryParse(respuestaPrepago, out number1);
+                if (canConvert == false)
+                {
+                    mensaje = mensaje + "Falló transferencia Prepago (" + respuestaPrepago + ").";
+                }
+                {
+                    mensaje = mensaje + "Transferencia Prepago exitosa con clave " + respuestaPrepago + ".";
+                }
             }
-            //mensaje de confirmacion            
-            if (respuestaSuma != "" && respuestaPrepago != "")
-            {
-                mensaje = "Transferencia Suma exitosa con clave " + respuestaSuma + ", " + "Transferencia Prepago exitosa con clave " + respuestaPrepago;
-            }
-            else if (respuestaSuma != "")
-            {
-                mensaje = "Transferencia Suma exitosa con clave " + respuestaSuma;
-            }
-            else
-            {
-                mensaje = "Transferencia Prepago exitosa con clave " + respuestaPrepago;
-            }
-            return View();
+            //mensaje de confirmacion  
+            ViewModel viewmodel = new ViewModel();
+            viewmodel.Title = "Operaciones / Transferencia de Saldo / Procesar Transferencia";
+            viewmodel.Message = mensaje;
+            viewmodel.ControllerName = "Transferencia";
+            viewmodel.ActionName = "FilterOrigen";
+            return RedirectToAction("GenericView", viewmodel);
+            
         }
 
         public ActionResult GenericView(ViewModel viewmodel)

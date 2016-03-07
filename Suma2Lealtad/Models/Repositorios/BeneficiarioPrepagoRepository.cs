@@ -421,7 +421,7 @@ namespace Suma2Lealtad.Models
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid,
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -478,7 +478,7 @@ namespace Suma2Lealtad.Models
                                 detalle = m.isodescription,
                                 tipo = m.transcode + "-" + m.transname,
                                 numerotarjeta = Convert.ToDecimal(m.pan),
-                                batchid = m.batchid,
+                                batchid = m.batchid.ToString(),
                                 Encabezado = encabezado
                             };
                             if (modotrans == "En Linea")
@@ -556,7 +556,7 @@ namespace Suma2Lealtad.Models
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid,
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -609,7 +609,7 @@ namespace Suma2Lealtad.Models
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid,
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -683,8 +683,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -725,8 +727,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -790,8 +794,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -832,8 +838,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -919,8 +927,10 @@ namespace Suma2Lealtad.Models
                                            monto = od.amount,
                                            detalle = od.comments,
                                            tipo = "200-Recarga",
+                                           batchid = od.cardsresponse,
                                            nroordenrecarga = o.id,
                                            referenciarecarga = o.documento,
+                                           observacionesrecarga = o.observaciones,
                                            Encabezado = new EncabezadoReporte()
                                            {
                                                nombreReporte = "Reporte de Recargas",
@@ -961,8 +971,10 @@ namespace Suma2Lealtad.Models
                                            monto = od.amount,
                                            detalle = od.comments,
                                            tipo = "200-Recarga",
+                                           batchid = od.cardsresponse,
                                            nroordenrecarga = o.id,
                                            referenciarecarga = o.documento,
+                                           observacionesrecarga = o.observaciones,
                                            Encabezado = new EncabezadoReporte()
                                            {
                                                nombreReporte = "Reporte de Recargas",
@@ -1025,8 +1037,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -1067,8 +1081,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",

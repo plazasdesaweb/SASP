@@ -12,7 +12,7 @@ namespace Suma2Lealtad.Models
         public DateTime fecha { get; set; }
         public Decimal monto { get; set; }        
         public string comentario { get; set; }
-        public int batchid { get; set; }
+        public string batchid { get; set; }
         public decimal numerotarjeta { get; set; }
         public string estatustarjeta { get; set; }
         public string usuario { get; set; }        
@@ -20,6 +20,7 @@ namespace Suma2Lealtad.Models
         public string tipo { get; set; }
         public int nroordenrecarga { get; set; }
         public string referenciarecarga { get; set; }
+        public string observacionesrecarga { get; set; }
         public ParametrosReporte Parametros {get;set;}
 
         public List<PrepaidCustomer> ListaClientes { get; set; }
