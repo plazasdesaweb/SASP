@@ -38,23 +38,14 @@ namespace Suma2Lealtad.Controllers.Prepago
                 //SI ES SUMA. VOY A EDIT, SI NO A CREATE
                 if (beneficiario.Afiliado.type == "Suma")
                 {
-                    beneficiario.Afiliado = repAfiliado.Find(beneficiario.Afiliado.id);
-                    beneficiario.Afiliado = repAfiliado.ReiniciarAfiliacionSumaAPrepago(beneficiario.Afiliado);
-                    if (repAfiliado.SaveChanges(beneficiario.Afiliado))
-                    {
-                        beneficiario.Afiliado.ListaClientes = repBeneficiario.GetClientes();
-                        beneficiario.Afiliado.ListaClientes.Insert(0, new PrepaidCustomer { id = 0, name = "" });
-                        return View("Edit", beneficiario.Afiliado);
-                    }
-                    else
-                    {
-                        ViewModel viewmodel = new ViewModel();
-                        viewmodel.Title = "Prepago / Beneficiario / Crear Beneficiario / Filtro de Búsqueda";
-                        viewmodel.Message = "Error de aplicación: No se pudo guardar afiliacion Prepago";
-                        viewmodel.ControllerName = "BeneficiarioPrepago";
-                        viewmodel.ActionName = "FilterReview";
-                        return RedirectToAction("GenericView", viewmodel);
-                    }
+                    //MUESTRO MENSAJE DE CAMBIO SUMA A PREPAGO
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Prepago / Beneficiario / Crear Beneficiario / Filtro de Búsqueda";
+                    viewmodel.Message = "El número de documento ya posee afiliación a Suma Plaza's. Complete la afiliación a Prepago Plaza's.";
+                    viewmodel.ControllerName = "BeneficiarioPrepago";
+                    viewmodel.ActionName = "CreateBeneficiarioSuma";
+                    viewmodel.RouteValues = beneficiario.Afiliado.id.ToString();
+                    return RedirectToAction("GenericView", viewmodel);                   
                 }
                 else
                 {
@@ -114,6 +105,30 @@ namespace Suma2Lealtad.Controllers.Prepago
                 viewmodel.ActionName = "FilterReview";
             }
             return RedirectToAction("GenericView", viewmodel);
+        }
+
+        public ActionResult CreateBeneficiarioSuma(int id)
+        {
+            BeneficiarioPrepago beneficiario = new BeneficiarioPrepago()
+            {
+                Afiliado = repAfiliado.Find(id)
+            };
+            beneficiario.Afiliado = repAfiliado.ReiniciarAfiliacionSumaAPrepago(beneficiario.Afiliado);
+            if (repAfiliado.SaveChanges(beneficiario.Afiliado))
+            {
+                beneficiario.Afiliado.ListaClientes = repBeneficiario.GetClientes();
+                beneficiario.Afiliado.ListaClientes.Insert(0, new PrepaidCustomer { id = 0, name = "" });
+                return View("Edit", beneficiario.Afiliado);
+            }
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Beneficiario / Crear Beneficiario / Filtro de Búsqueda";
+                viewmodel.Message = "Error de aplicación: No se pudo guardar afiliacion Prepago";
+                viewmodel.ControllerName = "BeneficiarioPrepago";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
+            }
         }
 
         public ActionResult CreateBeneficiarioConTarjeta(string numdoc)

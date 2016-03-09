@@ -9,11 +9,13 @@ namespace Suma2Lealtad.Models
     {
         //public string idAfiliadoOrigen { get; set; }
         public string docnumberAfiliadoOrigen { get; set; }
+        public string typeAfiliadoOrigen { get; set; }
         public string nameAfiliadoOrigen { get; set; }
         public string lastname1AfiliadoOrigen { get; set; }
         
         //public string idAfiliadoDestino { get; set; }
         public string docnumberAfiliadoDestino { get; set; }
+        public string typeAfiliadoDestino { get; set; }
         public string nameAfiliadoDestino { get; set; }
         public string lastname1AfiliadoDestino { get; set; }
 
