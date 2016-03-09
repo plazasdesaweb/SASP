@@ -27,162 +27,230 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult DetalleOrigen(string numdoc, string action = "post")
         {
             AfiliadoSumaIndex a;
-            //SI ESTOY EN SESION PREPAGO, SOLO BUSCO BENEFICIARIOS PREPAGO, SI ESTOY EN SUMA BUSCO TODOS
+            AfiliadoSuma afiliadoOrigen;
+            //SI ESTOY EN SESION PREPAGO, SOLO BUSCO BENEFICIARIOS PREPAGO
             if ((string)Session["type"] == "Prepago")
             {
-                BeneficiarioPrepagoIndex b = repBeneficiario.Find(numdoc, "", "", "", "").FirstOrDefault();
-                if (b != null)
+                a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
+                if (a == null)
                 {
-                    a = b.Afiliado;
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento origen " + numdoc + " no esta registrado.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else if (a.type != "Prepago")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento origen " + numdoc + " no es beneficiario Prepago Plaza's, no puede hacer transferencias.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
                 }
                 else
                 {
-                    a = null;
+                    afiliadoOrigen = repAfiliado.Find(a.id);
                 }
             }
+            //SI ESTOY EN SESION SUMA, SOLO BUSCO BENEFICIARIOS SUMA
             else
             {
-                a = repAfiliado.Find(numdoc, "", "", "", "").FindAll(x => x.type.Equals("Suma")).FirstOrDefault();
-            }
-            if (a == null)
-            {
-                ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
-                viewmodel.Message = "El número de documento " + numdoc + " no está registrado.";
-                viewmodel.ControllerName = "Transferencia";
-                viewmodel.ActionName = "FilterOrigen";
-                return RedirectToAction("GenericView", viewmodel);
-            }
-            else
-            {
-                AfiliadoSuma afiliadoOrigen = repAfiliado.Find(a.id);
-                SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoOrigen);
-                Transferencia transferencia = new Transferencia()
+                a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
+                if (a == null)
                 {
-                    docnumberAfiliadoOrigen = afiliadoOrigen.docnumber,
-                    nameAfiliadoOrigen = afiliadoOrigen.name,
-                    lastname1AfiliadoOrigen = afiliadoOrigen.lastname1,
-                    typeAfiliadoOrigen = afiliadoOrigen.type,
-                    datosCuentaSumaOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA)),
-                    DenominacionCuentaOrigenSuma = "Más",
-                    datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)),
-                    DenominacionCuentaOrigenPrepago = "Bs."
-                };
-                return View("DetalleTransferencia", transferencia);
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento origen " + numdoc + " no esta registrado.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else if (a.type != "Suma")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento origen " + numdoc + " es beneficiario Prepago Plaza's, no puede hacer transferencias.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else
+                {
+                    afiliadoOrigen = repAfiliado.Find(a.id);
+                }
             }
+            SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoOrigen);
+            Transferencia transferencia = new Transferencia()
+            {
+                docnumberAfiliadoOrigen = afiliadoOrigen.docnumber,
+                nameAfiliadoOrigen = afiliadoOrigen.name,
+                lastname1AfiliadoOrigen = afiliadoOrigen.lastname1,
+                typeAfiliadoOrigen = afiliadoOrigen.type,
+                datosCuentaSumaOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA)),
+                DenominacionCuentaOrigenSuma = "Más",
+                datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)),
+                DenominacionCuentaOrigenPrepago = "Bs."
+            };
+            return View("DetalleTransferencia", transferencia);
         }
 
         public ActionResult DetalleOrigen(string numdoc)
         {
             AfiliadoSumaIndex a;
-            //SI ESTOY EN SESION PREPAGO, SOLO BUSCO BENEFICIARIOS PREPAGO, SI ESTOY EN SUMA BUSCO TODOS
+            AfiliadoSuma afiliadoOrigen;
+            //SI ESTOY EN SESION PREPAGO, SOLO BUSCO BENEFICIARIOS PREPAGO
             if ((string)Session["type"] == "Prepago")
             {
-                BeneficiarioPrepagoIndex b = repBeneficiario.Find(numdoc, "", "", "", "").FirstOrDefault();
-                if (b != null)
+                a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
+                if (a == null)
                 {
-                    a = b.Afiliado;
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento origen " + numdoc + " no esta registrado.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else if (a.type != "Prepago")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento origen " + numdoc + " no es beneficiario Prepago Plaza's, no puede hacer transferencias.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
                 }
                 else
                 {
-                    a = null;
+                    afiliadoOrigen = repAfiliado.Find(a.id);
                 }
             }
+            //SI ESTOY EN SESION SUMA, SOLO BUSCO BENEFICIARIOS SUMA
             else
             {
-                a = repAfiliado.Find(numdoc, "", "", "", "").FindAll(x => x.type.Equals("Suma")).FirstOrDefault();
-            }
-            if (a == null)
-            {
-                ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
-                viewmodel.Message = "El número de documento " + numdoc + " no está registrado.";
-                viewmodel.ControllerName = "Transferencia";
-                viewmodel.ActionName = "FilterOrigen";
-                return RedirectToAction("GenericView", viewmodel);
-            }
-            else
-            {
-                AfiliadoSuma afiliadoOrigen = repAfiliado.Find(a.id);
-                SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoOrigen);
-                Transferencia transferencia = new Transferencia()
+                a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
+                if (a == null)
                 {
-                    docnumberAfiliadoOrigen = afiliadoOrigen.docnumber,
-                    nameAfiliadoOrigen = afiliadoOrigen.name,
-                    lastname1AfiliadoOrigen = afiliadoOrigen.lastname1,
-                    typeAfiliadoOrigen = afiliadoOrigen.type,
-                    datosCuentaSumaOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA)),
-                    DenominacionCuentaOrigenSuma = "Más",
-                    datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)),
-                    DenominacionCuentaOrigenPrepago = "Bs."
-                };
-                return View("DetalleTransferencia", transferencia);
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento " + numdoc + " no esta registrado.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else if (a.type != "Suma")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento " + numdoc + " es beneficiario Prepago Plaza's, no puede hacer transferencias.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "FilterOrigen";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else
+                {
+                    afiliadoOrigen = repAfiliado.Find(a.id);
+                }
             }
+            SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoOrigen);
+            Transferencia transferencia = new Transferencia()
+            {
+                docnumberAfiliadoOrigen = afiliadoOrigen.docnumber,
+                nameAfiliadoOrigen = afiliadoOrigen.name,
+                lastname1AfiliadoOrigen = afiliadoOrigen.lastname1,
+                typeAfiliadoOrigen = afiliadoOrigen.type,
+                datosCuentaSumaOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA)),
+                DenominacionCuentaOrigenSuma = "Más",
+                datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)),
+                DenominacionCuentaOrigenPrepago = "Bs."
+            };
+            return View("DetalleTransferencia", transferencia);
         }
 
         [HttpPost]
         public ActionResult DetalleTransferencia(Transferencia transferencia, string numdoc = "")
         {
             AfiliadoSumaIndex a;
-            //SI ESTOY EN SESION PREPAGO, SOLO BUSCO BENEFICIARIOS PREPAGO, SI ESTOY EN SUMA BUSCO TODOS
+            AfiliadoSuma afiliadoDestino;
+            //VERIFICO QUE EL NRO DOCUMENTO ORIGEN Y DESTINO SEAN DISTINTOS
+            if (numdoc == transferencia.docnumberAfiliadoOrigen)
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Destino";
+                viewmodel.Message = "El número de documento destino no puede ser igual al número de documento origen.";
+                viewmodel.ControllerName = "Transferencia";
+                viewmodel.ActionName = "DetalleOrigen";
+                viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
+                return RedirectToAction("GenericView", viewmodel);
+            }
+            //SI ESTOY EN SESION PREPAGO, SOLO BUSCO BENEFICIARIOS PREPAGO
             if ((string)Session["type"] == "Prepago")
             {
-                BeneficiarioPrepagoIndex b = repBeneficiario.Find(numdoc, "", "", "", "").FirstOrDefault();
-                if (b != null)
+                a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
+                if (a == null)
                 {
-                    a = b.Afiliado;
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento destino " + numdoc + " no esta registrado.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "DetalleOrigen";
+                    viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else if (a.type != "Prepago")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento destino " + numdoc + " no es beneficiario Prepago Plaza's, no puede hacer transferencias.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "DetalleOrigen";
+                    viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
+                    return RedirectToAction("GenericView", viewmodel);
                 }
                 else
                 {
-                    a = null;
+                    afiliadoDestino = repAfiliado.Find(a.id);
                 }
             }
+            //SI ESTOY EN SESION SUMA, SOLO BUSCO BENEFICIARIOS SUMA
             else
             {
-                a = repAfiliado.Find(numdoc, "", "", "", "").FindAll(x => x.type.Equals("Suma")).FirstOrDefault();
-            } 
-            if (a == null)
-            {
-                ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Destino";
-                viewmodel.Message = "El número de documento " + numdoc + " no está registrado.";
-                viewmodel.ControllerName = "Transferencia";
-                viewmodel.ActionName = "DetalleOrigen";
-                viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
-                return RedirectToAction("GenericView", viewmodel);
+                a = repAfiliado.Find(numdoc, "", "", "", "").FirstOrDefault();
+                if (a == null)
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento destino " + numdoc + " no esta registrado.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "DetalleOrigen";
+                    viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else if (a.type != "Suma")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Origen";
+                    viewmodel.Message = "El número de documento destino " + numdoc + " es beneficiario Prepago Plaza's, no puede hacer transferencias.";
+                    viewmodel.ControllerName = "Transferencia";
+                    viewmodel.ActionName = "DetalleOrigen";
+                    viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else
+                {
+                    afiliadoDestino = repAfiliado.Find(a.id);
+                }
             }
-            else if (a.docnumber == transferencia.docnumberAfiliadoOrigen)
-            {
-                ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Destino";
-                viewmodel.Message = "El número de documento de destino no puede ser igual al número de documento de origen.";
-                viewmodel.ControllerName = "Transferencia";
-                viewmodel.ActionName = "DetalleOrigen";
-                viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
-                return RedirectToAction("GenericView", viewmodel);
-            }
-            //EN CASO DE SESION SUMA, HAY QUE VERIFICAR QUE EL TIPO DE AFILIACION DE ORIGEN Y DESTINO SEAN IGUALES 
-            else if (a.type == transferencia.typeAfiliadoOrigen)
-            {
-                ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Operaciones / Transferencia de Saldo / Filtro de Búsqueda de Destino";
-                viewmodel.Message = "El tipo de afiliación del número de documento de destino no coincide con el tipo de afiliación del número de documento de de origen.";
-                viewmodel.ControllerName = "Transferencia";
-                viewmodel.ActionName = "DetalleOrigen";
-                viewmodel.RouteValues = "?numdoc=" + transferencia.docnumberAfiliadoOrigen;
-                return RedirectToAction("GenericView", viewmodel);
-            }            
-            else
-            {
-                AfiliadoSuma afiliadoDestino = repAfiliado.Find(a.id);
-                SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoDestino);
-                transferencia.docnumberAfiliadoDestino = afiliadoDestino.docnumber;
-                transferencia.nameAfiliadoDestino = afiliadoDestino.name;
-                transferencia.lastname1AfiliadoDestino = afiliadoDestino.lastname1;
-                transferencia.datosCuentaSumaDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
-                transferencia.datosCuentaPrepagoDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
-                return View(transferencia);
-            }
+            SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoDestino);
+            transferencia.docnumberAfiliadoDestino = afiliadoDestino.docnumber;
+            transferencia.nameAfiliadoDestino = afiliadoDestino.name;
+            transferencia.lastname1AfiliadoDestino = afiliadoDestino.lastname1;
+            transferencia.datosCuentaSumaDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
+            transferencia.datosCuentaPrepagoDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
+            return View(transferencia);
         }
 
         [HttpPost]
