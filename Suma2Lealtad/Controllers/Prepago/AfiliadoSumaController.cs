@@ -35,7 +35,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 {
                     ViewModel viewmodel = new ViewModel();
                     viewmodel.Title = "Afiliado / Crear Afiliación";
-                    viewmodel.Message = "El número de documento indicado ya posee una Tarjea Activa con el número " + afiliado.pan;
+                    viewmodel.Message = "El número de documento indicado ya posee una Tarjeta Activa con el número " + afiliado.pan;
                     viewmodel.ControllerName = "AfiliadoSuma";
                     viewmodel.ActionName = "CreateConTarjeta";
                     viewmodel.RouteValues = "?numdoc="+numdoc;

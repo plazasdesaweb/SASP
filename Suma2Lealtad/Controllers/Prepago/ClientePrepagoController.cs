@@ -200,7 +200,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                     {
                         ViewModel viewmodel = new ViewModel();
                         viewmodel.Title = "Prepago / Cliente / Crear Beneficiario / Filtro de Búsqueda";
-                        viewmodel.Message = "El número de documento indicado ya posee una Tarjea Activa con el número " + beneficiario.Afiliado.pan;
+                        viewmodel.Message = "El número de documento indicado ya posee una Tarjeta Activa con el número " + beneficiario.Afiliado.pan;
                         viewmodel.ControllerName = "ClientePrepago";
                         viewmodel.ActionName = "CreateBeneficiarioConTarjeta";
                         viewmodel.RouteValues = id.ToString() + "?numdoc=" + numdoc;
