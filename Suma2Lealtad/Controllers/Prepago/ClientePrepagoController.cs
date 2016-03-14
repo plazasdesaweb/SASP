@@ -14,7 +14,6 @@ namespace Suma2Lealtad.Controllers.Prepago
     [HandleError]
     public class ClientePrepagoController : Controller
     {
-        private const int ID_TYPE_PREPAGO = 2;
         private ClientePrepagoRepository repCliente = new ClientePrepagoRepository();
         private BeneficiarioPrepagoRepository repBeneficiario = new BeneficiarioPrepagoRepository();
         private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
@@ -181,32 +180,36 @@ namespace Suma2Lealtad.Controllers.Prepago
                 //SI ES SUMA. VOY A EDIT, SI NO A CREATE
                 if (beneficiario.Afiliado.type == "Suma")
                 {
-                    beneficiario.Afiliado = repAfiliado.Find(beneficiario.Afiliado.id);
-                    beneficiario.Afiliado = repAfiliado.ReiniciarAfiliacionSumaAPrepago(beneficiario.Afiliado);
-                    if (repAfiliado.SaveChanges(beneficiario.Afiliado))
-                    {
-                        beneficiario.Afiliado.idClientePrepago = beneficiario.Cliente.idCliente;
-                        beneficiario.Afiliado.NombreClientePrepago = beneficiario.Cliente.nameCliente;
-                        return View("EditBeneficiario", beneficiario.Afiliado);
-                    }
-                    else
-                    {
-                        ViewModel viewmodel = new ViewModel();
-                        viewmodel.Title = "Prepago / Cliente / Crear Beneficiario / Filtro de Búsqueda";
-                        viewmodel.Message = "Error de aplicación: No se pudo guardar afiliacion Prepago";
-                        viewmodel.ControllerName = "ClientePrepago";
-                        viewmodel.ActionName = "FilterBeneficiario";
-                        viewmodel.RouteValues = id.ToString();
-                        return RedirectToAction("GenericView", viewmodel);
-                    }
+                    //MUESTRO MENSAJE DE CAMBIO SUMA A PREPAGO
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Prepago / Cliente / Crear Beneficiario / Filtro de Búsqueda";
+                    viewmodel.Message = "El número de documento ya posee afiliación a Suma Plaza's. Complete la afiliación a Prepago Plaza's.";
+                    viewmodel.ControllerName = "ClientePrepago";
+                    viewmodel.ActionName = "CreateBeneficiarioSuma";
+                    viewmodel.RouteValues = id.ToString() + "?idBeneficiario=" + beneficiario.Afiliado.id.ToString();
+                    return RedirectToAction("GenericView", viewmodel);                                         
                 }
                 else
                 {
-                    beneficiario.Afiliado.typeid = ID_TYPE_PREPAGO;
+                    beneficiario.Afiliado.typeid = Globals.ID_TYPE_PREPAGO;
                     beneficiario.Afiliado.type = "Prepago";
                     beneficiario.Afiliado.idClientePrepago = beneficiario.Cliente.idCliente;
                     beneficiario.Afiliado.NombreClientePrepago = beneficiario.Cliente.nameCliente;
-                    return View("CreateBeneficiario", beneficiario.Afiliado);
+                    //verifico si tiene tarjeta en Cards
+                    if (beneficiario.Afiliado.pan != "0" && beneficiario.Afiliado.estatustarjeta == "Activa")
+                    {
+                        ViewModel viewmodel = new ViewModel();
+                        viewmodel.Title = "Prepago / Cliente / Crear Beneficiario / Filtro de Búsqueda";
+                        viewmodel.Message = "El número de documento indicado ya posee una Tarjeta Activa con el número " + beneficiario.Afiliado.pan;
+                        viewmodel.ControllerName = "ClientePrepago";
+                        viewmodel.ActionName = "CreateBeneficiarioConTarjeta";
+                        viewmodel.RouteValues = id.ToString() + "?numdoc=" + numdoc;
+                        return RedirectToAction("GenericView", viewmodel);
+                    }
+                    else
+                    {
+                        return View("CreateBeneficiario", beneficiario.Afiliado);
+                    }
                 }
             }
             //ES Beneficiario PrepagoPlazas
@@ -235,10 +238,10 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult CreateBeneficiario(AfiliadoSuma Afiliado, ClientePrepago Cliente, HttpPostedFileBase file)
+        public ActionResult CreateBeneficiario(AfiliadoSuma Afiliado, ClientePrepago Cliente, HttpPostedFileBase fileNoValidado)
         {
             ViewModel viewmodel = new ViewModel();
-            if (repAfiliado.Save(Afiliado, file))
+            if (repAfiliado.Save(Afiliado, fileNoValidado))
             {
                 BeneficiarioPrepago beneficiario = new BeneficiarioPrepago()
                 {
@@ -252,6 +255,93 @@ namespace Suma2Lealtad.Controllers.Prepago
                     viewmodel.ControllerName = "ClientePrepago";
                     viewmodel.ActionName = "FilterReviewBeneficiarios";
                     viewmodel.RouteValues = Afiliado.idClientePrepago.ToString();
+                }
+            }
+            else
+            {
+                viewmodel.Title = "Prepago / Cliente / Beneficiario / Crear Afiliación";
+                viewmodel.Message = "Error de aplicacion: No se pudo crear solicitud de afiliación.";
+                viewmodel.ControllerName = "ClientePrepago";
+                viewmodel.ActionName = "FilterReviewBeneficiarios";
+                viewmodel.RouteValues = Afiliado.idClientePrepago.ToString();
+            }
+            return RedirectToAction("GenericView", viewmodel);
+        }
+
+        public ActionResult CreateBeneficiarioSuma(int id, int idBeneficiario)
+        {
+            BeneficiarioPrepago beneficiario = new BeneficiarioPrepago()
+                {
+                    Afiliado = repAfiliado.Find(idBeneficiario),
+                    Cliente = repCliente.Find(id)
+                };
+            beneficiario.Afiliado = repAfiliado.ReiniciarAfiliacionSumaAPrepago(beneficiario.Afiliado);
+            if (repAfiliado.SaveChanges(beneficiario.Afiliado))
+            {
+                beneficiario.Afiliado.idClientePrepago = beneficiario.Cliente.idCliente;
+                beneficiario.Afiliado.NombreClientePrepago = beneficiario.Cliente.nameCliente;
+                return View("EditBeneficiario", beneficiario.Afiliado);
+            }
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Cliente / Crear Beneficiario / Filtro de Búsqueda";
+                viewmodel.Message = "Error de aplicación: No se pudo guardar afiliacion Prepago";
+                viewmodel.ControllerName = "ClientePrepago";
+                viewmodel.ActionName = "FilterBeneficiario";
+                viewmodel.RouteValues = id.ToString();
+                return RedirectToAction("GenericView", viewmodel);
+            }
+        }
+
+        public ActionResult CreateBeneficiarioConTarjeta(int id, string numdoc)
+        {
+            BeneficiarioPrepago beneficiario;
+            beneficiario = new BeneficiarioPrepago()
+            {
+                Afiliado = repAfiliado.Find(numdoc),
+                Cliente = repCliente.Find(id)
+            };
+            //CARGO VALOR POR DEFECTO EN LISTA DE ESTADOS
+            beneficiario.Afiliado.ListaEstados.Insert(0, new ESTADO { COD_ESTADO = " ", DESCRIPC_ESTADO = "Seleccione un Estado" });
+            beneficiario.Afiliado.typeid = Globals.ID_TYPE_PREPAGO;
+            beneficiario.Afiliado.type = "Prepago";
+            beneficiario.Afiliado.idClientePrepago = beneficiario.Cliente.idCliente;
+            beneficiario.Afiliado.NombreClientePrepago = beneficiario.Cliente.nameCliente;
+            return View("CreateBeneficiario", beneficiario.Afiliado);
+        }
+
+        [HttpPost]
+        public ActionResult CreateBeneficiarioConTarjeta(AfiliadoSuma Afiliado, ClientePrepago Cliente, HttpPostedFileBase fileNoValidado)
+        {
+            ViewModel viewmodel = new ViewModel();
+            if (repAfiliado.Save(Afiliado, fileNoValidado))
+            {
+                BeneficiarioPrepago beneficiario = new BeneficiarioPrepago()
+                {
+                    Afiliado = Afiliado,
+                    Cliente = repCliente.Find(Afiliado.idClientePrepago)
+                };
+                if (repBeneficiario.Save(beneficiario))
+                {
+                    int idafiliado = repAfiliado.Find(Afiliado.docnumber, "", "", "", "").First().id;
+                    beneficiario.Afiliado = repAfiliado.Find(idafiliado);
+                    if (repAfiliado.Aprobar(beneficiario.Afiliado))
+                    {
+                        viewmodel.Title = "Prepago / Cliente / Beneficiario / Crear Afiliación";
+                        viewmodel.Message = "Solicitud de afiliación creada y aprobada exitosamente.";
+                        viewmodel.ControllerName = "ClientePrepago";
+                        viewmodel.ActionName = "FilterReviewBeneficiarios";
+                        viewmodel.RouteValues = Afiliado.idClientePrepago.ToString();
+                    }
+                    else
+                    {
+                        viewmodel.Title = "Prepago / Cliente / Beneficiario / Crear Afiliación";
+                        viewmodel.Message = "Solicitud de afiliación creada, pero no se pudo aprobar automáticamente.";
+                        viewmodel.ControllerName = "ClientePrepago";
+                        viewmodel.ActionName = "FilterReviewBeneficiarios";
+                        viewmodel.RouteValues = Afiliado.idClientePrepago.ToString();
+                    }
                 }
             }
             else
@@ -450,12 +540,34 @@ namespace Suma2Lealtad.Controllers.Prepago
                 //    viewmodel.ActionName = "FilterReviewBeneficiarios";
                 //    viewmodel.RouteValues = beneficiario.Cliente.idCliente.ToString();
                 //}
-                repAfiliado.SaveChanges(beneficiario.Afiliado);
-                viewmodel.Title = "Prepago / Cliente / Beneficiario / Eliminar Beneficiario";
-                viewmodel.Message = "Beneficiario eliminado con éxito.";
-                viewmodel.ControllerName = "ClientePrepago";
-                viewmodel.ActionName = "FilterReviewBeneficiarios";
-                viewmodel.RouteValues = beneficiario.Cliente.idCliente.ToString();
+                if (repAfiliado.SaveChanges(beneficiario.Afiliado))
+                {
+                    //SE APRUEBA AFILIACION SUMA DE FORMA AUTOMATICA
+                    if (repAfiliado.Aprobar(beneficiario.Afiliado))
+                    {
+                        viewmodel.Title = "Prepago / Cliente / Beneficiario / Eliminar Beneficiario";
+                        viewmodel.Message = "Beneficiario eliminado con éxito.";
+                        viewmodel.ControllerName = "ClientePrepago";
+                        viewmodel.ActionName = "FilterReviewBeneficiarios";
+                        viewmodel.RouteValues = beneficiario.Cliente.idCliente.ToString();
+                    }
+                    else
+                    {
+                        viewmodel.Title = "Prepago / Cliente / Beneficiario / Eliminar Beneficiario";
+                        viewmodel.Message = "Afiliación Prepago eliminada, pero no se aprobó de forma automática la afiliación a Suma";
+                        viewmodel.ControllerName = "ClientePrepago";
+                        viewmodel.ActionName = "FilterReviewBeneficiarios";
+                        viewmodel.RouteValues = beneficiario.Cliente.idCliente.ToString();
+                    }
+                }
+                else
+                {
+                    viewmodel.Title = "Prepago / Cliente / Beneficiario / Eliminar Beneficiario";
+                    viewmodel.Message = "Beneficiario eliminado con éxito, pero no se pudo actualizar afiliación a Suma";
+                    viewmodel.ControllerName = "ClientePrepago";
+                    viewmodel.ActionName = "FilterReviewBeneficiarios";
+                    viewmodel.RouteValues = beneficiario.Cliente.idCliente.ToString();
+                }
             }
             else
             {
@@ -777,7 +889,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 BeneficiarioPrepagoSaldosMovimientos beneficiarioSaldosMovimientos = new BeneficiarioPrepagoSaldosMovimientos()
                 {
                     denominacionPrepago = "Bs.",
-                    denominacionSuma = "Más.",
+                    denominacionSuma = "Más",
                     Beneficiario = beneficiario,
                     SaldosMovimientos = SaldosMovimientos,
                 };
@@ -983,7 +1095,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult FilterOrdenes(int id, string numero, string fecha, string estadoOrden, string Referencia)
+        public ActionResult FilterOrdenes(int id, string numero, string fecha, string estadoOrden, string Referencia, string claseOrden, string Observaciones)
         {
             List<OrdenRecargaPrepago> ordenes = new List<OrdenRecargaPrepago>();
             OrdenRecargaPrepago orden;
@@ -997,7 +1109,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
             else
             {
-                ordenes = repOrden.Find(fecha, estadoOrden, Referencia).Where(o => o.Cliente.idCliente == id).ToList();
+                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones).Where(o => o.Cliente.idCliente == id).ToList();
             }
             if (ordenes.Count > 0)
             {
@@ -1021,10 +1133,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult AprobarOrden(int id, int idOrden, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia)
+        public ActionResult AprobarOrden(int id, int idOrden, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia, string Observaciones)
         {
             ViewModel viewmodel = new ViewModel();
             detalleOrden.First().documentoOrden = DocumentoReferencia;
+            detalleOrden.First().observacionesOrden = Observaciones;
             if (indicadorGuardar == "Aprobar")
             {
                 if (repOrden.AprobarOrden(detalleOrden.ToList(), MontoTotalRecargas))

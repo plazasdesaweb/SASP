@@ -14,10 +14,12 @@ namespace Suma2Lealtad.Modules
         //servicios Cards
         private const string WSL_CARDS_ADDCLIENT = "addclient/{numdoc}/{name}/{phone}/{address}";
         private const string WSL_CARDS_ADDBATCH = "addbatch/{numdoc}/{transcode}/{monto}/{factoracred}/{factorcanje}/{usuario}";
+        private const string WSL_CARDS_ADDBATCH_ANULACION = "addbatch/{numdoc}/{transcode}/{batchid}/{factoracred}/{factorcanje}/{usuario}";
+        private const string WSL_CARDS_ADDTRANSFER = "addtransfer/{numdocOrigen}/{numdocDestino}/{monto}/{accounttype}/{usuario}";
         private const string WSL_CARDS_GETCLIENT = "getclient/{numdoc}";
         private const string WSL_CARDS_GETBALANCE = "getbalance/{numdoc}";
         private const string WSL_CARDS_GETBATCH = "getbatch/{accounttype}/{numdoc}";
-        private const string WSL_CARDS_GETREPORT = "getreport/{fechadesde}/{fechahasta}/{numdoc}/{transcode}";
+        private const string WSL_CARDS_GETREPORT = "getreport/{fechadesde}/{fechahasta}/{numdoc}/{accounttype}/{transcode}";
         private const string WSL_CARDS_ADDCARD = "addcard/{numdoc}";
         private const string WSL_CARDS_CARD_PRINT = "card/print/{numdoc}";
         private const string WSL_CARDS_CARD_ACTIVE = "card/active/{numdoc}";
@@ -109,6 +111,29 @@ namespace Suma2Lealtad.Modules
                 return ConsumirServicioCards(req);
             }
 
+            public static string addBatchAnulacion(string numdoc, string transcode, string batchid, string usuario, string factoracred = "1", string factorcanje = "100")
+            {
+                string req = WSL_CARDS_ADDBATCH_ANULACION;
+                req = req.Replace("{numdoc}", numdoc);
+                req = req.Replace("{transcode}", transcode);
+                req = req.Replace("{batchid}", batchid);
+                req = req.Replace("{factoracred}", factoracred);
+                req = req.Replace("{factorcanje}", factorcanje);
+                req = req.Replace("{usuario}", usuario);
+                return ConsumirServicioCards(req);
+            }
+
+            public static string addTransfer(string numdocOrigen, string numdocDestino, string monto, string accounttype, string usuario)
+            {
+                string req = WSL_CARDS_ADDTRANSFER;
+                req = req.Replace("{numdocOrigen}", numdocOrigen);
+                req = req.Replace("{numdocDestino}", numdocDestino);
+                req = req.Replace("{monto}", monto);
+                req = req.Replace("{accounttype}", accounttype);
+                req = req.Replace("{usuario}", usuario);
+                return ConsumirServicioCards(req);
+            }
+
             public static string getClient(string numdoc)
             {
                 string req = WSL_CARDS_GETCLIENT;
@@ -131,12 +156,13 @@ namespace Suma2Lealtad.Modules
                 return ConsumirServicioCards(req);
             }
 
-            public static string getReport(string fechadesde, string fechahasta, string numdoc, string transcode)
+            public static string getReport(string fechadesde, string fechahasta, string numdoc, string accounttype, string transcode)
             {
                 string req = WSL_CARDS_GETREPORT;
                 req = req.Replace("{fechadesde}", fechadesde);
                 req = req.Replace("{fechahasta}", fechahasta);
                 req = req.Replace("{numdoc}", numdoc);
+                req = req.Replace("{accounttype}", accounttype);
                 req = req.Replace("{transcode}", transcode);
                 return ConsumirServicioCards(req);
             }

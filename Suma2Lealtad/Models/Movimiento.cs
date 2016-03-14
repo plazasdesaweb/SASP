@@ -11,5 +11,6 @@ namespace Suma2Lealtad.Models
         public decimal saldo { get; set; }
         public string transcode { get; set; }
         public string transname { get; set; }
+        public string b037 { get; set; }
     }
 }

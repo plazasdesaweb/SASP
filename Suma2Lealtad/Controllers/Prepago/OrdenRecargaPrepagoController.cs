@@ -30,7 +30,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             };
             orden.ListaClientes.Insert(0, new PrepaidCustomer { id = 0, name = "" });
             return View(orden);
-        }
+        }        
 
         public ActionResult Create(int idCliente)
         {
@@ -72,6 +72,64 @@ namespace Suma2Lealtad.Controllers.Prepago
                 viewmodel.Message = "Falló el proceso de creación de la Orden.";
                 viewmodel.ControllerName = "OrdenRecargaPrepago";
                 viewmodel.ActionName = "Filter";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+        }
+
+        public ActionResult FilterAnulacion()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult FilterAnulacion(string batchid)
+        {
+            List<DetalleOrdenRecargaPrepago> detalleOrden = repOrden.DetalleParaOrdenAnulacion(batchid);
+            if (detalleOrden.Count != 1 )
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Message = "No se encontró Recarga con la Referencia indicada";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterAnulacion";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+            else if (detalleOrden.First().batchid == "Ya tiene Anulación")
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Message = "La Referencia indicada ya tiene Orden de Anulación";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterAnulacion";
+                return RedirectToAction("GenericView", viewmodel);
+            }            
+            else
+            {
+                return View("CreateAnulacion",detalleOrden);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateAnulacion(int idCliente, IList<DetalleOrdenRecargaPrepago> detalleOrden)
+        {
+            decimal MontoAnulacion = detalleOrden.First().montoRecarga;
+            int idOrden = repOrden.CrearOrden(idCliente, detalleOrden.ToList(), MontoAnulacion);
+            if (idOrden != 0)
+            {
+                //viewmodel.Title = "Prepago / Cliente / Ordenes de Recarga / Detalle de la Orden";
+                //viewmodel.Message = "Orden Aprobada.";
+                //viewmodel.ControllerName = "ClientePrepago";
+                //viewmodel.ActionName = "FilterOrdenes";
+                //viewmodel.RouteValues = id.ToString();
+                return RedirectToAction("DetalleOrden", new { id = idOrden });
+            }
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Message = "Falló el proceso de creación de la Orden.";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterAnulacion";
                 return RedirectToAction("GenericView", viewmodel);
             }
         }
@@ -173,10 +231,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult AprobarOrden(int id, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia)
+        public ActionResult AprobarOrden(int id, IList<DetalleOrdenRecargaPrepago> detalleOrden, decimal MontoTotalRecargas, string indicadorGuardar, string DocumentoReferencia, string Observaciones)
         {
             ViewModel viewmodel = new ViewModel();
             detalleOrden.First().documentoOrden = DocumentoReferencia;
+            detalleOrden.First().observacionesOrden = Observaciones;
             if (indicadorGuardar == "Aprobar")
             {
                 if (repOrden.AprobarOrden(detalleOrden.ToList(), MontoTotalRecargas))
@@ -280,7 +339,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult FilterReview(string numero, string fecha, string estadoOrden, string Referencia)
+        public ActionResult FilterReview(string numero, string fecha, string estadoOrden, string Referencia, string claseOrden, string Observaciones)
         {
             List<OrdenRecargaPrepago> ordenes = new List<OrdenRecargaPrepago>();
             OrdenRecargaPrepago orden;
@@ -294,7 +353,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
             else
             {
-                ordenes = repOrden.Find(fecha, estadoOrden, Referencia).OrderBy(x => x.Cliente.nameCliente).ThenBy(y => y.id).ToList();
+                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones).OrderBy(x => x.Cliente.nameCliente).ThenBy(y => y.id).ToList();                
             }
             return View("Index", ordenes);
         }

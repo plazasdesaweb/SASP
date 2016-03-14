@@ -23,7 +23,7 @@ namespace Suma2Lealtad.Models
         public string name { get; set; }
         public bool active { get; set; }
         public bool Checked { get; set; }
-    
+            
         public virtual ICollection<CustomerInterest> CustomerInterests { get; set; }
     }
 }

@@ -4,11 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<link href="css/bootstrap.css" rel="stylesheet">*@
-@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
-@*<link href="css/style.css" rel="stylesheet">*@
-@*<link href="~/Content/style.css" rel="stylesheet" />*@
-
 <style type="text/css" media="screen">
     .table-hover {
         cursor: pointer;
@@ -70,8 +65,9 @@
                         <th>Nro. de Orden</th>
                         <th>Fecha de Creación</th>
                         <th>Estatus</th>
-                        <th>Comentarios</th>
+                        <th>Clase de Orden</th>
                         <th>Documento de Referencia</th>
+                        <th>Observaciones</th>
                         <th>Monto Total</th>
                         <th class="text-center"></th>
                         <th class="text-center"></th>
@@ -105,6 +101,10 @@
 
                             <td>
                                 @Html.DisplayFor(modelItem => item.documento)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.observaciones)
                             </td>
 
                             <td>

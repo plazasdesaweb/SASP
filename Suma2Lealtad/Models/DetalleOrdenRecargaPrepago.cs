@@ -18,7 +18,9 @@ namespace Suma2Lealtad.Models
         public string tipoOrden { get; set; }
         public string statusOrden { get; set; }
         public string documentoOrden { get; set; }
-
+        public string observacionesOrden { get; set; }
+        public string batchid { get; set; }                    //Para Ordenes de Anulación, aqui se guarda el batchid de la recarga anulada
+        
         public int idAfiliado { get; set; }
         public string docnumberAfiliado { get; set; }
         public string nameAfiliado { get; set; }

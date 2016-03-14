@@ -13,9 +13,8 @@ namespace Suma2Lealtad.Controllers.Prepago
     [HandleError]
     public class FueraLineaPrepagoController : Controller
     {
-        private const string TIPO_CUENTA_PREPAGO = "5";
         BeneficiarioPrepagoRepository repBeneficiario = new BeneficiarioPrepagoRepository();
-        private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
+        AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
 
         //
         // GET: /FueraLineaPrepago/Filter/
@@ -67,7 +66,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 numdoc = record.Afiliado.docnumber,
                 beneficiario = record.Afiliado.name + " " + record.Afiliado.lastname1,
                 monto = "0,00",
-                saldo = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(TIPO_CUENTA_PREPAGO)).saldo
+                saldo = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)).saldo
             };
 
             return View(model);

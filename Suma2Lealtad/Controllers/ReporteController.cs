@@ -1,5 +1,6 @@
 ﻿using Suma2Lealtad.Filters;
 using Suma2Lealtad.Models;
+using Suma2Lealtad.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,6 @@ namespace Suma2Lealtad.Controllers
     [HandleError]
     public class ReporteController : Controller
     {
-        private const string TRANSCODE_ACREDITACION_SUMA = "318";
-        private const string TRANSCODE_CANJE_SUMA = "319";
-
         private BeneficiarioPrepagoRepository repBeneficiario = new BeneficiarioPrepagoRepository();
         private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
 
@@ -307,11 +305,11 @@ namespace Suma2Lealtad.Controllers
             }
             else if (TipoTransaccion == "Acreditacion")
             {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TRANSCODE_ACREDITACION_SUMA, numdoc);
+                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_ACREDITACION_SUMA, numdoc);
             }
             else if (TipoTransaccion == "Canje")
             {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TRANSCODE_CANJE_SUMA, numdoc);
+                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_CANJE_SUMA, numdoc);
             }
             ParametrosReporteSuma p = new ParametrosReporteSuma()
             {
@@ -344,11 +342,11 @@ namespace Suma2Lealtad.Controllers
             }
             else if (TipoTransaccion == "Acreditacion")
             {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TRANSCODE_ACREDITACION_SUMA, numdoc);
+                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_ACREDITACION_SUMA, numdoc);
             }
             else if (TipoTransaccion == "Canje")
             {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TRANSCODE_CANJE_SUMA, numdoc);
+                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_CANJE_SUMA, numdoc);
             }
             string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteTransaccionesPDF", reporte)

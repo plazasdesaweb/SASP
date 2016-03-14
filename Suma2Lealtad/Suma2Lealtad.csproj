@@ -235,6 +235,7 @@
     <Compile Include="Controllers\Prepago\ClientePrepagoController.cs" />
     <Compile Include="Controllers\Prepago\FueraLineaPrepagoController.cs" />
     <Compile Include="Controllers\Prepago\OrdenRecargaPrepagoController.cs" />
+    <Compile Include="Controllers\Prepago\TransferenciaController.cs" />
     <Compile Include="Controllers\ReasonsBlockController.cs" />
     <Compile Include="Controllers\ReasonsController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
@@ -361,6 +362,7 @@
     <Compile Include="Models\ExceptionJSON.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Movimiento.cs" />
+    <Compile Include="Models\Repositorios\OperacionesRepository.cs" />
     <Compile Include="Models\Repositorios\OrdenRecargaPrepagoRepository.cs" />
     <Compile Include="Models\RespuestaCards.cs" />
     <Compile Include="Models\RespuestaWebPlazas.cs" />
@@ -403,6 +405,7 @@
     <Compile Include="Models\TARJETA.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Transferencia.cs" />
     <Compile Include="Models\TSource.cs" />
     <Compile Include="Models\Type.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
@@ -421,6 +424,7 @@
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Modules\AppModule.cs" />
     <Compile Include="Modules\AppSession.cs" />
+    <Compile Include="Modules\Globals.cs" />
     <Compile Include="Modules\Tarjeta.cs" />
     <Compile Include="Modules\WSL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -744,6 +748,11 @@
     <Content Include="Views\Reporte\ReporteTransacciones.cshtml" />
     <Content Include="Views\Reporte\ReporteTransaccionesPDF.cshtml" />
     <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\less\bootstrap-dialog.less" />
+    <Content Include="Views\OrdenRecargaPrepago\FilterAnulacion.cshtml" />
+    <Content Include="Views\OrdenRecargaPrepago\CreateAnulacion.cshtml" />
+    <Content Include="Views\Transferencia\GenericView.cshtml" />
+    <Content Include="Views\Transferencia\DetalleTransferencia.cshtml" />
+    <Content Include="Views\Transferencia\FilterTransferencia.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

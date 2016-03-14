@@ -11,16 +11,14 @@ namespace Suma2Lealtad.Models
 {
     public class BeneficiarioPrepagoRepository
     {
-        private const int ID_ESTATUS_AFILIACION_INICIAL = 0;
-        private const String TRANSCODE_COMPRA_PREPAGO = "145";
-        private ClientePrepagoRepository repCliente = new ClientePrepagoRepository();        
+        private ClientePrepagoRepository repCliente = new ClientePrepagoRepository();
 
         public List<BeneficiarioPrepagoIndex> Find(string numdoc, string name, string email, string estadoAfiliacion, string estadoTarjeta)
         {
             List<BeneficiarioPrepagoIndex> beneficiarios = new List<BeneficiarioPrepagoIndex>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 if (numdoc == "")
                 {
                     numdoc = null;
@@ -103,7 +101,7 @@ namespace Suma2Lealtad.Models
                 {
                     var query = (from a in db.Affiliates
                                  where a.SumaStatu.name.Equals(estadoAfiliacion)
-								 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid                                 
+                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
                                  join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
                                  join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
                                  from prue in PRUEBA.DefaultIfEmpty()
@@ -115,16 +113,16 @@ namespace Suma2Lealtad.Models
                                      docnumber = a.docnumber,
                                      typeid = a.typeid,
                                      sumastatusid = a.sumastatusid,
-									 idCliente = b.prepaidcustomerid,
+                                     idCliente = b.prepaidcustomerid,
                                      name = c.NOMBRE_CLIENTE1,
                                      lastname1 = c.APELLIDO_CLIENTE1,
                                      email = c.E_MAIL
                                  }).OrderBy(d => d.docnumber);
-				    beneficiarios = (from q in query.AsEnumerable()
+                    beneficiarios = (from q in query.AsEnumerable()
                                      join p in db.PrepaidCustomers on q.idCliente equals p.id
                                      join s in db.SumaStatuses on q.sumastatusid equals s.id
-                                 	 join ty in db.Types on q.typeid equals ty.id
-									 select new BeneficiarioPrepagoIndex
+                                     join ty in db.Types on q.typeid equals ty.id
+                                     select new BeneficiarioPrepagoIndex
                                      {
                                          Afiliado = new AfiliadoSumaIndex
                                          {
@@ -157,11 +155,11 @@ namespace Suma2Lealtad.Models
                                      }).OrderBy(n => n.Cliente.nameCliente).OrderBy(x => x.Afiliado.docnumber).ToList();
                 }
                 //BUSCAR POR NUMERO DE DOCUMENTO
-                else if (numdoc != null)   
+                else if (numdoc != null)
                 {
                     var query = (from a in db.Affiliates
                                  where a.docnumber.Equals(numdoc)
-                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid                                 
+                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
                                  join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
                                  join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
                                  from prue in PRUEBA.DefaultIfEmpty()
@@ -173,16 +171,16 @@ namespace Suma2Lealtad.Models
                                      docnumber = a.docnumber,
                                      typeid = a.typeid,
                                      sumastatusid = a.sumastatusid,
-									 idCliente = b.prepaidcustomerid,
+                                     idCliente = b.prepaidcustomerid,
                                      name = c.NOMBRE_CLIENTE1,
                                      lastname1 = c.APELLIDO_CLIENTE1,
                                      email = c.E_MAIL
                                  }).OrderBy(d => d.docnumber);
-				    beneficiarios = (from q in query.AsEnumerable()
+                    beneficiarios = (from q in query.AsEnumerable()
                                      join p in db.PrepaidCustomers on q.idCliente equals p.id
                                      join s in db.SumaStatuses on q.sumastatusid equals s.id
-                                 	 join ty in db.Types on q.typeid equals ty.id
-									 select new BeneficiarioPrepagoIndex
+                                     join ty in db.Types on q.typeid equals ty.id
+                                     select new BeneficiarioPrepagoIndex
                                      {
                                          Afiliado = new AfiliadoSumaIndex
                                          {
@@ -218,7 +216,7 @@ namespace Suma2Lealtad.Models
                 else if (name != null || email != null)
                 {
                     var query = (from a in db.Affiliates
-                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid                                 
+                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
                                  join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
                                  where (c.NOMBRE_CLIENTE1.Contains(name) || c.APELLIDO_CLIENTE1.Contains(name) || c.E_MAIL.Equals(email))
                                  join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
@@ -231,16 +229,16 @@ namespace Suma2Lealtad.Models
                                      docnumber = a.docnumber,
                                      typeid = a.typeid,
                                      sumastatusid = a.sumastatusid,
-									 idCliente = b.prepaidcustomerid,
+                                     idCliente = b.prepaidcustomerid,
                                      name = c.NOMBRE_CLIENTE1,
                                      lastname1 = c.APELLIDO_CLIENTE1,
                                      email = c.E_MAIL
                                  }).OrderBy(d => d.docnumber);
-				    beneficiarios = (from q in query.AsEnumerable()
+                    beneficiarios = (from q in query.AsEnumerable()
                                      join p in db.PrepaidCustomers on q.idCliente equals p.id
                                      join s in db.SumaStatuses on q.sumastatusid equals s.id
-                                 	 join ty in db.Types on q.typeid equals ty.id
-									 select new BeneficiarioPrepagoIndex
+                                     join ty in db.Types on q.typeid equals ty.id
+                                     select new BeneficiarioPrepagoIndex
                                      {
                                          Afiliado = new AfiliadoSumaIndex
                                          {
@@ -276,7 +274,7 @@ namespace Suma2Lealtad.Models
                 else if (numdoc == null && name == null && email == null && estadoAfiliacion == null && estadoTarjeta == null)
                 {
                     var query = (from a in db.Affiliates
-                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid                                 
+                                 join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
                                  join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
                                  join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
                                  from prue in PRUEBA.DefaultIfEmpty()
@@ -288,16 +286,16 @@ namespace Suma2Lealtad.Models
                                      docnumber = a.docnumber,
                                      typeid = a.typeid,
                                      sumastatusid = a.sumastatusid,
-									 idCliente = b.prepaidcustomerid,
+                                     idCliente = b.prepaidcustomerid,
                                      name = c.NOMBRE_CLIENTE1,
                                      lastname1 = c.APELLIDO_CLIENTE1,
                                      email = c.E_MAIL
                                  }).OrderBy(d => d.docnumber);
-				    beneficiarios = (from q in query.AsEnumerable()
+                    beneficiarios = (from q in query.AsEnumerable()
                                      join p in db.PrepaidCustomers on q.idCliente equals p.id
                                      join s in db.SumaStatuses on q.sumastatusid equals s.id
-                                 	 join ty in db.Types on q.typeid equals ty.id
-									 select new BeneficiarioPrepagoIndex
+                                     join ty in db.Types on q.typeid equals ty.id
+                                     select new BeneficiarioPrepagoIndex
                                      {
                                          Afiliado = new AfiliadoSumaIndex
                                          {
@@ -351,7 +349,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 Affiliate afiliado = db.Affiliates.FirstOrDefault(a => a.docnumber == beneficiario.Afiliado.docnumber);
                 //ENTIDAD PrepaidBeneficiary
                 var prepaidbeneficiary = new PrepaidBeneficiary()
@@ -384,7 +382,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString(); 
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
                 return db.PrepaidCustomers.OrderBy(u => u.name).ToList();
             }
         }
@@ -407,7 +405,7 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
                     if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                     {
                         return null;
@@ -423,7 +421,7 @@ namespace Suma2Lealtad.Models
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid,
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -464,7 +462,7 @@ namespace Suma2Lealtad.Models
                     List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(c.idCliente, "", "", "", "", "").OrderBy(x => x.Afiliado.id).ToList();
                     foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                     {
-                        string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                        string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
                         if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                         {
                             return null;
@@ -480,7 +478,7 @@ namespace Suma2Lealtad.Models
                                 detalle = m.isodescription,
                                 tipo = m.transcode + "-" + m.transname,
                                 numerotarjeta = Convert.ToDecimal(m.pan),
-                                batchid = m.batchid,
+                                batchid = m.batchid.ToString(),
                                 Encabezado = encabezado
                             };
                             if (modotrans == "En Linea")
@@ -542,7 +540,7 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
                     if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                     {
                         return null;
@@ -558,7 +556,7 @@ namespace Suma2Lealtad.Models
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid,
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -595,7 +593,7 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), TRANSCODE_COMPRA_PREPAGO);
+                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
                     if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
                     {
                         return null;
@@ -611,7 +609,7 @@ namespace Suma2Lealtad.Models
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid,
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
                         if (modotrans == "En Linea")
@@ -685,8 +683,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -727,8 +727,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -792,8 +794,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -834,8 +838,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -921,8 +927,10 @@ namespace Suma2Lealtad.Models
                                            monto = od.amount,
                                            detalle = od.comments,
                                            tipo = "200-Recarga",
+                                           batchid = od.cardsresponse,
                                            nroordenrecarga = o.id,
                                            referenciarecarga = o.documento,
+                                           observacionesrecarga = o.observaciones,
                                            Encabezado = new EncabezadoReporte()
                                            {
                                                nombreReporte = "Reporte de Recargas",
@@ -963,8 +971,10 @@ namespace Suma2Lealtad.Models
                                            monto = od.amount,
                                            detalle = od.comments,
                                            tipo = "200-Recarga",
+                                           batchid = od.cardsresponse,
                                            nroordenrecarga = o.id,
                                            referenciarecarga = o.documento,
+                                           observacionesrecarga = o.observaciones,
                                            Encabezado = new EncabezadoReporte()
                                            {
                                                nombreReporte = "Reporte de Recargas",
@@ -1027,8 +1037,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -1069,8 +1081,10 @@ namespace Suma2Lealtad.Models
                                        monto = od.amount,
                                        detalle = od.comments,
                                        tipo = "200-Recarga",
+                                       batchid = od.cardsresponse,
                                        nroordenrecarga = o.id,
                                        referenciarecarga = o.documento,
+                                       observacionesrecarga = o.observaciones,
                                        Encabezado = new EncabezadoReporte()
                                        {
                                            nombreReporte = "Reporte de Recargas",
@@ -1556,7 +1570,7 @@ namespace Suma2Lealtad.Models
         public string CompraFueraLinea(string numdoc, string monto)
         {
             //string montoSinSeparador = Math.Truncate(Convert.ToDecimal(monto) * 100).ToString();
-            string RespuestaCardsJson = WSL.Cards.addBatch(numdoc, monto, TRANSCODE_COMPRA_PREPAGO, (string)HttpContext.Current.Session["login"]);
+            string RespuestaCardsJson = WSL.Cards.addBatch(numdoc, monto, Globals.TRANSCODE_COMPRA_PREPAGO, (string)HttpContext.Current.Session["login"]);
             if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
             {
                 return null;

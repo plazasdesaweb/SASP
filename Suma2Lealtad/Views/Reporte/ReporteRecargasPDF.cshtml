@@ -141,6 +141,8 @@ else
             </th>
             <th>Doc. Referencia
             </th>
+            <th>Observaciones
+            </th>
         </tr>
     </thead>
 
@@ -162,7 +164,7 @@ else
                     @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
                 </td>
                 <td>
-                    @(String.Format("{0}", "------"))
+                    @Html.DisplayFor(modelItem => item.batchid)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.detalle)
@@ -175,6 +177,9 @@ else
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.referenciarecarga)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.observacionesrecarga)
                 </td>
             </tr>                            
             }
