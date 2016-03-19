@@ -1033,7 +1033,9 @@ namespace Suma2Lealtad.Models
             foreach (Movimiento mov in SaldosMovimientos.MovimientosPrepago)
             {
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
-                if (mov.transcode == Globals.TRANSCODE_ANULACION_RECARGA_PREPAGO)
+                mov.batchtime = mov.batchtime.Substring(0,2) + ":" + mov.batchtime.Substring(2,2) + ":" + mov.batchtime.Substring(4,2);
+                mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                if (mov.transcode == Globals.TRANSCODE_ANULACION_PREPAGO)
                 {
                     mov.isodescription = mov.isodescription + " (" + mov.b037 + ")";
                 }
@@ -1049,6 +1051,8 @@ namespace Suma2Lealtad.Models
             foreach (Movimiento mov in SaldosMovimientos.MovimientosSuma)
             {
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
+                mov.batchtime = mov.batchtime.Substring(0, 2) + ":" + mov.batchtime.Substring(2, 2) + ":" + mov.batchtime.Substring(4, 2);
+                mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);                
             }
             return SaldosMovimientos;
         }
@@ -1104,19 +1108,48 @@ namespace Suma2Lealtad.Models
             string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
             string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
             List<ReporteSuma> reporte = new List<ReporteSuma>();
-            EncabezadoReporteSuma encabezado = new EncabezadoReporteSuma();
-            #region Todos los Afiliados
-            if (numdoc == "")
+            EncabezadoReporteSuma encabezado = new EncabezadoReporteSuma();           
+            #region Por Afiliado específico
+            if (numdoc != "")
             {
-                List<AfiliadoSumaIndex> afiliados = Find("", "", "", "", "").ToList();
+                List<AfiliadoSumaIndex> afiliados = Find(numdoc, "", "", "", "").ToList();
                 encabezado.nombreReporte = "Reporte de Transacciones";
-                encabezado.numdocReporte = "Todos";
+                encabezado.tipoconsultaReporte = "Por Afiliado";
+                if (afiliados.Count == 0)
+                {
+                    encabezado.parametrotipoconsultaReporte = numdoc;
+                }
+                else
+                {
+                    encabezado.parametrotipoconsultaReporte = afiliados.First().docnumber + " " + afiliados.First().name + " " + afiliados.First().lastname1;
+                }
                 encabezado.fechainicioReporte = fechadesde;
                 encabezado.fechafinReporte = fechahasta;
                 encabezado.tipotransaccionReporte = tipotrans;
                 foreach (AfiliadoSumaIndex a in afiliados)
                 {
-                    string movimientosLealtadJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_SUMA, a.docnumber.Substring(2));
+                    //determino el tipo de llamada a getreport
+                    string movimientosLealtadJson;
+                    if (tipotrans == "Acreditacion")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+                    }
+                    else if (tipotrans == "Canje")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+                    }
+                    else if (tipotrans == "Transferencias Credito")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+                    }
+                    else if (tipotrans == "Transferencias Debito")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+                    }
+                    else
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+                    }                    
                     if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
                     {
                         return null;
@@ -1127,37 +1160,53 @@ namespace Suma2Lealtad.Models
                         ReporteSuma linea = new ReporteSuma()
                         {
                             Afiliado = a,
-                            fecha = DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                             monto = Convert.ToInt32(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
-                        if (tipotrans == "Todas")
-                        {
-                            reporte.Add(linea);
-                        }
-                        else if (tipotrans == m.transcode)
-                        {
-                            reporte.Add(linea);
-                        }
+                        reporte.Add(linea);
                     }
                 }
             }
             #endregion
-            #region Todos los Clientes
-            else if (numdoc != "")
+            #region Todos los Afiliados
+            else if (numdoc == "")
             {
-                List<AfiliadoSumaIndex> afiliados = Find(numdoc, "", "", "", "").ToList();
+                List<AfiliadoSumaIndex> afiliados = Find("", "", "", "", "").ToList();
                 encabezado.nombreReporte = "Reporte de Transacciones";
-                encabezado.numdocReporte = afiliados.First().docnumber + " " + afiliados.First().name + " " + afiliados.First().lastname1;
+                encabezado.tipoconsultaReporte = "Por Afiliado";
+                encabezado.parametrotipoconsultaReporte = "Todos";
                 encabezado.fechainicioReporte = fechadesde;
                 encabezado.fechafinReporte = fechahasta;
                 encabezado.tipotransaccionReporte = tipotrans;
                 foreach (AfiliadoSumaIndex a in afiliados)
                 {
-                    string movimientosLealtadJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_SUMA, a.docnumber.Substring(2));
+                    //determino el tipo de llamada a getreport
+                    string movimientosLealtadJson;
+                    if (tipotrans == "Acreditacion")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+                    }
+                    else if (tipotrans == "Canje")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+                    }
+                    else if (tipotrans == "Transferencias Credito")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+                    }
+                    else if (tipotrans == "Transferencias Debito")
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+                    }
+                    else
+                    {
+                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+                    } 
                     if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
                     {
                         return null;
@@ -1168,21 +1217,15 @@ namespace Suma2Lealtad.Models
                         ReporteSuma linea = new ReporteSuma()
                         {
                             Afiliado = a,
-                            fecha = DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                             monto = Convert.ToInt32(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
                             numerotarjeta = Convert.ToDecimal(m.pan),
+                            batchid = m.batchid.ToString(),
                             Encabezado = encabezado
                         };
-                        if (tipotrans == "Todas")
-                        {
-                            reporte.Add(linea);
-                        }
-                        else if (tipotrans == m.transcode)
-                        {
-                            reporte.Add(linea);
-                        }
+                        reporte.Add(linea);
                     }
                 }
             }
@@ -1195,9 +1238,7 @@ namespace Suma2Lealtad.Models
                 };
                 reporte.Add(r);
             }
-            DateTime desde = DateTime.ParseExact(fechadesde, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            return reporte.Where(x => x.fecha.Date >= desde && x.fecha.Date <= hasta).OrderBy(x => x.fecha).ToList();
+            return reporte.OrderBy(x => x.fecha).ToList();
         }
 
         private int DeterminarSucursalAfiliacion()

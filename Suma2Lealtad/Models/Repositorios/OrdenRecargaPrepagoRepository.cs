@@ -622,7 +622,7 @@ namespace Suma2Lealtad.Models
                 }
                 else
                 {
-                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION_RECARGA_PREPAGO, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
+                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION_PREPAGO, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
                     if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
                     {
                         ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);

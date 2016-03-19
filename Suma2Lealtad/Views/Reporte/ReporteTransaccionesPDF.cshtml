@@ -10,75 +10,6 @@
     decimal MontoTotalTransacciones = 0;
 }
 
-@*<div class="form-group">
-
-    <div class="panel panel-default">
-
-        <div class="panel-heading clearfix panel-gradient">
-            <h3 class="panel-title">Prepago / Reportes / Reporte de Compras</h3>
-        </div>
-        <div class="panel-body">*@
-
-@*<div class="editor-label col-md-4 control-label">
-                <br />
-            </div>
-
-            <div class="editor-field col-md-8">
-                <br />
-            </div>
-
-            <div class="editor-label col-md-4 control-label">
-                Nombre del Reporte :
-            </div>
-
-            <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.nombreReporte, new { @class = "form-control", @readonly = "true" })
-            </div>
-
-            <div id="TipoConsulta" class="editor-label col-md-4 control-label">
-                Tipo de Consulta :
-            </div>
-
-            <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.tipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
-            </div>
-
-            <div class="editor-label col-md-4 control-label numdoc">
-                Número de Documento / Cédula :
-            </div>
-
-            <div class="editor-label col-md-4 control-label idCliente">
-                Cliente :
-            </div>
-
-            <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.parametrotipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
-            </div>
-
-            <div class="editor-label col-md-4 control-label">
-                Fecha desde :
-            </div>
-
-            <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.fechainicioReporte, new { @class = "form-control", @readonly = "true" })
-            </div>
-
-            <div class="editor-label col-md-4 control-label">
-                Fecha hasta :
-            </div>
-
-            <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.fechafinReporte, new { @class = "form-control", @readonly = "true" })
-            </div>
-
-            <div class="editor-label col-md-4 control-label">
-                Modalidad de Transacciones :
-            </div>
-
-            <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.modotransaccionReporte, new { @class = "form-control", @readonly = "true" })
-            </div>*@
-
 <div class="editor-label col-md-4 control-label">
     <br />
 </div>
@@ -92,7 +23,11 @@
 </div>
 
 <div class="editor-field col-md-12">
-    @(String.Format("{0} {1}", "Afiliado: ", Model.First().Encabezado.numdocReporte))
+    @(String.Format("{0} {1}", "Tipo de Consulta: ", Model.First().Encabezado.tipoconsultaReporte))
+</div>
+
+<div class="editor-field col-md-12">
+    @(String.Format("{0} {1}", "Número de Documento / Cédula: ", Model.First().Encabezado.parametrotipoconsultaReporte))
 </div>
 
 <div class="editor-field col-md-12">
@@ -102,7 +37,7 @@
     @(String.Format("{0} {1}", "Fecha hasta: ", Model.First().Encabezado.fechafinReporte))
 </div>
 <div class="editor-field col-md-12">
-    @(String.Format("{0} {1}", "Tipo de Transacción: ", Model.First().Encabezado.tipotransaccionReporte))
+    @(String.Format("{0} {1}", "Tipo de Transacción: ", Model.First().Parametros.tipotransaccion))
 </div>
 
 <div class="editor-label col-md-4 control-label"></div>
@@ -114,9 +49,11 @@
     
     <thead>
         <tr>
-            <th>Afiliado
+            <th>Número de Documento/Cédula
             </th>
-            <th>Fecha
+            <th>Nombre
+            </th>
+            <th>Fecha y hora
             </th>
             <th>Referencia
             </th>
@@ -132,7 +69,7 @@
     </thead>
 
     <tbody style="font-size: 12px">
-        @if (Model.Count() != 0)
+        @if (Model.First().Afiliado != null)
         {
             foreach (var item in Model)
             {
@@ -140,13 +77,16 @@
                 MontoTotalTransacciones = MontoTotalTransacciones + item.monto;                 
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Afiliado.docnumber)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Afiliado.name) @Html.DisplayFor(modelItem => item.Afiliado.lastname1)
                 </td>
                 <td>
-                    @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
+                    @Html.DisplayFor(modelItem => item.fecha)
                 </td>
                 <td>
-                    @(String.Format("{0}", "------"))
+                   @Html.DisplayFor(modelItem => item.batchid)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.detalle)

@@ -1,4 +1,5 @@
 ﻿
+using System;
 namespace Suma2Lealtad.Models
 {
     public class Movimiento
@@ -12,5 +13,7 @@ namespace Suma2Lealtad.Models
         public string transcode { get; set; }
         public string transname { get; set; }
         public string b037 { get; set; }
+        public string batchtime { get; set; }
+        public DateTime fechahora { get; set; }
     }
 }

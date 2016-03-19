@@ -30,11 +30,16 @@ namespace Suma2Lealtad.Modules
         //Constantes de Cards
         public const string TIPO_CUENTA_SUMA = "7";
         public const string TIPO_CUENTA_PREPAGO = "5";
-        public const string ID_ESTATUS_TARJETA_SUSPENDIDA = "6";        
+        public const string ID_ESTATUS_TARJETA_SUSPENDIDA = "6";                
+        public const string TRANSCODE_COMPRA_PREPAGO = "145";
+        public const string TRANSCODE_ANULACION_PREPAGO = "161";
+        public const string TRANSCODE_RECARGA_PREPAGO = "200";
+        public const string TRANSCODE_TRANSFERENCIA_CREDITO_PREPAGO = "201";
+        public const string TRANSCODE_TRANSFERENCIA_DEBITO_PREPAGO = "202";
+        public const string TRANSCODE_TRANSFERENCIA_CREDITO_SUMA = "203";
+        public const string TRANSCODE_TRANSFERENCIA_DEBITO_SUMA = "204";
         public const string TRANSCODE_ACREDITACION_SUMA = "318";
         public const string TRANSCODE_CANJE_SUMA = "319";
-        public const string TRANSCODE_RECARGA_PREPAGO = "200";
-        public const string TRANSCODE_ANULACION_RECARGA_PREPAGO = "161";
-        public const string TRANSCODE_COMPRA_PREPAGO = "145";
+        
     }
 }

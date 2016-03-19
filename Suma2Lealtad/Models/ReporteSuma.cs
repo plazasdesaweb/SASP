@@ -12,6 +12,7 @@ namespace Suma2Lealtad.Models
         public DateTime fecha { get; set; }
         public int monto { get; set; }        
         public string comentario { get; set; }
+        public string batchid { get; set; }
         public decimal numerotarjeta { get; set; }
         //public string estatustarjeta { get; set; }
         //public string usuario { get; set; }        
@@ -48,7 +49,9 @@ namespace Suma2Lealtad.Models
         {
               new ModoTransaccion { id = "Todas", tipo = "Todas" },
               new ModoTransaccion { id = "Acreditacion", tipo = "Acreditacion" },
-              new ModoTransaccion { id = "Canje", tipo = "Canje" }          
+              new ModoTransaccion { id = "Canje", tipo = "Canje" },
+              new ModoTransaccion { id = "Transferencias Credito", tipo = "Transferencias de Puntos: Crédito" },
+              new ModoTransaccion { id = "Transferencias Debito", tipo = "Transferencias de Puntos: Débito" },
         };
         #endregion
 

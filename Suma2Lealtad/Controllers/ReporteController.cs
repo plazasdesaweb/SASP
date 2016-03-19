@@ -299,18 +299,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult ReporteTransacciones(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc = "")
         {
             List<ReporteSuma> reporte = new List<ReporteSuma>();
-            if (TipoTransaccion == "Todas")
-            {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);
-            }
-            else if (TipoTransaccion == "Acreditacion")
-            {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_ACREDITACION_SUMA, numdoc);
-            }
-            else if (TipoTransaccion == "Canje")
-            {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_CANJE_SUMA, numdoc);
-            }
+            reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);            
             ParametrosReporteSuma p = new ParametrosReporteSuma()
             {
                 tipotransaccion = TipoTransaccion,
@@ -336,18 +325,15 @@ namespace Suma2Lealtad.Controllers
         public ActionResult GenerateReporteTransaccionesPDF(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc = "")
         {
             List<ReporteSuma> reporte = new List<ReporteSuma>();
-            if (TipoTransaccion == "Todas")
+            reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);            
+            ParametrosReporteSuma p = new ParametrosReporteSuma()
             {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);
-            }
-            else if (TipoTransaccion == "Acreditacion")
-            {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_ACREDITACION_SUMA, numdoc);
-            }
-            else if (TipoTransaccion == "Canje")
-            {
-                reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, Globals.TRANSCODE_CANJE_SUMA, numdoc);
-            }
+                tipotransaccion = TipoTransaccion,
+                fechadesde = fechadesde,
+                fechahasta = fechahasta,
+                numdoc = numdoc
+            };
+            reporte.First().Parametros = p;
             string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteTransaccionesPDF", reporte)
             {

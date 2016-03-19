@@ -31,12 +31,20 @@
                 @Html.TextBoxFor(model => model.First().Encabezado.nombreReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div class="editor-label col-md-4 control-label numdoc">
-                Afiliado :
+            <div id="TipoConsulta" class="editor-label col-md-4 control-label">
+                Tipo de Consulta :
             </div>
 
             <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.numdocReporte, new { @class = "form-control", @readonly = "true" })
+                @Html.TextBoxFor(model => model.First().Encabezado.tipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
+            </div>
+            
+            <div class="editor-label col-md-4 control-label numdoc">
+                Número de Documento / Cédula :
+            </div>
+
+            <div class="editor-field col-md-6">
+                @Html.TextBoxFor(model => model.First().Encabezado.parametrotipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
             <div class="editor-label col-md-4 control-label">
@@ -60,7 +68,7 @@
             </div>
 
             <div class="editor-field col-md-6">
-                @Html.TextBoxFor(model => model.First().Encabezado.tipotransaccionReporte, new { @class = "form-control", @readonly = "true" })
+                @Html.TextBoxFor(model => model.First().Parametros.tipotransaccion, new { @class = "form-control", @readonly = "true" })
             </div>
 
             <div class="editor-label col-md-4 control-label"></div>
@@ -72,9 +80,11 @@
 
                 <thead>
                     <tr>
-                        <th>Afiliado
+                        <th>Número de Documento/Cédula
                         </th>
-                        <th>Fecha
+                        <th>Nombre
+                        </th>
+                        <th>Fecha y hora
                         </th>
                         <th>Referencia
                         </th>
@@ -90,19 +100,22 @@
                 </thead>
 
                 <tbody>
-                    @if (Model.Count() != 0)
+                    @if (Model.First().Afiliado != null)
                     {
                         foreach (var item in Model)
                         {                            
                         <tr>
                             <td>
+                                @Html.DisplayFor(modelItem => item.Afiliado.docnumber)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Afiliado.name) @Html.DisplayFor(modelItem => item.Afiliado.lastname1)
                             </td>
                             <td>
-                                @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
+                                @Html.DisplayFor(modelItem => item.fecha)
                             </td>
                             <td>
-                                @(String.Format("{0}", "------"))
+                                @Html.DisplayFor(modelItem => item.batchid)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.detalle)
@@ -156,58 +169,27 @@
 
 <script>
     $(document).ready(function () {
-        //AjustarParametros();
         actualizarTotales();
     });
-
-    //function AjustarParametros() {
-    //    if ($("#Encabezado_tipoconsultaReporte").val() == "Por Cliente") {
-    //         $(".idCliente").show();
-    //         $(".numdoc").hide();
-    //     }
-    //     else {
-    //         $(".idCliente").hide();
-    //         $(".numdoc").show();
-    //     }
-    // }
-
+    
     function actualizarTotales() {
         var TotalTransacciones = 0;
         var MontoTotalTransacciones = parseFloat("0");
         $("#detalleReporte tbody tr").each(function (index) {
-            var campo6 = 0;
+            var campo7 = 0;
             var temp;
             $(this).children("td").each(function (index2) {
                 switch (index2) {
-                    case 5:
+                    case 6:
                         temp = $(this).text();
                         temp = temp.replace(",", ".");
-                        campo6 = parseFloat(temp);
+                        campo7 = parseFloat(temp);
                         break;
-                        //case 3:
-                        //    campo4 = $.trim($(this).text());
-                        //    break;
-                        //case 4:
-                        //    if ($(this).children("input").val() != "") {
-                        //        $(this).children("input").show();
-                        //    }
-                        //    break;
                 }
             });
-            //if (campo4 != "Excluido") {
             TotalTransacciones = TotalTransacciones + 1;
-            MontoTotalTransacciones = MontoTotalTransacciones + campo6;
-            //}
+            MontoTotalTransacciones = MontoTotalTransacciones + campo7;
         });
-        @*if (TotalRecargas == 0) {
-            $("#Aprobar").hide();
-        }
-        else if ("@Model.First().statusOrden" == "Aprobada") {
-            $("#Aprobar").hide();
-        }
-        else {
-            $("#Aprobar").show();
-        }*@
         document.getElementById('TotalTransacciones').value = TotalTransacciones;
         document.getElementById('MontoTotalTransacciones').value = MontoTotalTransacciones.toFixed(0).toString().replace(".", ",");
     };
