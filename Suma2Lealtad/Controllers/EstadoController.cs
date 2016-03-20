@@ -20,6 +20,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View(db.ESTADOS.OrderBy(x=> x.DESCRIPC_ESTADO).ToList());
         }
 
@@ -28,6 +29,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(string id = null)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             ESTADO estado = db.ESTADOS.Find(id);
             if (estado == null)
             {
@@ -41,6 +43,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View();
         }
 
@@ -51,6 +54,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ESTADO estado)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             if (ModelState.IsValid)
             {
 
@@ -85,6 +89,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(string id = null)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             ESTADO estado = db.ESTADOS.Find(id);
             if (estado == null)
             {
@@ -100,6 +105,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ESTADO estado)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             if (ModelState.IsValid)
             {
                 db.Entry(estado).State = EntityState.Modified;
@@ -114,6 +120,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(string id = null)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             ESTADO estado = db.ESTADOS.Find(id);
             if (estado == null)
             {
@@ -129,6 +136,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             ESTADO estado = db.ESTADOS.Find(id);
             db.ESTADOS.Remove(estado);
             db.SaveChanges();
@@ -137,6 +145,7 @@ namespace Suma2Lealtad.Controllers
 
         protected override void Dispose(bool disposing)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             db.Dispose();
             base.Dispose(disposing);
         }

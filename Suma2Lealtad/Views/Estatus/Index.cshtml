@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Suma2Lealtad.Models.SumaStatus>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-push-2 col-md-8">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading clearfix panel-gradient">
+                    <h3 class="panel-title">Estatus / Lista de Registros </h3>
+                </div>
+
+                <div class="panel-body">
+
+                    <table class="table table-striped custab">
+
+                        <thead>
+
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre de la Tabla</th>
+                                <th>Estatus</th>
+                                <th class="text-center"></th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tablename)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.name)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                    <!-- buttons -->
+                    <div class="col-md-12 col-tabla-btn">
+                        <div class="pull-right">
+                            <a href="@Url.Action("Create", "Estatus")" class="btn btn-success btn-md">Agregar Nuevo Registro</a>
+                        </div>
+                    </div>
+                    <!--// buttons -->
+
+                </div>
+                <!-- panel-body -->
+
+            </div>
+            <!-- panel -->
+
+        </div>
+        <!-- columns -->
+
+    </div>
+    <!-- row -->
+
+</div>
+<!-- container -->

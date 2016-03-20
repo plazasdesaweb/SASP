@@ -19,14 +19,15 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View(db.MUNICIPIOS.OrderBy(x=> x.DESCRIPC_MUNICIPIO).ToList());
         }
 
         [HttpPost]
         public ActionResult Index(MUNICIPIO municipio)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             List<MUNICIPIO> modelo = db.MUNICIPIOS.Where(c => c.DESCRIPC_MUNICIPIO.Contains(municipio.DESCRIPC_MUNICIPIO)).OrderBy(x => x.DESCRIPC_MUNICIPIO).ToList();
-
             return View("Index", modelo);
         }
 
@@ -35,6 +36,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(string id = null)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             MUNICIPIO municipio = db.MUNICIPIOS.Find(id);
             if (municipio == null)
             {
@@ -48,6 +50,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View();
         }
 
@@ -58,6 +61,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(MUNICIPIO municipio)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             if (ModelState.IsValid)
             {
                 if (db.MUNICIPIOS.Count() > 0)
@@ -91,6 +95,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(string id = null)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             MUNICIPIO municipio = db.MUNICIPIOS.Find(id);
             if (municipio == null)
             {
@@ -106,6 +111,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(MUNICIPIO municipio)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             if (ModelState.IsValid)
             {
                 db.Entry(municipio).State = EntityState.Modified;
@@ -120,6 +126,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(string id = null)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             MUNICIPIO municipio = db.MUNICIPIOS.Find(id);
             if (municipio == null)
             {
@@ -135,6 +142,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             MUNICIPIO municipio = db.MUNICIPIOS.Find(id);
             db.MUNICIPIOS.Remove(municipio);
             db.SaveChanges();
@@ -143,11 +151,13 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult FilterMunicipio()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View();
         }
 
         protected override void Dispose(bool disposing)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             db.Dispose();
             base.Dispose(disposing);
         }

@@ -17,6 +17,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View(db.Channels.ToList());
         }
 
@@ -25,6 +26,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(int id = 0)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             Channel channel = db.Channels.Find(id);
             if (channel == null)
             {
@@ -38,6 +40,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             return View();
         }
 
@@ -48,6 +51,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Channel channel)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             if (ModelState.IsValid)
             {
 
@@ -72,6 +76,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(int id = 0)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             Channel channel = db.Channels.Find(id);
             if (channel == null)
             {
@@ -87,6 +92,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Channel channel)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             if (ModelState.IsValid)
             {
                 db.Entry(channel).State = EntityState.Modified;
@@ -101,6 +107,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(int id = 0)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             Channel channel = db.Channels.Find(id);
             if (channel == null)
             {
@@ -116,6 +123,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             Channel channel = db.Channels.Find(id);
             db.Channels.Remove(channel);
             db.SaveChanges();
@@ -124,6 +132,7 @@ namespace Suma2Lealtad.Controllers
 
         protected override void Dispose(bool disposing)
         {
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
             db.Dispose();
             base.Dispose(disposing);
         }

@@ -4,12 +4,14 @@ using Suma2Lealtad.Modules;
 using System.Configuration;
 using System.Web;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace Suma2Lealtad.Controllers
 {
     [HandleError]
     public class HomeController : Controller
     {
+
 
         public ActionResult Login()
         {
@@ -58,6 +60,72 @@ namespace Suma2Lealtad.Controllers
             HttpContext.Session.Abandon();
             HttpContext.User = null;
             return RedirectToAction("Login");
+        }
+
+        public ActionResult Filter()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Filter(string login)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                User user = (from u in db.Users
+                             where u.login.Equals(login)
+                             select u).FirstOrDefault();
+                if (user != null)
+                {
+                    return View("CambiarPassword", user);
+                }
+                else
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Usuario / Cambio de Contraseña";
+                    viewmodel.Message = "Contraseña actualizada correctamente.";
+                    viewmodel.ControllerName = "Home";
+                    viewmodel.ActionName = "Login";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CambiarPassword(string login, string password)
+        {
+            ViewModel viewmodel = new ViewModel();
+
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                User user = (from u in db.Users
+                             where u.login.Equals(login)
+                             select u).FirstOrDefault();
+                if (user != null)
+                {
+                    user.passw = password;
+                    db.SaveChanges();
+                    viewmodel.Title = "Usuario / Cambio de Contraseña";
+                    viewmodel.Message = "Contraseña actualizada correctamente.";
+                    viewmodel.ControllerName = "Home";
+                    viewmodel.ActionName = "Login";
+                }
+                else
+                {
+                    viewmodel.Title = "Usuario / Cambio de Contraseña";
+                    viewmodel.Message = "No se pudo actulizar la contraseña correctamente.";
+                    viewmodel.ControllerName = "Home";
+                    viewmodel.ActionName = "Filter";
+                }
+                return RedirectToAction("GenericView", viewmodel);
+            }
+        }
+
+        public ActionResult GenericView(ViewModel viewmodel)
+        {
+            return View(viewmodel);
         }
 
     }

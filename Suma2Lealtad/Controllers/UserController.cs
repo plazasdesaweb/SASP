@@ -1,4 +1,5 @@
-﻿using Suma2Lealtad.Filters;
+﻿using LoginFormApp.Models;
+using Suma2Lealtad.Filters;
 using Suma2Lealtad.Models;
 using System.Data;
 using System.Linq;
