@@ -1,0 +1,67 @@
+﻿@model Suma2Lealtad.Models.AfiliadoSuma
+
+@{
+    ViewBag.Title = "CambiarTipoDocumento";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Afiliado / Revisar Afiliacion / Cambiar Tipo de Documento </h3>
+        </div>
+
+        <div class="panel-body">
+
+            <form id="commentForm" method="post" action="@Url.Action("CambiarTipoDocumento", "AfiliadoSuma")" class="form-horizontal" >
+
+                <!-- DATOS BÁSICOS -->
+                <div class="tab-pane" id="tab1">
+
+                    <div class="editor-label col-md-4 control-label"></div>
+                    <div class="editor-field col-md-6">
+                        <br />
+                    </div>
+
+                    @Html.HiddenFor(model => model.id)
+
+                    <div class="editor-label col-md-4 control-label">
+                        * Número de Documento/Cédula Actual:
+                    </div>
+
+                    <div class="editor-field col-md-6">
+                        @Html.TextBoxFor(model => model.docnumber, new { @class = "form-control", @readonly = "true" })
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label Natural">
+                        * Nuevo Tipo de Documento :
+                    </div>
+
+                    <div class="editor-field col-md-6 Natural">
+                        @Html.DropDownList("TipoDocumento",
+                                (IEnumerable<SelectListItem>)ViewData["TipoDocumentoOptions"], new { @class = "form-control" })
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label"></div>
+                    <div class="editor-field col-md-6">
+                        <br />
+                    </div>
+
+                    <div class="col-md-12 col-tabla-btn">
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                            <a href="@Url.Action("Edit", "AfiliadoSuma", new { id = Model.id })" class="btn btn-danger btn-md">Regresar</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
