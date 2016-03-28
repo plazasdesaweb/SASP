@@ -38,7 +38,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                     viewmodel.Message = "El número de documento indicado ya posee una Tarjeta Activa con el número " + afiliado.pan;
                     viewmodel.ControllerName = "AfiliadoSuma";
                     viewmodel.ActionName = "CreateConTarjeta";
-                    viewmodel.RouteValues = "?numdoc="+numdoc;
+                    viewmodel.RouteValues = "?numdoc=" + numdoc;
                     return RedirectToAction("GenericView", viewmodel);
                 }
                 else
@@ -170,6 +170,55 @@ namespace Suma2Lealtad.Controllers.Prepago
             else
             {
                 return null;
+            }
+        }
+
+        public ActionResult CambiarTipoDocumento(int id)
+        {
+            AfiliadoSuma afiliado = repAfiliado.Find(id);
+            if (afiliado.docnumber.Substring(0, 1) == "V")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {      
+                    new SelectListItem{ Text="Cédula de Extranjero", Value="E"},
+                    new SelectListItem{ Text="Pasaporte", Value="P"}
+                };
+            }
+            else if (afiliado.docnumber.Substring(0, 1) == "E")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {           
+                    new SelectListItem{ Text="Cédula de Venezolano", Value="V"},
+                    new SelectListItem{ Text="Pasaporte", Value="P"}
+                };
+            }
+            else if (afiliado.docnumber.Substring(0, 1) == "P")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {           
+                    new SelectListItem{ Text="Cédula de Venezolano", Value="V"},
+                    new SelectListItem{ Text="Cédula de Extranjero", Value="E"}
+                };
+            }
+            return View(afiliado);
+        }
+
+        [HttpPost]
+        public ActionResult CambiarTipoDocumento(int id, string tipoDocumento)
+        {
+            AfiliadoSuma afiliado = repAfiliado.Find(id);
+            if (repAfiliado.CambiarTipoDocumento(afiliado, tipoDocumento))
+            {
+                return RedirectToAction("Edit", new { id = id });
+            }
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Afiliado / Revisar Afiliación / Cambiar Tipo de Documento";
+                viewmodel.Message = "Error de aplicacion: No se pudo cambiar tipo de documento.";
+                viewmodel.ControllerName = "AfiliadoSuma";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
             }
         }
 

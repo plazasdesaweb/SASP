@@ -5,6 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
+@{
+    string indicadorMostrar;
+    if (Session["RoleLevel"].ToString() == "1")
+    {
+        indicadorMostrar = "Ocultar";
+    }
+    else
+    {
+        indicadorMostrar = "Mostrar";
+    }
+}
+
 <div class="container">
 
     <div class="row">
@@ -78,6 +92,16 @@
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.docnumber, new { @class = "form-control", @readonly = "true" })
                             </div>
+
+                            @{if (indicadorMostrar == "Mostrar")
+                              {
+                                @:<div class="editor-field col-md-2">
+@:    <a id="CambiarTipoDocumento" href="@Url.Action("CambiarTipoDocumento", "ClientePrepago", new { id = Model.id })" class="btn btn-info btn-sm" >                                    
+                                @:        <span class="glyphicon glyphicon-edit"></span>
+                                @:    </a>
+                                @:</div>
+                                                              }
+                            }
 
                             <div class="editor-label col-md-4 control-label">
                                 * Correo Electrónico :

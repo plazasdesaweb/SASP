@@ -2,7 +2,21 @@
 
 @{
     ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@{
+    string indicadorMostrar;
+    if (Session["RoleLevel"].ToString() == "1")
+    {
+        indicadorMostrar = "Ocultar";
+    }
+    else
+    {
+        indicadorMostrar = "Mostrar";
+    }
+}
+
 
 <div class="container">
 
@@ -76,12 +90,22 @@
                                 @Html.TextBoxFor(model => model.docnumber, new { @class = "form-control", @readonly = "true" })
                             </div>
 
+                            @{if (indicadorMostrar == "Mostrar")
+                              {
+                                @:<div class="editor-field col-md-2">
+@:    <a id="CambiarTipoDocumento" href="@Url.Action("CambiarTipoDocumento", "AfiliadoSuma", new { id = Model.id })" class="btn btn-info btn-sm" >                                    
+                                @:        <span class="glyphicon glyphicon-edit"></span>
+                                @:    </a>
+                                @:</div>
+                                                              }
+                            }
+
                             <div class="editor-label col-md-4 control-label">
                                 * Correo Electrónico :
                             </div>
 
                             <div class="editor-field col-md-6">
-                                @Html.TextBoxFor(model => model.email, new { @class = "form-control"})
+                                @Html.TextBoxFor(model => model.email, new { @class = "form-control" })
                             </div>
 
                             <div class="editor-label col-md-4 control-label">
@@ -233,195 +257,181 @@
                             @{
                                 if (Model.picture != null)
                                 {
-                                    @:<div class="editor-label col-md-2 control-label">
+                                @:<div class="editor-label col-md-2 control-label">
+@:</div>
+                                @:<div class="editor-field col-md-10">
+@:<img src="@Url.Action("GetImage", "AfiliadoSuma", new { id = Model.id })" />
                                     @:</div>
-                                    @:<div class="editor-field col-md-10">
-                                        @:<img src="@Url.Action("GetImage", "AfiliadoSuma", new { id = Model.id })" />
-                                    @:</div>
-                                }
+                                                                                                }
                                 else
                                 {
-                                    @:<div class="editor-label col-md-10 control-label">
-                                        @:<div class="editor-label col-md-10 control-label">
+                                @:<div class="editor-label col-md-10 control-label">
+@:<div class="editor-label col-md-10 control-label">
                                             @:<p class="text-left text-danger">Escanee el documento de identidad, o seleccione el archivo si ya está escaneado.</p>
                                         @:</div>
                                     @:</div>
-                                    @:<div class="col-md-12">
-                                        Html.RenderPartial("SilverlightEscaner");
+                                @:<div class="col-md-12">
+Html.RenderPartial("SilverlightEscaner");
                                         @:<div class="editor-label col-md-10">
                                             @:<p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
                                         @:</div>
                                     @:</div>
-                                    @:<div class="col-md-12 col-btn">
-                                        @:<div id="capaarchivo" class="text-left">
+                                @:<div class="col-md-12 col-btn">
+@:<div id="capaarchivo" class="text-left">
                                             @:<input id="fileNoValidado" type=file name="fileNoValidado" style="visibility:hidden;position:absolute;top:0;left:0" onchange="ActualizaElementoControl('ElementoControl','Seleccionada', this, '@Model.docnumber')">
                                             @:<input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">
                                             @:<span id="info" style="border: 0px solid black"></span>
-                                        @:</div>
                                     @:</div>
-                                }                                                       
-                             }
+                                 @:</div>
+                                                                 }                                                       
+                            }
                         </div>
 
                         <!-- DIRECCIÓN -->
-                            <div class="tab-pane" id="tab3">
+                        <div class="tab-pane" id="tab3">
 
-                                <div class="editor-label col-md-4 control-label"></div>
-                                <div class="editor-field col-md-6">
-                                    <br />
-                                </div>
+                            <div class="editor-label col-md-4 control-label"></div>
+                            <div class="editor-field col-md-6">
+                                <br />
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Estado :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Estado :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.cod_estado,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.cod_estado,
                                 new SelectList(Model.ListaEstados,
                                 "COD_ESTADO", "DESCRIPC_ESTADO",
                                 Model.ListaEstados), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Ciudad :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Ciudad :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.cod_ciudad,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.cod_ciudad,
                                 new SelectList(Model.ListaCiudades,
                                 "cod_ciudad", "descripc_ciudad",
                                 Model.ListaCiudades), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Municipio :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Municipio :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.cod_municipio,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.cod_municipio,
                                 new SelectList(Model.ListaMunicipios,
                                 "cod_municipio", "descripc_municipio",
                                 Model.ListaMunicipios), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Parroquia :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Parroquia :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.cod_parroquia,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.cod_parroquia,
                                 new SelectList(Model.ListaParroquias,
                                 "cod_parroquia", "descripc_parroquia",
                                 Model.ListaParroquias), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Urbanización :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Urbanización :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.cod_urbanizacion,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.cod_urbanizacion,
                                 new SelectList(Model.ListaUrbanizaciones,
                                 "cod_urbanizacion", "descripc_urbanizacion",
                                 Model.ListaUrbanizaciones), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label"></div>
-                                <div class="editor-field col-md-6">
-                                    <br />
-                                </div>
+                            <div class="editor-label col-md-4 control-label"></div>
+                            <div class="editor-field col-md-6">
+                                <br />
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Canal :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Canal :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.channelid,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.channelid,
                                 new SelectList(Model.ChannelOptions,
                                 "id", "channel",
                                 Model.ChannelOptions), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    * Sucursal de Afiliación:
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                * Sucursal de Afiliación:
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.storeid,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.storeid,
                                 new SelectList(Model.StoreOptions,
                                 "id", "sucursal",
                                 Model.StoreOptions), new { @class = "form-control", @disabled = "disabled" })
-                                    @Html.HiddenFor(model => model.storeid)
-                                </div>
+                                @Html.HiddenFor(model => model.storeid)
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    Tipo de Despacho/Entrega :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Tipo de Despacho/Entrega :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.typedelivery,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.typedelivery,
                                 new SelectList(Model.TypeDeliveryOptions,
                                 "id", "delivery",
                                 Model.TypeDeliveryOptions), new { @class = "form-control" })
-                                </div>
+                            </div>
 
-                                <div class="editor-label col-md-4 control-label">
-                                    Sucursal :
-                                </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Sucursal :
+                            </div>
 
-                                <div class="editor-field col-md-6">
-                                    @Html.DropDownListFor(m => m.storeiddelivery,
+                            <div class="editor-field col-md-6">
+                                @Html.DropDownListFor(m => m.storeiddelivery,
                                 new SelectList(Model.StoreOptions,
                                 "id", "sucursal",
                                 Model.StoreOptions), new { @class = "form-control" })
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label"></div>
-                                <div class="editor-field col-md-6">
-                                    <br />
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label">
-                                    Temas de Interés :
-                                </div>
-
-                                <div class="editor-field col-md-6">
-                                    @for (int i = 0; i < Model.Intereses.Count; i++)
-                                    {
-                                        @Html.CheckBoxFor(m => m.Intereses[i].Checked, new { id = i })
-                                        @Html.HiddenFor(m => m.Intereses[i].id)
-                                        @Html.DisplayFor(m => m.Intereses[i].name)
-                                        <br />
-                                    }
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label"></div>
-                                <div class="editor-field col-md-6">
-                                    <br />
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label">
-                                    Comentarios/Observaciones :
-                                </div>
-
-                                <div class="editor-field col-md-6">
-                                    @Html.TextAreaFor(model => model.comments, new { @class = "form-control", style = "width: 520px; height: 100px;" })
-                                    @Html.ValidationMessageFor(model => model.comments)
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label"></div>
-                                <div class="editor-field col-md-6">
-                                    <br />
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label"></div>
-                                <div class="editor-field col-md-6">
-                                    <input type="submit" class="btn btn-success btn-md" value="Guardar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />
-                                </div>
-
-
                             </div>
-                            <!-- DIRECCIÓN -->
+
+                            <div class="editor-label col-md-4 control-label"></div>
+                            <div class="editor-field col-md-6">
+                                <br />
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                Temas de Interés :
+                            </div>
+
+                            <div class="editor-field col-md-6">
+                                @for (int i = 0; i < Model.Intereses.Count; i++)
+                                {
+                                    @Html.CheckBoxFor(m => m.Intereses[i].Checked, new { id = i })
+                                    @Html.HiddenFor(m => m.Intereses[i].id)
+                                    @Html.DisplayFor(m => m.Intereses[i].name)
+                                    <br />
+                                }
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label"></div>
+                            <div class="editor-field col-md-6">
+                                <br />
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                Comentarios/Observaciones :
+                            </div>
+
+                            <div class="editor-field col-md-6">
+                                @Html.TextAreaFor(model => model.comments, new { @class = "form-control", style = "width: 520px; height: 100px;" })
+                                @Html.ValidationMessageFor(model => model.comments)
+                            </div>
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
@@ -430,32 +440,46 @@
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
-                                <!-- BOTONES -->
-                                <ul class="pager wizard">
-
-                                    <li class="previous"><a href="#">Anterior</a></li>
-                                    <li class="next pull-left"><a href="#">Siguiente</a></li>
-                                </ul>
-                                <!--// BOTONES -->
+                                <input type="submit" class="btn btn-success btn-md" value="Guardar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />
                             </div>
 
-
-
-                            <div class="editor-label col-md-4 control-label"></div>
-                            <div class="editor-field col-md-6">
-                                <br />
-                            </div>
-
-                            <div class="editor-label col-md-4 control-label"></div>
-                            <div class="editor-field col-md-6">
-                                <br />
-                            </div>
 
                         </div>
-                        <!--// tab-content -->
+                        <!-- DIRECCIÓN -->
+
+                        <div class="editor-label col-md-4 control-label"></div>
+                        <div class="editor-field col-md-6">
+                            <br />
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label"></div>
+                        <div class="editor-field col-md-6">
+                            <!-- BOTONES -->
+                            <ul class="pager wizard">
+
+                                <li class="previous"><a href="#">Anterior</a></li>
+                                <li class="next pull-left"><a href="#">Siguiente</a></li>
+                            </ul>
+                            <!--// BOTONES -->
+                        </div>
+
+
+
+                        <div class="editor-label col-md-4 control-label"></div>
+                        <div class="editor-field col-md-6">
+                            <br />
+                        </div>
+
+                        <div class="editor-label col-md-4 control-label"></div>
+                        <div class="editor-field col-md-6">
+                            <br />
+                        </div>
 
                     </div>
-                    <!--// rootwizard -->
+                    <!--// tab-content -->
+
+                </div>
+                <!--// rootwizard -->
             </form>
 
         </div>

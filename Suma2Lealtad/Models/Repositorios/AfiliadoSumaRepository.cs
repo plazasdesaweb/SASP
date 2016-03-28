@@ -676,7 +676,6 @@ namespace Suma2Lealtad.Models
                     affiliate.storeiddelivery = afiliado.storeiddelivery;
                     affiliate.modifieduserid = (int)HttpContext.Current.Session["userid"];
                     affiliate.modifieddate = System.DateTime.Now;
-                    //affiliate.statusid = afiliado.statusid;
                     affiliate.sumastatusid = afiliado.sumastatusid;
                     affiliate.reasonsid = afiliado.reasonsid;
                     affiliate.twitter_account = afiliado.twitter_account;
@@ -807,6 +806,91 @@ namespace Suma2Lealtad.Models
                 //{
                 //    return false;
                 //}
+            }
+        }
+
+        public bool CambiarTipoDocumento(AfiliadoSuma afiliado, string tipoDocumento)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                // Entidad: Affiliate
+                Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
+                if (affiliate != null)
+                {
+                    affiliate.docnumber = tipoDocumento + afiliado.docnumber.Substring(1);
+                    affiliate.modifieduserid = (int)HttpContext.Current.Session["userid"];
+                    affiliate.modifieddate = System.DateTime.Now;
+                }
+                // Entidad: CLIENTE 
+                CLIENTE cliente = db.CLIENTES.FirstOrDefault(c => c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO == afiliado.docnumber);
+                if (cliente != null)
+                {
+                    CLIENTE clienteNuevo = new CLIENTE()
+                    {
+                        TIPO_DOCUMENTO = tipoDocumento,
+                        NRO_DOCUMENTO = cliente.NRO_DOCUMENTO,
+                        E_MAIL = cliente.E_MAIL,
+                        NOMBRE_CLIENTE1 = cliente.NOMBRE_CLIENTE1,
+                        NOMBRE_CLIENTE2 = cliente.NOMBRE_CLIENTE2,
+                        APELLIDO_CLIENTE1 = cliente.APELLIDO_CLIENTE1,
+                        APELLIDO_CLIENTE2 = cliente.APELLIDO_CLIENTE2,
+                        FECHA_NACIMIENTO = cliente.FECHA_NACIMIENTO,
+                        SEXO = cliente.SEXO,
+                        EDO_CIVIL = cliente.EDO_CIVIL,
+                        OCUPACION = cliente.OCUPACION,
+                        TELEFONO_HAB = cliente.TELEFONO_HAB,
+                        TELEFONO_OFIC = cliente.TELEFONO_OFIC,
+                        TELEFONO_CEL = cliente.TELEFONO_CEL ,
+                        COD_SUCURSAL = cliente.COD_SUCURSAL,
+                        COD_ESTADO = cliente.COD_ESTADO,
+                        COD_CIUDAD = cliente.COD_CIUDAD,
+                        COD_MUNICIPIO = cliente.COD_MUNICIPIO,
+                        COD_PARROQUIA = cliente.COD_PARROQUIA,
+                        COD_URBANIZACION = cliente.COD_URBANIZACION,
+                        FECHA_CREACION = cliente.FECHA_CREACION
+                    };
+                    clienteNuevo.TIPO_DOCUMENTO = tipoDocumento;
+                    //NACIONALIDAD => NINGUNA = "0", VENEZOLANO = "1", EXTRANJERO = "2"
+                    if (tipoDocumento == "V")
+                    {
+                        clienteNuevo.NACIONALIDAD = "1";
+                    }
+                    else if (tipoDocumento == "E" || tipoDocumento == "P")
+                    {
+                        clienteNuevo.NACIONALIDAD = "2";
+                    }
+                    else
+                    {
+                        clienteNuevo.NACIONALIDAD = "0";
+                    }
+                    db.CLIENTES.Add(clienteNuevo);
+                    db.CLIENTES.Remove(cliente);
+                }
+                // Entida: TARJETA
+                //TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_AFILIACION.Equals(afiliado.id));
+                Decimal pan = Convert.ToDecimal(afiliado.pan);
+                TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_TARJETA.Equals(pan));
+                if (tarjeta != null)
+                {
+                    tarjeta.TIPO_DOCUMENTO = tipoDocumento;
+                    tarjeta.COD_USUARIO = (int)HttpContext.Current.Session["userid"];
+                }
+                //Entidad: AffiliateAud 
+                //inserto registro por cambio de tipo de documento
+                var affiliateAuditoria = new AffiliateAud()
+                {
+                    id = AfilliateAudID(),
+                    affiliateid = afiliado.id,
+                    modifieduserid = (int)HttpContext.Current.Session["userid"],
+                    modifieddate = DateTime.Now,
+                    statusid = afiliado.sumastatusid,
+                    reasonsid = Globals.ID_REASONS_INICIAL,
+                    comments = afiliado.comments
+                };
+                db.AffiliateAuds.Add(affiliateAuditoria);
+                db.SaveChanges();
+                return true;
             }
         }
 
@@ -1033,7 +1117,7 @@ namespace Suma2Lealtad.Models
             foreach (Movimiento mov in SaldosMovimientos.MovimientosPrepago)
             {
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
-                mov.batchtime = mov.batchtime.Substring(0,2) + ":" + mov.batchtime.Substring(2,2) + ":" + mov.batchtime.Substring(4,2);
+                mov.batchtime = mov.batchtime.Substring(0, 2) + ":" + mov.batchtime.Substring(2, 2) + ":" + mov.batchtime.Substring(4, 2);
                 mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                 if (mov.transcode == Globals.TRANSCODE_ANULACION_PREPAGO)
                 {
@@ -1052,7 +1136,7 @@ namespace Suma2Lealtad.Models
             {
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
                 mov.batchtime = mov.batchtime.Substring(0, 2) + ":" + mov.batchtime.Substring(2, 2) + ":" + mov.batchtime.Substring(4, 2);
-                mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);                
+                mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
             }
             return SaldosMovimientos;
         }
@@ -1108,7 +1192,7 @@ namespace Suma2Lealtad.Models
             string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
             string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
             List<ReporteSuma> reporte = new List<ReporteSuma>();
-            EncabezadoReporteSuma encabezado = new EncabezadoReporteSuma();           
+            EncabezadoReporteSuma encabezado = new EncabezadoReporteSuma();
             #region Por Afiliado específico
             if (numdoc != "")
             {
@@ -1149,7 +1233,7 @@ namespace Suma2Lealtad.Models
                     else
                     {
                         movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
-                    }                    
+                    }
                     if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
                     {
                         return null;
@@ -1206,7 +1290,7 @@ namespace Suma2Lealtad.Models
                     else
                     {
                         movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
-                    } 
+                    }
                     if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
                     {
                         return null;

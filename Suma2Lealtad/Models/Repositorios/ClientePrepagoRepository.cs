@@ -487,6 +487,7 @@ namespace Suma2Lealtad.Models
                 PrepaidCustomer Cliente = db.PrepaidCustomers.FirstOrDefault(c => c.id == cliente.idCliente);
                 if (Cliente != null)
                 {
+                    Cliente.rif = cliente.rifCliente;
                     Cliente.name = cliente.nameCliente;
                     Cliente.phone = cliente.phoneCliente;
                     Cliente.alias = cliente.aliasCliente;

@@ -551,7 +551,7 @@ namespace Suma2Lealtad.Models
                         ReportePrepago linea = new ReportePrepago()
                         {
                             Beneficiario = b,
-                            fecha = DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                             monto = Convert.ToDecimal(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,
@@ -604,7 +604,7 @@ namespace Suma2Lealtad.Models
                         ReportePrepago linea = new ReportePrepago()
                         {
                             Beneficiario = b,
-                            fecha = DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                             monto = Convert.ToDecimal(m.saldo),
                             detalle = m.isodescription,
                             tipo = m.transcode + "-" + m.transname,

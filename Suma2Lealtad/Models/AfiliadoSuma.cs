@@ -70,6 +70,7 @@ namespace Suma2Lealtad.Models
         //public string exdetail { get; set; }
 
         //ATRIBUTOS DE LISTAS DE VALORES (DINÁMICOS Y ESTÁTICOS).
+
         #region Lista_Nacionalidades
         public class Nacionalidad
         {

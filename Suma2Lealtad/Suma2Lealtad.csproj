@@ -225,6 +225,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
+    <Compile Include="Controllers\EstatusController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterestController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -753,6 +754,12 @@
     <Content Include="Views\Transferencia\GenericView.cshtml" />
     <Content Include="Views\Transferencia\DetalleTransferencia.cshtml" />
     <Content Include="Views\Transferencia\FilterTransferencia.cshtml" />
+    <Content Include="Views\Home\CambiarPassword.cshtml" />
+    <Content Include="Views\Home\Filter.cshtml" />
+    <Content Include="Views\Home\GenericView.cshtml" />
+    <Content Include="Views\AfiliadoSuma\CambiarTipoDocumento.cshtml" />
+    <Content Include="Views\BeneficiarioPrepago\CambiarTipoDocumento.cshtml" />
+    <Content Include="Views\ClientePrepago\CambiarTipoDocumento.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -86,9 +86,11 @@
                     <tr>
                         <th>Cliente
                         </th>
-                        <th>Beneficiario
+                        <th>Número de Documento/Cédula
                         </th>
-                        <th>Fecha
+                        <th>Nombre
+                        </th>
+                        <th>Fecha y hora
                         </th>
                         <th>Referencia
                         </th>
@@ -104,7 +106,7 @@
                 </thead>
 
                 <tbody>
-                    @if (Model.Count() != 0)
+                    @if (Model.First().Beneficiario.Afiliado != null)
                     {
                         foreach (var item in Model)
                         {                            
@@ -113,10 +115,13 @@
                                 @Html.DisplayFor(modelItem => item.Beneficiario.Cliente.nameCliente)
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.docnumber)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.name) @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.lastname1)
                             </td>
                             <td>
-                                @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
+                                @Html.DisplayFor(modelItem => item.fecha)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.batchid)
@@ -193,14 +198,14 @@
         var TotalTransacciones = 0;       
         var MontoTotalTransacciones = parseFloat("0");
         $("#detalleReporte tbody tr").each(function (index) {
-            var campo7 = 0;
+            var campo8 = 0;
             var temp;
             $(this).children("td").each(function (index2) {
                 switch (index2) {
-                    case 6:
+                    case 7:
                         temp = $(this).text();
                         temp = temp.replace(",", ".");
-                        campo7 = parseFloat(temp);
+                        campo8 = parseFloat(temp);
                         break;
                     //case 3:
                     //    campo4 = $.trim($(this).text());
@@ -214,7 +219,7 @@
             });
             //if (campo4 != "Excluido") {
             TotalTransacciones = TotalTransacciones + 1;
-            MontoTotalTransacciones = MontoTotalTransacciones + campo7;
+            MontoTotalTransacciones = MontoTotalTransacciones + campo8;
             //}
         });
         @*if (TotalRecargas == 0) {

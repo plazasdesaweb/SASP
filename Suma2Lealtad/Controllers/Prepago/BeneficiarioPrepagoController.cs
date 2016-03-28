@@ -258,6 +258,55 @@ namespace Suma2Lealtad.Controllers.Prepago
             return RedirectToAction("GenericView", viewmodel);
         }
 
+        public ActionResult CambiarTipoDocumento(int id)
+        {
+            BeneficiarioPrepago beneficiario = repBeneficiario.Find(id);
+            if (beneficiario.Afiliado.docnumber.Substring(0, 1) == "V")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {      
+                    new SelectListItem{ Text="Cédula de Extranjero", Value="E"},
+                    new SelectListItem{ Text="Pasaporte", Value="P"}
+                };
+            }
+            else if (beneficiario.Afiliado.docnumber.Substring(0, 1) == "E")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {           
+                    new SelectListItem{ Text="Cédula de Venezolano", Value="V"},
+                    new SelectListItem{ Text="Pasaporte", Value="P"}
+                };
+            }
+            else if (beneficiario.Afiliado.docnumber.Substring(0, 1) == "P")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {           
+                    new SelectListItem{ Text="Cédula de Venezolano", Value="V"},
+                    new SelectListItem{ Text="Cédula de Extranjero", Value="E"}
+                };
+            }
+            return View(beneficiario.Afiliado);
+        }
+
+        [HttpPost]
+        public ActionResult CambiarTipoDocumento(int id, string tipoDocumento)
+        {
+            BeneficiarioPrepago beneficiario = repBeneficiario.Find(id);
+            if (repAfiliado.CambiarTipoDocumento(beneficiario.Afiliado, tipoDocumento))
+            {
+                return RedirectToAction("EditBeneficiario", new { id = id });
+            }
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Beneficiario / Revisar Afiliación / Cambiar Tipo de Documento";
+                viewmodel.Message = "Error de aplicacion: No se pudo cambiar tipo de documento.";
+                viewmodel.ControllerName = "BeneficiarioPrepago";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+        }
+
         public ActionResult AprobarBeneficiario(int id)
         {
             ViewModel viewmodel = new ViewModel();

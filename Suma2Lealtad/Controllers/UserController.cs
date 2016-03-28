@@ -19,6 +19,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult Index()
         {
             var q = (from u in db.Users
+                     join st in db.SumaStatuses on u.sumastatusid equals st.id
                      select new Usuario()
                      {
                          id = u.id,
@@ -27,7 +28,7 @@ namespace Suma2Lealtad.Controllers
                          firstname = u.firstname,
                          lastname = u.lastname,
                          email = u.email,
-                         status = (u.sumastatusid.Equals("1") ? "Activo" : "Inactivo")
+                         status = st.name
                      });
 
             return View(q.ToList());
