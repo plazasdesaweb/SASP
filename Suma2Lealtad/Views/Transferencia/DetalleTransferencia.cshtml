@@ -17,6 +17,23 @@
 </style>
 
 @{
+    string indicadorGuardar;
+    if (Session["RoleLevel"].ToString() == "3")
+    {
+        if (Model.statusOrden == "Nueva")
+        {
+            indicadorGuardar = "Aprobar";
+        }
+        else
+        {
+            indicadorGuardar = "Guardar";
+        }
+    }
+    else
+    {
+        indicadorGuardar = "Guardar";
+    }
+
     string indicadorMostrar;
     if (Model.docnumberAfiliadoDestino == null)
     {
@@ -25,6 +42,7 @@
     else
     {
         indicadorMostrar = "Mostrar";
+
     }
 }
 
@@ -38,29 +56,62 @@
 
         @{if (Model.docnumberAfiliadoDestino == null)
           {
-@*@:<form id="commentForm" method="post" action="@Url.Action("FilterDestino", "Transferencia")" class="form-horizontal">*@
-            @:<form id="form"  name="form" method="post" action="@Url.Action("DetalleTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return validarDocumento();">
-
+            @:<form id="form1" name="form2" method="post" action="@Url.Action("DetalleTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return validarDocumento();">
           }
-          else
+          else if (Model.id == 0)
           {
-            @:<form id="commentForm" method="post" action="@Url.Action("ProcesarTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return verificarTransferencia();">                
-                }
+            @:<form id="form2" name="form2" method="post" action="@Url.Action("CrearOrdenTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return verificarTransferencia();">
+          }
+          else if (@indicadorGuardar == "Aprobar")
+          {
+            @:<form id="commentForm" method="post" action="@Url.Action("AprobarTransferencia", "Transferencia", new { id = Model.id, indicadorGuardar = @indicadorGuardar })" class="form-horizontal" onsubmit="return verificarTransferencia();">                   
+          }
+          @*else
+          {
+            @:<form id="form3" name="form3" method="post" action="@Url.Action("ProcesarTransferencia", "Transferencia")" class="form-horizontal" onsubmit="return verificarTransferencia();">                
+          }*@
         }
 
         <div class="panel-body">
            
-            @*<!-- btn btn-success -->
-                <div class="col-md-12 col-btn">
-                    <div class="text-center">
-                        <p class="text-danger">
-                            Datos de Origen
-                        </p>
-                    </div>
+            @{if (Model.id != 0)
+              {
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
                 </div>
-                <!--// btn btn-success -->*@
 
-            <div class="col-md-12 col-tabla-btn">
+                <div class="editor-label col-md-4 control-label">
+                    Nro. de Orden :
+                </div>
+
+                <div class="editor-form col-md-6">
+                    @Html.HiddenFor(modelItem => Model.id)                    
+                    @Html.TextBoxFor(model => model.id, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Estatus de la Orden :
+                </div>
+
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.statusOrden, new { @class = "form-control", @readonly = "true" })
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Clase de Orden :
+                </div>
+
+                <div class="editor-form col-md-6">
+                    @Html.TextBoxFor(model => model.tipoOrden, new { @class = "form-control", @readonly = "true" })
+                </div>
+              }
+            }
+                <div class="editor-field col-md-6">
+                    <br />
+                </div>
+
+                <div class="col-md-12 col-tabla-btn">
                     <div class="text-center">
                         <p class="text-danger">
                             Datos de Origen
@@ -72,6 +123,7 @@
                     Nombre del Afiliado :
                 </div>
                 <div class="editor-form col-md-6">
+                    @Html.HiddenFor(modelItem => Model.idAfiliadoOrigen)
                     @Html.HiddenFor(modelItem => Model.nameAfiliadoOrigen)
                     @Html.HiddenFor(modelItem => Model.lastname1AfiliadoOrigen)
                     @Html.TextBox("name", @Model.nameAfiliadoOrigen + " " + @Model.lastname1AfiliadoOrigen, new { @class = "form-control", @readonly = "true" })
@@ -99,10 +151,21 @@
                             </th>
                             <th>Número de Cuenta
                             </th>
-                            <th>Saldo
-                            </th>
-                            <th>Denominación
-                            </th>
+                            @{if (Model.statusOrden == null)
+                              {
+                                  <th>Saldo
+                                  </th>
+                                  <th>Denominación
+                                  </th>
+                              }
+                              else
+                              {
+                                  <th>Estatus
+                                  </th>
+                                  <th>Observaciones
+                                  </th>
+                              }
+                              }
                         </tr>
                     </thead>
 
@@ -119,14 +182,29 @@
                                 @Html.HiddenFor(modelItem => Model.datosCuentaSumaOrigen.accountnumber)
                                 @Html.DisplayFor(modelItem => Model.datosCuentaSumaOrigen.accountnumber)
                             </td>
-                            <td id="sos">
-                                @Html.HiddenFor(modelItem => Model.datosCuentaSumaOrigen.saldo)
-                                @(String.Format("{0}", Math.Truncate(Model.datosCuentaSumaOrigen.saldo)))
-                            </td>
-                            <td>
+                             @{if (Model.statusOrden == null)
+                               {
+                                <td id="sos">
+                                    @Html.HiddenFor(modelItem => Model.datosCuentaSumaOrigen.saldo)
+                                    @(String.Format("{0}", Math.Truncate(Model.datosCuentaSumaOrigen.saldo)))
+                                </td>
+                                <td>
                                 @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenSuma)
                                 @Model.DenominacionCuentaOrigenSuma
-                            </td>                           
+                                </td>  
+                               }
+                               else
+                               {
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.statusDetalleOrdenOrigenSuma)
+                                @Model.statusDetalleOrdenOrigenSuma
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.resultadoTransferenciaOrigenSuma)
+                                @Model.resultadoTransferenciaOrigenSuma 
+                            </td> 
+                               }   
+                               }                      
                         </tr>
 
                         <tr data-row-key="@Model.datosCuentaPrepagoOrigen.accounttype">
@@ -140,6 +218,8 @@
                                 @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoOrigen.accountnumber)
                                 @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoOrigen.accountnumber)
                             </td>
+                            @{if (Model.statusOrden == null)
+                              {
                             <td id="sop">
                                 @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoOrigen.saldo)
                                 @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoOrigen.saldo)
@@ -147,169 +227,210 @@
                             <td>
                                 @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenPrepago)
                                 @Model.DenominacionCuentaOrigenPrepago
-                            </td>                                                
+                            </td>  
+                              }
+                              else
+                              {
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.statusDetalleOrdenOrigenPrepago)
+                                @Model.statusDetalleOrdenOrigenPrepago
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.resultadoTransferenciaOrigenPrepago)
+                                @Model.resultadoTransferenciaOrigenPrepago 
+                            </td>  
+                              } 
+                               }                                               
                         </tr>
 
                     </tbody>
 
-                </table>                              
-
-                @*<div class="panel-heading clearfix panel-gradient">
-                <h3 class="panel-title">Operaciones / Transferencia de Saldo / Datos de Destino </h3>
-            </div>*@
+                </table>                                              
 
 @{if (indicadorMostrar == "Ocultar")
   {
-                @:<div class="col-md-12 col-tabla-btn">
-                @:    <div class="text-center">
-                @:        <p class="text-danger">
-                @:            Datos de Destino
-                @:        </p>
-                @:    </div>
-                @:</div>
-                @:<div class="editor-label col-md-4 control-label"></div>
-                @:<div class="editor-field col-md-8">
-                @:    <br />
-                @:</div>
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="text-center">
+                        <p class="text-danger">
+                            Datos de Destino
+                        </p>
+                    </div>
+                </div>
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
 
-                @:<div class="editor-label col-md-4 control-label">
-                @:    Número de Documento/Cédula :
-                @:</div>
+                <div class="editor-label col-md-4 control-label">
+                    Número de Documento/Cédula :
+                </div>
 
-                @:<div class="editor-field col-md-8">
-                @:    <input type="text" id="numdoc" name="numdoc" value="" maxlength="11" placeholder="V-12345678" class="form-control" required>
-                @:    <span id="someID"></span>
-                @:</div>
-    
+                <div class="editor-field col-md-8">
+                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="11" placeholder="V-12345678" class="form-control" required>
+                    <span id="someID"></span>
+                </div>    
   }
   else
   {
-      @*
-      @:</div>
-      @:  <!-- panel-body -->
-      @:<div class="panel-body">*@
-
-                @:<div class="col-md-12 col-tabla-btn">
-                @:    <div class="text-center">
-                @:        <p class="text-danger">
-                @:            Datos de Destino
-                @:        </p>
-                @:    </div>
-                @:</div>
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="text-center">
+                        <p class="text-danger">
+                            Datos de Destino
+                        </p>
+                    </div>
+                </div>
                
+                <div class="editor-label col-md-4 control-label">
+                    Nombre del Afiliado :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.HiddenFor(modelItem => Model.idAfiliadoDestino)                    
+                    @Html.HiddenFor(modelItem => Model.nameAfiliadoDestino)
+                    @Html.HiddenFor(modelItem => Model.lastname1AfiliadoDestino)
+                    @Html.TextBox("name", @Model.nameAfiliadoDestino + " " + @Model.lastname1AfiliadoDestino, new { @class = "form-control", @readonly = "true" })
+                </div>
 
-                @:<div class="editor-label col-md-4 control-label">
-                @:    Nombre del Afiliado :
-                @:</div>
-                @:<div class="editor-form col-md-6">
-                @:    @Html.HiddenFor(modelItem => Model.nameAfiliadoDestino)
-                @:    @Html.HiddenFor(modelItem => Model.lastname1AfiliadoDestino)
-                @:    @Html.TextBox("name", @Model.nameAfiliadoDestino + " " + @Model.lastname1AfiliadoDestino, new { @class = "form-control", @readonly = "true" })
-                @:</div>
-
-                @:<div class="editor-label col-md-4 control-label">
-                @:    Número de Documento/Cédula :
-                @:</div>
-                @:<div class="editor-form col-md-6">
-                @:    @Html.HiddenFor(modelItem => Model.docnumberAfiliadoDestino)
-                @:    @Html.TextBox("docnumber", @Model.docnumberAfiliadoDestino, new { @class = "form-control", @readonly = "true" })
-                @:</div>
-
-                @:<div class="editor-label col-md-4 control-label"></div>
-                @:<div class="editor-field col-md-8">
-                @:    <br />
-                @:</div>
+                <div class="editor-label col-md-4 control-label">
+                    Número de Documento/Cédula :
+                </div>
+                <div class="editor-form col-md-6">
+                    @Html.HiddenFor(modelItem => Model.docnumberAfiliadoDestino)
+                    @Html.TextBox("docnumber", @Model.docnumberAfiliadoDestino, new { @class = "form-control", @readonly = "true" })
+                </div>
+    
+                    <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
 
                 @*<table class="table table-striped custab">*@
-                @:<table id="cuentasDestino" class="table table-hover">
+                <table id="cuentasDestino" class="table table-hover">
 
-                @:    <thead>
-                @:        <tr>
-                @:            <th>Tipo de Cuenta
-                @:            </th>
-                @:            <th>Número de Cuenta
-                @:            </th>
-                @:            <th>Saldo
-                @:            </th>
-                @:            <th>Denominación
-                @:            </th>
-                @:        </tr>
-                @:    </thead>
+                    <thead>
+                        <tr>
+                            <th>Tipo de Cuenta
+                            </th>
+                            <th>Número de Cuenta
+                            </th>
+                @if (Model.statusOrden == null)
+                {
+                                  <th>Saldo
+                                  </th>
+                                  <th>Denominación
+                                  </th>
+                }
+                else
+                {
+                                  <th>Estatus
+                                  </th>
+                                  <th>Observaciones
+                                  </th>
+                }                              
+                        </tr>
+                    </thead>
 
-                @:    <tbody>
+                    <tbody>
 
-                @:        <tr data-row-key="@Model.datosCuentaSumaDestino.accounttype">
-                @:          @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accounttype)
+                        <tr data-row-key="@Model.datosCuentaSumaDestino.accounttype">
+                          @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accounttype)
 
-                @:            <td>
-                @:                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accountname)
-                @:                @Html.DisplayFor(modelItem => Model.datosCuentaSumaDestino.accountname)
-                @:            </td>
-                @:            <td>
-                @:                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accountnumber)
-                @:                @Html.DisplayFor(modelItem => Model.datosCuentaSumaDestino.accountnumber)
-                @:            </td>
-                @:            <td id="sds">
-                @:                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.saldo)
-                @:                @(String.Format("{0}", Math.Truncate(Model.datosCuentaSumaDestino.saldo)))
-                @:            </td>
-                @:            <td>
-                @:                @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenSuma)
-                @:                @Model.DenominacionCuentaOrigenSuma
-                @:            </td>
-                @:        </tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accountname)
+                                @Html.DisplayFor(modelItem => Model.datosCuentaSumaDestino.accountname)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.accountnumber)
+                                @Html.DisplayFor(modelItem => Model.datosCuentaSumaDestino.accountnumber)
+                            </td>
+                @if (Model.statusOrden == null)
+                {
+                            <td id="sds">
+                                @Html.HiddenFor(modelItem => Model.datosCuentaSumaDestino.saldo)
+                                @(String.Format("{0}", Math.Truncate(Model.datosCuentaSumaDestino.saldo)))
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenSuma)
+                                @Model.DenominacionCuentaOrigenSuma
+                            </td>  
+                }
+                else
+                {
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.statusDetalleOrdenDestinoSuma)
+                                @Model.statusDetalleOrdenDestinoSuma 
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.resultadoTransferenciaDestinoSuma)
+                                @Model.resultadoTransferenciaDestinoSuma 
+                            </td>  
+                }
+                        </tr>
 
-                @:        <tr data-row-key="@Model.datosCuentaPrepagoDestino.accounttype">
-                @:            @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accounttype)
+                        <tr data-row-key="@Model.datosCuentaPrepagoDestino.accounttype">
+                            @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accounttype)
 
-                @:            <td>
-                @:                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accountname)
-                @:                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.accountname)
-                @:            </td>
-                @:            <td>
-                @:                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accountnumber)
-                @:                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.accountnumber)
-                @:            </td>
-                @:            <td id="sdp">
-                @:                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.saldo)
-                @:                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.saldo)
-                @:            </td>
-                @:            <td>
-                @:                @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenPrepago)
-                @:                @Model.DenominacionCuentaOrigenPrepago
-                @:        </tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accountname)
+                                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.accountname)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.accountnumber)
+                                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.accountnumber)
+                            </td>
+                @if (Model.statusOrden == null)
+                {
+                            <td id="sdp">
+                                @Html.HiddenFor(modelItem => Model.datosCuentaPrepagoDestino.saldo)
+                                @Html.DisplayFor(modelItem => Model.datosCuentaPrepagoDestino.saldo)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.DenominacionCuentaOrigenPrepago)
+                                @Model.DenominacionCuentaOrigenPrepago
+                            </td>  
+                }
+                else
+                {
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.statusDetalleOrdenDestinoPrepago)
+                                @Model.statusDetalleOrdenDestinoPrepago
+                            </td>
+                            <td>
+                                @Html.HiddenFor(modelItem => Model.resultadoTransferenciaDestinoPrepago)
+                                @Model.resultadoTransferenciaDestinoPrepago 
+                            </td>
+                } 
 
-                @:    </tbody>
+                    </tbody>
 
-                @:</table>
+                </table>
 
-                @:<!-- btn btn-success -->
-                @:<div class="col-md-12 col-tabla-btn">
-                @:    <div class="text-center">
-                @:        <p class="text-danger">
-                @:            Resumen de Transferencia
-                @:        </p>
-                @:    </div>
-                @:</div>
-                @:<!--// btn btn-success -->
+                <!-- btn btn-success -->
+                <div class="col-md-12 col-tabla-btn">
+                    <div class="text-center">
+                        <p class="text-danger">
+                            Resumen de Transferencia
+                        </p>
+                    </div>
+                </div>
+                <!--// btn btn-success -->
 
-                @:<div class="editor-label col-md-4 control-label">
-                @:    Monto a transferir @Model.datosCuentaSumaOrigen.accountname :
-                @:</div>
+                <div class="editor-label col-md-4 control-label">
+                    Monto a transferir @Model.datosCuentaSumaOrigen.accountname :
+                </div>
 
-                @:<div class="editor-form col-md-6">
-                @:    <input type="text" id="ResumenTransferenciaSuma" name="ResumenTransferenciaSuma" value="0" maxlength="10" class="form-control" readonly="true">
-                @:</div>
+                <div class="editor-form col-md-6">
+                    <input type="text" id="ResumenTransferenciaSuma" name="ResumenTransferenciaSuma" value="@Model.ResumenTransferenciaSuma" maxlength="10" class="form-control" readonly="true">
+                </div>
 
-                @:<div class="editor-label col-md-4 control-label">
-                @:    Monto a transferir @Model.datosCuentaPrepagoOrigen.accountname :
-                @:</div>
+                <div class="editor-label col-md-4 control-label">
+                    Monto a transferir @Model.datosCuentaPrepagoOrigen.accountname :
+                </div>
 
-                @:<div class="editor-form col-md-6">
-                @:    <input type="text" id="ResumenTransferenciaPrepago" name="ResumenTransferenciaPrepago" value="0,00" maxlength="10" class="form-control" readonly="true">
-                @:</div>             
+                <div class="editor-form col-md-6">
+                    <input type="text" id="ResumenTransferenciaPrepago" name="ResumenTransferenciaPrepago" value="@Model.ResumenTransferenciaPrepago.Replace(".", "")" maxlength="10" class="form-control" readonly="true">
+                </div>             
   }
-}
+  }
             
           <div class="editor-label col-md-4 control-label">
                 </div>
@@ -322,23 +443,36 @@
             <div class="col-md-12 col-btn">
                     <div class="pull-right">
                          @{if (Model.docnumberAfiliadoDestino == null)
-                          {
-                              @:<input id="Buscar" type="submit" class="btn btn-success btn-md" value="Buscar" />
-                        
-                          }
-                          else
-                          {
-                              @:<a id="Transferir" class="btn btn-success btn-md" role="button">Transferir</a>                         
-                              @:<input id="Procesar" type="submit" class="btn btn-success btn-md" value="Procesar" />
-                        
-                          }
+                           {
+                              <input id="Buscar" type="submit" class="btn btn-success btn-md" value="Buscar" />
+                              <a href="@Url.Action("FilterOrigen", "Transferencia")" class="btn btn-danger btn-md">Regresar</a>
+                           }
+                           else if (Model.id == 0)
+                           {
+                              <a id="Transferir" class="btn btn-success btn-md" role="button">Transferir</a>                         
+                              <input id="Crear" type="submit" class="btn btn-success btn-md" value="Crear Orden de Transferencia" style="display:none" />
+                              <a href="@Url.Action("FilterOrigen", "Transferencia")" class="btn btn-danger btn-md">Regresar</a>                           
+                           }
+                           else if (@indicadorGuardar == "Aprobar")
+                           {
+                              <input id="Aprobar" type="submit" class="btn btn-success btn-md" value="Aprobar Orden" />                            
+                              <a id="Rechazar" href="@Url.Action("RechazarTransferencia", "Transferencia", new { id = Model.id })" class="btn btn-success btn-md">Rechazar Orden</a> 
+                              <a href="@Url.Action("FilterReview", "OrdenRecargaPrepago")" class="btn btn-danger btn-md">Regresar</a>                           
+                           }
+                           else if (Model.statusOrden != "Procesada" && Model.statusOrden != "Rechazada")
+                           {
+                              <a id="Procesar" href="@Url.Action("ProcesarTransferencia", "Transferencia", new { id = Model.id })" class="btn btn-success btn-md">Procesar Orden</a> 
+                              @*<input id="Procesar" type="submit" class="btn btn-success btn-md" value="Procesar" />*@
+                              <a href="@Url.Action("FilterReview", "OrdenRecargaPrepago")" class="btn btn-danger btn-md">Regresar</a>   
+                           }
+                           else
+                           {
+                                <a href="@Url.Action("FilterReview", "OrdenRecargaPrepago")" class="btn btn-danger btn-md">Regresar</a>
+                           }
                         }
-                        <a href="@Url.Action("FilterOrigen", "Transferencia")" class="btn btn-danger btn-md">Cancelar</a>
-                        @*<a href="@Url.Action("FilterReview", "AfiliadoSuma")" class="btn btn-danger btn-md">Regresar</a>*@
-                    </div>
+                       </div>
                 </div>
-                <!--// buttons -->
-            
+                <!--// buttons -->            
         </div>
         <!-- panel-body -->
 
@@ -361,15 +495,16 @@
         $('#ResumenTransferenciaPrepago').val($('#datosCuentaPrepagoOrigen_saldo').val());
         $('#ResumenTransferenciaSuma').val($('#datosCuentaSumaOrigen_saldo').val());
         $('#datosCuentaSumaDestino_saldo').val(nuevosuma);
-        $('#sds').html(nuevosuma);
+        $('#sds').html('<input name="datosCuentaSumaDestino.saldo" id="datosCuentaSumaDestino_saldo" type="hidden" value="' + nuevosuma + '" data-val-required="El campo saldo es obligatorio." data-val-number="The field saldo must be a number." data-val="true">' + nuevosuma);
         $('#datosCuentaPrepagoDestino_saldo').val(nuevoprepago.toFixed(2).toString().replace(".", ","));
-        $('#sdp').html(nuevoprepago.toFixed(2).toString().replace(".", ","));
+        $('#sdp').html('<input name="datosCuentaPrepagoDestino.saldo" id="datosCuentaPrepagoDestino_saldo" type="hidden" value="' + nuevoprepago.toFixed(2).toString().replace(".", ",") + '" data-val-required="El campo saldo es obligatorio." data-val-number="The field saldo must be a number." data-val="true">' + nuevoprepago.toFixed(2).toString().replace(".", ","));
         $('#datosCuentaSumaOrigen_saldo').val("0");
         $('#sos').html("0");
         $('#datosCuentaPrepagoOrigen_saldo').val("0,00");
         $('#sop').html("0,00");
         $("#Transferir").hide();
-     });
+        $("#Crear").show();
+    });
 
     function verificarTransferencia() {
         if ($('#ResumenTransferenciaSuma').val() == "0" && $('#ResumenTransferenciaPrepago').val() == "0,00") {

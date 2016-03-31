@@ -50,16 +50,19 @@
                 </thead>
 
                 <tbody>
-                    @if (Model.Count() != 0)
-                    {
-                        foreach (var item in Model)
-                        {                            
+                    @{if (Model.Count() != 0)
+                      {
+                          foreach (var item in Model)
+                          {                            
                         <tr data-row-key="@item.id" >
 
                             @Html.HiddenFor(modelItem => item.statusOrden)
 
                             <td>
+                                @if (item.tipoOrden != "Orden de Transferencia")
+                                {
                                 @Html.DisplayFor(modelItem => item.Cliente.nameCliente)
+                                }
                             </td>
 
                             <td>
@@ -87,28 +90,47 @@
                             </td>
 
                             <td>
-                                @Html.DisplayFor(modelItem => item.montoOrden)
+                                @if (item.tipoOrden != "Orden de Transferencia")
+                                {
+                                    @Html.DisplayFor(modelItem => item.montoOrden)
+                                }
                             </td>
 
                             <td>
-                                <a href="@Url.Action("DetalleOrden", "OrdenRecargaPrepago", new { id =  item.id })" class="btn btn-success btn-sm" >
-                                    <span class="glyphicon glyphicon-zoom-in"></span>
-                                </a>
+                                @if (item.tipoOrden == "Orden de Transferencia")
+                                {
+                                    <a href="@Url.Action("DetalleTransferencia", "Transferencia", new { id = item.id })" class="btn btn-success btn-sm" >
+                                        <span class="glyphicon glyphicon-zoom-in"></span>
+                                    </a>
+                                }
+                                else
+                                {                                    
+                                    <a href="@Url.Action("DetalleOrden", "OrdenRecargaPrepago", new { id = item.id })" class="btn btn-success btn-sm" >
+                                        <span class="glyphicon glyphicon-zoom-in"></span>
+                                    </a>
+                                }
                             </td>
 
                             <td>
-                                @{if (item.statusOrden == "Aprobada")
-                                  {
-                                    <a href="@Url.Action("ProcesarOrden", "OrdenRecargaPrepago", new { id =  item.id })" class="btn btn-info btn-sm" >
+                                @if (item.statusOrden == "Aprobada")
+                                {
+                                    if (item.tipoOrden == "Orden de Transferencia")
+                                    {
+                                    <a href="@Url.Action("ProcesarTransferencia", "Transferencia", new { id = item.id })" class="btn btn-info btn-sm" >
                                         <span class="glyphicon glyphicon-usd"></span>
                                     </a>
-                                  }
+                                    }
+                                    else
+                                    {
+                                    <a href="@Url.Action("ProcesarOrden", "OrdenRecargaPrepago", new { id = item.id })" class="btn btn-info btn-sm" >
+                                        <span class="glyphicon glyphicon-usd"></span>
+                                    </a>
+                                    }
                                 }
-
                             </td>
-
                         </tr>                 
-                        }
+                          }
+                      }
                     }
                 </tbody>
 

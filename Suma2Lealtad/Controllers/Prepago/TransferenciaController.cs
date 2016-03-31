@@ -14,9 +14,12 @@ namespace Suma2Lealtad.Controllers.Prepago
     [HandleError]
     public class TransferenciaController : Controller
     {
+        private ClientePrepagoRepository repCliente = new ClientePrepagoRepository();
         AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
         BeneficiarioPrepagoRepository repBeneficiario = new BeneficiarioPrepagoRepository();
         OperacionesRepository repOperaciones = new OperacionesRepository();
+        private OrdenRecargaRepository repOrden = new OrdenRecargaRepository();
+
 
         public ActionResult FilterOrigen()
         {
@@ -86,6 +89,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             Transferencia transferencia = new Transferencia()
             {
                 docnumberAfiliadoOrigen = afiliadoOrigen.docnumber,
+                idAfiliadoOrigen = afiliadoOrigen.id,
                 nameAfiliadoOrigen = afiliadoOrigen.name,
                 lastname1AfiliadoOrigen = afiliadoOrigen.lastname1,
                 typeAfiliadoOrigen = afiliadoOrigen.type,
@@ -159,6 +163,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             Transferencia transferencia = new Transferencia()
             {
                 docnumberAfiliadoOrigen = afiliadoOrigen.docnumber,
+                idAfiliadoOrigen = afiliadoOrigen.id,
                 nameAfiliadoOrigen = afiliadoOrigen.name,
                 lastname1AfiliadoOrigen = afiliadoOrigen.lastname1,
                 typeAfiliadoOrigen = afiliadoOrigen.type,
@@ -246,54 +251,151 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
             SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoDestino);
             transferencia.docnumberAfiliadoDestino = afiliadoDestino.docnumber;
+            transferencia.idAfiliadoDestino = afiliadoDestino.id;
             transferencia.nameAfiliadoDestino = afiliadoDestino.name;
             transferencia.lastname1AfiliadoDestino = afiliadoDestino.lastname1;
             transferencia.datosCuentaSumaDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
             transferencia.datosCuentaPrepagoDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
+            transferencia.ResumenTransferenciaSuma = "0";
+            transferencia.ResumenTransferenciaPrepago = "0,00";
             return View(transferencia);
         }
 
         [HttpPost]
-        public ActionResult ProcesarTransferencia(Transferencia transferencia)
+        public ActionResult CrearOrdenTransferencia(Transferencia transferencia)
         {
-            string respuestaSuma = "";
-            string respuestaPrepago = "";
-            string mensaje = "";
-            //realizar transferencias
-            if (transferencia.ResumenTransferenciaSuma != "0")
+            //crear detalle de orden
+            int idCliente = 62;
+            List<DetalleOrdenRecargaPrepago> detalleOrden = new List<DetalleOrdenRecargaPrepago>();
+            DetalleOrdenRecargaPrepago datosorigensuma = new DetalleOrdenRecargaPrepago()
             {
-                respuestaSuma = repOperaciones.Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_SUMA, transferencia.ResumenTransferenciaSuma);
-                long number1 = 0;
-                bool canConvert = long.TryParse(respuestaSuma, out number1);
-                if (canConvert == false)
-                {
-                    mensaje = "Falló transferencia Suma (" + respuestaSuma + "). ";
-                }
-                else
-                {
-                    mensaje = "Transferencia Suma exitosa con clave " + respuestaSuma + ". ";
-                }
-            }
-            if (transferencia.ResumenTransferenciaPrepago != "0,00")
+                idAfiliado = transferencia.idAfiliadoOrigen,
+                montoRecarga = Convert.ToDecimal(transferencia.ResumenTransferenciaSuma),
+                tipoOrden = "Orden de Transferencia"
+            };
+            detalleOrden.Add(datosorigensuma);
+            DetalleOrdenRecargaPrepago datosorigenprepago = new DetalleOrdenRecargaPrepago()
             {
-                respuestaPrepago = repOperaciones.Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_PREPAGO, transferencia.ResumenTransferenciaPrepago);
-                long number1 = 0;
-                bool canConvert = long.TryParse(respuestaPrepago, out number1);
-                if (canConvert == false)
-                {
-                    mensaje = mensaje + "Falló transferencia Prepago (" + respuestaPrepago + ").";
-                }
-                {
-                    mensaje = mensaje + "Transferencia Prepago exitosa con clave " + respuestaPrepago + ".";
-                }
+                idAfiliado = transferencia.idAfiliadoOrigen,
+                montoRecarga = Convert.ToDecimal(transferencia.ResumenTransferenciaPrepago),
+                tipoOrden = "Orden de Transferencia"
+            };
+            detalleOrden.Add(datosorigenprepago);
+            DetalleOrdenRecargaPrepago datosdestinosuma = new DetalleOrdenRecargaPrepago()
+            {
+                idAfiliado = transferencia.idAfiliadoDestino,
+                montoRecarga = Convert.ToDecimal(transferencia.ResumenTransferenciaSuma),
+                tipoOrden = "Orden de Transferencia"
+            };
+            detalleOrden.Add(datosdestinosuma);
+            DetalleOrdenRecargaPrepago datosdestinoprepago = new DetalleOrdenRecargaPrepago()
+            {
+                idAfiliado = transferencia.idAfiliadoDestino,
+                montoRecarga = Convert.ToDecimal(transferencia.ResumenTransferenciaPrepago),
+                tipoOrden = "Orden de Transferencia"
+            };
+            detalleOrden.Add(datosdestinoprepago);
+            //crear orden            
+            int idOrden = repOperaciones.CrearTransferencia(idCliente, detalleOrden);
+            if (idOrden != 0)
+            {
+                //viewmodel.Title = "Prepago / Cliente / Ordenes de Recarga / Detalle de la Orden";
+                //viewmodel.Message = "Orden Aprobada.";
+                //viewmodel.ControllerName = "ClientePrepago";
+                //viewmodel.ActionName = "FilterOrdenes";
+                //viewmodel.RouteValues = id.ToString();
+                OrdenRecargaPrepago orden = repOrden.Find(idOrden);
+                transferencia.id = idOrden;
+                transferencia.creationdateOrden = orden.creationdateOrden;
+                transferencia.montoOrden = orden.montoOrden;
+                transferencia.statusOrden = orden.statusOrden;
+                transferencia.tipoOrden = orden.tipoOrden;
+                return View("DetalleTransferencia", transferencia);
             }
-            //mensaje de confirmacion  
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Crear Orden de Transferencia";
+                viewmodel.Message = "Falló el proceso de creación de la Orden.";
+                viewmodel.ControllerName = "Transferencia";
+                viewmodel.ActionName = "FilterOrigen";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+        }
+
+        public ActionResult DetalleTransferencia(int id)
+        {
+            Transferencia transferencia = repOperaciones.FindTransferencia(id);
+            return View("DetalleTransferencia", transferencia);
+        }
+
+        public ActionResult AprobarTransferencia(Transferencia transferencia)
+        {
             ViewModel viewmodel = new ViewModel();
-            viewmodel.Title = "Operaciones / Transferencia de Saldo / Procesar Transferencia";
-            viewmodel.Message = mensaje;
-            viewmodel.ControllerName = "Transferencia";
-            viewmodel.ActionName = "FilterOrigen";
+            int idOrderHistory = repOrden.OrdersHistoryId();
+            if (repOperaciones.AprobarTransferencia(transferencia))
+            {
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Aprobar Transferencia";
+                viewmodel.Message = "Orden Aprobada.";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterReview";
+                //return RedirectToAction("DetalleOrden", new { id = id, idOrden = idOrden });
+            }
+            else
+            {
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Aprobar Transferencia";
+                viewmodel.Message = "Falló el proceso de aprobación de la Orden.";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterReview";
+            }
             return RedirectToAction("GenericView", viewmodel);
+        }
+
+        public ActionResult RechazarTransferencia(int id)
+        {
+            ViewModel viewmodel = new ViewModel();
+            if (repOperaciones.RechazarTransferencia(id))
+            {
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Rechazar Transferencia";
+                viewmodel.Message = "Orden Rechazada.";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterReview";
+            }
+            else
+            {
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Rechazar Transferencia";
+                viewmodel.Message = "Falló el proceso de rechazo de la Orden.";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterReview";
+            }
+            return RedirectToAction("GenericView", viewmodel);
+        }
+
+        public ActionResult ProcesarTransferencia(int id)
+        {
+            if (repOperaciones.ProcesarTransferencia(id))
+            {
+                //ViewModel viewmodel = new ViewModel();
+                //viewmodel.Title = "Prepago / Cliente / Ordenes de Recarga / Detalle de la Orden / Procesar Orden";
+                //viewmodel.Message = "Orden Procesada.";
+                //viewmodel.ControllerName = "ClientePrepago";
+                //viewmodel.ActionName = "FilterOrdenes";
+                //viewmodel.RouteValues = id.ToString();
+                //return RedirectToAction("GenericView", viewmodel);
+                //List<DetalleOrdenRecargaPrepago> detalleOrden = repOrden.FindDetalleOrden(idOrden);
+                //return View("ResultadoOrden", detalleOrden);
+                Transferencia transferencia = repOperaciones.FindTransferencia(id);
+                return View("DetalleTransferencia", transferencia);
+            }
+            else
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Procesar Transferencia";
+                viewmodel.Message = "Falló el procesamiento de la Orden.";
+                viewmodel.ControllerName = "OrdenRecargaPrepago";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
+            }
 
         }
 

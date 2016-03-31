@@ -67,8 +67,7 @@ namespace Suma2Lealtad.Modules
                                   select r.level).ToList().Max();
                     //Ojo: No se filtra el Menú por Tipo de Usuario, sino por Rol del Usuario. Hay que tener esto en cuenta al definir los roles que sean excluyentes.
                     _menu = (from mainMenu in db.Menus
-                             join securityMenu in db.SecurityMenus
-                             on mainMenu.id equals securityMenu.menuid
+                             join securityMenu in db.SecurityMenus on mainMenu.id equals securityMenu.menuid
                              where roles.Contains(securityMenu.roleid)
                              select new CMenu
                              {
@@ -78,7 +77,7 @@ namespace Suma2Lealtad.Modules
                                  actions = mainMenu.actions,
                                  parentid = mainMenu.parentid,
                                  order_no = mainMenu.order_no
-                             }).Distinct().OrderBy(m => m.id).ThenBy(m => m.parentid).ThenBy(m => m.order_no).ToList();
+                             }).Distinct().OrderBy(m => m.parentid).ThenBy(m => m.order_no).ToList();
                     _menu.Add(new CMenu { id = 10000, name = "Salir", controller = "", actions = "", parentid = 0, order_no = 1 });
                     _menu.Add(new CMenu { id = 10001, name = "Cerrar Sesión", controller = "Home", actions = "Logout", parentid = 10000, order_no = 2 });
                 }

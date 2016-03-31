@@ -50,8 +50,8 @@
             <div class="editor-field col-md-8">
                 <br />
             </div>
-
-            <form id="commentForm" method="post" action="@Url.Action("AprobarOrden", "OrdenRecargaPrepago", new { id = Model.First().idOrden, indicadorGuardar = @indicadorGuardar })" class="form-horizontal" onsubmit="return actualizarRecargas();">
+            
+            <form id="commentForm" method="post" action="@Url.Action("AprobarOrden", "OrdenRecargaPrepago", new { id = Model.First().idOrden, indicadorGuardar = @indicadorGuardar })" class="form-horizontal" onsubmit="return actualizarRecargas();">                   
 
                 <div class="editor-label col-md-4 control-label">
                     Cliente :
@@ -195,7 +195,7 @@
                                     }
                                 </td>
 
-                                @{if (Model.First().tipoOrden != "Orden de Anulación")
+                                @{if (Model.First().tipoOrden != "Orden de Anulación de Recarga")
                                   {
                                       if (Model.First().statusOrden == "Nueva")
                                       {

@@ -9,7 +9,10 @@ namespace Suma2Lealtad.Models.Repositorios
 {
     public class OperacionesRepository
     {
-        public string Transferir(string numdocOrigen, string numdocDestino, string tipoCuenta, string monto)
+        private OrdenRecargaRepository repOrden = new OrdenRecargaRepository();
+        private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
+
+        private string Transferir(string numdocOrigen, string numdocDestino, string tipoCuenta, string monto)
         {
             int intentos;
             string respuesta = "";
@@ -59,5 +62,261 @@ namespace Suma2Lealtad.Models.Repositorios
             return respuesta;
         }
 
+        public bool ProcesarTransferencia(int id)
+        {
+            Transferencia transferencia = FindTransferencia(id);
+            string respuestaSuma = "";
+            string respuestaPrepago = "";
+            string mensaje = "";
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                Order orden = db.Orders.Find(transferencia.id);
+                List<OrdersDetail> ordersdetails = db.OrdersDetails.Where(x => x.orderid == orden.id).ToList();
+                //realizar transferencias
+                if (transferencia.ResumenTransferenciaSuma != "0")
+                {
+                    respuestaSuma = Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_SUMA, transferencia.ResumenTransferenciaSuma);
+                    long number1 = 0;
+                    bool canConvert = long.TryParse(respuestaSuma, out number1);
+                    if (canConvert == false)
+                    {
+                        mensaje = "Falló transferencia Suma (" + respuestaSuma + "). ";
+                        ordersdetails.First().comments = "Transferencia Suma fallida";
+                        ordersdetails.First().cardsresponse = respuestaSuma;
+                        ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(2).First().comments = "Transferencia Suma fallida";
+                        ordersdetails.Skip(2).First().cardsresponse = respuestaSuma;
+                        ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;                    
+                    }
+                    else
+                    {
+                        mensaje = "Transferencia Suma efectiva con clave " + respuestaSuma + ". ";
+                        ordersdetails.First().comments = "Transferencia Suma efectiva";
+                        ordersdetails.First().cardsresponse = respuestaSuma;
+                        ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(2).First().comments = "Transferencia Suma efectiva";
+                        ordersdetails.Skip(2).First().cardsresponse = (Convert.ToInt32(respuestaSuma) + 1).ToString();
+                        ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    }
+                }
+                else
+                {
+                    ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    ordersdetails.First().comments = "";
+                    ordersdetails.First().cardsresponse = "";
+                    ordersdetails.Skip(2).First().comments = "";
+                    ordersdetails.Skip(2).First().cardsresponse = "";
+                    ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;                    
+                }                     
+                if (transferencia.ResumenTransferenciaPrepago != "0,00")
+                {
+                    respuestaPrepago = Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_PREPAGO, transferencia.ResumenTransferenciaPrepago);
+                    long number1 = 0;
+                    bool canConvert = long.TryParse(respuestaPrepago, out number1);
+                    if (canConvert == false)
+                    {
+                        mensaje = mensaje + "Falló transferencia Prepago (" + respuestaPrepago + ").";
+                        ordersdetails.Skip(1).First().comments = "Transferencia Prepago fallida";
+                        ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
+                        ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(3).First().comments = "Transferencia Prepago fallida";
+                        ordersdetails.Skip(3).First().cardsresponse = respuestaPrepago;
+                        ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    }
+                    else
+                    {
+                        mensaje = mensaje + "Transferencia Prepago efectiva con clave " + respuestaPrepago + ".";
+                        ordersdetails.Skip(1).First().comments = "Transferencia Prepago efectiva";
+                        ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
+                        ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(3).First().comments = "Transferencia Prepago efectiva";
+                        ordersdetails.Skip(3).First().cardsresponse = (Convert.ToInt32(respuestaPrepago) + 1).ToString();
+                        ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    }
+                }
+                else
+                {
+                    ordersdetails.Skip(1).First().comments = "";
+                    ordersdetails.Skip(1).First().cardsresponse = "";
+                    ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    ordersdetails.Skip(3).First().comments = "";
+                    ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    ordersdetails.Skip(3).First().cardsresponse = "";
+                }
+                db.SaveChanges();
+                //Actualizar estatus de la Orden
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Order")).id;
+                orden.processdate = DateTime.Now;
+                //Entidad OrderHistory
+                int idOrderHistory = repOrden.OrdersHistoryId();
+                OrdersHistory orderhistory = new OrdersHistory()
+                {
+                    id = idOrderHistory,
+                    orderid = orden.id,
+                    estatusid = orden.sumastatusid,
+                    userid = (int)HttpContext.Current.Session["userid"],
+                    creationdate = orden.processdate,
+                    comments = "orden procesada"
+                };
+                db.OrdersHistories.Add(orderhistory);
+                db.SaveChanges();
+                return true;
+            }                 
+        }
+
+        public bool AprobarTransferencia(Transferencia transferencia)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                Order orden = db.Orders.Find(transferencia.id);
+                List<OrdersDetail> ordersdetails = db.OrdersDetails.Where(x => x.orderid == orden.id).ToList();
+                foreach (OrdersDetail od in ordersdetails)
+                {
+                    OrdersDetail od2 = db.OrdersDetails.Find(od.id, od.orderid);
+                    od2.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_APROBADO) && (s.tablename == "OrdersDetail")).id;
+                }
+                //Actualizar estatus y monto de la Orden
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_APROBADA) && (s.tablename == "Order")).id;
+                orden.totalamount = 0;
+                orden.processdate = DateTime.Now;
+                //Entidad OrderHistory
+                int idOrderHistory = repOrden.OrdersHistoryId();
+                OrdersHistory orderhistory = new OrdersHistory()
+                {
+                    id = idOrderHistory,
+                    orderid = orden.id,
+                    estatusid = orden.sumastatusid,
+                    userid = (int)HttpContext.Current.Session["userid"],
+                    creationdate = orden.processdate,
+                    comments = "orden aprobada"
+                };
+                db.OrdersHistories.Add(orderhistory);
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool RechazarTransferencia(int id)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                Order orden = db.Orders.FirstOrDefault(o => o.id.Equals(id));
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Order")).id;
+                orden.processdate = DateTime.Now;
+                //Entidad OrderHistory
+                int idOrderHistory = repOrden.OrdersHistoryId();
+                OrdersHistory orderhistory = new OrdersHistory()
+                {
+                    id = idOrderHistory,
+                    orderid = orden.id,
+                    estatusid = orden.sumastatusid,
+                    userid = (int)HttpContext.Current.Session["userid"],
+                    creationdate = orden.processdate,
+                    comments = "orden rechazada"
+                };
+                db.OrdersHistories.Add(orderhistory);
+                db.SaveChanges();
+                return true;
+            }
+        }
+
+        public int CrearTransferencia(int idCliente, List<DetalleOrdenRecargaPrepago> detalleOrden)
+        {
+            int idOrden = 0;
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                //ENTIDAD Order                   
+                Order Order = new Order()
+                {
+                    id = repOrden.OrderId(),
+                    prepaidcustomerid = idCliente,
+                    totalamount = 0,
+                    paymenttype = "",
+                    creationdate = DateTime.Now,
+                    creationuserid = (int)HttpContext.Current.Session["userid"],
+                    processdate = DateTime.Now,
+                    comments = detalleOrden.First().tipoOrden,
+                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_NUEVA) && (s.tablename == "Order")).id
+                };
+                db.Orders.Add(Order);
+                idOrden = Order.id;
+                int idbase = repOrden.OrdersDetailId();
+                foreach (DetalleOrdenRecargaPrepago item in detalleOrden)
+                {
+                    idbase = idbase + 1;
+                    //ENTIDAD OrderDetail    
+                    OrdersDetail OrderDetail = new OrdersDetail()
+                    {
+                        id = idbase,
+                        orderid = Order.id,
+                        customerid = item.idAfiliado,
+                        amount = item.montoRecarga,
+                        sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
+                    };                    
+                    db.OrdersDetails.Add(OrderDetail);
+                }
+                //Entidad OrderHistory
+                int idOrderHistory = repOrden.OrdersHistoryId();
+                OrdersHistory orderhistory = new OrdersHistory()
+                {
+                    id = idOrderHistory,
+                    orderid = idOrden,
+                    estatusid = Order.sumastatusid,
+                    userid = (int)HttpContext.Current.Session["userid"],
+                    creationdate = DateTime.Now,
+                    comments = "orden creada"
+                };
+                db.OrdersHistories.Add(orderhistory);
+                db.SaveChanges();
+                return idOrden;
+            }
+        }
+
+        public Transferencia FindTransferencia(int id)
+        {
+            //llenar modelo transferencia desde los datos de la orden
+            List<DetalleOrdenRecargaPrepago> detalleOrden = repOrden.FindDetalleOrden(id);
+            Transferencia transferencia = new Transferencia();
+            AfiliadoSuma afiliadoOrigen = repAfiliado.Find(detalleOrden.First().idAfiliado);
+            SaldosMovimientos SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoOrigen);
+            transferencia.docnumberAfiliadoOrigen = afiliadoOrigen.docnumber;
+            transferencia.idAfiliadoOrigen = afiliadoOrigen.id;
+            transferencia.nameAfiliadoOrigen = afiliadoOrigen.name;
+            transferencia.lastname1AfiliadoOrigen = afiliadoOrigen.lastname1;
+            transferencia.typeAfiliadoOrigen = afiliadoOrigen.type;            
+            transferencia.datosCuentaSumaOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
+            transferencia.DenominacionCuentaOrigenSuma = "Más";
+            transferencia.datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
+            transferencia.DenominacionCuentaOrigenPrepago = "Bs.";
+            transferencia.statusDetalleOrdenOrigenSuma = detalleOrden.First().statusDetalleOrden;
+            transferencia.resultadoTransferenciaOrigenSuma = detalleOrden.First().observacionesExclusion + " " + detalleOrden.First().resultadoRecarga;
+            transferencia.statusDetalleOrdenOrigenPrepago = detalleOrden.Skip(1).First().statusDetalleOrden;
+            transferencia.resultadoTransferenciaOrigenPrepago = detalleOrden.Skip(1).First().observacionesExclusion + " " + detalleOrden.Skip(1).First().resultadoRecarga;
+            AfiliadoSuma afiliadoDestino = repAfiliado.Find(detalleOrden.SkipWhile(x => x.idAfiliado == afiliadoOrigen.id).First().idAfiliado);
+            SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoDestino);
+            transferencia.docnumberAfiliadoDestino = afiliadoDestino.docnumber;
+            transferencia.idAfiliadoDestino = afiliadoDestino.id;
+            transferencia.nameAfiliadoDestino = afiliadoDestino.name;
+            transferencia.lastname1AfiliadoDestino = afiliadoDestino.lastname1;            
+            transferencia.datosCuentaSumaDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
+            transferencia.datosCuentaPrepagoDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
+            transferencia.statusDetalleOrdenDestinoSuma = detalleOrden.Skip(2).First().statusDetalleOrden;
+            transferencia.resultadoTransferenciaDestinoSuma = detalleOrden.Skip(2).First().observacionesExclusion + " " + detalleOrden.Skip(2).First().resultadoRecarga;
+            transferencia.statusDetalleOrdenDestinoPrepago = detalleOrden.Skip(3).First().statusDetalleOrden;
+            transferencia.resultadoTransferenciaDestinoPrepago = detalleOrden.Skip(3).First().observacionesExclusion + " " + detalleOrden.Skip(3).First().resultadoRecarga;
+            transferencia.ResumenTransferenciaSuma = Math.Truncate(detalleOrden.First().montoRecarga).ToString();
+            transferencia.ResumenTransferenciaPrepago = detalleOrden.Skip(1).First().montoRecarga.ToString("N2");
+            OrdenRecargaPrepago orden = repOrden.Find(id);
+            transferencia.id = orden.id;
+            transferencia.creationdateOrden = orden.creationdateOrden;
+            transferencia.montoOrden = orden.montoOrden;
+            transferencia.statusOrden = orden.statusOrden;
+            transferencia.tipoOrden = orden.tipoOrden;
+            return transferencia;
+        }
     }
 }

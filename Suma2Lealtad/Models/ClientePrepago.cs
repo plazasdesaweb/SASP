@@ -30,7 +30,9 @@ namespace Suma2Lealtad.Models
               new ClaseDeOrden { id = "", clase = "Seleccione..."          },
               new ClaseDeOrden { id = "Orden de Recarga", clase = "Orden de Recarga" },
               new ClaseDeOrden { id = "Orden de Recarga desde Archivo", clase = "Orden de Recarga desde Archivo"  } ,
-              new ClaseDeOrden { id = "Orden de Anulación", clase = "Orden de Anulación"  }
+              new ClaseDeOrden { id = "Orden de Anulación de Recarga", clase = "Orden de Anulación de Recarga"  },
+              new ClaseDeOrden { id = "Orden de Transferencia", clase = "Orden de Transferencia"  },
+              new ClaseDeOrden { id = "Orden de Anulación de Transferencia", clase = "Orden de Anulación de Transferencia"  }
         };
         #endregion
 
