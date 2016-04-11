@@ -52,6 +52,25 @@
                         @Html.ValidationMessageFor(model => model.monto)
                     </div>
 
+                    <div class="editor-label col-md-4 control-label Natural">
+                        * Sucursal :
+                    </div>
+
+                    <div class="editor-field col-md-6 Natural">
+                        @Html.DropDownListFor(m=>m.storeid,
+                                new SelectList(Model.StoreOptions,
+                                "id", "sucursal",
+                                Model.StoreOptions), new { @class = "form-control" })
+                    </div>
+
+                    <div class="editor-label col-md-4 control-label">
+                        Observaciones :
+                    </div>
+                    <div class="editor-form col-md-6">
+                        @Html.TextBoxFor(model => model.observaciones, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.observaciones)
+                    </div>
+
                     <div class="editor-label col-md-4 control-label"></div>
                     <div class="editor-field col-md-6">
                         <br>
@@ -98,7 +117,14 @@
         valor = valor.toString().replace(".", ",");
         //alert("despues" + valor);
         document.getElementById('monto').value = valor;
-        return true;
+        //alert(document.getElementById('storeid').value == "");
+        if (document.getElementById('storeid').value == "0") {
+            document.getElementById('storeid').focus();
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 </script>

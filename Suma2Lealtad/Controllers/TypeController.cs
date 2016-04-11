@@ -17,7 +17,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View(db.Types.ToList());
         }
 
@@ -26,7 +26,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Suma2Lealtad.Models.Type type = db.Types.Find(id);
             if (type == null)
             {
@@ -40,7 +40,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
@@ -51,7 +51,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Suma2Lealtad.Models.Type type)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 if (db.Types.Count() > 0)
@@ -75,7 +75,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Suma2Lealtad.Models.Type type = db.Types.Find(id);
             if (type == null)
             {
@@ -91,7 +91,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Suma2Lealtad.Models.Type type)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 db.Entry(type).State = EntityState.Modified;
@@ -106,7 +106,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Suma2Lealtad.Models.Type type = db.Types.Find(id);
             if (type == null)
             {
@@ -122,7 +122,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Suma2Lealtad.Models.Type type = db.Types.Find(id);
             db.Types.Remove(type);
             db.SaveChanges();
@@ -131,7 +131,7 @@ namespace Suma2Lealtad.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             db.Dispose();
             base.Dispose(disposing);
         }

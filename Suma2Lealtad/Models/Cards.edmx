@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CardsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="CardsModelStoreContainer" />
+        <Function Name="PLZ_GETREPORT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FROMDATE" Type="varchar" Mode="In" />
+          <Parameter Name="UNTILDATE" Type="varchar" Mode="In" />
+          <Parameter Name="NUMDOC" Type="varchar" Mode="In" />
+          <Parameter Name="ACCOUNTTYPE" Type="varchar" Mode="In" />
+          <Parameter Name="TRX" Type="varchar" Mode="In" />
+        </Function>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CardsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CardsEntities" p1:LazyLoadingEnabled="true" >
+          <FunctionImport Name="PLZ_GETREPORT" ReturnType="Collection(CardsModel.PLZ_GETREPORT_Result)">
+            <Parameter Name="FROMDATE" Mode="In" Type="String" />
+            <Parameter Name="UNTILDATE" Mode="In" Type="String" />
+            <Parameter Name="NUMDOC" Mode="In" Type="String" />
+            <Parameter Name="ACCOUNTTYPE" Mode="In" Type="String" />
+            <Parameter Name="TRX" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="PLZ_GETREPORT_Result">
+          <Property Type="Int32" Name="BATCHID" Nullable="false" />
+          <Property Type="String" Name="FECHA" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="PAN" Nullable="false" MaxLength="21" />
+          <Property Type="Int32" Name="TRANSCODE" Nullable="true" />
+          <Property Type="String" Name="TRANSNAME" Nullable="true" MaxLength="40" />
+          <Property Type="Decimal" Name="SALDO" Nullable="true" Precision="14" Scale="2" />
+          <Property Type="String" Name="ISODESCRIPTION" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="TRANSDAY" Nullable="true" />
+          <Property Type="Int32" Name="TRANSMONTH" Nullable="true" />
+          <Property Type="Int32" Name="TRANSYEAR" Nullable="true" />
+          <Property Type="String" Name="TRANSDATE" Nullable="true" MaxLength="8" />
+          <Property Type="String" Name="NUMDOC" Nullable="true" MaxLength="8" />
+          <Property Type="DateTime" Name="BATCHDATE" Nullable="false" Precision="23" />
+          <Property Type="String" Name="BATCHTIME" Nullable="true" MaxLength="6" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CardsModelStoreContainer" CdmEntityContainer="CardsEntities" >
+          <FunctionImportMapping FunctionImportName="PLZ_GETREPORT" FunctionName="CardsModel.Store.PLZ_GETREPORT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CardsModel.PLZ_GETREPORT_Result">
+                <ScalarProperty Name="BATCHID" ColumnName="BATCHID" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="TRANSCODE" ColumnName="TRANSCODE" />
+                <ScalarProperty Name="TRANSNAME" ColumnName="TRANSNAME" />
+                <ScalarProperty Name="SALDO" ColumnName="SALDO" />
+                <ScalarProperty Name="ISODESCRIPTION" ColumnName="ISODESCRIPTION" />
+                <ScalarProperty Name="TRANSDAY" ColumnName="TRANSDAY" />
+                <ScalarProperty Name="TRANSMONTH" ColumnName="TRANSMONTH" />
+                <ScalarProperty Name="TRANSYEAR" ColumnName="TRANSYEAR" />
+                <ScalarProperty Name="TRANSDATE" ColumnName="TRANSDATE" />
+                <ScalarProperty Name="NUMDOC" ColumnName="NUMDOC" />
+                <ScalarProperty Name="BATCHDATE" ColumnName="BATCHDATE" />
+                <ScalarProperty Name="BATCHTIME" ColumnName="BATCHTIME" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -66,7 +66,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 numdoc = record.Afiliado.docnumber,
                 beneficiario = record.Afiliado.name + " " + record.Afiliado.lastname1,
                 monto = "0,00",
-                saldo = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)).saldo
+                saldo = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO)).saldo,
             };
 
             return View(model);
@@ -98,7 +98,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 else
                 {
                     ViewModel viewmodel = new ViewModel();
-                    string respuesta = repBeneficiario.CompraFueraLinea(model.documento, model.montotrx);
+                    string respuesta = repBeneficiario.CompraFueraLinea(model.documento, model.montotrx, model.storeid, model.observaciones);
                     if (respuesta == null)
                     {
                         viewmodel.Title = "Prepago / Fuera de Línea / Crear Transacción de Compra";
@@ -116,9 +116,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                     return RedirectToAction("GenericView", viewmodel);
                 }
             }
-
-            return View();
-
+            return View(model);
         }
 
         public ActionResult GenericView(ViewModel viewmodel)

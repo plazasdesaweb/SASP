@@ -265,6 +265,21 @@
     <Compile Include="Models\BeneficiarioPrepago.cs" />
     <Compile Include="Models\BeneficiarioPrepagoIndex.cs" />
     <Compile Include="Models\BeneficiarioPrepagoViewModel.cs" />
+    <Compile Include="Models\Cards.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cards.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cards.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cards.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Cards.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cards.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Channel.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
@@ -280,8 +295,14 @@
     <Compile Include="Models\CompanyAffiliate.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FueraDeLinea.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ParametrosReporteSuma.cs" />
     <Compile Include="Models\EncabezadoReporteSuma.cs" />
+    <Compile Include="Models\PLZ_GETREPORT_Result.cs">
+      <DependentUpon>Cards.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReporteSuma.cs" />
     <Compile Include="Models\CreditLimit.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
@@ -365,6 +386,7 @@
     <Compile Include="Models\Movimiento.cs" />
     <Compile Include="Models\Repositorios\OperacionesRepository.cs" />
     <Compile Include="Models\Repositorios\OrdenRecargaPrepagoRepository.cs" />
+    <Compile Include="Models\Repositorios\ReportesRepository.cs" />
     <Compile Include="Models\RespuestaCards.cs" />
     <Compile Include="Models\RespuestaWebPlazas.cs" />
     <Compile Include="Models\RESTRICCION.cs">
@@ -511,6 +533,23 @@
     </Content>
     <Content Include="App_Data\Plantilla.xls" />
     <Content Include="App_Browsers\qt.browser" />
+    <EntityDeploy Include="Models\Cards.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Cards.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Cards.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Cards.edmx</DependentUpon>
+      <LastGenOutput>Cards.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Cards.edmx.diagram">
+      <DependentUpon>Cards.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Cards.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Cards.edmx</DependentUpon>
+      <LastGenOutput>Cards.cs</LastGenOutput>
+    </Content>
     <None Include="Properties\PublishProfiles\Suma-Calidad.pubxml" />
     <None Include="Properties\PublishProfiles\Suma-Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\Suma-Produccion.pubxml" />
@@ -760,6 +799,8 @@
     <Content Include="Views\AfiliadoSuma\CambiarTipoDocumento.cshtml" />
     <Content Include="Views\BeneficiarioPrepago\CambiarTipoDocumento.cshtml" />
     <Content Include="Views\ClientePrepago\CambiarTipoDocumento.cshtml" />
+    <Content Include="Views\Transferencia\FilterAnulacionTransferencia.cshtml" />
+    <Content Include="Views\Transferencia\CreateAnulacionTransferencia.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

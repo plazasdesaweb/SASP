@@ -19,14 +19,14 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View(db.PARROQUIAS.OrderBy(x=> x.DESCRIPC_PARROQUIA).ToList());
         }
 
         [HttpPost]
         public ActionResult Index(PARROQUIA parroquia)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             List<PARROQUIA> modelo = db.PARROQUIAS.Where(c => c.DESCRIPC_PARROQUIA.Contains(parroquia.DESCRIPC_PARROQUIA)).OrderBy(x => x.DESCRIPC_PARROQUIA).ToList();
 
             return View("Index", modelo);
@@ -37,7 +37,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(string id = null)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             PARROQUIA parroquia = db.PARROQUIAS.Find(id);
             if (parroquia == null)
             {
@@ -51,7 +51,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
@@ -62,7 +62,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PARROQUIA parroquia)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 if (db.PARROQUIAS.Count() > 0)
@@ -96,7 +96,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(string id = null)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             PARROQUIA parroquia = db.PARROQUIAS.Find(id);
             if (parroquia == null)
             {
@@ -112,7 +112,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PARROQUIA parroquia)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 db.Entry(parroquia).State = EntityState.Modified;
@@ -127,7 +127,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(string id = null)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             PARROQUIA parroquia = db.PARROQUIAS.Find(id);
             if (parroquia == null)
             {
@@ -143,7 +143,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             PARROQUIA parroquia = db.PARROQUIAS.Find(id);
             db.PARROQUIAS.Remove(parroquia);
             db.SaveChanges();
@@ -152,13 +152,13 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult FilterParroquia()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             db.Dispose();
             base.Dispose(disposing);
         }

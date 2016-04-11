@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "FilterAnulacion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Operaciones / Transferencia de Saldo / Crear Órden de Anulación / Filtro de Búsqueda</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form action="@Url.Action("FilterAnulacionTransferencia", "Transferencia")" name="form" method="post" >
+
+            <div class="editor-label col-md-4 control-label"></div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <div class="editor-label col-md-4 control-label">
+                * Número de Orden :
+            </div>
+
+            <div class="editor-field col-md-6">
+                <input type="text" id="orden" name="orden" maxlength="10" placeholder="" class="form-control">
+                <span id="mensaje"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 col-btn">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-lg" value="Buscar" />
+                        @*<a id="Buscar" class="btn btn-success btn-md">Buscar</a>*@
+                    </div>
+                </div>
+            </div>
+
+            @*</form>*@
+
+        </div>
+        <!--// panel-body -->
+
+    </div>
+    <!--// panel -->
+
+</div>
+<!--// columns -->
+
+<script>
+    $("#batchid").change(function () {
+        LimpiarSpanMessage('mensaje');
+    });
+
+    $("#Buscar").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        var orden = $('#orden').val();
+        if (orden == "") {
+            spanMessage('mensaje', '* Debe indicar un número de Orden...');
+        }
+        else {
+            href = href.replace("{controller}", "Transferencia");
+            href = href.replace("{action}", "CreateAnulacionTransferencia");
+            href = href.replace("{params}", "?orden=" + orden);
+            window.location.href = href;
+        }
+    });    
+
+    function LimpiarSpanMessage(idelemento) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+</script>
+
+

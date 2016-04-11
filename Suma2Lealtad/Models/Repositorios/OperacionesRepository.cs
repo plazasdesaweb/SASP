@@ -62,6 +62,47 @@ namespace Suma2Lealtad.Models.Repositorios
             return respuesta;
         }
 
+        private string Anular(string docnumber, string batchid, string Transcode)
+        {
+            int intentos;
+            string respuesta = "";
+            //Se intenta la operación 3 veces, antes de fallar
+            for (intentos = 0; intentos <= 3; intentos++)
+            {
+                //Se llama al servicio para verificar q este activo
+                //SERVICIO WSL.Cards.getClient !
+                string clienteCardsJson = WSL.Cards.getClient(docnumber.Substring(2));
+                if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
+                {
+                    respuesta = "Servicio no responde";
+                    intentos++;
+                }
+                else
+                {
+                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(docnumber.Substring(2), Transcode, batchid, (string)HttpContext.Current.Session["login"]);
+                    if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                    {
+                        ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
+                        respuesta = exceptionJson.detail + "-" + exceptionJson.source;
+                        intentos++;
+                    }
+                    else
+                    {
+                        RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
+                        if (Convert.ToDecimal(RespuestaCards.excode) < 0)
+                        {
+                            return RespuestaCards.exdetail;
+                        }
+                        else
+                        {
+                            return RespuestaCards.exdetail;
+                        }
+                    }
+                }
+            }
+            return respuesta;
+        }
+
         public bool ProcesarTransferencia(int id)
         {
             Transferencia transferencia = FindTransferencia(id);
@@ -70,81 +111,186 @@ namespace Suma2Lealtad.Models.Repositorios
             string mensaje = "";
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.Find(transferencia.id);
                 List<OrdersDetail> ordersdetails = db.OrdersDetails.Where(x => x.orderid == orden.id).ToList();
-                //realizar transferencias
-                if (transferencia.ResumenTransferenciaSuma != "0")
+                if (orden.comments.Contains("Orden de Transferencia"))
                 {
-                    respuestaSuma = Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_SUMA, transferencia.ResumenTransferenciaSuma);
-                    long number1 = 0;
-                    bool canConvert = long.TryParse(respuestaSuma, out number1);
-                    if (canConvert == false)
+                    //realizar transferencias
+                    if (transferencia.ResumenTransferenciaSuma != "0")
                     {
-                        mensaje = "Falló transferencia Suma (" + respuestaSuma + "). ";
-                        ordersdetails.First().comments = "Transferencia Suma fallida";
-                        ordersdetails.First().cardsresponse = respuestaSuma;
-                        ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                        ordersdetails.Skip(2).First().comments = "Transferencia Suma fallida";
-                        ordersdetails.Skip(2).First().cardsresponse = respuestaSuma;
-                        ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;                    
+                        respuestaSuma = Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_SUMA, transferencia.ResumenTransferenciaSuma);
+                        long number1 = 0;
+                        bool canConvert = long.TryParse(respuestaSuma, out number1);
+                        if (canConvert == false)
+                        {
+                            mensaje = "Falló transferencia Suma (" + respuestaSuma + "). ";
+                            ordersdetails.First().comments = "Transferencia Suma fallida";
+                            ordersdetails.First().cardsresponse = respuestaSuma;
+                            ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            ordersdetails.Skip(2).First().comments = "Transferencia Suma fallida";
+                            ordersdetails.Skip(2).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        else
+                        {
+                            mensaje = "Transferencia Suma efectiva con clave " + respuestaSuma + ". ";
+                            ordersdetails.First().comments = "Transferencia Suma efectiva";
+                            ordersdetails.First().cardsresponse = respuestaSuma;
+                            ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            ordersdetails.Skip(2).First().comments = "Transferencia Suma efectiva";
+                            ordersdetails.Skip(2).First().cardsresponse = (Convert.ToInt32(respuestaSuma) + 1).ToString();
+                            ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
                     }
                     else
                     {
-                        mensaje = "Transferencia Suma efectiva con clave " + respuestaSuma + ". ";
-                        ordersdetails.First().comments = "Transferencia Suma efectiva";
-                        ordersdetails.First().cardsresponse = respuestaSuma;
                         ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                        ordersdetails.Skip(2).First().comments = "Transferencia Suma efectiva";
-                        ordersdetails.Skip(2).First().cardsresponse = (Convert.ToInt32(respuestaSuma) + 1).ToString();
+                        ordersdetails.First().comments = "";
+                        ordersdetails.First().cardsresponse = "";
+                        ordersdetails.Skip(2).First().comments = "";
+                        ordersdetails.Skip(2).First().cardsresponse = "";
                         ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
                     }
-                }
-                else
-                {
-                    ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                    ordersdetails.First().comments = "";
-                    ordersdetails.First().cardsresponse = "";
-                    ordersdetails.Skip(2).First().comments = "";
-                    ordersdetails.Skip(2).First().cardsresponse = "";
-                    ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;                    
-                }                     
-                if (transferencia.ResumenTransferenciaPrepago != "0,00")
-                {
-                    respuestaPrepago = Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_PREPAGO, transferencia.ResumenTransferenciaPrepago);
-                    long number1 = 0;
-                    bool canConvert = long.TryParse(respuestaPrepago, out number1);
-                    if (canConvert == false)
+                    if (transferencia.ResumenTransferenciaPrepago != "0,00")
                     {
-                        mensaje = mensaje + "Falló transferencia Prepago (" + respuestaPrepago + ").";
-                        ordersdetails.Skip(1).First().comments = "Transferencia Prepago fallida";
-                        ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
-                        ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                        ordersdetails.Skip(3).First().comments = "Transferencia Prepago fallida";
-                        ordersdetails.Skip(3).First().cardsresponse = respuestaPrepago;
-                        ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        respuestaPrepago = Transferir(transferencia.docnumberAfiliadoOrigen, transferencia.docnumberAfiliadoDestino, Globals.TIPO_CUENTA_PREPAGO, transferencia.ResumenTransferenciaPrepago);
+                        long number1 = 0;
+                        bool canConvert = long.TryParse(respuestaPrepago, out number1);
+                        if (canConvert == false)
+                        {
+                            mensaje = mensaje + "Falló transferencia Prepago (" + respuestaPrepago + ").";
+                            ordersdetails.Skip(1).First().comments = "Transferencia Prepago fallida";
+                            ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
+                            ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            ordersdetails.Skip(3).First().comments = "Transferencia Prepago fallida";
+                            ordersdetails.Skip(3).First().cardsresponse = respuestaPrepago;
+                            ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        else
+                        {
+                            mensaje = mensaje + "Transferencia Prepago efectiva con clave " + respuestaPrepago + ".";
+                            ordersdetails.Skip(1).First().comments = "Transferencia Prepago efectiva";
+                            ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
+                            ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            ordersdetails.Skip(3).First().comments = "Transferencia Prepago efectiva";
+                            ordersdetails.Skip(3).First().cardsresponse = (Convert.ToInt32(respuestaPrepago) + 1).ToString();
+                            ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
                     }
                     else
                     {
-                        mensaje = mensaje + "Transferencia Prepago efectiva con clave " + respuestaPrepago + ".";
-                        ordersdetails.Skip(1).First().comments = "Transferencia Prepago efectiva";
-                        ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
+                        ordersdetails.Skip(1).First().comments = "";
+                        ordersdetails.Skip(1).First().cardsresponse = "";
                         ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                        ordersdetails.Skip(3).First().comments = "Transferencia Prepago efectiva";
-                        ordersdetails.Skip(3).First().cardsresponse = (Convert.ToInt32(respuestaPrepago) + 1).ToString();
+                        ordersdetails.Skip(3).First().comments = "";
                         ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(3).First().cardsresponse = "";
                     }
+                    db.SaveChanges();
                 }
                 else
                 {
-                    ordersdetails.Skip(1).First().comments = "";
-                    ordersdetails.Skip(1).First().cardsresponse = "";
-                    ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                    ordersdetails.Skip(3).First().comments = "";
-                    ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
-                    ordersdetails.Skip(3).First().cardsresponse = "";
+                    //Anular Transferencias y Actualizar estatus detalleorden
+                    if (transferencia.ResumenTransferenciaSuma != "0")
+                    {
+                        //ANULO DEBITO SUMA                    
+                        respuestaSuma = Anular(transferencia.docnumberAfiliadoOrigen, ordersdetails.First().comments, Globals.TRANSCODE_ANULACION_SUMA);
+                        long number1 = 0;
+                        bool canConvert = long.TryParse(respuestaSuma, out number1);
+                        if (canConvert == false)
+                        {
+                            mensaje = "Falló Anulación de transferencia Suma (" + respuestaSuma + "). ";
+                            ordersdetails.First().comments = "Anulación fallida " + ordersdetails.First().comments;
+                            ordersdetails.First().cardsresponse = respuestaSuma;
+                            ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        else
+                        {
+                            mensaje = "Anulación de Transferencia Suma efectiva con clave " + respuestaSuma + ". ";
+                            ordersdetails.First().comments = "Anulación efectiva " + ordersdetails.First().comments;
+                            ordersdetails.First().cardsresponse = respuestaSuma;
+                            ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+
+                        }
+                        //ANULO CREDITO SUMA
+                        respuestaSuma = Anular(transferencia.docnumberAfiliadoDestino, ordersdetails.Skip(2).First().comments, Globals.TRANSCODE_ANULACION_SUMA);
+                        number1 = 0;
+                        canConvert = long.TryParse(respuestaSuma, out number1);
+                        if (canConvert == false)
+                        {
+                            mensaje = "Falló Anulación de transferencia Suma (" + respuestaSuma + "). ";
+                            ordersdetails.Skip(2).First().comments = "Anulación fallida " + ordersdetails.Skip(2).First().comments;
+                            ordersdetails.Skip(2).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        else
+                        {
+                            mensaje = "Anulación de Transferencia Suma efectiva con clave " + respuestaSuma + ". ";
+                            ordersdetails.Skip(2).First().comments = "Anulación efectiva " + ordersdetails.Skip(2).First().comments;
+                            ordersdetails.Skip(2).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                    }
+                    else
+                    {
+                        ordersdetails.First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.First().comments = "";
+                        ordersdetails.First().cardsresponse = "";
+                        ordersdetails.Skip(2).First().comments = "";
+                        ordersdetails.Skip(2).First().cardsresponse = "";
+                        ordersdetails.Skip(2).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                    }
+                    if (transferencia.ResumenTransferenciaPrepago != "0,00")
+                    {
+                        //ANULO DEBITO PREPAGO
+                        respuestaPrepago = Anular(transferencia.docnumberAfiliadoOrigen, ordersdetails.Skip(1).First().comments, Globals.TRANSCODE_ANULACION_PREPAGO);
+                        long number1 = 0;
+                        bool canConvert = long.TryParse(respuestaPrepago, out number1);
+                        if (canConvert == false)
+                        {
+                            mensaje = "Falló Anulación de transferencia Prepago (" + respuestaSuma + "). ";
+                            ordersdetails.Skip(1).First().comments = "Anulación fallida " + ordersdetails.Skip(1).First().comments;
+                            ordersdetails.Skip(1).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        else
+                        {
+                            mensaje = "Anulación de Transferencia Prepago efectiva con clave " + respuestaSuma + ". ";
+                            ordersdetails.Skip(1).First().comments = "Anulación efectiva " + ordersdetails.Skip(1).First().comments;
+                            ordersdetails.Skip(1).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        //ANULO CREDITO PREPAGO
+                        respuestaPrepago = Anular(transferencia.docnumberAfiliadoDestino, ordersdetails.Skip(3).First().comments, Globals.TRANSCODE_ANULACION_PREPAGO);
+                        number1 = 0;
+                        canConvert = long.TryParse(respuestaPrepago, out number1);
+                        if (canConvert == false)
+                        {
+                            mensaje = "Falló Anulación de transferencia Prepago (" + respuestaSuma + "). ";
+                            ordersdetails.Skip(3).First().comments = "Anulación fallida " + ordersdetails.Skip(3).First().comments;
+                            ordersdetails.Skip(3).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                        else
+                        {
+                            mensaje = "Anulación de Transferencia Prepago efectiva con clave " + respuestaSuma + ". ";
+                            ordersdetails.Skip(3).First().comments = "Anulación efectiva " + ordersdetails.Skip(3).First().comments;
+                            ordersdetails.Skip(3).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        }
+                    }
+                    else
+                    {
+                        ordersdetails.Skip(1).First().comments = "";
+                        ordersdetails.Skip(1).First().cardsresponse = "";
+                        ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(3).First().comments = "";
+                        ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetails.Skip(3).First().cardsresponse = "";
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
                 //Actualizar estatus de la Orden
                 orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Order")).id;
                 orden.processdate = DateTime.Now;
@@ -162,14 +308,14 @@ namespace Suma2Lealtad.Models.Repositorios
                 db.OrdersHistories.Add(orderhistory);
                 db.SaveChanges();
                 return true;
-            }                 
+            }
         }
 
         public bool AprobarTransferencia(Transferencia transferencia)
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.Find(transferencia.id);
                 List<OrdersDetail> ordersdetails = db.OrdersDetails.Where(x => x.orderid == orden.id).ToList();
                 foreach (OrdersDetail od in ordersdetails)
@@ -202,7 +348,7 @@ namespace Suma2Lealtad.Models.Repositorios
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.FirstOrDefault(o => o.id.Equals(id));
                 orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Order")).id;
                 orden.processdate = DateTime.Now;
@@ -228,7 +374,7 @@ namespace Suma2Lealtad.Models.Repositorios
             int idOrden = 0;
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //ENTIDAD Order                   
                 Order Order = new Order()
                 {
@@ -256,7 +402,11 @@ namespace Suma2Lealtad.Models.Repositorios
                         customerid = item.idAfiliado,
                         amount = item.montoRecarga,
                         sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
-                    };                    
+                    };
+                    if (Order.comments.Equals("Orden de Anulación de Transferencia"))
+                    {
+                        OrderDetail.comments = item.batchid;
+                    }
                     db.OrdersDetails.Add(OrderDetail);
                 }
                 //Entidad OrderHistory
@@ -287,7 +437,7 @@ namespace Suma2Lealtad.Models.Repositorios
             transferencia.idAfiliadoOrigen = afiliadoOrigen.id;
             transferencia.nameAfiliadoOrigen = afiliadoOrigen.name;
             transferencia.lastname1AfiliadoOrigen = afiliadoOrigen.lastname1;
-            transferencia.typeAfiliadoOrigen = afiliadoOrigen.type;            
+            transferencia.typeAfiliadoOrigen = afiliadoOrigen.type;
             transferencia.datosCuentaSumaOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
             transferencia.DenominacionCuentaOrigenSuma = "Más";
             transferencia.datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
@@ -301,7 +451,7 @@ namespace Suma2Lealtad.Models.Repositorios
             transferencia.docnumberAfiliadoDestino = afiliadoDestino.docnumber;
             transferencia.idAfiliadoDestino = afiliadoDestino.id;
             transferencia.nameAfiliadoDestino = afiliadoDestino.name;
-            transferencia.lastname1AfiliadoDestino = afiliadoDestino.lastname1;            
+            transferencia.lastname1AfiliadoDestino = afiliadoDestino.lastname1;
             transferencia.datosCuentaSumaDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
             transferencia.datosCuentaPrepagoDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
             transferencia.statusDetalleOrdenDestinoSuma = detalleOrden.Skip(2).First().statusDetalleOrden;
@@ -318,5 +468,40 @@ namespace Suma2Lealtad.Models.Repositorios
             transferencia.tipoOrden = orden.tipoOrden;
             return transferencia;
         }
+
+        public Transferencia DetalleParaOrdenAnulacionTransferencia(int orden)
+        {
+            Transferencia transferencia = new Transferencia();
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                //verificar que es orden de transferencia
+                if (db.Orders.Find(orden).comments != "Orden de Transferencia")
+                {
+                    return null;
+                }
+                //verificar que esa orden no tenga anulación
+                var q = (from od in db.OrdersDetails
+                         where od.orderid.Equals(orden)
+                         select od).ToList();
+                foreach (var o in q)
+                {
+                    var query = (from od in db.OrdersDetails
+                                 where od.comments.Equals(o.cardsresponse) || od.comments.Equals("Anulación efectiva " + o.cardsresponse)
+                                 select od).ToList();
+                    if (query.Count > 0)
+                    {
+                        transferencia.tipoOrden = "Ya tiene Anulación";
+                        return transferencia;
+                    }
+                }
+                //buscar detalle para crear orden de anulación
+                {
+                    transferencia = FindTransferencia(orden);
+                    return transferencia;
+                }
+            }
+        }
+
     }
 }

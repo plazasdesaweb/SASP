@@ -18,7 +18,7 @@ namespace Suma2Lealtad.Models
 
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Role role = db.Roles.Find(id);
 
                 RoleID = role.id;
@@ -48,7 +48,7 @@ namespace Suma2Lealtad.Models
 
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 foreach (var m in db.SecurityMenus.Where(f => f.roleid == RoleID))
                 {
                     db.SecurityMenus.Remove(m);

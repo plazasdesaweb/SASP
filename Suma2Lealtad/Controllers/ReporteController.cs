@@ -15,6 +15,7 @@ namespace Suma2Lealtad.Controllers
     {
         private BeneficiarioPrepagoRepository repBeneficiario = new BeneficiarioPrepagoRepository();
         private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
+        private ReportesRepository repReportes = new ReportesRepository();
 
         public ActionResult FilterReporteRecargas()
         {
@@ -54,24 +55,29 @@ namespace Suma2Lealtad.Controllers
             {
                 if (idCliente == 0)
                 {
-                    reporte = repBeneficiario.ReporteComprasxCliente("todos", fechadesde, fechahasta, ModoTransaccion);
+                    //reporte = repBeneficiario.ReporteComprasxCliente("todos", fechadesde, fechahasta, ModoTransaccion);
+                    reporte = repReportes.ReporteDeComprasConsolidado("todos", fechadesde, fechahasta, ModoTransaccion);
                 }
                 else
                 {
-                    reporte = repBeneficiario.ReporteComprasxCliente("uno", fechadesde, fechahasta, ModoTransaccion, idCliente);
+                    //reporte = repBeneficiario.ReporteComprasxCliente("uno", fechadesde, fechahasta, ModoTransaccion, idCliente);                    
+                    reporte = repReportes.ReporteDeComprasConsolidado("uno", fechadesde, fechahasta, ModoTransaccion, idCliente);
+                    //reporte = repReportes.ReporteDeComprasDetallado("consolidado", fechadesde, fechahasta, ModoTransaccion, idCliente);
+                    //reporte = repReportes.ReporteDeComprasDetallado("detallado", fechadesde, fechahasta, ModoTransaccion, idCliente);
+                
                 }
             }
-            else if (TipoConsulta == "Beneficiario")
-            {
-                if (numdoc == "")
-                {
-                    reporte = repBeneficiario.ReporteComprasxBeneficiario("todos", fechadesde, fechahasta, ModoTransaccion);
-                }
-                else
-                {
-                    reporte = repBeneficiario.ReporteComprasxBeneficiario("uno", fechadesde, fechahasta, ModoTransaccion, numdoc);
-                }
-            }
+            //else if (TipoConsulta == "Beneficiario")
+            //{
+                //    if (numdoc == "")
+                //    {
+                //        reporte = repBeneficiario.ReporteComprasxBeneficiario("todos", fechadesde, fechahasta, ModoTransaccion);
+                //    }
+                //    else
+                //    {
+                //        reporte = repBeneficiario.ReporteComprasxBeneficiario("uno", fechadesde, fechahasta, ModoTransaccion, numdoc);
+                //    }
+            //}
             ParametrosReporte p = new ParametrosReporte()
             {
                 TipoConsulta = TipoConsulta,
@@ -130,18 +136,22 @@ namespace Suma2Lealtad.Controllers
         }
 
         [HttpPost]
-        public ActionResult ReporteRecargas(string TipoConsulta, string fechadesde, string fechahasta, int idCliente = 0, string numdoc = "", string Referencia = "")
+        public ActionResult ReporteRecargas(string TipoConsulta, string fechadesde, string fechahasta, int idCliente = 0, string numdoc = "", string Referencia = "", string Observaciones = "")
         {
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             if (TipoConsulta == "Cliente")
             {
                 if (idCliente == 0)
                 {
-                    reporte = repBeneficiario.ReporteRecargasxCliente("todos", fechadesde, fechahasta, 0, Referencia);
+                    //reporte = repBeneficiario.ReporteRecargasxCliente("todos", fechadesde, fechahasta, 0, Referencia);
+                    //reporte = repReportes.ReporteRecargasConsolidado("todos", fechadesde, fechahasta, idCliente);
                 }
                 else
                 {
-                    reporte = repBeneficiario.ReporteRecargasxCliente("uno", fechadesde, fechahasta, idCliente, Referencia);
+                    //reporte = repBeneficiario.ReporteRecargasxCliente("uno", fechadesde, fechahasta, idCliente, Referencia);
+                    //reporte = repReportes.ReporteRecargasConsolidado("uno", fechadesde, fechahasta, idCliente);
+                    //reporte = repReportes.ReporteDeComprasDetallado("consolidado", fechadesde, fechahasta, ModoTransaccion, idCliente);
+                    reporte = repReportes.ReporteRecargasDetallado("consolidado", fechadesde, fechahasta, idCliente);
                 }
             }
             else if (TipoConsulta == "Beneficiario")
@@ -299,7 +309,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult ReporteTransacciones(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc = "")
         {
             List<ReporteSuma> reporte = new List<ReporteSuma>();
-            reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);            
+            reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);
             ParametrosReporteSuma p = new ParametrosReporteSuma()
             {
                 tipotransaccion = TipoTransaccion,
@@ -325,7 +335,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult GenerateReporteTransaccionesPDF(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc = "")
         {
             List<ReporteSuma> reporte = new List<ReporteSuma>();
-            reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);            
+            reporte = repAfiliado.ReporteTransacciones(fechadesde, fechahasta, TipoTransaccion, numdoc);
             ParametrosReporteSuma p = new ParametrosReporteSuma()
             {
                 tipotransaccion = TipoTransaccion,

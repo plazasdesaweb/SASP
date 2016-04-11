@@ -17,7 +17,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View(db.Interests.ToList());
         }
 
@@ -26,7 +26,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Interest interest = db.Interests.Find(id);
             if (interest == null)
             {
@@ -40,7 +40,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
@@ -51,7 +51,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Interest interest)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 db.Interests.Add(interest);
@@ -67,7 +67,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Interest interest = db.Interests.Find(id);
             if (interest == null)
             {
@@ -83,7 +83,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Interest interest)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 db.Entry(interest).State = EntityState.Modified;
@@ -98,7 +98,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Interest interest = db.Interests.Find(id);
             if (interest == null)
             {
@@ -115,7 +115,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Interest interest = db.Interests.Find(id);
 
             foreach (var m in db.CustomerInterests.Where(m => m.interestid == id))
@@ -133,7 +133,7 @@ namespace Suma2Lealtad.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             db.Dispose();
             base.Dispose(disposing);
         }

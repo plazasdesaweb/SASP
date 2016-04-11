@@ -48,19 +48,37 @@ namespace Suma2Lealtad.Modules
         }
 
         /* retornar el connection string para el EF */
-        public static string ConnectionString()
+        public static string ConnectionString(string nombreEF)
         {
-            if (ConfigurationManager.AppSettings["AMBIENTE"] == "PRODUCCION")
+            if (nombreEF == "SumaLealtad")
             {
-                return ConfigurationManager.AppSettings["CS_PRODUCCION"];
-            }
-            else if (ConfigurationManager.AppSettings["AMBIENTE"] == "DESARROLLO")
-            {
-                return ConfigurationManager.AppSettings["CS_DESARROLLO"];
+                if (ConfigurationManager.AppSettings["AMBIENTE"] == "PRODUCCION")
+                {
+                    return ConfigurationManager.AppSettings["CS_PRODUCCION"];
+                }
+                else if (ConfigurationManager.AppSettings["AMBIENTE"] == "DESARROLLO")
+                {
+                    return ConfigurationManager.AppSettings["CS_DESARROLLO"];
+                }
+                else
+                {
+                    return ConfigurationManager.AppSettings["CS_CALIDAD"];
+                }
             }
             else
             {
-                return ConfigurationManager.AppSettings["CS_CALIDAD"];
+                if (ConfigurationManager.AppSettings["AMBIENTE"] == "PRODUCCION")
+                {
+                    return ConfigurationManager.AppSettings["CS_PRODUCCION_CARDS"];
+                }
+                else if (ConfigurationManager.AppSettings["AMBIENTE"] == "DESARROLLO")
+                {
+                    return ConfigurationManager.AppSettings["CS_DESARROLLO_CARDS"];
+                }
+                else
+                {
+                    return ConfigurationManager.AppSettings["CS_CALIDAD_CARDS"];
+                }
             }
         }
 

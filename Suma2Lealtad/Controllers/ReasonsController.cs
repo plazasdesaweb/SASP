@@ -18,7 +18,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View(db.Reasons.Where(c => c.type == "Rechazo" && c.id > 1).ToList());
         }
 
@@ -27,7 +27,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Reason reason = db.Reasons.Find(id);
             if (reason == null)
             {
@@ -41,7 +41,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
@@ -52,7 +52,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Reason reason)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 db.Reasons.Add(reason);
@@ -68,7 +68,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Suma2Lealtad.Models.Reason reason = db.Reasons.Find(id);
             if (reason == null)
             {
@@ -84,7 +84,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Suma2Lealtad.Models.Reason reason)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 reason.type = "Rechazo";
@@ -100,7 +100,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Reason reason = db.Reasons.Find(id);
             if (reason == null)
             {
@@ -116,7 +116,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             Reason reason = db.Reasons.Find(id);
             db.Reasons.Remove(reason);
             db.SaveChanges();
@@ -125,7 +125,7 @@ namespace Suma2Lealtad.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             db.Dispose();
             base.Dispose(disposing);
         }

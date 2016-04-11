@@ -85,7 +85,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult FilterAnulacion(string batchid)
         {
             List<DetalleOrdenRecargaPrepago> detalleOrden = repOrden.DetalleParaOrdenAnulacion(batchid);
-            if (detalleOrden.Count != 1 )
+            if (detalleOrden.Count != 1)
             {
                 ViewModel viewmodel = new ViewModel();
                 viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";

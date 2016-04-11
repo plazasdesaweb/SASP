@@ -16,7 +16,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (db.Orders.Count() == 0)
                     return 1;
                 return (db.Orders.Max(c => c.id) + 1);
@@ -27,7 +27,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (db.OrdersDetails.Count() == 0)
                     return 1;
                 return (db.OrdersDetails.Max(c => c.id));
@@ -38,7 +38,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (db.OrdersHistories.Count() == 0)
                     return 1;
                 return (db.OrdersHistories.Max(c => c.id) + 1);
@@ -50,7 +50,7 @@ namespace Suma2Lealtad.Models
             List<OrdenRecargaPrepago> ordenes;
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (fecha == "")
                 {
                     fecha = null;
@@ -385,7 +385,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 OrdenRecargaPrepago orden = new OrdenRecargaPrepago();
                 orden = (from o in db.Orders
                          join c in db.PrepaidCustomers on o.prepaidcustomerid equals c.id
@@ -422,7 +422,7 @@ namespace Suma2Lealtad.Models
             List<DetalleOrdenRecargaPrepago> detalleorden = new List<DetalleOrdenRecargaPrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 detalleorden = (from od in db.OrdersDetails
                                 join a in db.Affiliates on od.customerid equals a.id
                                 join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
@@ -449,7 +449,7 @@ namespace Suma2Lealtad.Models
                                     resultadoRecarga = od.cardsresponse,
                                     observacionesExclusion = od.comments,
                                     statusDetalleOrden = s.name,
-                                    batchid = od.comments
+                                    batchid = od.cardsresponse
                                 }).OrderBy(x => x.id).ToList();
             }
             return detalleorden;
@@ -459,7 +459,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //Actualizar estatus detalleOrden
                 foreach (var item in detalleOrden)
                 {
@@ -501,7 +501,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.Find(detalleOrden.First().idOrden);
 
                 //Actualizar estatus detalleOrden
@@ -545,7 +545,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.FirstOrDefault(o => o.id.Equals(id));
                 orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Order")).id;
                 orden.processdate = DateTime.Now;
@@ -655,7 +655,7 @@ namespace Suma2Lealtad.Models
             List<DetalleOrdenRecargaPrepago> detalleOrden = FindDetalleOrden(id);
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.Find(id);
                 //PROCESAR ORDENES DE RECARGA
                 if (orden.comments.Contains("Orden de Recarga"))
@@ -791,7 +791,7 @@ namespace Suma2Lealtad.Models
             List<DetalleOrdenRecargaPrepago> detalleorden = new List<DetalleOrdenRecargaPrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //verificar que ese batchid no tenga orden de anulación
                 var query = (from od in db.OrdersDetails
                              where od.comments.Equals(batchid) || od.comments.Equals("Anulación efectiva " + batchid)
@@ -844,7 +844,7 @@ namespace Suma2Lealtad.Models
             int idOrden = 0;
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //ENTIDAD Order                   
                 Order Order = new Order()
                 {
@@ -982,7 +982,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 return db.PrepaidCustomers.OrderBy(u => u.name).ToList();
             }
         }

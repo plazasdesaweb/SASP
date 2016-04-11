@@ -48,7 +48,7 @@ namespace Suma2Lealtad.Modules
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var user = db.Users.SingleOrDefault(u => u.login == login && u.passw == password);
                 if (user != null)
                 {

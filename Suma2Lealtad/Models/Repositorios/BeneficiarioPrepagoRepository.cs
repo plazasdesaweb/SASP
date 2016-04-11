@@ -18,7 +18,7 @@ namespace Suma2Lealtad.Models
             List<BeneficiarioPrepagoIndex> beneficiarios = new List<BeneficiarioPrepagoIndex>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (numdoc == "")
                 {
                     numdoc = null;
@@ -349,7 +349,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Affiliate afiliado = db.Affiliates.FirstOrDefault(a => a.docnumber == beneficiario.Afiliado.docnumber);
                 //ENTIDAD PrepaidBeneficiary
                 var prepaidbeneficiary = new PrepaidBeneficiary()
@@ -369,7 +369,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //ENTIDAD PrepaidBeneficiary
                 PrepaidBeneficiary prepaidbeneficiary = db.PrepaidBeneficiaries.FirstOrDefault(b => b.affiliateid == beneficiario.Afiliado.id && b.prepaidcustomerid == beneficiario.Cliente.idCliente);
                 db.PrepaidBeneficiaries.Remove(prepaidbeneficiary);
@@ -382,7 +382,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 return db.PrepaidCustomers.OrderBy(u => u.name).ToList();
             }
         }
@@ -405,13 +405,35 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
-                    if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                    //string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
+                    //if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                    //{
+                    //    return null;
+                    //}
+                    //List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
+                    List<Movimiento> movimientosPrepago = new List<Movimiento>();
+                    using (CardsEntities db = new CardsEntities())
                     {
-                        return null;
-                    }
-                    List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
-                    foreach (Movimiento m in movimientosPrepago)
+                        db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                        foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
+                        {
+                            if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                            {
+                                Movimiento mov = new Movimiento()
+                                {
+                                    fecha = fila.FECHA,
+                                    batchtime = fila.BATCHTIME,
+                                    saldo = fila.SALDO.Value,
+                                    isodescription = fila.ISODESCRIPTION,
+                                    transcode = fila.TRANSCODE.ToString(),
+                                    transname = fila.TRANSNAME,
+                                    pan = fila.PAN,
+                                    batchid = fila.BATCHID
+                                };
+                                movimientosPrepago.Add(mov);
+                            }
+                        }
+                    } foreach (Movimiento m in movimientosPrepago)
                     {
                         ReportePrepago linea = new ReportePrepago()
                         {
@@ -462,12 +484,35 @@ namespace Suma2Lealtad.Models
                     List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(c.idCliente, "", "", "", "", "").OrderBy(x => x.Afiliado.id).ToList();
                     foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                     {
-                        string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
-                        if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                        //string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
+                        //if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                        //{
+                        //    return null;
+                        //}
+                        //List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
+                        List<Movimiento> movimientosPrepago = new List<Movimiento>();
+                        using (CardsEntities db = new CardsEntities())
                         {
-                            return null;
-                        }
-                        List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosPrepago.Add(mov);
+                                }
+                            }
+                        } 
                         foreach (Movimiento m in movimientosPrepago)
                         {
                             ReportePrepago linea = new ReportePrepago()
@@ -540,12 +585,35 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
-                    if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                    //string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);                                     
+                    //if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                    //{
+                    //    return null;
+                    //}
+                    //List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
+                    List<Movimiento> movimientosPrepago = new List<Movimiento>();
+                    using (CardsEntities db = new CardsEntities())
                     {
-                        return null;
+                        db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                        foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
+                        {
+                            if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                            {
+                                Movimiento mov = new Movimiento()
+                                {
+                                    fecha = fila.FECHA,
+                                    batchtime = fila.BATCHTIME,
+                                    saldo = fila.SALDO.Value,
+                                    isodescription = fila.ISODESCRIPTION,
+                                    transcode = fila.TRANSCODE.ToString(),
+                                    transname = fila.TRANSNAME,
+                                    pan = fila.PAN,
+                                    batchid = fila.BATCHID
+                                };
+                                movimientosPrepago.Add(mov);
+                            }
+                        }
                     }
-                    List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
                     foreach (Movimiento m in movimientosPrepago)
                     {
                         ReportePrepago linea = new ReportePrepago()
@@ -593,12 +661,35 @@ namespace Suma2Lealtad.Models
                 encabezado.modotransaccionReporte = modotrans;
                 foreach (BeneficiarioPrepagoIndex b in beneficiarios)
                 {
-                    string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
-                    if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                    //string movimientosPrepagoJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO);
+                    //if (WSL.Cards.ExceptionServicioCards(movimientosPrepagoJson))
+                    //{
+                    //    return null;
+                    //}
+                    //List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
+                    List<Movimiento> movimientosPrepago = new List<Movimiento>();
+                    using (CardsEntities db = new CardsEntities())
                     {
-                        return null;
+                        db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                        foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
+                        {
+                            if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                            {
+                                Movimiento mov = new Movimiento()
+                                {
+                                    fecha = fila.FECHA,
+                                    batchtime = fila.BATCHTIME,
+                                    saldo = fila.SALDO.Value,
+                                    isodescription = fila.ISODESCRIPTION,
+                                    transcode = fila.TRANSCODE.ToString(),
+                                    transname = fila.TRANSNAME,
+                                    pan = fila.PAN,
+                                    batchid = fila.BATCHID
+                                };
+                                movimientosPrepago.Add(mov);
+                            }
+                        }
                     }
-                    List<Movimiento> movimientosPrepago = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosPrepagoJson).OrderBy(x => x.fecha).ToList();
                     foreach (Movimiento m in movimientosPrepago)
                     {
                         ReportePrepago linea = new ReportePrepago()
@@ -650,7 +741,7 @@ namespace Suma2Lealtad.Models
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 #region Por Cliente específico
                 if (tiporeporte == "uno")
                 {
@@ -886,7 +977,7 @@ namespace Suma2Lealtad.Models
             string textoparametro;
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 #region Por Beneficiario específico
                 if (tiporeporte == "uno")
                 {
@@ -1125,7 +1216,7 @@ namespace Suma2Lealtad.Models
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 #region Por Cliente específico
                 if (tiporeporte == "uno")
                 {
@@ -1344,7 +1435,7 @@ namespace Suma2Lealtad.Models
             string textoparametro;
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 #region Por Beneficiario específico
                 if (tiporeporte == "uno")
                 {
@@ -1567,7 +1658,7 @@ namespace Suma2Lealtad.Models
          * Función : public bool CompraFueraLinea(string numdoc, string monto)
          * 
          **/
-        public string CompraFueraLinea(string numdoc, string monto)
+        public string CompraFueraLinea(string numdoc, string monto, string storeid, string observaciones)
         {
             //string montoSinSeparador = Math.Truncate(Convert.ToDecimal(monto) * 100).ToString();
             string RespuestaCardsJson = WSL.Cards.addBatch(numdoc, monto, Globals.TRANSCODE_COMPRA_PREPAGO, (string)HttpContext.Current.Session["login"]);
@@ -1582,6 +1673,20 @@ namespace Suma2Lealtad.Models
             }
             else
             {
+                //guardar observaciones y sucursal de procesamiento
+                using (LealtadEntities db = new LealtadEntities())
+                {
+                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                    //ENTIDAD FueraDeLinea
+                    var fueradelinea = new FueraDeLinea()
+                    {
+                        batchid = RespuestaCards.exdetail,
+                        store_code = storeid,
+                        observaciones = observaciones
+                    };
+                    db.FueraDeLineas.Add(fueradelinea);
+                    db.SaveChanges();
+                }
                 return RespuestaCards.exdetail;
             }
         }

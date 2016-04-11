@@ -35,6 +35,7 @@
       [FACTURA].[NRO_DOCUMENTO] AS [NRO_DOCUMENTO]
       FROM [dbo].[FACTURA] AS [FACTURA]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="FueraDeLinea" EntityType="SumaLealtad.Store.FueraDeLinea" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Interest" EntityType="SumaLealtad.Store.Interest" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Menu" EntityType="SumaLealtad.Store.Menu" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MUNICIPIO" EntityType="SumaLealtad.Store.MUNICIPIO" store:Type="Tables" Schema="dbo" />
@@ -325,6 +326,15 @@
           <Property Name="PUNTOS_CANJE" Type="int" />
           <Property Name="TIPO_DOCUMENTO" Type="varchar" Nullable="false" MaxLength="1" />
           <Property Name="NRO_DOCUMENTO" Type="varchar" Nullable="false" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="FueraDeLinea">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="batchid" Type="varchar" Nullable="false" MaxLength="300" />
+          <Property Name="store_code" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="observaciones" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Interest">
           <Key>
@@ -947,6 +957,7 @@
             <End Role="SumaStatu" EntitySet="SumaStatuses" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="FueraDeLineas" EntityType="SumaLealtad.FueraDeLinea" />
         </EntityContainer>
         <EntityType Name="Affiliate">
           <Key>
@@ -1559,6 +1570,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FueraDeLinea">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="batchid" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="store_code" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="observaciones" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2077,6 +2097,16 @@
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="value" ColumnName="value" />
                 <ScalarProperty Name="tablename" ColumnName="tablename" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FueraDeLineas">
+            <EntityTypeMapping TypeName="SumaLealtad.FueraDeLinea">
+              <MappingFragment StoreEntitySet="FueraDeLinea">
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="store_code" ColumnName="store_code" />
+                <ScalarProperty Name="batchid" ColumnName="batchid" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

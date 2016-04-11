@@ -72,7 +72,7 @@ namespace Suma2Lealtad.Controllers
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 User user = (from u in db.Users
                              where u.login.Equals(login)
                              select u).FirstOrDefault();
@@ -99,7 +99,7 @@ namespace Suma2Lealtad.Controllers
 
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 User user = (from u in db.Users
                              where u.login.Equals(login)
                              select u).FirstOrDefault();

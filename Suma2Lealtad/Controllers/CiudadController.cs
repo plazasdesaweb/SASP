@@ -19,14 +19,14 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Index()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View(db.CIUDADES.OrderBy(x=> x.DESCRIPC_CIUDAD).ToList());
         }
 
         [HttpPost]
         public ActionResult Index(CIUDAD ciudad)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             List<CIUDAD> modelo = db.CIUDADES.Where(c => c.DESCRIPC_CIUDAD.Contains(ciudad.DESCRIPC_CIUDAD)).OrderBy(x => x.DESCRIPC_CIUDAD).ToList();
             return View("Index", modelo);
         }
@@ -36,7 +36,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Details(string id = null)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             CIUDAD ciudad = db.CIUDADES.Find(id);
             if (ciudad == null)
             {
@@ -50,7 +50,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Create()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CIUDAD ciudad)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 if (db.CIUDADES.Count() > 0)
@@ -95,7 +95,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Edit(string id = null)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             CIUDAD ciudad = db.CIUDADES.Find(id);
             if (ciudad == null)
             {
@@ -111,7 +111,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CIUDAD ciudad)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             if (ModelState.IsValid)
             {
                 db.Entry(ciudad).State = EntityState.Modified;
@@ -126,7 +126,7 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult Delete(string id = null)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             CIUDAD ciudad = db.CIUDADES.Find(id);
             if (ciudad == null)
             {
@@ -142,7 +142,7 @@ namespace Suma2Lealtad.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             CIUDAD ciudad = db.CIUDADES.Find(id);
             db.CIUDADES.Remove(ciudad);
             db.SaveChanges();
@@ -151,13 +151,13 @@ namespace Suma2Lealtad.Controllers
 
         public ActionResult FilterCiudad()
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             return View();
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString();
+            db.Database.Connection.ConnectionString = Suma2Lealtad.Modules.AppModule.ConnectionString("SumaLealtad");
             db.Dispose();
             base.Dispose(disposing);
         }

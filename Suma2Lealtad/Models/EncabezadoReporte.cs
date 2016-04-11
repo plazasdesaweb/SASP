@@ -14,6 +14,7 @@ namespace Suma2Lealtad.Models
         public string parametrotipoconsultaReporte { set; get; }
         public string modotransaccionReporte { set; get; }
         public string documentoreferenciaReporte { set; get; }
+        public string observacionesReporte { set; get; }
         public string estatustarjetaReporte { set; get; }
     }
 }

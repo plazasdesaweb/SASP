@@ -24,7 +24,7 @@ namespace Suma2Lealtad.Filters
             {
                 using (LealtadEntities db = new LealtadEntities())
                 {
-                    db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                     int idlog;
                     if (db.Auditings.Count() > 0)
                     {

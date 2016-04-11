@@ -15,7 +15,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Photos_Affiliate photo_affiliate = db.Photos_Affiliates.FirstOrDefault(p => p.Affiliate_id == id);
                 if (photo_affiliate != null)
                 {
@@ -122,7 +122,7 @@ namespace Suma2Lealtad.Models
             //Segundo se buscan los datos del AFILIADO en SumaPlazas
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //Entidad Affiliate                
                 afiliado.id = (from a in db.Affiliates
                                where a.docnumber.Equals(afiliado.docnumber)
@@ -152,7 +152,7 @@ namespace Suma2Lealtad.Models
             List<AfiliadoSumaIndex> afiliados = new List<AfiliadoSumaIndex>();
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (numdoc == "")
                 {
                     numdoc = null;
@@ -369,7 +369,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 AfiliadoSuma afiliado = (from a in db.Affiliates
                                          join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
                                          join s in db.SumaStatuses on a.sumastatusid equals s.id
@@ -518,7 +518,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //ENTIDAD Affiliatte                   
                 var Affiliate = new Affiliate()
                 {
@@ -664,7 +664,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 // Entidad: Affiliate
                 Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
                 if (affiliate != null)
@@ -813,7 +813,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 // Entidad: Affiliate
                 Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
                 if (affiliate != null)
@@ -904,7 +904,7 @@ namespace Suma2Lealtad.Models
             RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (RespuestaCards.excode == "0" || RespuestaCards.excode == "7")
                 {
                     //Se buscan los datos de Tarjeta del AFILIADO en Cards
@@ -978,7 +978,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 // Entidad TARJETA
                 var dpan = Convert.ToDecimal(pan);
                 TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_TARJETA.Equals(dpan));
@@ -1123,6 +1123,21 @@ namespace Suma2Lealtad.Models
                 {
                     mov.isodescription = mov.isodescription + " (" + mov.b037 + ")";
                 }
+                if (mov.isodescription.Contains("offline"))
+                {
+                    //buscar info en FueraDeLinea
+                    using (LealtadEntities db = new LealtadEntities())
+                    {
+                        db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                        string operacion = mov.batchid.ToString();
+                        FueraDeLinea f = db.FueraDeLineas.FirstOrDefault(t => t.batchid.Equals(operacion));
+                        if (f != null)
+                        {
+                            string sucursal = afiliado.StoreOptions.Where(c => c.id != null).FirstOrDefault(x => x.id.Equals(f.store_code)).sucursal;
+                            mov.isodescription = mov.isodescription + " (origen: " + sucursal + ", motivo: " + f.observaciones + ")";
+                        }                        
+                    }
+                }
             }
             string movimientosLealtadJson = WSL.Cards.getBatch(Globals.TIPO_CUENTA_SUMA, SaldosMovimientos.DocId.Substring(2));
             if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
@@ -1177,7 +1192,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Affiliate afiliate = db.Affiliates.FirstOrDefault(a => a.docnumber == afiliado.docnumber);
                 afiliate.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
                 db.SaveChanges();
@@ -1213,32 +1228,143 @@ namespace Suma2Lealtad.Models
                 foreach (AfiliadoSumaIndex a in afiliados)
                 {
                     //determino el tipo de llamada a getreport
-                    string movimientosLealtadJson;
+                    //string movimientosLealtadJson;
+                    List<Movimiento> movimientosSuma = new List<Movimiento>();                    
                     if (tipotrans == "Acreditacion")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else if (tipotrans == "Canje")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else if (tipotrans == "Transferencias Credito")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else if (tipotrans == "Transferencias Debito")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL"))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
-                    if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
-                    {
-                        return null;
-                    }
-                    List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();
+                    //if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
+                    //{
+                    //    return null;
+                    //}
+                    //List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();                    
                     foreach (Movimiento m in movimientosSuma)
                     {
                         ReporteSuma linea = new ReporteSuma()
@@ -1270,32 +1396,143 @@ namespace Suma2Lealtad.Models
                 foreach (AfiliadoSumaIndex a in afiliados)
                 {
                     //determino el tipo de llamada a getreport
-                    string movimientosLealtadJson;
+                    //string movimientosLealtadJson;
+                    List<Movimiento> movimientosSuma = new List<Movimiento>();
                     if (tipotrans == "Acreditacion")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else if (tipotrans == "Canje")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else if (tipotrans == "Transferencias Credito")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else if (tipotrans == "Transferencias Debito")
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+                        using (CardsEntities db = new CardsEntities())
+                        {
+                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL"))
+                            {
+                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                {
+                                    Movimiento mov = new Movimiento()
+                                    {
+                                        fecha = fila.FECHA,
+                                        batchtime = fila.BATCHTIME,
+                                        saldo = fila.SALDO.Value,
+                                        isodescription = fila.ISODESCRIPTION,
+                                        transcode = fila.TRANSCODE.ToString(),
+                                        transname = fila.TRANSNAME,
+                                        pan = fila.PAN,
+                                        batchid = fila.BATCHID
+                                    };
+                                    movimientosSuma.Add(mov);
+                                }
+                            }
+                        }
                     }
-                    if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
-                    {
-                        return null;
-                    }
-                    List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();
+                    //if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
+                    //{
+                    //    return null;
+                    //}
+                    //List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();                    
                     foreach (Movimiento m in movimientosSuma)
                     {
                         ReporteSuma linea = new ReporteSuma()
@@ -1380,7 +1617,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 return db.Interests.Where(x => x.active == true).ToList();
             }
         }
@@ -1389,7 +1626,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 List<customerInterest> records = (from i in db.CustomerInterests
                                                   where i.customerid == customerID
                                                   select new customerInterest()
@@ -1426,7 +1663,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (db.Affiliates.Count() == 0)
                     return 1;
                 return (db.Affiliates.Max(a => a.id) + 1);
@@ -1437,7 +1674,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 if (db.AffiliateAuds.Count() == 0)
                     return 1;
                 return (db.AffiliateAuds.Max(a => a.id) + 1);
@@ -1454,7 +1691,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 return db.ESTADOS.OrderBy(u => u.DESCRIPC_ESTADO).ToList();
             }
         }
@@ -1464,7 +1701,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var query = db.CIUDADES.Where(a => a.ESTADOS.Select(b => b.COD_ESTADO).Contains(id));
                 return query.ToList(); //.ToArray();
             }
@@ -1475,7 +1712,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var query = db.MUNICIPIOS.Where(a => a.CIUDADES.Select(b => b.COD_CIUDAD).Contains(id));
                 return query.ToList();
             }
@@ -1486,7 +1723,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var query = db.PARROQUIAS.Where(a => a.MUNICIPIOS.Select(b => b.COD_MUNICIPIO).Contains(id));
                 return query.ToList();
             }
@@ -1497,7 +1734,7 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var query = db.URBANIZACIONES.Where(a => a.PARROQUIAS.Select(b => b.COD_PARROQUIA).Contains(id));
                 return query.ToList();
             }

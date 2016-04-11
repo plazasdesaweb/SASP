@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e4651b8165f842c6ad365bba15983f5e" Name="Diagram1" ZoomLevel="71">
+      <Diagram DiagramId="e4651b8165f842c6ad365bba15983f5e" Name="Diagram1" ZoomLevel="100">
         <EntityTypeShape EntityType="SumaLealtad.Affiliate" Width="1.5" PointX="5.75" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SumaLealtad.AffiliateAud" Width="1.5" PointX="3.375" PointY="13.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SumaLealtad.Auditing" Width="1.5" PointX="14.25" PointY="2.875" IsExpanded="true" />
@@ -47,7 +47,7 @@
         <AssociationConnector Association="SumaLealtad.ESTADO_CIUDAD" ManuallyRouted="false" />
         <AssociationConnector Association="SumaLealtad.MUNICIPIO_PARROQUIA" ManuallyRouted="false" />
         <AssociationConnector Association="SumaLealtad.PARROQUIA_URBANIZACION" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SumaLealtad.Order" Width="1.5" PointX="8.125" PointY="6.375" />
+        <EntityTypeShape EntityType="SumaLealtad.Order" Width="1.5" PointX="8.125" PointY="6.125" />
         <AssociationConnector Association="SumaLealtad.FK_OrdersDetail_Order" />
         <EntityTypeShape EntityType="SumaLealtad.PrepaidBeneficiary" Width="1.5" PointX="8" PointY="13.625" />
         <EntityTypeShape EntityType="SumaLealtad.PrepaidCustomer" Width="1.5" PointX="8.125" PointY="10.125" />
@@ -58,6 +58,7 @@
         <AssociationConnector Association="SumaLealtad.FK_OrdersDetail_SumaStatus" />
         <AssociationConnector Association="SumaLealtad.FK_PBeneficiary_PCustomer" />
         <AssociationConnector Association="SumaLealtad.FK_User_SumaStatus" />
+        <EntityTypeShape EntityType="SumaLealtad.FueraDeLinea" Width="1.5" PointX="22.125" PointY="10.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

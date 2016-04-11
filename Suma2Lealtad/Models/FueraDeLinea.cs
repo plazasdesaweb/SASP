@@ -12,18 +12,11 @@ namespace Suma2Lealtad.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Interest
+    public partial class FueraDeLinea
     {
-        public Interest()
-        {
-            this.CustomerInterests = new HashSet<CustomerInterest>();
-        }
-    
         public int id { get; set; }
-        public string name { get; set; }
-        public bool active { get; set; }
-        public bool Checked { get; set; }
-    
-        public virtual ICollection<CustomerInterest> CustomerInterests { get; set; }
+        public string batchid { get; set; }
+        public string store_code { get; set; }
+        public string observaciones { get; set; }
     }
 }
