@@ -13,7 +13,7 @@ namespace Suma2Lealtad.Models
         private ClientePrepagoRepository repCliente = new ClientePrepagoRepository();
         private AfiliadoSumaRepository repAfiliado = new AfiliadoSumaRepository();
 
-        public List<ReportePrepago> ReporteDeComprasConsolidado(string tiporeporte, string fechadesde, string fechahasta, string modotrans, int idCliente = 0)
+        public List<ReportePrepago> ReporteDeComprasConsolidado(string tiporeporte, string fechadesde, string fechahasta, string modotrans, int idCliente)
         {
             string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
             string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
@@ -151,7 +151,8 @@ namespace Suma2Lealtad.Models
             if (tiporeporte == "detallado")
             {
                 List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(idCliente, "", "", "", "", "").ToList();
-                encabezado.nombreReporte = "Reporte de Compras Detallado (Detallado por Beneficiario)";
+                encabezado.nombreReporte = "Reporte de Compras Detallado";
+                encabezado.tipodetalleReporte = "Detallado por Beneficiario";
                 encabezado.tipoconsultaReporte = "Por Cliente";
                 encabezado.parametrotipoconsultaReporte = beneficiarios.First().Cliente.rifCliente + " " + beneficiarios.First().Cliente.nameCliente;
                 encabezado.fechainicioReporte = fechadesde;
@@ -165,11 +166,11 @@ namespace Suma2Lealtad.Models
                         {
                             db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
                             consulta = db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO).ToList();
-                            if (modotrans == "Offline")
+                            if (modotrans == "Fuera de Línea")
                             {
                                 consulta = consulta.Where(x => x.ISODESCRIPTION.Contains("offline")).ToList();
                             }
-                            else if (modotrans == "En Linea")
+                            else if (modotrans == "En Línea")
                             {
                                 consulta = consulta.Where(x => !x.ISODESCRIPTION.Contains("offline")).ToList();
                             }
@@ -213,7 +214,8 @@ namespace Suma2Lealtad.Models
             else if (tiporeporte == "consolidado")
             {
                 List<BeneficiarioPrepagoIndex> beneficiarios = repCliente.FindBeneficiarios(idCliente, "", "", "", "", "").OrderBy(x => x.Afiliado.docnumber).ToList();
-                encabezado.nombreReporte = "Reporte de Compras Detallado (Consolidado por Beneficiario)";
+                encabezado.nombreReporte = "Reporte de Compras Detallado";
+                encabezado.tipodetalleReporte = "Consolidado por Beneficiario";
                 encabezado.tipoconsultaReporte = "Por Cliente";
                 encabezado.parametrotipoconsultaReporte = beneficiarios.First().Cliente.rifCliente + " " + beneficiarios.First().Cliente.nameCliente;
                 encabezado.fechainicioReporte = fechadesde;
@@ -229,11 +231,11 @@ namespace Suma2Lealtad.Models
                             TotalCompras = 0;
                             db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
                             consulta = db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO).ToList();
-                            if (modotrans == "Offline")
+                            if (modotrans == "Fuera de Línea")
                             {
                                 consulta = consulta.Where(x => x.ISODESCRIPTION.Contains("offline")).ToList();
                             }
-                            else if (modotrans == "En Linea")
+                            else if (modotrans == "En Línea")
                             {
                                 consulta = consulta.Where(x => !x.ISODESCRIPTION.Contains("offline")).ToList();
                             }
@@ -269,7 +271,7 @@ namespace Suma2Lealtad.Models
             return reporte;
         }
 
-        public List<ReportePrepago> ReporteRecargasConsolidado(string tiporeporte, string fechadesde, string fechahasta, int idCliente = 0, string referencia = "", string observaciones = "")
+        public List<ReportePrepago> ReporteRecargasConsolidado(string tiporeporte, string fechadesde, string fechahasta, int idCliente, string referencia, string observaciones)
         {
             string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
             string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
@@ -280,6 +282,7 @@ namespace Suma2Lealtad.Models
             EncabezadoReporte encabezado = new EncabezadoReporte();
             ReportePrepago linea = new ReportePrepago();
             decimal TotalRecargas = 0;
+            decimal TotalAnulaciones = 0;
             using (LealtadEntities db = new LealtadEntities())
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
@@ -329,34 +332,43 @@ namespace Suma2Lealtad.Models
                     {
                         if (q.ClaseOrden == "Orden de Anulación de Recarga")
                         {
-                            linea = new ReportePrepago()
-                            {
-                                Beneficiario = new BeneficiarioPrepagoIndex()
-                                {
-                                    Cliente = repCliente.Find(idCliente)
-                                },
-                                monto = q.Total * -1,
-                                tipo = "161-Anulación",
-                                Encabezado = encabezado
-                            };
-                            reporte.Add(linea);
+                            TotalAnulaciones = TotalAnulaciones + q.Total;
                         }
                         else
                         {
                             TotalRecargas = TotalRecargas + q.Total;
                         }
                     }
-                    linea = new ReportePrepago()
+                    //NO INCLUYO CLIENTES SIN RECARGAS
+                    if (TotalRecargas != 0)
                     {
-                        Beneficiario = new BeneficiarioPrepagoIndex()
+                        linea = new ReportePrepago()
                         {
-                            Cliente = repCliente.Find(idCliente)
-                        },
-                        monto = TotalRecargas,
-                        tipo = "200-Recarga",
-                        Encabezado = encabezado
-                    };
-                    reporte.Add(linea);
+                            Beneficiario = new BeneficiarioPrepagoIndex()
+                            {
+                                Cliente = repCliente.Find(idCliente)
+                            },
+                            monto = TotalRecargas,
+                            tipo = "200-Recarga",
+                            Encabezado = encabezado
+                        };
+                        reporte.Add(linea);
+                    }                    
+                    //NO INCLUYO CLIENETS SIN ANULACIONES
+                    if (TotalAnulaciones != 0)
+                    {
+                        linea = new ReportePrepago()
+                        {
+                            Beneficiario = new BeneficiarioPrepagoIndex()
+                            {
+                                Cliente = repCliente.Find(idCliente)
+                            },
+                            monto = TotalAnulaciones * -1,
+                            tipo = "161-Anulación",
+                            Encabezado = encabezado
+                        };
+                        reporte.Add(linea);
+                    }
                 }
                 #endregion
                 #region Todos los Clientes
@@ -373,6 +385,7 @@ namespace Suma2Lealtad.Models
                     foreach (ClientePrepago c in clientes)
                     {
                         TotalRecargas = 0;
+                        TotalAnulaciones = 0;
                         //busco movimientos de recaga y anulación de recarga
                         var queryTotalRecargas = (from o in db.Orders
                                                   join od in db.OrdersDetails on o.id equals od.orderid
@@ -408,17 +421,7 @@ namespace Suma2Lealtad.Models
                         {
                             if (q.ClaseOrden == "Orden de Anulación de Recarga")
                             {
-                                linea = new ReportePrepago()
-                                {
-                                    Beneficiario = new BeneficiarioPrepagoIndex()
-                                    {
-                                        Cliente = c
-                                    },
-                                    monto = q.Total * -1,
-                                    tipo = "161-Anulación",
-                                    Encabezado = encabezado
-                                };
-                                reporte.Add(linea);
+                                TotalAnulaciones = TotalAnulaciones + q.Total;
                             }
                             else
                             {
@@ -440,6 +443,21 @@ namespace Suma2Lealtad.Models
                             };
                             reporte.Add(linea);
                         }
+                        //NO INCLUYO CLIENTES SIN ANULACIONES
+                        if (TotalAnulaciones != 0)
+                        {
+                            linea = new ReportePrepago()
+                            {
+                                Beneficiario = new BeneficiarioPrepagoIndex()
+                                {
+                                    Cliente = c
+                                },
+                                monto = TotalAnulaciones * -1,
+                                tipo = "161-Anulación",
+                                Encabezado = encabezado
+                            };
+                            reporte.Add(linea);
+                        }
                     }
                 }
                 #endregion
@@ -455,7 +473,7 @@ namespace Suma2Lealtad.Models
             return reporte;
         }
 
-        public List<ReportePrepago> ReporteRecargasDetallado(string tiporeporte, string fechadesde, string fechahasta, int idCliente, string referencia = "", string observaciones = "")
+        public List<ReportePrepago> ReporteRecargasDetallado(string tiporeporte, string fechadesde, string fechahasta, int idCliente, string referencia, string observaciones)
         {
             string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
             string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
@@ -472,7 +490,8 @@ namespace Suma2Lealtad.Models
                 if (tiporeporte == "detallado")
                 {
                     ClientePrepago cliente = repCliente.Find(idCliente);
-                    encabezado.nombreReporte = "Reporte de Recargas Detallado (Detallado por Beneficiario)";
+                    encabezado.nombreReporte = "Reporte de Recargas Detallado";
+                    encabezado.tipodetalleReporte = "Detallado por Beneficiario";
                     encabezado.tipoconsultaReporte = "Por Cliente";
                     encabezado.parametrotipoconsultaReporte = cliente.rifCliente + " " + cliente.nameCliente; ;
                     encabezado.fechainicioReporte = fechadesde;
@@ -562,7 +581,7 @@ namespace Suma2Lealtad.Models
                                 nroordenrecarga = q.nroordenrecarga,
                                 referenciarecarga = q.referenciarecarga,
                                 observacionesrecarga = q.observacionesrecarga,
-                                Encabezado = q.Encabezado
+                                Encabezado = encabezado
                             };
                             reporte.Add(linea);
                         }
@@ -574,7 +593,8 @@ namespace Suma2Lealtad.Models
                 else if (tiporeporte == "consolidado")
                 {
                     ClientePrepago cliente = repCliente.Find(idCliente);
-                    encabezado.nombreReporte = "Reporte de Recargas Detallado (Consolidado por Beneficiario)";
+                    encabezado.nombreReporte = "Reporte de Recargas Detallado";
+                    encabezado.tipodetalleReporte = "Consolidado por Beneficiario";
                     encabezado.tipoconsultaReporte = "Por Cliente";
                     encabezado.parametrotipoconsultaReporte = cliente.rifCliente + " " + cliente.nameCliente; ;
                     encabezado.fechainicioReporte = fechadesde;
@@ -617,41 +637,51 @@ namespace Suma2Lealtad.Models
                     //armo lineas del reporte
                     foreach (var doc in queryreporte.Select(d => d.Afiliado.docnumber).Distinct())
                     {
-                        decimal TotalRecargas = 0;                                                
+                        decimal TotalRecargas = 0;
+                        decimal TotalAnulaciones = 0;                        
                         foreach (var q in queryreporte.Where(s => s.Afiliado.docnumber == doc))
                         {
                             if (q.ClaseOrden == "Orden de Anulación de Recarga")
-                            {
-                                linea = new ReportePrepago()
-                                {
-                                    Beneficiario = new BeneficiarioPrepagoIndex()
-                                    {
-                                        Afiliado = q.Afiliado,
-                                        Cliente = repCliente.Find(idCliente)
-                                    },
-                                    monto = q.Total * -1,
-                                    tipo = "161-Anulación",
-                                    Encabezado = encabezado
-                                };
-                                reporte.Add(linea);
+                            {                                
+                                TotalAnulaciones = TotalAnulaciones + q.Total;
                             }
                             else
                             {
                                 TotalRecargas = TotalRecargas + q.Total;
                             }
                         }
-                        linea = new ReportePrepago()
+                        //NO INCLUYO BENEFICIARIOS SIN RECARGAS
+                        if (TotalRecargas != 0)
                         {
-                            Beneficiario = new BeneficiarioPrepagoIndex()
+                            linea = new ReportePrepago()
                             {
-                                Afiliado = repAfiliado.Find(doc,"","","","").First(),
-                                Cliente = repCliente.Find(idCliente)
-                            },
-                            monto = TotalRecargas,
-                            tipo = "200-Recarga",
-                            Encabezado = encabezado
-                        };
-                        reporte.Add(linea);
+                                Beneficiario = new BeneficiarioPrepagoIndex()
+                                {
+                                    Afiliado = repAfiliado.Find(doc, "", "", "", "").First(),
+                                    Cliente = repCliente.Find(idCliente)
+                                },
+                                monto = TotalRecargas,
+                                tipo = "200-Recarga",
+                                Encabezado = encabezado
+                            };
+                            reporte.Add(linea);
+                        }
+                        //NO INCLUYO BENEFICIARIOS SIN ANULACIONES
+                        if (TotalAnulaciones != 0)
+                        {
+                            linea = new ReportePrepago()
+                            {
+                                Beneficiario = new BeneficiarioPrepagoIndex()
+                                {
+                                    Afiliado = repAfiliado.Find(doc, "", "", "", "").First(),
+                                    Cliente = repCliente.Find(idCliente)
+                                },
+                                monto = TotalAnulaciones * -1,
+                                tipo = "161-Anulación",
+                                Encabezado = encabezado
+                            };
+                            reporte.Add(linea);
+                        }
                     }
                 }
                 #endregion

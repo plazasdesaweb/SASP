@@ -1,0 +1,170 @@
+﻿@model Suma2Lealtad.Models.ReportePrepago
+
+@{
+    ViewBag.Title = "FilterReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Prepago / Reportes / Reporte de Recargas Consolidado / Parámetros del Reporte</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form action="@Url.Action("ReporteRecargasConsolidado", "Reporte")" method="post" onsubmit="return validateForm();">
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
+
+                <div class="editor-label col-md-4 control-label idCliente">
+                    Cliente :
+                </div>
+
+                <div class="editor-field col-md-6 idCliente">
+                    @Html.DropDownList("idCliente",
+                                           new SelectList(Model.ListaClientes,
+                                           "id",
+                                           "name",
+                                           Model.ListaClientes),
+                                           new { @class = "form-control" }
+                                           )
+                    <span id="field1"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    * Fecha desde :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="fechadesde" name="fechadesde" maxlength="10" placeholder="dd/mm/aaaa" class="form-control">
+                    <span id="field2"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    * Fecha hasta :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="fechahasta" name="fechahasta" maxlength="10" placeholder="dd/mm/aaaa" class="form-control">
+                    <span id="field3"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Referencia :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="Referencia" name="Referencia" maxlength="10" placeholder="Ingrese un número" class="form-control">
+                    <span id="field4"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Observaciones :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="Observaciones" name="Observaciones" maxlength="100" placeholder="Escriba el texto" class="form-control">
+                    <span id="field5"></span>
+                </div>
+                
+                <br />
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <span id="fields"></span>
+                </div>
+                <br />
+
+                <div class="col-md-12 col-btn">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-md" value="Generar Reporte" />
+                    </div>
+                </div>
+                <!-- form-group -->
+
+            </form>
+
+        </div>
+        <!--// panel-body -->
+
+    </div>
+    <!--// panel -->
+
+</div>
+<!--// container -->
+
+<script>
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function LimpiarSpanMessage(idelemento) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+    }
+
+    function validateFechaDesde() {
+        var fecha = document.getElementById('fechadesde').value;
+        if (fecha.length == 0) {
+            spanMessage('field2', '* Debe ingresar Fecha desde');
+            document.getElementById('fechadesde').focus();
+            return false;
+        }
+        var RegExPattern = /^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])(\/)(\d{4})$/;
+        if (RegExPattern.test(fecha) == false) {
+            spanMessage('field2', '* Formato Fecha Incorrecto. (dd/mm/aaaa)');
+            document.getElementById('fechadesde').value = "";
+            document.getElementById('fechadesde').focus();
+            return false;
+        }
+        LimpiarSpanMessage('field2');
+        return true;
+    }
+
+    function validateFechaHasta() {
+        var fecha = document.getElementById('fechahasta').value;
+        if (fecha.length == 0) {
+            spanMessage('field3', '* Debe ingresar Fecha hasta');
+            document.getElementById('fechahasta').focus();
+            return false;
+        }
+        var RegExPattern = /^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])(\/)(\d{4})$/
+        if (RegExPattern.test(fecha) == false) {
+            spanMessage('field3', '* Formato Fecha Incorrecto. (dd/mm/aaaa)');
+            document.getElementById('fechahasta').value = "";
+            document.getElementById('fechahasta').focus();
+            return false;
+        }
+        LimpiarSpanMessage('field3');
+        return true;
+    }
+
+    function validateForm() {
+        if (validateFechaDesde() && validateFechaHasta()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>
+

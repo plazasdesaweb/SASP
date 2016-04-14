@@ -298,12 +298,10 @@
     <Compile Include="Models\FueraDeLinea.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ParametrosReporteSuma.cs" />
     <Compile Include="Models\EncabezadoReporteSuma.cs" />
     <Compile Include="Models\PLZ_GETREPORT_Result.cs">
       <DependentUpon>Cards.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ReporteSuma.cs" />
     <Compile Include="Models\CreditLimit.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
@@ -726,7 +724,7 @@
     <Content Include="Views\ClientePrepago\DetalleOrden.cshtml" />
     <Content Include="Views\ClientePrepago\CreateOrdenRecarga.cshtml" />
     <Content Include="Views\ClientePrepago\CargarArchivoRecarga.cshtml" />
-    <Content Include="Views\Reporte\ReporteCompras.cshtml" />
+    <Content Include="Views\Reporte\ReporteComprasConsolidado.cshtml" />
     <Content Include="Views\BeneficiarioPrepago\FilterReview.cshtml" />
     <Content Include="Views\BeneficiarioPrepago\Index.cshtml" />
     <Content Include="Views\BeneficiarioPrepago\Filter.cshtml" />
@@ -776,17 +774,7 @@
     <Content Include="Views\FueraLineaPrepago\AddNew.cshtml" />
     <Content Include="Views\FueraLineaPrepago\GenericView.cshtml" />
     <Content Include="Views\OrdenRecargaPrepago\GenericView.cshtml" />
-    <Content Include="Views\Reporte\FilterReporteCompras.cshtml" />
-    <Content Include="Views\Reporte\FilterReporteRecargas.cshtml" />
-    <Content Include="Views\Reporte\FilterReporteTarjetas.cshtml" />
-    <Content Include="Views\Reporte\ReporteComprasPDF.cshtml" />
-    <Content Include="Views\Reporte\ReporteRecargas.cshtml" />
-    <Content Include="Views\Reporte\ReporteRecargasPDF.cshtml" />
-    <Content Include="Views\Reporte\ReporteTarjetas.cshtml" />
-    <Content Include="Views\Reporte\ReporteTarjetasPDF.cshtml" />
-    <Content Include="Views\Reporte\FilterReporteTransacciones.cshtml" />
-    <Content Include="Views\Reporte\ReporteTransacciones.cshtml" />
-    <Content Include="Views\Reporte\ReporteTransaccionesPDF.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteComprasDetallado.cshtml" />
     <Content Include="Scripts\PruebaBS3Dialog\assets\bootstrap-dialog\less\bootstrap-dialog.less" />
     <Content Include="Views\OrdenRecargaPrepago\FilterAnulacion.cshtml" />
     <Content Include="Views\OrdenRecargaPrepago\CreateAnulacion.cshtml" />
@@ -801,6 +789,16 @@
     <Content Include="Views\ClientePrepago\CambiarTipoDocumento.cshtml" />
     <Content Include="Views\Transferencia\FilterAnulacionTransferencia.cshtml" />
     <Content Include="Views\Transferencia\CreateAnulacionTransferencia.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteComprasConsolidado.cshtml" />
+    <Content Include="Views\Reporte\ReporteComprasDetallado.cshtml" />
+    <Content Include="Views\Reporte\ReporteComprasConsolidadoPDF.cshtml" />
+    <Content Include="Views\Reporte\ReporteComprasDetalladoPDF.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteRecargasConsolidado.cshtml" />
+    <Content Include="Views\Reporte\ReporteRecargasConsolidado.cshtml" />
+    <Content Include="Views\Reporte\ReporteRecargasConsolidadoPDF.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteRecargasDetallado.cshtml" />
+    <Content Include="Views\Reporte\ReporteRecargasDetallado.cshtml" />
+    <Content Include="Views\Reporte\ReporteRecargasDetalladoPDF.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

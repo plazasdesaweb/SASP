@@ -22,23 +22,7 @@ namespace Suma2Lealtad.Models
         public string referenciarecarga { get; set; }
         public string observacionesrecarga { get; set; }
         public ParametrosReporte Parametros {get;set;}
-
         public List<PrepaidCustomer> ListaClientes { get; set; }
-
-        #region Lista_TipoConsulta
-        public class TipoConsulta
-        {
-            public string id { get; set; }
-            public string tipo { get; set; }
-        }
-
-        public IEnumerable<TipoConsulta> TipoConsultaOptions =
-            new List<TipoConsulta>
-        {
-              new TipoConsulta { id = "Cliente", tipo = "Por Cliente" },
-              new TipoConsulta { id = "Beneficiario", tipo = "Por Beneficiario" },
-        };
-        #endregion
 
         #region Lista_ModoTransaccion
         public class ModoTransaccion
@@ -51,8 +35,62 @@ namespace Suma2Lealtad.Models
             new List<ModoTransaccion>
         {
               new ModoTransaccion { id = "Todas", modo = "Todas" },
-              new ModoTransaccion { id = "En Linea", modo = "En Linea" },
-              new ModoTransaccion { id = "Offline", modo = "Fuera de Linea" }          
+              new ModoTransaccion { id = "En Línea", modo = "En Línea" },
+              new ModoTransaccion { id = "Fuera de Línea", modo = "Fuera de Línea" }          
+        };
+        #endregion
+
+        #region Lista_TipoDetalle
+        public class TipoDetalle
+        {
+            public string id { get; set; }
+            public string tipo { get; set; }
+        }
+
+        public IEnumerable<TipoDetalle> TipoDetalleOptions =
+            new List<TipoDetalle>
+        {
+              new TipoDetalle { id = "Consolidado por Beneficiario", tipo = "Consolidado por Beneficiario" },
+              new TipoDetalle { id = "Detallado por Beneficiario", tipo = "Detallado por Beneficiario" },
+        };
+        #endregion
+
+        #region Lista_TipoTransaccionSuma
+        public class TipoTransaccionSuma
+        {
+            public string id { get; set; }
+            public string tipo { get; set; }
+        }
+
+        public IEnumerable<TipoTransaccionSuma> TipoTransaccionSumaOptions =
+            new List<TipoTransaccionSuma>
+        {
+              new TipoTransaccionSuma { id = "Todas", tipo = "Todas" },
+              new TipoTransaccionSuma { id = "Acreditacion", tipo = "Acreditacion" },
+              new TipoTransaccionSuma { id = "Canje", tipo = "Canje" },
+              new TipoTransaccionSuma { id = "Transferencias de Puntos: Crédito", tipo = "Transferencias de Puntos: Crédito" },
+              new TipoTransaccionSuma { id = "Transferencias de Puntos: Débito", tipo = "Transferencias de Puntos: Débito" },
+              new TipoTransaccionSuma { id = "Anulación de Transferencias de Puntos", tipo = "Anulación de Transferencias de Puntos" },
+        };
+        #endregion
+
+        #region Lista_TipoTransaccionPrepago
+        public class TipoTransaccionPrepago
+        {
+            public string id { get; set; }
+            public string tipo { get; set; }
+        }
+
+        public IEnumerable<TipoTransaccionPrepago> TipoTransaccionPrepagoOptions =
+            new List<TipoTransaccionPrepago>
+        {
+              new TipoTransaccionPrepago { id = "Todas", tipo = "Todas" },
+              new TipoTransaccionPrepago { id = "Compra", tipo = "Compra" },
+              new TipoTransaccionPrepago { id = "Recarga", tipo = "Recarga" },
+              new TipoTransaccionPrepago { id = "Anulación de Recarga", tipo = "Anulación de Recarga" },
+              new TipoTransaccionPrepago { id = "Transferencias de Saldo: Crédito", tipo = "Transferencias de Saldo: Crédito" },
+              new TipoTransaccionPrepago { id = "Transferencias de Saldo: Débito", tipo = "Transferencias de Saldo: Débito" },
+              new TipoTransaccionPrepago { id = "Anulación de Transferencias de Saldo", tipo = "Anulación de Transferencias de Saldo" },
         };
         #endregion
 
@@ -72,7 +110,6 @@ namespace Suma2Lealtad.Models
               new EstadoDeTarjeta { id = "Suspendida", estado = "Suspendida"  }
         };
         #endregion
-
+        
     }
-
 }

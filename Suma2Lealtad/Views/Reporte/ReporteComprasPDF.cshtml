@@ -155,9 +155,9 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item.Beneficiario.Cliente.nameCliente)
                 </td>
-                <td>
+               @* <td>
                     @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.name) @Html.DisplayFor(modelItem => item.Beneficiario.Afiliado.lastname1)
-                </td>
+                </td>*@
                 <td>
                     @(String.Format("{0}", item.fecha.ToString("dd/MM/yyyy hh:mm tt")))
                 </td>

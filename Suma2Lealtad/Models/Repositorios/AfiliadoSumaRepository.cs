@@ -111,7 +111,7 @@ namespace Suma2Lealtad.Models
                 afiliado.gender = clienteWebPlazas.gender.Replace("/", "").Replace("\\", "");
                 afiliado.clientid = clienteWebPlazas.id;
                 afiliado.maritalstatus = clienteWebPlazas.maritalstatus.Replace("/", "").Replace("\\", "");
-                afiliado.occupation = clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "");
+                afiliado.occupation = clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "").Substring(0,30);
                 afiliado.phone1 = clienteWebPlazas.phone1.Replace("/", "").Replace("\\", "");
                 afiliado.phone2 = clienteWebPlazas.phone2.Replace("/", "").Replace("\\", "");
                 afiliado.phone3 = clienteWebPlazas.phone3.Replace("/", "").Replace("\\", "");
@@ -562,7 +562,7 @@ namespace Suma2Lealtad.Models
                         FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         SEXO = afiliado.gender == null ? "" : afiliado.gender,
                         EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus,
-                        OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation,
+                        OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation.Substring(0,30),
                         TELEFONO_HAB = afiliado.phone1,
                         TELEFONO_OFIC = afiliado.phone2 == null ? "" : afiliado.phone2,
                         TELEFONO_CEL = afiliado.phone3 == null ? "" : afiliado.phone3,
@@ -696,7 +696,7 @@ namespace Suma2Lealtad.Models
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     cliente.SEXO = afiliado.gender;
                     cliente.EDO_CIVIL = afiliado.maritalstatus;
-                    cliente.OCUPACION = afiliado.occupation;
+                    cliente.OCUPACION = afiliado.occupation.Substring(0,30);
                     cliente.TELEFONO_HAB = afiliado.phone1;
                     cliente.TELEFONO_OFIC = afiliado.phone2;
                     cliente.TELEFONO_CEL = afiliado.phone3;
@@ -1202,365 +1202,365 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        public List<ReporteSuma> ReporteTransacciones(string fechadesde, string fechahasta, string tipotrans, string numdoc = "")
-        {
-            string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
-            string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
-            List<ReporteSuma> reporte = new List<ReporteSuma>();
-            EncabezadoReporteSuma encabezado = new EncabezadoReporteSuma();
-            #region Por Afiliado específico
-            if (numdoc != "")
-            {
-                List<AfiliadoSumaIndex> afiliados = Find(numdoc, "", "", "", "").ToList();
-                encabezado.nombreReporte = "Reporte de Transacciones";
-                encabezado.tipoconsultaReporte = "Por Afiliado";
-                if (afiliados.Count == 0)
-                {
-                    encabezado.parametrotipoconsultaReporte = numdoc;
-                }
-                else
-                {
-                    encabezado.parametrotipoconsultaReporte = afiliados.First().docnumber + " " + afiliados.First().name + " " + afiliados.First().lastname1;
-                }
-                encabezado.fechainicioReporte = fechadesde;
-                encabezado.fechafinReporte = fechahasta;
-                encabezado.tipotransaccionReporte = tipotrans;
-                foreach (AfiliadoSumaIndex a in afiliados)
-                {
-                    //determino el tipo de llamada a getreport
-                    //string movimientosLealtadJson;
-                    List<Movimiento> movimientosSuma = new List<Movimiento>();                    
-                    if (tipotrans == "Acreditacion")
-                    {
-                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else if (tipotrans == "Canje")
-                    {
-                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else if (tipotrans == "Transferencias Credito")
-                    {
-                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else if (tipotrans == "Transferencias Debito")
-                    {
-                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                    //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL"))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    //if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
-                    //{
-                    //    return null;
-                    //}
-                    //List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();                    
-                    foreach (Movimiento m in movimientosSuma)
-                    {
-                        ReporteSuma linea = new ReporteSuma()
-                        {
-                            Afiliado = a,
-                            fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
-                            monto = Convert.ToInt32(m.saldo),
-                            detalle = m.isodescription,
-                            tipo = m.transcode + "-" + m.transname,
-                            numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid.ToString(),
-                            Encabezado = encabezado
-                        };
-                        reporte.Add(linea);
-                    }
-                }
-            }
-            #endregion
-            #region Todos los Afiliados
-            else if (numdoc == "")
-            {
-                List<AfiliadoSumaIndex> afiliados = Find("", "", "", "", "").ToList();
-                encabezado.nombreReporte = "Reporte de Transacciones";
-                encabezado.tipoconsultaReporte = "Por Afiliado";
-                encabezado.parametrotipoconsultaReporte = "Todos";
-                encabezado.fechainicioReporte = fechadesde;
-                encabezado.fechafinReporte = fechahasta;
-                encabezado.tipotransaccionReporte = tipotrans;
-                foreach (AfiliadoSumaIndex a in afiliados)
-                {
-                    //determino el tipo de llamada a getreport
-                    //string movimientosLealtadJson;
-                    List<Movimiento> movimientosSuma = new List<Movimiento>();
-                    if (tipotrans == "Acreditacion")
-                    {
-                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else if (tipotrans == "Canje")
-                    {
-                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else if (tipotrans == "Transferencias Credito")
-                    {
-                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else if (tipotrans == "Transferencias Debito")
-                    {
-                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
-                        using (CardsEntities db = new CardsEntities())
-                        {
-                            db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
-                            foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL"))
-                            {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
-                                {
-                                    Movimiento mov = new Movimiento()
-                                    {
-                                        fecha = fila.FECHA,
-                                        batchtime = fila.BATCHTIME,
-                                        saldo = fila.SALDO.Value,
-                                        isodescription = fila.ISODESCRIPTION,
-                                        transcode = fila.TRANSCODE.ToString(),
-                                        transname = fila.TRANSNAME,
-                                        pan = fila.PAN,
-                                        batchid = fila.BATCHID
-                                    };
-                                    movimientosSuma.Add(mov);
-                                }
-                            }
-                        }
-                    }
-                    //if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
-                    //{
-                    //    return null;
-                    //}
-                    //List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();                    
-                    foreach (Movimiento m in movimientosSuma)
-                    {
-                        ReporteSuma linea = new ReporteSuma()
-                        {
-                            Afiliado = a,
-                            fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
-                            monto = Convert.ToInt32(m.saldo),
-                            detalle = m.isodescription,
-                            tipo = m.transcode + "-" + m.transname,
-                            numerotarjeta = Convert.ToDecimal(m.pan),
-                            batchid = m.batchid.ToString(),
-                            Encabezado = encabezado
-                        };
-                        reporte.Add(linea);
-                    }
-                }
-            }
-            #endregion
-            if (reporte.Count == 0)
-            {
-                ReporteSuma r = new ReporteSuma()
-                {
-                    Encabezado = encabezado
-                };
-                reporte.Add(r);
-            }
-            return reporte.OrderBy(x => x.fecha).ToList();
-        }
+        //public List<ReporteSuma> ReporteTransacciones(string fechadesde, string fechahasta, string tipotrans, string numdoc = "")
+        //{
+        //    string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
+        //    string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
+        //    List<ReporteSuma> reporte = new List<ReporteSuma>();
+        //    EncabezadoReporteSuma encabezado = new EncabezadoReporteSuma();
+        //    #region Por Afiliado específico
+        //    if (numdoc != "")
+        //    {
+        //        List<AfiliadoSumaIndex> afiliados = Find(numdoc, "", "", "", "").ToList();
+        //        encabezado.nombreReporte = "Reporte de Transacciones";
+        //        encabezado.tipoconsultaReporte = "Por Afiliado";
+        //        if (afiliados.Count == 0)
+        //        {
+        //            encabezado.parametrotipoconsultaReporte = numdoc;
+        //        }
+        //        else
+        //        {
+        //            encabezado.parametrotipoconsultaReporte = afiliados.First().docnumber + " " + afiliados.First().name + " " + afiliados.First().lastname1;
+        //        }
+        //        encabezado.fechainicioReporte = fechadesde;
+        //        encabezado.fechafinReporte = fechahasta;
+        //        encabezado.tipotransaccionReporte = tipotrans;
+        //        foreach (AfiliadoSumaIndex a in afiliados)
+        //        {
+        //            //determino el tipo de llamada a getreport
+        //            //string movimientosLealtadJson;
+        //            List<Movimiento> movimientosSuma = new List<Movimiento>();                    
+        //            if (tipotrans == "Acreditacion")
+        //            {
+        //            //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (tipotrans == "Canje")
+        //            {
+        //            //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (tipotrans == "Transferencias Credito")
+        //            {
+        //            //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (tipotrans == "Transferencias Debito")
+        //            {
+        //            //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //            //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL"))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            //if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
+        //            //{
+        //            //    return null;
+        //            //}
+        //            //List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();                    
+        //            foreach (Movimiento m in movimientosSuma)
+        //            {
+        //                ReporteSuma linea = new ReporteSuma()
+        //                {
+        //                    Afiliado = a,
+        //                    fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+        //                    monto = Convert.ToInt32(m.saldo),
+        //                    detalle = m.isodescription,
+        //                    tipo = m.transcode + "-" + m.transname,
+        //                    numerotarjeta = Convert.ToDecimal(m.pan),
+        //                    batchid = m.batchid.ToString(),
+        //                    Encabezado = encabezado
+        //                };
+        //                reporte.Add(linea);
+        //            }
+        //        }
+        //    }
+        //    #endregion
+        //    #region Todos los Afiliados
+        //    else if (numdoc == "")
+        //    {
+        //        List<AfiliadoSumaIndex> afiliados = Find("", "", "", "", "").ToList();
+        //        encabezado.nombreReporte = "Reporte de Transacciones";
+        //        encabezado.tipoconsultaReporte = "Por Afiliado";
+        //        encabezado.parametrotipoconsultaReporte = "Todos";
+        //        encabezado.fechainicioReporte = fechadesde;
+        //        encabezado.fechafinReporte = fechahasta;
+        //        encabezado.tipotransaccionReporte = tipotrans;
+        //        foreach (AfiliadoSumaIndex a in afiliados)
+        //        {
+        //            //determino el tipo de llamada a getreport
+        //            //string movimientosLealtadJson;
+        //            List<Movimiento> movimientosSuma = new List<Movimiento>();
+        //            if (tipotrans == "Acreditacion")
+        //            {
+        //                //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_ACREDITACION_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (tipotrans == "Canje")
+        //            {
+        //                //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_CANJE_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (tipotrans == "Transferencias Credito")
+        //            {
+        //                //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_CREDITO_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (tipotrans == "Transferencias Debito")
+        //            {
+        //                //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA);
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), "NULL", Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                //    movimientosLealtadJson = WSL.Cards.getReport(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL");
+        //                using (CardsEntities db = new CardsEntities())
+        //                {
+        //                    db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+        //                    foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, a.docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL"))
+        //                    {
+        //                        if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+        //                        {
+        //                            Movimiento mov = new Movimiento()
+        //                            {
+        //                                fecha = fila.FECHA,
+        //                                batchtime = fila.BATCHTIME,
+        //                                saldo = fila.SALDO.Value,
+        //                                isodescription = fila.ISODESCRIPTION,
+        //                                transcode = fila.TRANSCODE.ToString(),
+        //                                transname = fila.TRANSNAME,
+        //                                pan = fila.PAN,
+        //                                batchid = fila.BATCHID
+        //                            };
+        //                            movimientosSuma.Add(mov);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            //if (WSL.Cards.ExceptionServicioCards(movimientosLealtadJson))
+        //            //{
+        //            //    return null;
+        //            //}
+        //            //List<Movimiento> movimientosSuma = (List<Movimiento>)JsonConvert.DeserializeObject<List<Movimiento>>(movimientosLealtadJson).OrderBy(x => x.fecha).ToList();                    
+        //            foreach (Movimiento m in movimientosSuma)
+        //            {
+        //                ReporteSuma linea = new ReporteSuma()
+        //                {
+        //                    Afiliado = a,
+        //                    fecha = m.batchtime == null ? DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(m.fecha.Substring(6, 2) + "/" + m.fecha.Substring(4, 2) + "/" + m.fecha.Substring(0, 4) + " " + m.batchtime.Substring(0, 2) + ":" + m.batchtime.Substring(2, 2) + ":" + m.batchtime.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+        //                    monto = Convert.ToInt32(m.saldo),
+        //                    detalle = m.isodescription,
+        //                    tipo = m.transcode + "-" + m.transname,
+        //                    numerotarjeta = Convert.ToDecimal(m.pan),
+        //                    batchid = m.batchid.ToString(),
+        //                    Encabezado = encabezado
+        //                };
+        //                reporte.Add(linea);
+        //            }
+        //        }
+        //    }
+        //    #endregion
+        //    if (reporte.Count == 0)
+        //    {
+        //        ReporteSuma r = new ReporteSuma()
+        //        {
+        //            Encabezado = encabezado
+        //        };
+        //        reporte.Add(r);
+        //    }
+        //    return reporte.OrderBy(x => x.fecha).ToList();
+        //}
 
         private int DeterminarSucursalAfiliacion()
         {
