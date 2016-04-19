@@ -9,7 +9,7 @@
 @*<link href="css/style.css" rel="stylesheet">*@
 @*<link href="~/Content/style.css" rel="stylesheet" />*@
 
-<style type="text/css" media="screen">
+@*<style type="text/css" media="screen">
     .table-hover {
         cursor: pointer;
     }
@@ -18,7 +18,7 @@
         background-color: #5e8262; /*#476B6B #29A329;*/
         color: white;
     }
-</style>
+</style>*@
 
 @{
     string indicadorMostrar;
@@ -179,7 +179,6 @@
         statusAfiliacion = $(filatabla).data("statusafiliacion");
         statusTarjeta = $(filatabla).data("statustarjeta");
         tipo = $(filatabla).data("tipo");
-        var ocultar = "@indicadorMostrar";
         $('.table tbody tr').removeClass("active");
         $(filatabla).addClass("active");
 
@@ -207,9 +206,7 @@
             $("#ReiniciarPin").show();
             if (tipo != "Prepago") {
                 $("#BloquearTarjeta").show();
-                if (ocultar != "Ocultar"){
-                    $("#SuspenderTarjeta").show();
-                }
+                $("#SuspenderTarjeta").show();
             }            
             $("#SaldosMovimientos").show();
             //$("#Acreditar").show();
@@ -220,9 +217,7 @@
             $("#ReiniciarPin").show();
             if (tipo != "Prepago") {
                 $("#BloquearTarjeta").show();
-                if (ocultar != "Ocultar"){
-                    $("#ReactivarTarjeta").show();
-                }
+                $("#ReactivarTarjeta").show();
             }            
             $("#SaldosMovimientos").show();
         }

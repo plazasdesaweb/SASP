@@ -519,7 +519,7 @@ namespace Suma2Lealtad.Models
                     }
                 }
                 //Actualizar estatus y monto de la Orden
-                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_APROBADA) && (s.tablename == "Order")).id;
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_APROBADA) && (s.tablename == "Orders")).id;
                 orden.totalamount = MontoTotalRecargas;
                 orden.documento = detalleOrden.First().documentoOrden;
                 orden.observaciones = detalleOrden.First().observacionesOrden;
@@ -547,7 +547,7 @@ namespace Suma2Lealtad.Models
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.FirstOrDefault(o => o.id.Equals(id));
-                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Order")).id;
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Orders")).id;
                 orden.processdate = DateTime.Now;
                 //Entidad OrderHistory
                 int idOrderHistory = OrdersHistoryId();
@@ -611,6 +611,8 @@ namespace Suma2Lealtad.Models
 
         private bool Anular(DetalleOrdenRecargaPrepago detalleorden)
         {
+            //el batchid esta guardado en el campo observacionesExclusion
+            detalleorden.batchid = detalleorden.observacionesExclusion;
             int intentos;
             //Se intenta la operación 3 veces, antes de fallar
             for (intentos = 0; intentos <= 3; intentos++)
@@ -706,7 +708,7 @@ namespace Suma2Lealtad.Models
                     }
                 }
                 //Actualizar estatus de la Orden
-                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Order")).id;
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Orders")).id;
                 orden.documento = detalleOrden.First().documentoOrden;
                 orden.processdate = DateTime.Now;
                 //Entidad OrderHistory
@@ -858,7 +860,7 @@ namespace Suma2Lealtad.Models
                     comments = detalleOrden.First().tipoOrden,
                     documento = detalleOrden.First().documentoOrden,
                     observaciones = detalleOrden.First().observacionesOrden,
-                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_NUEVA) && (s.tablename == "Order")).id
+                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_NUEVA) && (s.tablename == "Orders")).id
                 };
                 db.Orders.Add(Order);
                 idOrden = Order.id;

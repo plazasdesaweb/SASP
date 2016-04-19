@@ -195,12 +195,12 @@ label {
 margin-top: 8px;
 }
 
-/* --- */
+/* Tablas */
 .table-hover{
 cursor: pointer;
 }
 
 .table tbody tr.active td {
-background-color: #1C2B2B;
-color: white;
+background-color: #5E8262;
+/*color: white;*/
 }

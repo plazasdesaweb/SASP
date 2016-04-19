@@ -39,7 +39,7 @@ namespace Suma2Lealtad.Modules
         public const string TRANSCODE_TRANSFERENCIA_CREDITO_PREPAGO = "201";
         public const string TRANSCODE_TRANSFERENCIA_DEBITO_PREPAGO = "202";
 
-        public const string TRANSCODE_ANULACION_SUMA = "161";
+        public const string TRANSCODE_ANULACION_SUMA = "261";
         public const string TRANSCODE_TRANSFERENCIA_CREDITO_SUMA = "203";
         public const string TRANSCODE_TRANSFERENCIA_DEBITO_SUMA = "204";
         public const string TRANSCODE_ACREDITACION_SUMA = "318";

@@ -417,6 +417,15 @@ namespace Suma2Lealtad.Controllers.Prepago
                 viewmodel.ActionName = "FilterAnulacionTransferencia";
                 return RedirectToAction("GenericView", viewmodel);
             }
+            else if (transferencia.tipoOrden == "No ha sido procesada")
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Operaciones / Transferencia de Saldo / Crear Orden de Anulación";
+                viewmodel.Message = "La Orden indicada aún no ha sido Procesada";
+                viewmodel.ControllerName = "Transferencia";
+                viewmodel.ActionName = "FilterAnulacionTransferencia";
+                return RedirectToAction("GenericView", viewmodel);
+            }
             else if (transferencia.tipoOrden == "Ya tiene Anulación")
             {
                 ViewModel viewmodel = new ViewModel();
@@ -480,8 +489,10 @@ namespace Suma2Lealtad.Controllers.Prepago
                 //viewmodel.ControllerName = "ClientePrepago";
                 //viewmodel.ActionName = "FilterOrdenes";
                 //viewmodel.RouteValues = id.ToString();
-                transferencia = repOperaciones.FindTransferencia(idOrden);
-                return View("DetalleTransferencia", transferencia);
+                
+                //transferencia = repOperaciones.FindTransferencia(idOrden);
+                //return View("DetalleTransferencia", transferencia);
+                return RedirectToAction("DetalleTransferencia", new { id = idOrden });
             }
             else
             {

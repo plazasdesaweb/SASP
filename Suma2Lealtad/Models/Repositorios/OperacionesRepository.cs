@@ -292,7 +292,7 @@ namespace Suma2Lealtad.Models.Repositorios
                     db.SaveChanges();
                 }
                 //Actualizar estatus de la Orden
-                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Order")).id;
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Orders")).id;
                 orden.processdate = DateTime.Now;
                 //Entidad OrderHistory
                 int idOrderHistory = repOrden.OrdersHistoryId();
@@ -324,7 +324,7 @@ namespace Suma2Lealtad.Models.Repositorios
                     od2.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_APROBADO) && (s.tablename == "OrdersDetail")).id;
                 }
                 //Actualizar estatus y monto de la Orden
-                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_APROBADA) && (s.tablename == "Order")).id;
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_APROBADA) && (s.tablename == "Orders")).id;
                 orden.totalamount = 0;
                 orden.processdate = DateTime.Now;
                 //Entidad OrderHistory
@@ -350,7 +350,7 @@ namespace Suma2Lealtad.Models.Repositorios
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.FirstOrDefault(o => o.id.Equals(id));
-                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Order")).id;
+                orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_RECHAZADA) && (s.tablename == "Orders")).id;
                 orden.processdate = DateTime.Now;
                 //Entidad OrderHistory
                 int idOrderHistory = repOrden.OrdersHistoryId();
@@ -386,7 +386,7 @@ namespace Suma2Lealtad.Models.Repositorios
                     creationuserid = (int)HttpContext.Current.Session["userid"],
                     processdate = DateTime.Now,
                     comments = detalleOrden.First().tipoOrden,
-                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_NUEVA) && (s.tablename == "Order")).id
+                    sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_NUEVA) && (s.tablename == "Orders")).id
                 };
                 db.Orders.Add(Order);
                 idOrden = Order.id;
@@ -443,9 +443,9 @@ namespace Suma2Lealtad.Models.Repositorios
             transferencia.datosCuentaPrepagoOrigen = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
             transferencia.DenominacionCuentaOrigenPrepago = "Bs.";
             transferencia.statusDetalleOrdenOrigenSuma = detalleOrden.First().statusDetalleOrden;
-            transferencia.resultadoTransferenciaOrigenSuma = detalleOrden.First().observacionesExclusion + " " + detalleOrden.First().resultadoRecarga;
+            transferencia.resultadoTransferenciaOrigenSuma = detalleOrden.First().observacionesExclusion + " (" + detalleOrden.First().resultadoRecarga + ")";
             transferencia.statusDetalleOrdenOrigenPrepago = detalleOrden.Skip(1).First().statusDetalleOrden;
-            transferencia.resultadoTransferenciaOrigenPrepago = detalleOrden.Skip(1).First().observacionesExclusion + " " + detalleOrden.Skip(1).First().resultadoRecarga;
+            transferencia.resultadoTransferenciaOrigenPrepago = detalleOrden.Skip(1).First().observacionesExclusion + " (" + detalleOrden.Skip(1).First().resultadoRecarga + ")";
             AfiliadoSuma afiliadoDestino = repAfiliado.Find(detalleOrden.SkipWhile(x => x.idAfiliado == afiliadoOrigen.id).First().idAfiliado);
             SaldosMovimientos = repAfiliado.FindSaldosMovimientos(afiliadoDestino);
             transferencia.docnumberAfiliadoDestino = afiliadoDestino.docnumber;
@@ -455,9 +455,9 @@ namespace Suma2Lealtad.Models.Repositorios
             transferencia.datosCuentaSumaDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_SUMA));
             transferencia.datosCuentaPrepagoDestino = SaldosMovimientos.Saldos.First(x => x.accounttype.Equals(Globals.TIPO_CUENTA_PREPAGO));
             transferencia.statusDetalleOrdenDestinoSuma = detalleOrden.Skip(2).First().statusDetalleOrden;
-            transferencia.resultadoTransferenciaDestinoSuma = detalleOrden.Skip(2).First().observacionesExclusion + " " + detalleOrden.Skip(2).First().resultadoRecarga;
+            transferencia.resultadoTransferenciaDestinoSuma = detalleOrden.Skip(2).First().observacionesExclusion + " (" + detalleOrden.Skip(2).First().resultadoRecarga + ")";
             transferencia.statusDetalleOrdenDestinoPrepago = detalleOrden.Skip(3).First().statusDetalleOrden;
-            transferencia.resultadoTransferenciaDestinoPrepago = detalleOrden.Skip(3).First().observacionesExclusion + " " + detalleOrden.Skip(3).First().resultadoRecarga;
+            transferencia.resultadoTransferenciaDestinoPrepago = detalleOrden.Skip(3).First().observacionesExclusion + " (" + detalleOrden.Skip(3).First().resultadoRecarga + ")";
             transferencia.ResumenTransferenciaSuma = Math.Truncate(detalleOrden.First().montoRecarga).ToString();
             transferencia.ResumenTransferenciaPrepago = detalleOrden.Skip(1).First().montoRecarga.ToString("N2");
             OrdenRecargaPrepago orden = repOrden.Find(id);
@@ -476,9 +476,22 @@ namespace Suma2Lealtad.Models.Repositorios
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //verificar que es orden de transferencia
-                if (db.Orders.Find(orden).comments != "Orden de Transferencia")
+                Order order = db.Orders.Find(orden);
+                //orden no encontrada
+                if (order == null)
                 {
                     return null;
+                }
+                //orden no es de transferencia
+                if (order.comments != "Orden de Transferencia")
+                {
+                    return null;
+                }
+                //verificar que la orden de transferencia este procesada
+                if (order.sumastatusid != db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_PROCESADA) && (s.tablename == "Orders")).id)
+                {
+                    transferencia.tipoOrden = "No ha sido procesada";
+                    return transferencia;
                 }
                 //verificar que esa orden no tenga anulación
                 var q = (from od in db.OrdersDetails
@@ -487,7 +500,9 @@ namespace Suma2Lealtad.Models.Repositorios
                 foreach (var o in q)
                 {
                     var query = (from od in db.OrdersDetails
-                                 where od.comments.Equals(o.cardsresponse) || od.comments.Equals("Anulación efectiva " + o.cardsresponse)
+                                 join or in db.Orders on od.orderid equals or.id
+                                 where (od.comments.Equals(o.cardsresponse) || od.comments.Equals("Anulación efectiva " + o.cardsresponse))
+                                 && or.comments == "Orden de Anulación de Transferencia"
                                  select od).ToList();
                     if (query.Count > 0)
                     {
