@@ -15,7 +15,7 @@
 
         <div class="panel-body">
 
-            <form action="@Url.Action("SuspenderTarjeta", "ClientePrepago", new { id = @Model.Cliente.idCliente, idBeneficiario = @Model.Afiliado.id })" name="form" method="post">
+            <form action="@Url.Action("SuspenderTarjeta", "ClientePrepago", new { id = @Model.Cliente.idCliente, idBeneficiario = @Model.Afiliado.id })" name="form" method="post" onsubmit="return verificarObservaciones();">
 
                 @Html.HiddenFor(model => model.Cliente.idCliente)
 
@@ -85,7 +85,26 @@
                         <p class="text-danger">
                             Advertencia: Esta operación suspenderá temporalmente la tarjeta actual.
                         </p>
-                        <input type="submit" class="btn btn-success btn-md" value="Suspender" />                        
+                    </div>
+                    <div class="text-center">
+                        <div class="editor-label col-md-4 control-label">
+                            * Observaciones :
+                        </div>
+                        <div class="editor-form col-md-6">
+                            @Html.TextBox("observaciones", @Model.Afiliado.comments, new { @class = "form-control" })
+                        </div>
+                        <div class="editor-form col-md-11">
+                            <span id="field1"></span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="editor-label col-md-4 control-label"></div>
+                        <div class="editor-field col-md-6">
+                            <br />
+                        </div>
+                        <div class="editor-label col-md-7 control-label">
+                            <input type="submit" class="btn btn-success btn-md" value="Suspender" />
+                        </div>
                     </div>
                 </div>
 
@@ -105,3 +124,31 @@
 
 </div>
 <!-- panel panel-default -->
+
+<script>
+    function verificarObservaciones() {
+        LimpiarSpanMessage('field1');
+        var observaciones = document.getElementById("observaciones").value;
+        if (observaciones.length == 0) {
+            spanMessage('field1', '* Debe incluir Observaciones.');
+            document.getElementById("observaciones").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function LimpiarSpanMessage(idelemento) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+    }
+</script>

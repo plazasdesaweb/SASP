@@ -19,81 +19,80 @@
 
                 <div class="panel-body">
 
-                    @using (Html.BeginForm())
-                    {
+
+                    <form action="@Url.Action("Edit", "ClientePrepago")" method="post" class="form-horizontal" role="form" id="commentForm" onsubmit="return validarDocumento();" >
+
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
 
                         @Html.HiddenFor(model => model.idCliente)
 
-                        <form class="form-horizontal" role="form">
 
-                            <div class="form-group">
+                        <div class="form-group">
 
-                                <div class="editor-label  col-md-4 control-label">
-                                    RIF :
-                                </div>
-                                <div class="editor-field col-md-8">
-                                    @Html.TextBoxFor(model => model.rifCliente, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.rifCliente)
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label">
-                                    Nombre:
-                                </div>
-                                <div class="editor-field col-md-8">
-                                    @Html.TextBoxFor(model => model.nameCliente, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.nameCliente)
-                                </div>
-
-                                <div class="editor-label col-md-4 control-label">
-                                    Alias:
-                                </div>
-                                <div class="editor-field col-md-8">
-                                    @Html.TextBoxFor(model => model.aliasCliente, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.aliasCliente)
-                                </div>
-
-                                <div class="editor-label  col-md-4 control-label">
-                                    Dirección :
-                                </div>
-                                <div class="editor-field col-md-8">
-                                    @Html.TextBoxFor(model => model.addressCliente, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.addressCliente)
-                                </div>
-
-                                <div class="editor-label  col-md-4 control-label">
-                                    Teléfono :
-                                </div>
-                                <div class="editor-field col-md-8">
-                                    @Html.TextBoxFor(model => model.phoneCliente, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.phoneCliente)
-                                </div>
-
-                                <div class="editor-label  col-md-4 control-label">
-                                    Correo Electrónico :
-                                </div>
-                                <div class="editor-field col-md-8">
-                                    @Html.TextBoxFor(model => model.emailCliente, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.emailCliente)
-                                </div>
-
+                            <div class="editor-label  col-md-4 control-label">
+                                RIF :
+                            </div>
+                            <div class="editor-field col-md-8">
+                                @Html.TextBoxFor(model => model.rifCliente, new { @class = "form-control" })
+                                @*@Html.ValidationMessageFor(model => model.rifCliente)*@
+                                <span id="field1"></span>
                             </div>
 
-                            <!-- buttons -->
-                            <div class="form-group">
-                                <div class="col-md-12 col-btn">
-                                    <div class="pull-right">
-                                        <input type="submit" class="btn btn-success btn-md" value="Guardar" />
-                                        <a class="btn btn-danger btn-md" href="@Url.Action("Index", "ClientePrepago", new { rif = Model.rifCliente })">Cancelar</a>
-                                    </div>
+                            <div class="editor-label col-md-4 control-label">
+                                Nombre:
+                            </div>
+                            <div class="editor-field col-md-8">
+                                @Html.TextBoxFor(model => model.nameCliente, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.nameCliente)
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                Alias:
+                            </div>
+                            <div class="editor-field col-md-8">
+                                @Html.TextBoxFor(model => model.aliasCliente, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.aliasCliente)
+                            </div>
+
+                            <div class="editor-label  col-md-4 control-label">
+                                Dirección :
+                            </div>
+                            <div class="editor-field col-md-8">
+                                @Html.TextBoxFor(model => model.addressCliente, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.addressCliente)
+                            </div>
+
+                            <div class="editor-label  col-md-4 control-label">
+                                Teléfono :
+                            </div>
+                            <div class="editor-field col-md-8">
+                                @Html.TextBoxFor(model => model.phoneCliente, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.phoneCliente)
+                            </div>
+
+                            <div class="editor-label  col-md-4 control-label">
+                                Correo Electrónico :
+                            </div>
+                            <div class="editor-field col-md-8">
+                                @Html.TextBoxFor(model => model.emailCliente, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.emailCliente)
+                            </div>
+
+                        </div>
+
+                        <!-- buttons -->
+                        <div class="form-group">
+                            <div class="col-md-12 col-btn">
+                                <div class="pull-right">
+                                    <input type="submit" class="btn btn-success btn-md" value="Guardar" />
+                                    <a class="btn btn-danger btn-md" href="@Url.Action("Index", "ClientePrepago", new { rif = Model.rifCliente })">Cancelar</a>
                                 </div>
                             </div>
-                            <!--// buttons -->
+                        </div>
+                        <!--// buttons -->
 
-                        </form>
-                
-                    }
+                    </form>
 
                 </div>
                 <!--// panel-body -->
@@ -109,3 +108,48 @@
 
 </div>
 <!--// container -->
+
+<script type="text/javascript">
+    function validateRif() {
+        var rif = document.getElementById('rifCliente').value;
+        if (rif.length != 0) {
+            var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
+            var RegExPattern2 = /^([VvEeJjGg]){1}(\d){9}$/;
+            if (RegExPattern.test(rif) == false && RegExPattern2.test(rif) == false) {
+                spanMessage('field1', '* Formato RIF Incorrecto. (J-123456789)');
+                document.getElementById('rifCliente').value = "";
+                document.getElementById('rifCliente').focus();
+                return false;
+            }
+            else if (RegExPattern.test(rif) != false) {
+                document.getElementById('rifCliente').value = rif.toUpperCase();
+            }
+            else if (RegExPattern2.test(rif) != false) {
+                document.getElementById('rifCliente').value = rif.substring(0, 1).toUpperCase() + "-" + rif.substring(1).toUpperCase();
+            }
+            document.getElementById('field1').value = "";
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function validarDocumento() {
+        if (validateRif()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>

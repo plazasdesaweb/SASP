@@ -353,7 +353,7 @@ namespace Suma2Lealtad.Models
                             Encabezado = encabezado
                         };
                         reporte.Add(linea);
-                    }                    
+                    }
                     //NO INCLUYO CLIENETS SIN ANULACIONES
                     if (TotalAnulaciones != 0)
                     {
@@ -587,7 +587,7 @@ namespace Suma2Lealtad.Models
                         }
                     }
                     reporte = reporte.OrderBy(x => x.fecha).ToList();
-                }                
+                }
                 #endregion
                 #region Por Cliente específico, Consolidado por Beneficiario
                 else if (tiporeporte == "consolidado")
@@ -625,7 +625,7 @@ namespace Suma2Lealtad.Models
                                             Total = g.Sum(x => x.amount),
                                             Referencia = g.Key.documento,
                                             Observaciones = g.Key.observaciones
-                                        }).OrderBy(x=>x.Afiliado.docnumber).ToList();
+                                        }).OrderBy(x => x.Afiliado.docnumber).ToList();
                     if (referencia != "")
                     {
                         queryreporte = queryreporte.Where(x => x.Referencia == referencia).ToList();
@@ -638,11 +638,11 @@ namespace Suma2Lealtad.Models
                     foreach (var doc in queryreporte.Select(d => d.Afiliado.docnumber).Distinct())
                     {
                         decimal TotalRecargas = 0;
-                        decimal TotalAnulaciones = 0;                        
+                        decimal TotalAnulaciones = 0;
                         foreach (var q in queryreporte.Where(s => s.Afiliado.docnumber == doc))
                         {
                             if (q.ClaseOrden == "Orden de Anulación de Recarga")
-                            {                                
+                            {
                                 TotalAnulaciones = TotalAnulaciones + q.Total;
                             }
                             else
@@ -695,6 +695,147 @@ namespace Suma2Lealtad.Models
                 reporte.Add(linea);
             }
             return reporte;
+        }
+
+        public List<ReportePrepago> ReporteTransaccionesSuma(string tipotransaccion, string fechadesde, string fechahasta, string docnumber)
+        {
+            AfiliadoSumaIndex afiliado = repAfiliado.Find(docnumber, "", "", "", "").First();
+            string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
+            string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
+            List<ReportePrepago> reporte = new List<ReportePrepago>();
+            EncabezadoReporte encabezado = new EncabezadoReporte();
+            ReportePrepago linea = new ReportePrepago();
+            List<PLZ_GETREPORT_Result> consulta = new List<PLZ_GETREPORT_Result>();
+            encabezado.nombreReporte = "Reporte de Transacciones Suma";
+            encabezado.parametrotipoconsultaReporte = docnumber + " " + afiliado.name + " " + afiliado.lastname1;
+            encabezado.fechainicioReporte = fechadesde;
+            encabezado.fechafinReporte = fechahasta;
+            encabezado.tipotransaccionReporte = tipotransaccion;
+            using (CardsEntities db = new CardsEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                if (tipotransaccion == "Todas")
+                {
+                    consulta = db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, docnumber.Substring(2), Globals.TIPO_CUENTA_SUMA, "NULL").ToList();
+                }
+                foreach (PLZ_GETREPORT_Result fila in consulta.Where(x => x.TRANSCODE != 121))
+                {
+                    linea = new ReportePrepago()
+                    {
+                        Beneficiario = new BeneficiarioPrepagoIndex()
+                        {
+                            Afiliado = afiliado
+                        },
+                        fecha = fila.BATCHTIME == null ? DateTime.ParseExact(fila.FECHA.Substring(6, 2) + "/" + fila.FECHA.Substring(4, 2) + "/" + fila.FECHA.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(fila.FECHA.Substring(6, 2) + "/" + fila.FECHA.Substring(4, 2) + "/" + fila.FECHA.Substring(0, 4) + " " + fila.BATCHTIME.Substring(0, 2) + ":" + fila.BATCHTIME.Substring(2, 2) + ":" + fila.BATCHTIME.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                        monto = fila.SALDO.Value,
+                        detalle = fila.ISODESCRIPTION,
+                        tipo = fila.TRANSCODE + "-" + fila.TRANSNAME,
+                        numerotarjeta = Convert.ToDecimal(fila.PAN),
+                        batchid = fila.BATCHID.ToString(),
+                        Encabezado = encabezado
+                    };
+                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_SUMA)
+                    {
+                        linea.detalle  = linea.detalle  + " (" + fila.B037 + ")";
+                    }
+                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_CANJE_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA)
+                    {
+                        linea.monto = linea.monto * Convert.ToInt32(Globals.FACTOR_CANJE);
+                    }
+                    reporte.Add(linea);
+                }
+            }
+            reporte = reporte.OrderBy(x => x.fecha).ToList();
+            if (reporte.Count == 0)
+            {
+                linea = new ReportePrepago()
+                {
+                    Encabezado = encabezado
+                };
+                reporte.Add(linea);
+            }
+            return reporte;
+        }
+
+        public List<ReportePrepago> ReporteTransaccionesPrepago(string tipotransaccion, string fechadesde, string fechahasta, string docnumber)
+        {
+            AfiliadoSumaIndex afiliado = repAfiliado.Find(docnumber, "", "", "", "").First();
+            string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
+            string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
+            List<ReportePrepago> reporte = new List<ReportePrepago>();
+            EncabezadoReporte encabezado = new EncabezadoReporte();
+            ReportePrepago linea = new ReportePrepago();
+            List<PLZ_GETREPORT_Result> consulta = new List<PLZ_GETREPORT_Result>();
+            encabezado.nombreReporte = "Reporte de Transacciones Prepago";
+            encabezado.parametrotipoconsultaReporte = docnumber + " " + afiliado.name + " " + afiliado.lastname1;
+            encabezado.fechainicioReporte = fechadesde;
+            encabezado.fechafinReporte = fechahasta;
+            encabezado.tipotransaccionReporte = tipotransaccion;
+            using (CardsEntities db = new CardsEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
+                if (tipotransaccion == "Todas")
+                {
+                    consulta = db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, docnumber.Substring(2), Globals.TIPO_CUENTA_PREPAGO, "NULL").ToList();
+                }
+                foreach (PLZ_GETREPORT_Result fila in consulta.Where(x=>x.TRANSCODE != 121))
+                {
+                    linea = new ReportePrepago()
+                    {
+                        Beneficiario = new BeneficiarioPrepagoIndex()
+                        {
+                            Afiliado = afiliado
+                        },
+                        fecha = fila.BATCHTIME == null ? DateTime.ParseExact(fila.FECHA.Substring(6, 2) + "/" + fila.FECHA.Substring(4, 2) + "/" + fila.FECHA.Substring(0, 4), "dd/MM/yyyy", CultureInfo.InvariantCulture) : DateTime.ParseExact(fila.FECHA.Substring(6, 2) + "/" + fila.FECHA.Substring(4, 2) + "/" + fila.FECHA.Substring(0, 4) + " " + fila.BATCHTIME.Substring(0, 2) + ":" + fila.BATCHTIME.Substring(2, 2) + ":" + fila.BATCHTIME.Substring(4, 2), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                        monto = fila.SALDO.Value,
+                        detalle = fila.ISODESCRIPTION,
+                        tipo = fila.TRANSCODE + "-" + fila.TRANSNAME,
+                        numerotarjeta = Convert.ToDecimal(fila.PAN),
+                        batchid = fila.BATCHID.ToString(),
+                        Encabezado = encabezado
+                    };
+                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_SUMA)
+                    {
+                        linea.detalle = linea.detalle + " (" + fila.B037 + ")";
+                    }
+                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_CANJE_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA)
+                    {
+                        linea.monto = linea.monto * Convert.ToInt32(Globals.FACTOR_CANJE);
+                    }
+                    if (linea.detalle.Contains("offline"))
+                    {
+                        //buscar info en FueraDeLinea
+                        using (LealtadEntities db2 = new LealtadEntities())
+                        {
+                            db2.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                            string operacion = linea.batchid.ToString();
+                            FueraDeLinea f = db2.FueraDeLineas.FirstOrDefault(t => t.batchid.Equals(operacion));
+                            if (f != null)
+                            {
+                                string sucursal = repAfiliado.Find(afiliado.id).StoreOptions.Where(c => c.id != null).FirstOrDefault(x => x.id.Equals(f.store_code)).sucursal;
+                                linea.detalle = linea.detalle + " (origen: " + sucursal + ", motivo: " + f.observaciones + ")";
+                            }
+                        }
+                    }
+                    reporte.Add(linea);
+                }
+            }
+            reporte = reporte.OrderBy(x => x.fecha).ToList();
+            if (reporte.Count == 0)
+            {
+                linea = new ReportePrepago()
+                {
+                    Encabezado = encabezado
+                };
+                reporte.Add(linea);
+            }
+            return reporte;
+        }
+
+        public List<AfiliadoSumaExcel> CargarDatosExportarDatosAfiliadosExcel()
+        {
+            List<AfiliadoSumaExcel> afiliados = repAfiliado.FindAllExcel();
+            return afiliados;
         }
 
     }

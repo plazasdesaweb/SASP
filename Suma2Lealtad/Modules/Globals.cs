@@ -13,6 +13,7 @@ namespace Suma2Lealtad.Modules
         public const string WEB_TYPE = "1";
         public const int ID_ESTATUS_AFILIACION_INICIAL = 0;
         public const int ID_ESTATUS_AFILIACION_ACTIVA = 2;
+        public const int ID_ESTATUS_AFILIACION_ELIMINADA = 3;
         public const int ID_REASONS_INICIAL = 1;        
 
         //Constantes de Ordenes de Recarga
@@ -31,19 +32,26 @@ namespace Suma2Lealtad.Modules
         public const string TIPO_CUENTA_SUMA = "7";
         public const string TIPO_CUENTA_PREPAGO = "5";
         public const string ID_ESTATUS_TARJETA_SUSPENDIDA = "6";
-        public const int TRANSCODE_CONSULTA_DE_SALDO = 121;
-                
+        public const string TRANSCODE_CONSULTA_DE_SALDO = "121";
+        public const string TRANSCODE_ANULACION = "161";
+        //Constantes de Cards - Prepago
         public const string TRANSCODE_COMPRA_PREPAGO = "145";
-        public const string TRANSCODE_ANULACION_PREPAGO = "161";
         public const string TRANSCODE_RECARGA_PREPAGO = "200";
+        public const string TRANSCODE_ANULACION_RECARGA_PREPAGO = "161";        
         public const string TRANSCODE_TRANSFERENCIA_CREDITO_PREPAGO = "201";
+        public const string TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_PREPAGO = "661";
         public const string TRANSCODE_TRANSFERENCIA_DEBITO_PREPAGO = "202";
-
-        public const string TRANSCODE_ANULACION_SUMA = "261";
+        public const string TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_PREPAGO = "761";
+        //Constantes de Cards - Suma
         public const string TRANSCODE_TRANSFERENCIA_CREDITO_SUMA = "203";
+        public const string TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA = "861";
         public const string TRANSCODE_TRANSFERENCIA_DEBITO_SUMA = "204";
+        public const string TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_SUMA = "961";
         public const string TRANSCODE_ACREDITACION_SUMA = "318";
         public const string TRANSCODE_CANJE_SUMA = "319";
+        public const string FACTOR_ACREDITACION = "1";
+        public const string FACTOR_CANJE = "100";
+
         
     }
 }

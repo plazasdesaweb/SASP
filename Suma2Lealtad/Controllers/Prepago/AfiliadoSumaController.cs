@@ -50,7 +50,20 @@ namespace Suma2Lealtad.Controllers.Prepago
             {
                 //ESTA EN SUMA
                 afiliado = repAfiliado.Find(afiliado.id);
-                return View("Edit", afiliado);
+                //SI ESTA ELIMINADO, NO SE PUEDE HACER OPERACIONES, SE MUESTRA MENSAJE
+                if (afiliado.estatus == "Eliminada")
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Afiliado / Crear Afiliación";
+                    viewmodel.Message = "El número de documento indicado posee un Afiliación Eliminada. No puede realizar operaciones.";
+                    viewmodel.ControllerName = "AfiliadoSuma";
+                    viewmodel.ActionName = "Filter";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+                else
+                {
+                    return View("Edit", afiliado);
+                }
             }
         }
 
@@ -136,7 +149,20 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult Edit(int id)
         {
             AfiliadoSuma afiliado = repAfiliado.Find(id);
-            return View(afiliado);
+            //SI ESTA ELIMINADO, NO SE PUEDE HACER OPERACIONES, SE MUESTRA MENSAJE
+            if (afiliado.estatus == "Eliminada")
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Afiliado / Crear Afiliación";
+                viewmodel.Message = "El número de documento indicado posee un Afiliación Eliminada. No puede realizar operaciones.";
+                viewmodel.ControllerName = "AfiliadoSuma";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+            else
+            {
+                return View(afiliado);
+            }
         }
 
         [HttpPost]
@@ -342,11 +368,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult SuspenderTarjeta(int id, string mode = "post")
+        public ActionResult SuspenderTarjeta(int id, string observaciones, string mode = "post")
         {
             ViewModel viewmodel = new ViewModel();
             AfiliadoSuma afiliado = repAfiliado.Find(id);
-            if (repAfiliado.SuspenderTarjeta(afiliado))
+            if (repAfiliado.SuspenderTarjeta(afiliado, observaciones))
             {
                 viewmodel.Title = "Afiliado / Suspender Tarjeta";
                 viewmodel.Message = "Tarjeta suspendida correctamente";
@@ -442,6 +468,54 @@ namespace Suma2Lealtad.Controllers.Prepago
             {
                 viewmodel.Title = "Afiliado / Acreditar ";
                 viewmodel.Message = "Falló el proceso de acreditación";
+                viewmodel.ControllerName = "AfiliadoSuma";
+                viewmodel.ActionName = "FilterReview";
+            }
+            return RedirectToAction("GenericView", viewmodel);
+        }
+
+        public ActionResult EliminarAfiliacion(int id)
+        {
+            AfiliadoSuma afiliado = repAfiliado.Find(id);
+            return View(afiliado);
+        }
+
+        [HttpPost]
+        public ActionResult EliminarAfiliacion(int id, string estatustarjeta, string observaciones)
+        {
+            ViewModel viewmodel = new ViewModel();
+            AfiliadoSuma afiliado = repAfiliado.Find(id);
+            if (repAfiliado.EliminarAfiliacion(afiliado, observaciones))
+            {
+                if (estatustarjeta == "Activa")
+                {
+                    if (repAfiliado.SuspenderTarjeta(afiliado, observaciones))
+                    {
+                        viewmodel.Title = "Afiliado / Eliminar Afiliación";
+                        viewmodel.Message = "La Afiliación fué eliminada con éxito";
+                        viewmodel.ControllerName = "AfiliadoSuma";
+                        viewmodel.ActionName = "FilterReview";
+                    }
+                    else
+                    {
+                        viewmodel.Title = "Afiliado / Eliminar Afiliación";
+                        viewmodel.Message = "Falló el proceso de suspender Tarjeta";
+                        viewmodel.ControllerName = "AfiliadoSuma";
+                        viewmodel.ActionName = "FilterReview";
+                    }
+                }
+                else
+                {
+                    viewmodel.Title = "Afiliado / Eliminar Afiliación";
+                    viewmodel.Message = "La Afiliación fué eliminada con éxito";
+                    viewmodel.ControllerName = "AfiliadoSuma";
+                    viewmodel.ActionName = "FilterReview";
+                }
+            }
+            else
+            {
+                viewmodel.Title = "Afiliado / Acreditar ";
+                viewmodel.Message = "Falló el proceso de eliminar Afiliación";
                 viewmodel.ControllerName = "AfiliadoSuma";
                 viewmodel.ActionName = "FilterReview";
             }

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet">
+
+    <script src="@Url.Content("~/Scripts/jquery-2.1.3.min.js")"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div>
+
+            <div class="col-md-2 col-right">
+                <img src="@Url.Content("~/Images/Prepago.jpg")" />
+            </div>
+
+            <div class="col-md-2 col-center">
+                <h3>
+                    Estado de Cuenta
+                </h3>
+                <h6>
+                    Usted puede realizar su pago mensual a sus tarjetas Prepagadas a travez de trasferencia bancaria:	
+                    <br />						
+                    Banco: Banesco Cta. N°: 0134-0031-8203-1112-1642 Razón Social: Prepago Plaza´s RIF: J-31419534-4	
+                    <br />						
+                    Banco: Bancaribe  Cta. N°: 0114-0195-39-1950011560-1642 Razón Social: Prepago Plaza´s RIF: J-31419534-4
+                </h6>
+
+            </div>
+
+
+        </div>
+
+        @RenderBody()
+
+    </div>
+
+</body>
+
+</html>

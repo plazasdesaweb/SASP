@@ -195,7 +195,7 @@ namespace Suma2Lealtad.Models.Repositorios
                     if (transferencia.ResumenTransferenciaSuma != "0")
                     {
                         //ANULO DEBITO SUMA                    
-                        respuestaSuma = Anular(transferencia.docnumberAfiliadoOrigen, ordersdetails.First().comments, Globals.TRANSCODE_ANULACION_SUMA);
+                        respuestaSuma = Anular(transferencia.docnumberAfiliadoOrigen, ordersdetails.First().comments, Globals.TRANSCODE_ANULACION);
                         long number1 = 0;
                         bool canConvert = long.TryParse(respuestaSuma, out number1);
                         if (canConvert == false)
@@ -214,7 +214,7 @@ namespace Suma2Lealtad.Models.Repositorios
 
                         }
                         //ANULO CREDITO SUMA
-                        respuestaSuma = Anular(transferencia.docnumberAfiliadoDestino, ordersdetails.Skip(2).First().comments, Globals.TRANSCODE_ANULACION_SUMA);
+                        respuestaSuma = Anular(transferencia.docnumberAfiliadoDestino, ordersdetails.Skip(2).First().comments, Globals.TRANSCODE_ANULACION);
                         number1 = 0;
                         canConvert = long.TryParse(respuestaSuma, out number1);
                         if (canConvert == false)
@@ -244,39 +244,39 @@ namespace Suma2Lealtad.Models.Repositorios
                     if (transferencia.ResumenTransferenciaPrepago != "0,00")
                     {
                         //ANULO DEBITO PREPAGO
-                        respuestaPrepago = Anular(transferencia.docnumberAfiliadoOrigen, ordersdetails.Skip(1).First().comments, Globals.TRANSCODE_ANULACION_PREPAGO);
+                        respuestaPrepago = Anular(transferencia.docnumberAfiliadoOrigen, ordersdetails.Skip(1).First().comments, Globals.TRANSCODE_ANULACION);
                         long number1 = 0;
                         bool canConvert = long.TryParse(respuestaPrepago, out number1);
                         if (canConvert == false)
                         {
-                            mensaje = "Falló Anulación de transferencia Prepago (" + respuestaSuma + "). ";
+                            mensaje = "Falló Anulación de transferencia Prepago (" + respuestaPrepago + "). ";
                             ordersdetails.Skip(1).First().comments = "Anulación fallida " + ordersdetails.Skip(1).First().comments;
-                            ordersdetails.Skip(1).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
                             ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
                         }
                         else
                         {
-                            mensaje = "Anulación de Transferencia Prepago efectiva con clave " + respuestaSuma + ". ";
+                            mensaje = "Anulación de Transferencia Prepago efectiva con clave " + respuestaPrepago + ". ";
                             ordersdetails.Skip(1).First().comments = "Anulación efectiva " + ordersdetails.Skip(1).First().comments;
-                            ordersdetails.Skip(1).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(1).First().cardsresponse = respuestaPrepago;
                             ordersdetails.Skip(1).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
                         }
                         //ANULO CREDITO PREPAGO
-                        respuestaPrepago = Anular(transferencia.docnumberAfiliadoDestino, ordersdetails.Skip(3).First().comments, Globals.TRANSCODE_ANULACION_PREPAGO);
+                        respuestaPrepago = Anular(transferencia.docnumberAfiliadoDestino, ordersdetails.Skip(3).First().comments, Globals.TRANSCODE_ANULACION);
                         number1 = 0;
                         canConvert = long.TryParse(respuestaPrepago, out number1);
                         if (canConvert == false)
                         {
-                            mensaje = "Falló Anulación de transferencia Prepago (" + respuestaSuma + "). ";
+                            mensaje = "Falló Anulación de transferencia Prepago (" + respuestaPrepago + "). ";
                             ordersdetails.Skip(3).First().comments = "Anulación fallida " + ordersdetails.Skip(3).First().comments;
-                            ordersdetails.Skip(3).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(3).First().cardsresponse = respuestaPrepago;
                             ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
                         }
                         else
                         {
-                            mensaje = "Anulación de Transferencia Prepago efectiva con clave " + respuestaSuma + ". ";
+                            mensaje = "Anulación de Transferencia Prepago efectiva con clave " + respuestaPrepago + ". ";
                             ordersdetails.Skip(3).First().comments = "Anulación efectiva " + ordersdetails.Skip(3).First().comments;
-                            ordersdetails.Skip(3).First().cardsresponse = respuestaSuma;
+                            ordersdetails.Skip(3).First().cardsresponse = respuestaPrepago;
                             ordersdetails.Skip(3).First().sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
                         }
                     }
@@ -403,9 +403,20 @@ namespace Suma2Lealtad.Models.Repositorios
                         amount = item.montoRecarga,
                         sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
                     };
-                    if (Order.comments.Equals("Orden de Anulación de Transferencia"))
+                    if (detalleOrden.First().tipoOrden == "Orden de Anulación de Transferencia")
                     {
-                        OrderDetail.comments = item.batchid;
+                        long number1 = 0;
+                        bool canConvert = long.TryParse(item.batchid, out number1);
+                        //si la transferencia no fue exitosa, creo el renglon de la orden con monto 0
+                        if (canConvert == false)
+                        {
+                            OrderDetail.amount = 0;
+                        }
+                        else
+                        {
+                            OrderDetail.amount = item.montoRecarga;
+                            OrderDetail.comments = item.batchid;
+                        }
                     }
                     db.OrdersDetails.Add(OrderDetail);
                 }

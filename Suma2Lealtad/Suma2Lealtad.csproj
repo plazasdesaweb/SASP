@@ -81,6 +81,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.0.5\lib\net20\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="LinqToExcel, Version=1.10.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=x86">
       <HintPath>..\packages\LinqToExcel.1.10.1\lib\LinqToExcel.dll</HintPath>
       <Private>True</Private>
@@ -295,13 +298,12 @@
     <Compile Include="Models\CompanyAffiliate.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AfiliadoSumaExcel.cs" />
+    <Compile Include="Models\ExportarDatosAfiliacionesExcel.cs" />
     <Compile Include="Models\FueraDeLinea.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EncabezadoReporteSuma.cs" />
-    <Compile Include="Models\PLZ_GETREPORT_Result.cs">
-      <DependentUpon>Cards.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CreditLimit.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
@@ -359,6 +361,9 @@
     </Compile>
     <Compile Include="Models\Photos_Affiliate.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PLZ_GETREPORT_Result.cs">
+      <DependentUpon>Cards.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PrepaidBeneficiary.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
@@ -500,6 +505,7 @@
     <Content Include="Images\conectadoPrepago.jpg" />
     <Content Include="Images\conectadoSuma.jpg" />
     <Content Include="Images\plzlogo.jpg" />
+    <Content Include="Images\Prepago.jpg" />
     <Content Include="Images\principal.jpg" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
@@ -791,7 +797,6 @@
     <Content Include="Views\Transferencia\CreateAnulacionTransferencia.cshtml" />
     <Content Include="Views\Reporte\FilterReporteComprasConsolidado.cshtml" />
     <Content Include="Views\Reporte\ReporteComprasDetallado.cshtml" />
-    <Content Include="Views\Reporte\ReporteComprasConsolidadoPDF.cshtml" />
     <Content Include="Views\Reporte\ReporteComprasDetalladoPDF.cshtml" />
     <Content Include="Views\Reporte\FilterReporteRecargasConsolidado.cshtml" />
     <Content Include="Views\Reporte\ReporteRecargasConsolidado.cshtml" />
@@ -799,6 +804,16 @@
     <Content Include="Views\Reporte\FilterReporteRecargasDetallado.cshtml" />
     <Content Include="Views\Reporte\ReporteRecargasDetallado.cshtml" />
     <Content Include="Views\Reporte\ReporteRecargasDetalladoPDF.cshtml" />
+    <Content Include="Views\AfiliadoSuma\EliminarAfiliacion.cshtml" />
+    <Content Include="Views\Reporte\ReporteComprasConsolidadoPDF.cshtml" />
+    <Content Include="Views\Shared\_LayoutReportes.cshtml" />
+    <Content Include="Views\Reporte\ExportarDatosAfiliacionesExcel.cshtml" />
+    <Content Include="Views\Reporte\ReporteTransaccionesSuma.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteTransaccionesSuma.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteTransaccionesPrepago.cshtml" />
+    <Content Include="Views\Reporte\ReporteTransaccionesPrepago.cshtml" />
+    <Content Include="Views\Reporte\ReporteTransaccionesPrepagoPDF.cshtml" />
+    <Content Include="Views\Reporte\ReporteTransaccionesSumaPDF.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

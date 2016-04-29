@@ -1,0 +1,193 @@
+﻿@model Suma2Lealtad.Models.ReportePrepago
+
+@{
+    ViewBag.Title = "FilterReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Reportes / Reporte de Transacciones Prepago / Parámetros del Reporte</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form action="@Url.Action("ReporteTransaccionesPrepago", "Reporte")" method="post" onsubmit="return validateForm();">
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    * Número de Documento/Cédula :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="numdoc" name="numdoc" maxlength="11" placeholder="V-12345678" class="form-control">
+                    <span id="field1"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    * Fecha desde :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="fechadesde" name="fechadesde" maxlength="10" placeholder="dd/mm/aaaa" class="form-control">
+                    <span id="field2"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    * Fecha hasta :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="fechahasta" name="fechahasta" maxlength="10" placeholder="dd/mm/aaaa" class="form-control">
+                    <span id="field3"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    * Tipo de Transacción :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="TipoTransaccion" name="TipoTransaccion" maxlength="10" value="Todas" readonly="true" class="form-control">
+                    @*@Html.DropDownList("TipoTransaccion",
+                                       new SelectList(Model.ModoTransaccionOptions,
+                                       "id",
+                                       "modo",
+                                       Model.ModoTransaccionOptions),
+                                       new { @class = "form-control" }
+                                       )*@
+                    <span id="field4"></span>
+                </div>
+
+                <br />
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <span id="fields"></span>
+                </div>
+                <br />
+
+                <div class="col-md-12 col-btn">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-md" value="Generar Reporte" />
+                    </div>
+                </div>
+                <!-- form-group -->
+
+            </form>
+
+        </div>
+        <!--// panel-body -->
+
+    </div>
+    <!--// panel -->
+
+</div>
+<!--// container -->
+
+<script>
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function LimpiarSpanMessage(idelemento) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+    }
+
+    function validateNumDoc() {
+        var numdoc = document.getElementById('numdoc').value;
+        if (numdoc.length == 0) {
+            return true;
+        }
+        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
+        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
+        if (RegExPattern.test(numdoc) == false && RegExPattern2.test(numdoc) == false && RegExPattern3.test(numdoc) == false && RegExPattern4.test(numdoc) == false) {
+            spanMessage('field1', '* Formato Número de Documento/Cédula Incorrecto. (V-12345678)');
+            document.getElementById('numdoc').value = "";
+            document.getElementById('numdoc').focus();
+            return false;
+        }
+        else if (RegExPattern.test(numdoc) != false) {
+            document.getElementById('numdoc').value = numdoc.toUpperCase();
+        }
+        else if (RegExPattern2.test(numdoc) != false) {
+            document.getElementById('numdoc').value = numdoc.substring(0, 1).toUpperCase() + "-" + numdoc.substring(1).toUpperCase();
+        }
+        else if (RegExPattern3.test(numdoc) != false) {
+            document.getElementById('numdoc').value = numdoc.toUpperCase();
+        }
+        else if (RegExPattern4.test(numdoc) != false) {
+            document.getElementById('numdoc').value = numdoc.substring(0, 1).toUpperCase() + "-" + numdoc.substring(1).toUpperCase();
+        }
+        document.getElementById('field1').value = "";
+        return true;
+    }
+
+    function validateFechaDesde() {
+        var fecha = document.getElementById('fechadesde').value;
+        if (fecha.length == 0) {
+            spanMessage('field2', '* Debe ingresar Fecha desde');
+            document.getElementById('fechadesde').focus();
+            return false;
+        }
+        var RegExPattern = /^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])(\/)(\d{4})$/;
+        if (RegExPattern.test(fecha) == false) {
+            spanMessage('field2', '* Formato Fecha Incorrecto. (dd/mm/aaaa)');
+            document.getElementById('fechadesde').value = "";
+            document.getElementById('fechadesde').focus();
+            return false;
+        }
+        LimpiarSpanMessage('field2');
+        return true;
+    }
+
+    function validateFechaHasta() {
+        var fecha = document.getElementById('fechahasta').value;
+        if (fecha.length == 0) {
+            spanMessage('field3', '* Debe ingresar Fecha hasta');
+            document.getElementById('fechahasta').focus();
+            return false;
+        }
+        var RegExPattern = /^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])(\/)(\d{4})$/
+        if (RegExPattern.test(fecha) == false) {
+            spanMessage('field3', '* Formato Fecha Incorrecto. (dd/mm/aaaa)');
+            document.getElementById('fechahasta').value = "";
+            document.getElementById('fechahasta').focus();
+            return false;
+        }
+        LimpiarSpanMessage('field3');
+        return true;
+    }
+
+    function validateForm() {
+        if (validateNumDoc() && validateFechaDesde() && validateFechaHasta()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>
+

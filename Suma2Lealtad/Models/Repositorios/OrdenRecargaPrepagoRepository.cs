@@ -582,6 +582,7 @@ namespace Suma2Lealtad.Models
                 else
                 {
                     string montoSinSeparador = Math.Truncate(detalleorden.montoRecarga * 100).ToString();
+                    //string RespuestaCardsJson = WSL.Cards.addBatch(detalleorden.docnumberAfiliado.Substring(2), montoSinSeparador, Globals.TRANSCODE_RECARGA_PREPAGO, (string)HttpContext.Current.Session["login"]);
                     string RespuestaCardsJson = WSL.Cards.addBatch(detalleorden.docnumberAfiliado.Substring(2), montoSinSeparador, Globals.TRANSCODE_RECARGA_PREPAGO, "NULL");
                     if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
                     {
@@ -626,7 +627,7 @@ namespace Suma2Lealtad.Models
                 }
                 else
                 {
-                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION_PREPAGO, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
+                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
                     if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
                     {
                         ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);

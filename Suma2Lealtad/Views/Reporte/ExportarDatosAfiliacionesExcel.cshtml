@@ -1,0 +1,69 @@
+﻿@model List<Suma2Lealtad.Models.AfiliadoSumaExcel>
+
+<table>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().type)</th>
+            <th>@Html.DisplayNameFor(model => model.First().docnumber)</th>
+            <th>@Html.DisplayNameFor(model => model.First().name)</th>
+            <th>@Html.DisplayNameFor(model => model.First().name2)</th>
+            <th>@Html.DisplayNameFor(model => model.First().lastname1)</th>
+            <th>@Html.DisplayNameFor(model => model.First().lastname2)</th>
+            <th>@Html.DisplayNameFor(model => model.First().birthdate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().gender)</th>
+            <th>@Html.DisplayNameFor(model => model.First().maritalstatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().occupation)</th>
+            <th>@Html.DisplayNameFor(model => model.First().phone1)</th>
+            <th>@Html.DisplayNameFor(model => model.First().phone2)</th>
+            <th>@Html.DisplayNameFor(model => model.First().phone3)</th>
+            <th>@Html.DisplayNameFor(model => model.First().estatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().pan)</th>
+            <th>@Html.DisplayNameFor(model => model.First().estatustarjeta)</th>
+            <th>@Html.DisplayNameFor(model => model.First().fechaAfiliacion)</th>
+            <th>@Html.DisplayNameFor(model => model.First().usuarioAfiliacion)</th>
+            <th>@Html.DisplayNameFor(model => model.First().twitter_account)</th>
+            <th>@Html.DisplayNameFor(model => model.First().facebook_account)</th>
+            <th>@Html.DisplayNameFor(model => model.First().instagram_account)</th>
+            <th>@Html.DisplayNameFor(model => model.First().cod_estado)</th>
+            <th>@Html.DisplayNameFor(model => model.First().cod_ciudad)</th>
+            <th>@Html.DisplayNameFor(model => model.First().cod_municipio)</th>
+            <th>@Html.DisplayNameFor(model => model.First().cod_parroquia)</th>
+            <th>@Html.DisplayNameFor(model => model.First().cod_urbanizacion)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{foreach (var item in Model)
+          {
+            <tr>
+                <td>@Html.DisplayFor(model => item.type)</td>
+                <td>@Html.DisplayFor(model => item.docnumber)</td>
+                <td>@Html.DisplayFor(model => item.name)</td>
+                <td>@Html.DisplayFor(model => item.name2)</td>
+                <td>@Html.DisplayFor(model => item.lastname1)</td>
+                <td>@Html.DisplayFor(model => item.lastname2)</td>
+                <td>@Html.DisplayFor(model => item.birthdate)</td>
+                <td>@Html.DisplayFor(model => item.gender)</td>
+                <td>@Html.DisplayFor(model => item.maritalstatus)</td>
+                <td>@Html.DisplayFor(model => item.occupation)</td>
+                <td>@Html.DisplayFor(model => item.phone1)</td>
+                <td>@Html.DisplayFor(model => item.phone2)</td>
+                <td>@Html.DisplayFor(model => item.phone3)</td>
+                <td>@Html.DisplayFor(model => item.estatus)</td>
+                <td>@Html.DisplayFor(model => item.pan)</td>
+                <td>@Html.DisplayFor(model => item.estatustarjeta)</td>
+                <td>@Html.DisplayFor(model => item.fechaAfiliacion)</td>
+                <td>@Html.DisplayFor(model => item.usuarioAfiliacion)</td>
+                <td>@Html.DisplayFor(model => item.twitter_account)</td>
+                <td>@Html.DisplayFor(model => item.facebook_account)</td>
+                <td>@Html.DisplayFor(model => item.instagram_account)</td>
+                <td>@Html.DisplayFor(model => item.cod_estado)</td>
+                <td>@Html.DisplayFor(model => item.cod_ciudad)</td>
+                <td>@Html.DisplayFor(model => item.cod_municipio)</td>
+                <td>@Html.DisplayFor(model => item.cod_parroquia)</td>
+                <td>@Html.DisplayFor(model => item.cod_urbanizacion)</td>
+            </tr>           
+          }
+        }
+    </tbody>
+</table>
+

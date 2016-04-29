@@ -1,7 +1,7 @@
 ﻿@model Suma2Lealtad.Models.AfiliadoSuma
 
 @{
-    ViewBag.Title = "SuspenderTarjeta";
+    ViewBag.Title = "EliminarAfiliacion";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,12 +10,12 @@
     <div class="panel panel-default">
 
         <div class="panel-heading clearfix panel-gradient">
-            <h3 class="panel-title">Afiliado / Suspender Tarjeta</h3>
+            <h3 class="panel-title">Afiliado / Eliminar Afiliación</h3>
         </div>
 
         <div class="panel-body">
 
-            <form action="@Url.Action("SuspenderTarjeta", "AfiliadoSuma", new { id = @Model.id })" name="form" method="post"  onsubmit="return verificarObservaciones();">
+            <form action="@Url.Action("EliminarAfiliacion", "AfiliadoSuma", new { id = @Model.id })" name="form" method="post" onsubmit="return verificarObservaciones();">
 
                 <div class="editor-label col-md-4 control-label">
                     Tipo de Afiliado :
@@ -56,7 +56,7 @@
                 <div class="col-md-12 col-btn">
                     <div class="text-center">
                         <p class="text-danger">
-                            Advertencia: Esta operación suspenderá temporalmente la tarjeta actual.
+                            Advertencia: Esta operación ELIMINA DE FORMA PERMANENTE la Afiliación y es irreversible. Ingrese observaciones y presione el btotón Eliminar Afiliación.
                         </p>
                     </div>
                     <div class="text-center">
@@ -76,7 +76,7 @@
                             <br />
                         </div>
                         <div class="editor-label col-md-7 control-label">
-                            <input type="submit" class="btn btn-success btn-md" value="Suspender" />
+                            <input type="submit" class="btn btn-success btn-md" value="Eliminar Afiliación" />
                         </div>
                     </div>
                 </div>

@@ -27,5 +27,6 @@ namespace Suma2Lealtad.Models
         public string NUMDOC { get; set; }
         public System.DateTime BATCHDATE { get; set; }
         public string BATCHTIME { get; set; }
+        public Nullable<int> B037 { get; set; }
     }
 }

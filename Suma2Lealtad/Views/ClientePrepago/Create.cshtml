@@ -19,7 +19,7 @@
 
                 <div class="panel-body">
 
-                    <form action="@Url.Action("Create", "ClientePrepago")" method="post" class="form-horizontal" role="form" >
+                    <form action="@Url.Action("Create", "ClientePrepago")" method="post" class="form-horizontal" role="form" id="commentForm" >
 
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)

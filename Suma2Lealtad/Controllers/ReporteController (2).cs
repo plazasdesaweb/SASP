@@ -1,10 +1,8 @@
-﻿using OfficeOpenXml;
-using Suma2Lealtad.Filters;
+﻿using Suma2Lealtad.Filters;
 using Suma2Lealtad.Models;
 using Suma2Lealtad.Modules;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -116,7 +114,7 @@ namespace Suma2Lealtad.Controllers
             {
                 reporte = repReportes.ReporteDeComprasConsolidado("uno", fechadesde, fechahasta, ModoTransaccion, idCliente);
             }
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteComprasConsolidadoPDF", reporte)
             {
                 FileName = "Reporte de Compras Consolidado.pdf",
@@ -158,7 +156,7 @@ namespace Suma2Lealtad.Controllers
             }
             return View(reporte);
         }
-
+        
         public ActionResult GenerateReporteComprasDetalladoPDF(string TipoDetalle, string ModoTransaccion, string fechadesde, string fechahasta, int idCliente)
         {
             List<ReportePrepago> reporte = new List<ReportePrepago>();
@@ -169,8 +167,8 @@ namespace Suma2Lealtad.Controllers
             else
             {
                 reporte = repReportes.ReporteDeComprasDetallado("detallado", fechadesde, fechahasta, ModoTransaccion, idCliente);
-            }
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            }            
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteComprasDetalladoPDF", reporte)
             {
                 FileName = "Reporte de Compras Detallado.pdf",
@@ -196,7 +194,7 @@ namespace Suma2Lealtad.Controllers
                 fechahasta = fechahasta,
                 idCliente = idCliente,
                 referencia = Referencia,
-                observaciones = Observaciones
+                observaciones = Observaciones            
             };
             if (reporte.Count == 0)
             {
@@ -224,7 +222,7 @@ namespace Suma2Lealtad.Controllers
             {
                 reporte = repReportes.ReporteRecargasConsolidado("uno", fechadesde, fechahasta, idCliente, Referencia, Observaciones);
             }
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteRecargasConsolidadoPDF", reporte)
             {
                 FileName = "Reporte de Recargas Consolidado.pdf",
@@ -279,7 +277,7 @@ namespace Suma2Lealtad.Controllers
             {
                 reporte = repReportes.ReporteRecargasDetallado("detallado", fechadesde, fechahasta, idCliente, Referencia, Observaciones);
             }
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteRecargasDetalladoPDF", reporte)
             {
                 FileName = "Reporte de Recargas Detallado.pdf",
@@ -291,7 +289,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult ReporteTransaccionesSuma(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc)
         {
             List<ReportePrepago> reporte = new List<ReportePrepago>();
-            reporte = repReportes.ReporteTransaccionesSuma(TipoTransaccion, fechadesde, fechahasta, numdoc);
+            //reporte = repReportes.ReporteTransaccionesSuma(TipoTransaccion,fechadesde,fechahasta,numdoc)
             ParametrosReporte p = new ParametrosReporte()
             {
                 TipoTransaccion = TipoTransaccion,
@@ -317,8 +315,8 @@ namespace Suma2Lealtad.Controllers
         public ActionResult GenerateReporteTransaccionesSumaPDF(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc)
         {
             List<ReportePrepago> reporte = new List<ReportePrepago>();
-            reporte = repReportes.ReporteTransaccionesSuma(TipoTransaccion, fechadesde, fechahasta, numdoc);
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            //reporte = repReportes.ReporteTransaccionesSuma(TipoTransaccion,fechadesde,fechahasta,numdoc)
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteTransaccionesSumaPDF", reporte)
             {
                 FileName = "Reporte de Transacciones Suma.pdf",
@@ -330,7 +328,7 @@ namespace Suma2Lealtad.Controllers
         public ActionResult ReporteTransaccionesPrepago(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc)
         {
             List<ReportePrepago> reporte = new List<ReportePrepago>();
-            reporte = repReportes.ReporteTransaccionesPrepago(TipoTransaccion, fechadesde, fechahasta, numdoc);
+            //reporte = repReportes.ReporteTransaccionesPrepago(TipoTransaccion,fechadesde,fechahasta,numdoc)
             ParametrosReporte p = new ParametrosReporte()
             {
                 TipoTransaccion = TipoTransaccion,
@@ -356,8 +354,8 @@ namespace Suma2Lealtad.Controllers
         public ActionResult GenerateReporteTransaccionesPrepagoPDF(string TipoTransaccion, string fechadesde, string fechahasta, string numdoc)
         {
             List<ReportePrepago> reporte = new List<ReportePrepago>();
-            reporte = repReportes.ReporteTransaccionesPrepago(TipoTransaccion, fechadesde, fechahasta, numdoc);
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            //reporte = repReportes.ReporteTransaccionesPrepago(TipoTransaccion,fechadesde,fechahasta,numdoc)
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteTransaccionesSumaPDF", reporte)
             {
                 FileName = "Reporte de Transacciones Prepago.pdf",
@@ -365,7 +363,6 @@ namespace Suma2Lealtad.Controllers
             };
         }
 
-        //OJO ESTE REPORTE CREO QUE LO VOY A ELIMINAR
         [HttpPost]
         public ActionResult ReporteTarjetas(string fechadesde, string fechahasta, int idCliente = 0, string estadoTarjeta = "")
         {
@@ -411,35 +408,13 @@ namespace Suma2Lealtad.Controllers
             {
                 //reporte = repReportes.Tarjetas("uno", fechadesde, fechahasta, idCliente, estadoTarjeta);
             }
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            string footer = "--footer-right \"Fecha: [date] [time]\" " + "--footer-center \"Página: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
             return new Rotativa.ViewAsPdf("ReporteTarjetasPDF", reporte)
             {
                 FileName = "Reporte de Tarjetas.pdf",
                 CustomSwitches = footer
             };
         }
-
-        public void ExportarDatosAfiliacionesExcel()
-        {
-            List<AfiliadoSumaExcel> afiliados = repReportes.CargarDatosExportarDatosAfiliadosExcel();
-            //USAMOS EPPLUS
-            ExcelPackage excel = new ExcelPackage();
-            var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
-            workSheet.Cells[1, 1].LoadFromCollection(afiliados, true);
-            workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
-            using (var memoryStream = new MemoryStream())
-            {
-                Response.Clear();
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;  filename=Datos de Afiliaciones.xlsx");
-                excel.SaveAs(memoryStream);
-                memoryStream.WriteTo(Response.OutputStream);
-                Response.Flush();
-                Response.End();
-            }
-        }
-
-
 
     }
 

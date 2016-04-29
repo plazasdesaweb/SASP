@@ -466,11 +466,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult SuspenderTarjeta(int id, string mode = "post")
+        public ActionResult SuspenderTarjeta(int id, string observaciones = "", string mode = "post")
         {
             ViewModel viewmodel = new ViewModel();
             AfiliadoSuma afiliado = repAfiliado.Find(id);
-            if (repAfiliado.SuspenderTarjeta(afiliado))
+            if (repAfiliado.SuspenderTarjeta(afiliado, observaciones))
             {
                 viewmodel.Title = "Prepago / Beneficiario / Suspender Tarjeta";
                 viewmodel.Message = "Tarjeta suspendida correctamente";

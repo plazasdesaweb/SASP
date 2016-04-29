@@ -417,7 +417,7 @@ namespace Suma2Lealtad.Models
                         db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
                         foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
                         {
-                            if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                            if (fila.TRANSCODE.Value.ToString() != Globals.TRANSCODE_CONSULTA_DE_SALDO)
                             {
                                 Movimiento mov = new Movimiento()
                                 {
@@ -496,7 +496,7 @@ namespace Suma2Lealtad.Models
                             db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
                             foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
                             {
-                                if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                                if (fila.TRANSCODE.Value.ToString() != Globals.TRANSCODE_CONSULTA_DE_SALDO)
                                 {
                                     Movimiento mov = new Movimiento()
                                     {
@@ -597,7 +597,7 @@ namespace Suma2Lealtad.Models
                         db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
                         foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
                         {
-                            if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                            if (fila.TRANSCODE.Value.ToString() != Globals.TRANSCODE_CONSULTA_DE_SALDO)
                             {
                                 Movimiento mov = new Movimiento()
                                 {
@@ -673,7 +673,7 @@ namespace Suma2Lealtad.Models
                         db.Database.Connection.ConnectionString = AppModule.ConnectionString("Cards");
                         foreach (PLZ_GETREPORT_Result fila in db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, b.Afiliado.docnumber.Substring(2), "NULL", Globals.TRANSCODE_COMPRA_PREPAGO))
                         {
-                            if (fila.TRANSCODE != Globals.TRANSCODE_CONSULTA_DE_SALDO)
+                            if (fila.TRANSCODE.Value.ToString() != Globals.TRANSCODE_CONSULTA_DE_SALDO)
                             {
                                 Movimiento mov = new Movimiento()
                                 {

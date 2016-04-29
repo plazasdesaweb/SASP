@@ -22,13 +22,21 @@
 
 @{
     string indicadorMostrar;
+    string indicadorEliminar;
     if (Session["RoleLevel"].ToString() == "1")
     {
         indicadorMostrar = "Ocultar";
+        indicadorEliminar = "Ocultar";
+    }
+    else if (Session["RoleLevel"].ToString() == "2")
+    {
+        indicadorMostrar = "Mostrar";
+        indicadorEliminar = "Ocultar";
     }
     else
     {
         indicadorMostrar = "Mostrar";
+        indicadorEliminar = "Mostrar";
     }
 }
 
@@ -127,7 +135,7 @@
                     <a id="ImprimirTarjeta" class="btn btn-success btn-md" role="button">Imprimir Tarjeta</a>
                     <a id="BloquearTarjeta" class="btn btn-success btn-md" role="button">Bloquear Tarjeta</a>
                     <a id="SuspenderTarjeta" class="btn btn-success btn-md" role="button">Suspender Tarjeta</a>
-                    <a id="ReactivarTarjeta" class="btn btn-success btn-md" role="button">Reactivar Tarjeta</a>
+                    <a id="ReactivarTarjeta" class="btn btn-success btn-md" role="button">Reactivar Tarjeta</a>                    
                      @{ if (indicadorMostrar == "Mostrar")
                      {
                         @:<a id="SaldosMovimientos" class="btn btn-success btn-md" role="button">Saldos y Movimientos</a>
@@ -137,6 +145,7 @@
                      }
                      }
                     <a id="Acreditar" class="btn btn-success btn-md" role="button">Acreditar</a>
+                    <a id="EliminarAfiliacion" class="btn btn-danger btn-md" role="button">Eliminar Afiliación</a>                    
                 </div>
                 <div class="pull-right">
                     <a href="@Url.Action("Filter", "AfiliadoSuma")" class="btn btn-success btn-md">Agregar Nuevo Afiliado</a>
@@ -171,6 +180,7 @@
         $("#ReactivarTarjeta").hide();
         $("#SaldosMovimientos").hide();
         $("#Acreditar").hide();
+        $("#EliminarAfiliacion").hide();
     });
 
     $('.table tbody tr td:not(:last-child)').click(function () {
@@ -191,6 +201,7 @@
         $("#ReactivarTarjeta").hide();
         $("#SaldosMovimientos").hide();
         $("#Acreditar").hide();
+        $("#EliminarAfiliacion").hide();
 
         if (statusAfiliacion == "Nueva") {
         }
@@ -199,6 +210,9 @@
                 $("#ImprimirTarjeta").show();
             }
             $("#SaldosMovimientos").show();
+            if ("@indicadorEliminar" == "Mostrar") {
+                $("#EliminarAfiliacion").show();
+            }
         }
         else if (statusAfiliacion == "Activa" && statusTarjeta == "Activa") {
             $("#CrearPin").show();
@@ -210,6 +224,9 @@
             }            
             $("#SaldosMovimientos").show();
             //$("#Acreditar").show();
+            if ("@indicadorEliminar" == "Mostrar") {
+                $("#EliminarAfiliacion").show();
+            }
         }
         else if (statusAfiliacion == "Activa" && statusTarjeta == "Suspendida") {
             $("#CrearPin").show();
@@ -220,6 +237,9 @@
                 $("#ReactivarTarjeta").show();
             }            
             $("#SaldosMovimientos").show();
+            if ("@indicadorEliminar" == "Mostrar") {
+                $("#EliminarAfiliacion").show();
+            }
         }
     });
 
@@ -291,6 +311,14 @@
         var href = '@Url.Content("~/{controller}/{action}/{params}")';
         href = href.replace("{controller}", "AfiliadoSuma");
         href = href.replace("{action}", "Acreditar");
+        href = href.replace("{params}", rowId);
+        window.location.href = href;
+    });
+
+    $("#EliminarAfiliacion").click(function () {
+        var href = '@Url.Content("~/{controller}/{action}/{params}")';
+        href = href.replace("{controller}", "AfiliadoSuma");
+        href = href.replace("{action}", "EliminarAfiliacion");
         href = href.replace("{params}", rowId);
         window.location.href = href;
     });

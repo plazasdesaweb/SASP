@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Suma2Lealtad.Models
 {
@@ -111,7 +112,7 @@ namespace Suma2Lealtad.Models
                 afiliado.gender = clienteWebPlazas.gender.Replace("/", "").Replace("\\", "");
                 afiliado.clientid = clienteWebPlazas.id;
                 afiliado.maritalstatus = clienteWebPlazas.maritalstatus.Replace("/", "").Replace("\\", "");
-                afiliado.occupation = clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "").Substring(0,30);
+                afiliado.occupation = clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "").Length > 30 ? clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "").Substring(0, 30) : clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "");
                 afiliado.phone1 = clienteWebPlazas.phone1.Replace("/", "").Replace("\\", "");
                 afiliado.phone2 = clienteWebPlazas.phone2.Replace("/", "").Replace("\\", "");
                 afiliado.phone3 = clienteWebPlazas.phone3.Replace("/", "").Replace("\\", "");
@@ -502,6 +503,311 @@ namespace Suma2Lealtad.Models
             }
         }
 
+        public List<AfiliadoSumaExcel> FindAllExcel()
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                AfiliadoSuma datos = new AfiliadoSuma();
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                List<AfiliadoSumaExcel> afiliados = new List<AfiliadoSumaExcel>();
+                var query = (from a in db.Affiliates
+                             join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                             join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
+                             from prue in PRUEBA.DefaultIfEmpty()
+                             select new
+                             {
+                                 //tarjeta
+                                 pan = prue == null ? new decimal() : prue.NRO_TARJETA,
+                                 estatustarjeta = prue == null ? "" : prue.ESTATUS_TARJETA,
+                                 //affiliate
+                                 id = a.id,
+                                 docnumber = a.docnumber,
+                                 typeid = a.typeid,
+                                 sumastatusid = a.sumastatusid,
+                                 customerid = a.customerid,
+                                 clientid = a.clientid,
+                                 storeid = a.storeid,
+                                 channelid = a.channelid,
+                                 typedelivery = a.typedelivery,
+                                 storeiddelivery = a.storeiddelivery,
+                                 reasonsid = a.reasonsid,
+                                 twitter_account = a.twitter_account,
+                                 facebook_account = a.facebook_account,
+                                 instagram_account = a.instagram_account,
+                                 comments = a.comments,
+                                 //cliente
+                                 name = c.NOMBRE_CLIENTE1,
+                                 name2 = c.NOMBRE_CLIENTE2,
+                                 lastname1 = c.APELLIDO_CLIENTE1,
+                                 lastname2 = c.APELLIDO_CLIENTE2,
+                                 fecha_nacimiento = c.FECHA_NACIMIENTO,
+                                 email = c.E_MAIL,
+                                 nationality = c.NACIONALIDAD,
+                                 gender = c.SEXO,
+                                 maritalstatus = c.EDO_CIVIL,
+                                 occupation = c.OCUPACION,
+                                 phone1 = c.TELEFONO_HAB,
+                                 phone2 = c.TELEFONO_OFIC,
+                                 phone3 = c.TELEFONO_CEL,
+                                 cod_estado = c.COD_ESTADO,
+                                 cod_ciudad = c.COD_CIUDAD,
+                                 cod_municipio = c.COD_MUNICIPIO,
+                                 cod_parroquia = c.COD_PARROQUIA,
+                                 cod_urbanizacion = c.COD_URBANIZACION,
+                                 fechaAfiliacion = a.creationdate,
+                                 usuarioAfiliacion = a.creationuserid
+                             }).OrderBy(d => d.docnumber);
+                var query2 = (from q in query.AsEnumerable()
+                              join s in db.SumaStatuses on q.sumastatusid equals s.id
+                              join ty in db.Types on q.typeid equals ty.id
+                              select new //AfiliadoSumaExcel()
+                              {
+                                  id = q.id,
+                                  clientid = q.clientid,
+                                  estatus = s.name,
+                                  type = ty.name,
+                                  docnumber = q.docnumber,
+                                  nationality = datos.NacionalidadOptions.FirstOrDefault(x => x.id.ToString() == q.nationality).nacionalidad,
+                                  storeid = datos.StoreOptions.First(x => x.id == q.storeid.ToString()).sucursal,
+                                  channelid = datos.ChannelOptions.First(x => x.id == q.channelid).channel,
+                                  typedelivery = q.typedelivery == null ? "" : datos.TypeDeliveryOptions.First(x => x.id.ToString() == q.typedelivery).delivery,
+                                  storeiddelivery = q.storeiddelivery == null ? "" : datos.StoreOptions.FirstOrDefault(x => x.id == q.storeiddelivery.Value.ToString()).sucursal,
+                                  name = q.name,
+                                  name2 = q.name2,
+                                  lastname1 = q.lastname1,
+                                  lastname2 = q.lastname2,
+                                  birthdate = q.fecha_nacimiento == null ? "" : q.fecha_nacimiento.Value.ToString(),
+                                  gender = datos.SexoOptions.FirstOrDefault(x => x.id.ToString() == q.gender).sexo,
+                                  edad = q.fecha_nacimiento == null ? 0 : ((DateTime.Now.Subtract(q.fecha_nacimiento.Value)).Days) / 365,
+                                  maritalstatus = datos.MaritalStatusOptions.FirstOrDefault(x => x.id.ToString() == q.maritalstatus).maritalstatus,
+                                  occupation = q.occupation,
+                                  email = q.email,
+                                  phone1 = q.phone1,
+                                  phone2 = q.phone2,
+                                  phone3 = q.phone3,
+                                  twitter_account = q.twitter_account == null ? "" : q.twitter_account,
+                                  facebook_account = q.facebook_account == null ? "" : q.facebook_account,
+                                  instagram_account = q.instagram_account == null ? "" : q.instagram_account,
+                                  cod_estado = q.cod_estado,
+                                  cod_ciudad = q.cod_ciudad,
+                                  cod_municipio = q.cod_municipio,
+                                  cod_parroquia = q.cod_parroquia,
+                                  cod_urbanizacion = q.cod_urbanizacion,
+                                  pan = q.pan == 0 ? "" : q.pan.ToString(),
+                                  estatustarjeta = q.estatustarjeta,
+                                  fechaAfiliacion = q.fechaAfiliacion.ToString(),
+                                  usuarioAfiliacion = q.usuarioAfiliacion
+                              }).ToList();
+                var query3 = (from q in query2.AsEnumerable()
+                              join u in db.Users on q.usuarioAfiliacion equals u.id
+                              join e in db.ESTADOS on q.cod_estado equals e.COD_ESTADO into estados
+                              from estado in estados.DefaultIfEmpty()
+                              select new
+                              {
+                                  id = q.id,
+                                  clientid = q.clientid,
+                                  estatus = q.estatus,
+                                  type = q.type,
+                                  docnumber = q.docnumber,
+                                  nationality = q.nationality,
+                                  storeid = q.storeid,
+                                  channelid = q.channelid,
+                                  typedelivery = q.typedelivery,
+                                  storeiddelivery = q.storeiddelivery,
+                                  name = q.name,
+                                  name2 = q.name2,
+                                  lastname1 = q.lastname1,
+                                  lastname2 = q.lastname2,
+                                  birthdate = q.birthdate,
+                                  gender = q.gender,
+                                  edad = q.edad,
+                                  maritalstatus = q.maritalstatus,
+                                  occupation = q.occupation,
+                                  email = q.email,
+                                  phone1 = q.phone1,
+                                  phone2 = q.phone2,
+                                  phone3 = q.phone3,
+                                  twitter_account = q.twitter_account,
+                                  facebook_account = q.facebook_account,
+                                  instagram_account = q.instagram_account,
+                                  cod_estado = estado == null ? "" : estado.DESCRIPC_ESTADO,
+                                  cod_ciudad = q.cod_ciudad,
+                                  cod_municipio = q.cod_municipio,
+                                  cod_parroquia = q.cod_parroquia,
+                                  cod_urbanizacion = q.cod_urbanizacion,
+                                  pan = q.pan,
+                                  estatustarjeta = q.estatustarjeta,
+                                  fechaAfiliacion = q.fechaAfiliacion,
+                                  usuarioAfiliacion = u.login
+                              }).ToList();
+                var query4 = (from q in query3.AsEnumerable()
+                              join c in db.CIUDADES on q.cod_ciudad equals c.COD_CIUDAD into ciudades
+                              from ciudad in ciudades.DefaultIfEmpty()
+                              select new
+                              {
+                                  id = q.id,
+                                  clientid = q.clientid,
+                                  estatus = q.estatus,
+                                  type = q.type,
+                                  docnumber = q.docnumber,
+                                  nationality = q.nationality,
+                                  storeid = q.storeid,
+                                  channelid = q.channelid,
+                                  typedelivery = q.typedelivery,
+                                  storeiddelivery = q.storeiddelivery,
+                                  name = q.name,
+                                  name2 = q.name2,
+                                  lastname1 = q.lastname1,
+                                  lastname2 = q.lastname2,
+                                  birthdate = q.birthdate,
+                                  gender = q.gender,
+                                  edad = q.edad,
+                                  maritalstatus = q.maritalstatus,
+                                  occupation = q.occupation,
+                                  email = q.email,
+                                  phone1 = q.phone1,
+                                  phone2 = q.phone2,
+                                  phone3 = q.phone3,
+                                  twitter_account = q.twitter_account,
+                                  facebook_account = q.facebook_account,
+                                  instagram_account = q.instagram_account,
+                                  cod_estado = q.cod_estado,
+                                  cod_ciudad = ciudad == null ? "" : ciudad.DESCRIPC_CIUDAD,
+                                  cod_municipio = q.cod_municipio,
+                                  cod_parroquia = q.cod_parroquia,
+                                  cod_urbanizacion = q.cod_urbanizacion,
+                                  pan = q.pan,
+                                  estatustarjeta = q.estatustarjeta,
+                                  fechaAfiliacion = q.fechaAfiliacion,
+                                  usuarioAfiliacion = q.usuarioAfiliacion
+                              }).ToList();
+                var query5 = (from q in query4.AsEnumerable()
+                              join m in db.MUNICIPIOS on q.cod_municipio equals m.COD_MUNICIPIO into municipios
+                              from municipio in municipios.DefaultIfEmpty()
+                              select new
+                              {
+                                  id = q.id,
+                                  clientid = q.clientid,
+                                  estatus = q.estatus,
+                                  type = q.type,
+                                  docnumber = q.docnumber,
+                                  nationality = q.nationality,
+                                  storeid = q.storeid,
+                                  channelid = q.channelid,
+                                  typedelivery = q.typedelivery,
+                                  storeiddelivery = q.storeiddelivery,
+                                  name = q.name,
+                                  name2 = q.name2,
+                                  lastname1 = q.lastname1,
+                                  lastname2 = q.lastname2,
+                                  birthdate = q.birthdate,
+                                  gender = q.gender,
+                                  edad = q.edad,
+                                  maritalstatus = q.maritalstatus,
+                                  occupation = q.occupation,
+                                  email = q.email,
+                                  phone1 = q.phone1,
+                                  phone2 = q.phone2,
+                                  phone3 = q.phone3,
+                                  twitter_account = q.twitter_account,
+                                  facebook_account = q.facebook_account,
+                                  instagram_account = q.instagram_account,
+                                  cod_estado = q.cod_estado,
+                                  cod_ciudad = q.cod_ciudad,
+                                  cod_municipio = municipio == null ? "" : municipio.DESCRIPC_MUNICIPIO,
+                                  cod_parroquia = q.cod_parroquia,
+                                  cod_urbanizacion = q.cod_urbanizacion,
+                                  pan = q.pan,
+                                  estatustarjeta = q.estatustarjeta,
+                                  fechaAfiliacion = q.fechaAfiliacion,
+                                  usuarioAfiliacion = q.usuarioAfiliacion
+                              }).ToList();
+                var query6 = (from q in query5.AsEnumerable()
+                              join p in db.PARROQUIAS on q.cod_parroquia equals p.COD_PARROQUIA into parroquias
+                              from parroquia in parroquias.DefaultIfEmpty()
+                              select new
+                              {
+                                  id = q.id,
+                                  clientid = q.clientid,
+                                  estatus = q.estatus,
+                                  type = q.type,
+                                  docnumber = q.docnumber,
+                                  nationality = q.nationality,
+                                  storeid = q.storeid,
+                                  channelid = q.channelid,
+                                  typedelivery = q.typedelivery,
+                                  storeiddelivery = q.storeiddelivery,
+                                  name = q.name,
+                                  name2 = q.name2,
+                                  lastname1 = q.lastname1,
+                                  lastname2 = q.lastname2,
+                                  birthdate = q.birthdate,
+                                  gender = q.gender,
+                                  edad = q.edad,
+                                  maritalstatus = q.maritalstatus,
+                                  occupation = q.occupation,
+                                  email = q.email,
+                                  phone1 = q.phone1,
+                                  phone2 = q.phone2,
+                                  phone3 = q.phone3,
+                                  twitter_account = q.twitter_account,
+                                  facebook_account = q.facebook_account,
+                                  instagram_account = q.instagram_account,
+                                  cod_estado = q.cod_estado,
+                                  cod_ciudad = q.cod_ciudad,
+                                  cod_municipio = q.cod_municipio,
+                                  cod_parroquia = parroquia == null ? "" : parroquia.DESCRIPC_PARROQUIA,
+                                  cod_urbanizacion = q.cod_urbanizacion,
+                                  pan = q.pan,
+                                  estatustarjeta = q.estatustarjeta,
+                                  fechaAfiliacion = q.fechaAfiliacion,
+                                  usuarioAfiliacion = q.usuarioAfiliacion
+                              }).ToList();
+                afiliados = (from q in query6.AsEnumerable()
+                              join u in db.URBANIZACIONES on q.cod_urbanizacion equals u.COD_URBANIZACION into urbanizaciones
+                              from urbanizacion in urbanizaciones.DefaultIfEmpty()
+                              select new AfiliadoSumaExcel
+                              {
+                                  id = q.id,
+                                  clientid = q.clientid,
+                                  estatus = q.estatus,
+                                  type = q.type,
+                                  docnumber = q.docnumber,
+                                  nationality = q.nationality,
+                                  storeid = q.storeid,
+                                  channelid = q.channelid,
+                                  typedelivery = q.typedelivery,
+                                  storeiddelivery = q.storeiddelivery,
+                                  name = q.name,
+                                  name2 = q.name2,
+                                  lastname1 = q.lastname1,
+                                  lastname2 = q.lastname2,
+                                  birthdate = q.birthdate,
+                                  gender = q.gender,
+                                  edad = q.edad,
+                                  maritalstatus = q.maritalstatus,
+                                  occupation = q.occupation,
+                                  email = q.email,
+                                  phone1 = q.phone1,
+                                  phone2 = q.phone2,
+                                  phone3 = q.phone3,
+                                  twitter_account = q.twitter_account,
+                                  facebook_account = q.facebook_account,
+                                  instagram_account = q.instagram_account,
+                                  cod_estado = q.cod_estado,
+                                  cod_ciudad = q.cod_ciudad,
+                                  cod_municipio = q.cod_municipio,
+                                  cod_parroquia = q.cod_parroquia,
+                                  cod_urbanizacion = urbanizacion == null ? "" : urbanizacion.DESCRIPC_URBANIZACION,
+                                  pan = q.pan,
+                                  estatustarjeta = q.estatustarjeta,
+                                  fechaAfiliacion = q.fechaAfiliacion,
+                                  usuarioAfiliacion = q.usuarioAfiliacion
+                              }).ToList();
+                return afiliados;
+            }
+        }
+
         //YA NO SE ENVIARÁ INFORMACIÓN A LA WEB
         //private bool SaveWebPlazas(AfiliadoSuma afiliado)
         //{
@@ -562,7 +868,7 @@ namespace Suma2Lealtad.Models
                         FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         SEXO = afiliado.gender == null ? "" : afiliado.gender,
                         EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus,
-                        OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation.Substring(0,30),
+                        OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation,
                         TELEFONO_HAB = afiliado.phone1,
                         TELEFONO_OFIC = afiliado.phone2 == null ? "" : afiliado.phone2,
                         TELEFONO_CEL = afiliado.phone3 == null ? "" : afiliado.phone3,
@@ -574,6 +880,10 @@ namespace Suma2Lealtad.Models
                         COD_URBANIZACION = afiliado.cod_urbanizacion,
                         FECHA_CREACION = DateTime.Now
                     };
+                    if (cliente.OCUPACION.Length > 30)
+                    {
+                        cliente.OCUPACION = cliente.OCUPACION.Substring(0, 30);
+                    }
                     db.CLIENTES.Add(CLIENTE);
                 }
                 else
@@ -696,7 +1006,7 @@ namespace Suma2Lealtad.Models
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     cliente.SEXO = afiliado.gender;
                     cliente.EDO_CIVIL = afiliado.maritalstatus;
-                    cliente.OCUPACION = afiliado.occupation.Substring(0,30);
+                    cliente.OCUPACION = afiliado.occupation.Length > 30 ? afiliado.occupation.Substring(0, 30) : afiliado.occupation;
                     cliente.TELEFONO_HAB = afiliado.phone1;
                     cliente.TELEFONO_OFIC = afiliado.phone2;
                     cliente.TELEFONO_CEL = afiliado.phone3;
@@ -841,7 +1151,7 @@ namespace Suma2Lealtad.Models
                         OCUPACION = cliente.OCUPACION,
                         TELEFONO_HAB = cliente.TELEFONO_HAB,
                         TELEFONO_OFIC = cliente.TELEFONO_OFIC,
-                        TELEFONO_CEL = cliente.TELEFONO_CEL ,
+                        TELEFONO_CEL = cliente.TELEFONO_CEL,
                         COD_SUCURSAL = cliente.COD_SUCURSAL,
                         COD_ESTADO = cliente.COD_ESTADO,
                         COD_CIUDAD = cliente.COD_CIUDAD,
@@ -1034,7 +1344,7 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        public bool SuspenderTarjeta(AfiliadoSuma afiliado)
+        public bool SuspenderTarjeta(AfiliadoSuma afiliado, string observaciones)
         {
             string RespuestaCardsJson = WSL.Cards.cardStatus(afiliado.docnumber.Substring(2), Globals.ID_ESTATUS_TARJETA_SUSPENDIDA);
             if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
@@ -1057,6 +1367,7 @@ namespace Suma2Lealtad.Models
                 afiliado.estatustarjeta = clienteCards.tarjeta;
                 afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
                 afiliado.cvv2 = "123";
+                afiliado.comments = "Tarjeta suspendida, fecha: " + DateTime.Now + ", observaciones: " + observaciones;
                 return SaveChanges(afiliado);
             }
             else
@@ -1088,6 +1399,7 @@ namespace Suma2Lealtad.Models
                 afiliado.estatustarjeta = clienteCards.tarjeta;
                 afiliado.trackII = Tarjeta.ConstruirTrackII(afiliado.pan);
                 afiliado.cvv2 = "123";
+                afiliado.comments = "";
                 return SaveChanges(afiliado);
             }
             else
@@ -1119,7 +1431,7 @@ namespace Suma2Lealtad.Models
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
                 mov.batchtime = mov.batchtime.Substring(0, 2) + ":" + mov.batchtime.Substring(2, 2) + ":" + mov.batchtime.Substring(4, 2);
                 mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                if (mov.transcode == Globals.TRANSCODE_ANULACION_PREPAGO)
+                if (mov.transcode == Globals.TRANSCODE_ANULACION_RECARGA_PREPAGO || mov.transcode == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_PREPAGO || mov.transcode == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_PREPAGO)
                 {
                     mov.isodescription = mov.isodescription + " (" + mov.b037 + ")";
                 }
@@ -1135,7 +1447,7 @@ namespace Suma2Lealtad.Models
                         {
                             string sucursal = afiliado.StoreOptions.Where(c => c.id != null).FirstOrDefault(x => x.id.Equals(f.store_code)).sucursal;
                             mov.isodescription = mov.isodescription + " (origen: " + sucursal + ", motivo: " + f.observaciones + ")";
-                        }                        
+                        }
                     }
                 }
             }
@@ -1152,6 +1464,14 @@ namespace Suma2Lealtad.Models
                 mov.fecha = mov.fecha.Substring(6, 2) + "/" + mov.fecha.Substring(4, 2) + "/" + mov.fecha.Substring(0, 4);
                 mov.batchtime = mov.batchtime.Substring(0, 2) + ":" + mov.batchtime.Substring(2, 2) + ":" + mov.batchtime.Substring(4, 2);
                 mov.fechahora = DateTime.ParseExact(mov.fecha + " " + mov.batchtime, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                if (mov.transcode == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA || mov.transcode == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_SUMA)
+                {
+                    mov.isodescription = mov.isodescription + " (" + mov.b037 + ")";
+                }
+                if (mov.transcode == Globals.TRANSCODE_CANJE_SUMA || mov.transcode == Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA || mov.transcode == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA)
+                {
+                    mov.saldo = mov.saldo * Convert.ToInt32(Globals.FACTOR_CANJE);
+                }
             }
             return SaldosMovimientos;
         }
@@ -1199,6 +1519,72 @@ namespace Suma2Lealtad.Models
                 afiliado.estatus = "Nueva";
                 afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_INICIAL) && (s.tablename == "Affiliatte")).id;
                 return afiliado;
+            }
+        }
+
+        public bool EliminarAfiliacion(AfiliadoSuma afiliado, string observaciones)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                // Entidad: Affiliate
+                Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
+                if (affiliate != null)
+                {
+                    //affiliate.storeid = afiliado.storeid;
+                    //affiliate.channelid = afiliado.channelid;
+                    //affiliate.typeid = afiliado.typeid;
+                    //affiliate.typedelivery = afiliado.typedelivery;
+                    //affiliate.storeiddelivery = afiliado.storeiddelivery;
+                    affiliate.modifieduserid = (int)HttpContext.Current.Session["userid"];
+                    affiliate.modifieddate = System.DateTime.Now;
+                    affiliate.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_ELIMINADA) && (s.tablename == "Affiliatte")).id;
+                    //affiliate.reasonsid = afiliado.reasonsid;
+                    //affiliate.twitter_account = afiliado.twitter_account;
+                    //affiliate.facebook_account = afiliado.facebook_account;
+                    //affiliate.instagram_account = afiliado.instagram_account;
+                    affiliate.comments = observaciones;
+                }
+                // Entidad: TARJETA
+                //TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_AFILIACION.Equals(afiliado.id));
+                //Decimal pan = Convert.ToDecimal(afiliado.pan);
+                //TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_TARJETA.Equals(pan));
+                //if (tarjeta != null)
+                //{
+                //tarjeta.NRO_AFILIACION = afiliado.id;
+                //tarjeta.ESTATUS_TARJETA = afiliado.estatustarjeta;
+                //tarjeta.COD_USUARIO = (int)HttpContext.Current.Session["userid"];
+                //tarjeta.TRACK2 = afiliado.trackII;
+                //tarjeta.CVV2 = afiliado.cvv2;
+                //tarjeta.FECHA_CREACION = afiliado.printed == null ? new DateTime?() : DateTime.ParseExact(afiliado.printed, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                //}
+                //Entidad: AffiliateAud 
+                int sumastatusidactual = (from a in db.Affiliates
+                                          where a.id.Equals(afiliado.id)
+                                          select a.sumastatusid
+                                         ).SingleOrDefault().Value;
+                //Solo inserto registros cuando hay cambio de estado de Afiliación
+                if (sumastatusidactual != affiliate.sumastatusid)
+                {
+                    var affiliateAuditoria = new AffiliateAud()
+                    {
+                        id = AfilliateAudID(),
+                        affiliateid = afiliado.id,
+                        modifieduserid = (int)HttpContext.Current.Session["userid"],
+                        modifieddate = DateTime.Now,
+                        statusid = affiliate.sumastatusid.Value,
+                        reasonsid = Globals.ID_REASONS_INICIAL,
+                        comments = affiliate.comments
+                    };
+                    db.AffiliateAuds.Add(affiliateAuditoria);
+                }
+                db.SaveChanges();
+                return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
             }
         }
 
@@ -1696,6 +2082,22 @@ namespace Suma2Lealtad.Models
             }
         }
 
+        private string GetNombreEstado(string id)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                if (db.ESTADOS.Find(id) == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return db.ESTADOS.Find(id).DESCRIPC_ESTADO;
+                } 
+            }
+        }
+
         // retornar la lista de Ciudades asociadas al campo clave de la entidad Estado.
         public List<CIUDAD> GetCiudades(string id)
         {
@@ -1704,6 +2106,22 @@ namespace Suma2Lealtad.Models
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var query = db.CIUDADES.Where(a => a.ESTADOS.Select(b => b.COD_ESTADO).Contains(id));
                 return query.ToList(); //.ToArray();
+            }
+        }
+
+        private string GetNombreCiudad(string id)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                if (db.CIUDADES.Find(id) == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return db.CIUDADES.Find(id).DESCRIPC_CIUDAD;
+                } 
             }
         }
 
@@ -1718,6 +2136,22 @@ namespace Suma2Lealtad.Models
             }
         }
 
+        private string GetNombreMunicipio(string id)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                if (db.MUNICIPIOS.Find(id) == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return db.MUNICIPIOS.Find(id).DESCRIPC_MUNICIPIO;
+                } 
+            }
+        }
+
         // retornar la lista de Parroquias asociadas al campo clave de la entidad Municipio.
         public List<PARROQUIA> GetParroquias(string id)
         {
@@ -1729,6 +2163,21 @@ namespace Suma2Lealtad.Models
             }
         }
 
+        private string GetNombreParroquia(string id)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                if (db.PARROQUIAS.Find(id) == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return db.PARROQUIAS.Find(id).DESCRIPC_PARROQUIA;
+                }
+            }
+        }
+
         // retornar la lista de Urbanizaciones asociadas al campo clave de la entidad Parroquia.
         public List<URBANIZACION> GetUrbanizaciones(string id)
         {
@@ -1737,6 +2186,22 @@ namespace Suma2Lealtad.Models
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 var query = db.URBANIZACIONES.Where(a => a.PARROQUIAS.Select(b => b.COD_PARROQUIA).Contains(id));
                 return query.ToList();
+            }
+        }
+
+        private string GetNombreUrbanizacion(string id)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                if (db.URBANIZACIONES.Find(id) == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return db.URBANIZACIONES.Find(id).DESCRIPC_URBANIZACION;
+                }
             }
         }
         #endregion

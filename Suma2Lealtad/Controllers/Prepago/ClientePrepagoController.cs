@@ -763,11 +763,11 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult SuspenderTarjeta(int id, int idBeneficiario, string mode = "post")
+        public ActionResult SuspenderTarjeta(int id, int idBeneficiario, string observaciones = "", string mode = "post")
         {
             ViewModel viewmodel = new ViewModel();
             AfiliadoSuma afiliado = repAfiliado.Find(idBeneficiario);
-            if (repAfiliado.SuspenderTarjeta(afiliado))
+            if (repAfiliado.SuspenderTarjeta(afiliado, observaciones))
             {
                 viewmodel.Title = "Prepago / Cliente / Beneficiario / Suspender Tarjeta";
                 viewmodel.Message = "Tarjeta suspendida correctamente";
@@ -840,7 +840,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         }
 
         [HttpPost]
-        public ActionResult SuspenderCliente(int id, string mode = "post")
+        public ActionResult SuspenderCliente(int id, string observaciones = "",string mode = "post")
         {
             ViewModel viewmodel = new ViewModel();
             Boolean result = true;
@@ -849,7 +849,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             foreach (BeneficiarioPrepagoIndex b in beneficiarios)
             {
                 afiliado = repAfiliado.Find(b.Afiliado.id);
-                if (repAfiliado.SuspenderTarjeta(afiliado) == false)
+                if (repAfiliado.SuspenderTarjeta(afiliado, observaciones) == false)
                 {
                     result = false;
                 }

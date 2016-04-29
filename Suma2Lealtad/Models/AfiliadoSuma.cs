@@ -65,6 +65,8 @@ namespace Suma2Lealtad.Models
         public DateTime fechaAfiliacion { get; set; }
         public string usuarioAfiliacion { get; set; }
 
+        public int edad { get; set; }
+
         /* Excepciones */
         //public string exnumber { get; set; }
         //public string exdetail { get; set; }
