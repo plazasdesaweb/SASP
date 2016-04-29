@@ -514,6 +514,7 @@ namespace Suma2Lealtad.Models.Repositorios
                                  join or in db.Orders on od.orderid equals or.id
                                  where (od.comments.Equals(o.cardsresponse) || od.comments.Equals("Anulación efectiva " + o.cardsresponse))
                                  && or.comments == "Orden de Anulación de Transferencia"
+                                 && od.amount != 0
                                  select od).ToList();
                     if (query.Count > 0)
                     {
