@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Reportes / Reporte de Transacciones Prepago";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutReportes.cshtml";
 }
 
 @{
@@ -23,15 +23,11 @@
                 <br />
             </div>
 
-            <div class="editor-field col-md-8">
-                <br />
-            </div>
-
             <div >
                 Nombre del Reporte :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.nombreReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
@@ -39,7 +35,7 @@
                 Afiliado :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.parametrotipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
@@ -47,7 +43,7 @@
                 Fecha desde :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.fechainicioReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
@@ -55,7 +51,7 @@
                 Fecha hasta :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.fechafinReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
@@ -63,7 +59,7 @@
                 Tipo de Transacción :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.tipotransaccionReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
