@@ -569,10 +569,9 @@ namespace Suma2Lealtad.Models
         private bool Recargar(DetalleOrdenRecargaPrepago detalleorden)
         {
             int intentos;
-            //Se intenta la operación 3 veces, antes de fallar
+            //Se llama al servicio para verificar q este activo. Se intenta la operación 3 veces, antes de fallar
             for (intentos = 0; intentos <= 3; intentos++)
             {
-                //Se llama al servicio para verificar q este activo
                 //SERVICIO WSL.Cards.getClient !
                 string clienteCardsJson = WSL.Cards.getClient(detalleorden.docnumberAfiliado.Substring(2));
                 if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
@@ -581,32 +580,40 @@ namespace Suma2Lealtad.Models
                 }
                 else
                 {
-                    string montoSinSeparador = Math.Truncate(detalleorden.montoRecarga * 100).ToString();
-                    string RespuestaCardsJson = WSL.Cards.addBatch(detalleorden.docnumberAfiliado.Substring(2), montoSinSeparador, Globals.TRANSCODE_RECARGA_PREPAGO, (string)HttpContext.Current.Session["login"]);
-                    if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                    break;
+                }
+            }
+            if (intentos > 3)
+            {
+                return false;
+            }
+            //Se intenta la operación 3 veces, antes de fallar
+            string montoSinSeparador = Math.Truncate(detalleorden.montoRecarga * 100).ToString();
+            for (intentos = 0; intentos <= 3; intentos++)
+            {
+                string RespuestaCardsJson = WSL.Cards.addBatch(detalleorden.docnumberAfiliado.Substring(2), montoSinSeparador, Globals.TRANSCODE_RECARGA_PREPAGO, (string)HttpContext.Current.Session["login"]);
+                if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                {
+                    ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
+                    detalleorden.resultadoRecarga = exceptionJson.exdetail + "-" + exceptionJson.exsource;
+                    intentos++;
+                }
+                else
+                {
+                    RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
+                    if ((Convert.ToDecimal(RespuestaCards.excode) < 0))
                     {
-                        ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
-                        detalleorden.resultadoRecarga = exceptionJson.detail + "-" + exceptionJson.source;
-                        intentos++;
+                        detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                        return false;
                     }
                     else
                     {
-                        RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
-                        if ((Convert.ToDecimal(RespuestaCards.excode) < 0))
-                        {
-                            detalleorden.resultadoRecarga = RespuestaCards.exdetail;
-                            return false;
-                        }
-                        else
-                        {
-                            detalleorden.resultadoRecarga = RespuestaCards.exdetail;
-                            return true;
-                        }
+                        detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                        return true;
                     }
                 }
-
             }
-            return (intentos < 3);
+            return (intentos <= 3);
         }
 
         private bool Anular(DetalleOrdenRecargaPrepago detalleorden)
@@ -614,10 +621,9 @@ namespace Suma2Lealtad.Models
             //el batchid esta guardado en el campo observacionesExclusion
             detalleorden.batchid = detalleorden.observacionesExclusion;
             int intentos;
-            //Se intenta la operación 3 veces, antes de fallar
+            //Se llama al servicio para verificar q este activo. Se intenta la operación 3 veces, antes de fallar
             for (intentos = 0; intentos <= 3; intentos++)
             {
-                //Se llama al servicio para verificar q este activo
                 //SERVICIO WSL.Cards.getClient !
                 string clienteCardsJson = WSL.Cards.getClient(detalleorden.docnumberAfiliado.Substring(2));
                 if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
@@ -626,30 +632,39 @@ namespace Suma2Lealtad.Models
                 }
                 else
                 {
-                    string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
-                    if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                    break;
+                }
+            }
+            if (intentos > 3)
+            {
+                return false;
+            }
+            //Se intenta la operación 3 veces, antes de fallar
+            for (intentos = 0; intentos <= 3; intentos++)
+            {
+                string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
+                if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                {
+                    ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
+                    detalleorden.resultadoRecarga = exceptionJson.exdetail + "-" + exceptionJson.exsource;
+                    intentos++;
+                }
+                else
+                {
+                    RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
+                    if ((Convert.ToDecimal(RespuestaCards.excode) < 0))
                     {
-                        ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
-                        detalleorden.resultadoRecarga = exceptionJson.detail + "-" + exceptionJson.source;
-                        intentos++;
+                        detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                        return false;
                     }
                     else
                     {
-                        RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
-                        if ((Convert.ToDecimal(RespuestaCards.excode) < 0))
-                        {
-                            detalleorden.resultadoRecarga = RespuestaCards.exdetail;
-                            return false;
-                        }
-                        else
-                        {
-                            detalleorden.resultadoRecarga = RespuestaCards.exdetail;
-                            return true;
-                        }
+                        detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                        return true;
                     }
                 }
             }
-            return (intentos < 3);
+            return (intentos <= 3);
         }
 
         public bool ProcesarOrden(int id)

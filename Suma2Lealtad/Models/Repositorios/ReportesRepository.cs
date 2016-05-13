@@ -794,14 +794,10 @@ namespace Suma2Lealtad.Models
                         batchid = fila.BATCHID.ToString(),
                         Encabezado = encabezado
                     };
-                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_SUMA)
+                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_RECARGA_PREPAGO || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_PREPAGO || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_PREPAGO)
                     {
                         linea.detalle = linea.detalle + " (" + fila.B037 + ")";
-                    }
-                    if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_CANJE_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA)
-                    {
-                        linea.monto = linea.monto * Convert.ToInt32(Globals.FACTOR_CANJE);
-                    }
+                    }                    
                     if (linea.detalle.Contains("offline"))
                     {
                         //buscar info en FueraDeLinea

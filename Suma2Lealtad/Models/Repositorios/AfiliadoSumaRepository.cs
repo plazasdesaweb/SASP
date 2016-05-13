@@ -507,8 +507,8 @@ namespace Suma2Lealtad.Models
         {
             using (LealtadEntities db = new LealtadEntities())
             {
-                AfiliadoSuma datos = new AfiliadoSuma();
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                AfiliadoSuma datos = new AfiliadoSuma();                
                 List<AfiliadoSumaExcel> afiliados = new List<AfiliadoSumaExcel>();
                 var query = (from a in db.Affiliates
                              join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
@@ -1478,20 +1478,51 @@ namespace Suma2Lealtad.Models
 
         public string Acreditar(AfiliadoSuma afiliado, string monto)
         {
-            string RespuestaCardsJson = WSL.Cards.addBatch(afiliado.docnumber.Substring(2), monto, Globals.TRANSCODE_ACREDITACION_SUMA, "NULL");
-            if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+            int intentos;
+            string respuesta = "";
+            //Se llama al servicio para verificar q este activo. Se intenta la operación 3 veces, antes de fallar
+            for (intentos = 0; intentos <= 3; intentos++)
             {
-                return null;
+                //SERVICIO WSL.Cards.getClient !
+                string clienteCardsJson = WSL.Cards.getClient(afiliado.docnumber.Substring(2));
+                if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
+                {
+                    respuesta = "Servicio no responde";
+                    intentos++;
+                }
+                else
+                {
+                    break;
+                }
             }
-            RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
-            if (Convert.ToDecimal(RespuestaCards.excode) < 0)
+            if (intentos > 3)
             {
-                return null;
+                return respuesta;
             }
-            else
+            //Se intenta la operación 3 veces, antes de fallar
+            for (intentos = 0; intentos <= 3; intentos++)
             {
-                return RespuestaCards.exdetail;
+                string RespuestaCardsJson = WSL.Cards.addBatch(afiliado.docnumber.Substring(2), monto, Globals.TRANSCODE_ACREDITACION_SUMA, "NULL");
+                if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                {
+                    ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
+                    respuesta = exceptionJson.exdetail + "-" + exceptionJson.exsource;
+                    intentos++;
+                }
+                else
+                {
+                    RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
+                    if (Convert.ToDecimal(RespuestaCards.excode) < 0)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return RespuestaCards.exdetail;
+                    }
+                }
             }
+            return respuesta;
         }
 
         public AfiliadoSuma CambiarASuma(AfiliadoSuma afiliado)

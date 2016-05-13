@@ -48,7 +48,7 @@ namespace Suma2Lealtad.Modules
         // retornar excepcion JSON.
         private static string GetExcepcionJSON(string ExcepcionMessage, string Source)
         {
-            return "{\"code\":\"100\",\"detail\":\" @Message@\", \"source\": \" @Source@\" }".Replace("@Message@", ExcepcionMessage).Replace("@Source@",Source);
+            return "{\"code\":\"100\",\"detail\":\" @Message@\", \"source\": \" @Source@\" }".Replace("@Message@", ExcepcionMessage).Replace("@Source@", Source);
         }
 
         //implementa los servicios cards
@@ -74,7 +74,7 @@ namespace Suma2Lealtad.Modules
                 try
                 {
                     ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaServicioCards);
-                    if (exceptionJson.code == "100")
+                    if (exceptionJson.excode == "100" || exceptionJson.excode == "-1000")
                     {
                         return true;
                     }
@@ -228,7 +228,7 @@ namespace Suma2Lealtad.Modules
                 try
                 {
                     ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaServicioWebPlazas);
-                    if (exceptionJson.code == "100")
+                    if (exceptionJson.excode == "100" || exceptionJson.excode == "-1000")
                     {
                         return true;
                     }

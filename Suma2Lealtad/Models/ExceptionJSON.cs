@@ -7,9 +7,9 @@ namespace Suma2Lealtad.Models
 {
     public class ExceptionJSON
     {
-        public string code { get; set; }
-        public string detail { get; set; }
-        public string source { get; set; }
+        public string excode { get; set; }
+        public string exdetail { get; set; }
+        public string exsource { get; set; }
     }
 
 }
