@@ -448,6 +448,8 @@
     <Compile Include="Models\UserRols.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="Models\ViewModels\Home\CambiarPasswordViewModel.cs" />
+    <Compile Include="Models\ViewModels\Home\LoginViewModel.cs" />
     <Compile Include="Modules\AppModule.cs" />
     <Compile Include="Modules\AppSession.cs" />
     <Compile Include="Modules\Globals.cs" />

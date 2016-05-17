@@ -421,7 +421,7 @@ namespace Suma2Lealtad.Controllers
 
         public void ExportarDatosAfiliacionesExcel()
         {
-            List<AfiliadoSumaExcel> afiliados = repReportes.CargarDatosExportarDatosAfiliadosExcel();
+            List<AfiliadoSumaExcel> afiliados = repReportes.CargarDatosExportarDatosAfiliadosExcel().Take(10).ToList();
             //USAMOS EPPLUS
             ExcelPackage excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
