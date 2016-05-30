@@ -22,7 +22,7 @@
             }
 
             @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
+            @Html.ValidationSummary(true)
 
                 <div id="rootwizard">
                     <div class="nav-gradient navbar navbar-default">
@@ -71,15 +71,15 @@
                             </div>
 
                             <div class="editor-field col-md-6">
-                                @{if (@Model.email != null)
-                                  {
-                                    @Html.TextBoxFor(model => model.email, new { @class = "form-control", @readonly = "true" })
-                                  }
-                                  else
-                                  {
-                                    @Html.TextBoxFor(model => model.email, new { @class = "form-control" })
-                                  }
-                                }
+                                @Html.TextBoxFor(model => model.email, new { @class = "form-control" })                                
+                            </div>
+
+                            <div class="editor-label col-md-4 control-label">
+                                * Confirmación Correo Electrónico :
+                            </div>
+
+                            <div class="editor-field col-md-6">
+                                <input type="text" id="confirmacioncorreo" name="confirmacioncorreo" value="@Model.email" placeholder="" class="form-control" required>
                             </div>
 
                             <div class="editor-label col-md-4 control-label">
