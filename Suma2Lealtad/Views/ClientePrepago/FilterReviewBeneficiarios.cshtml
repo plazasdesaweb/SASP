@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="editor-field col-md-6">
-                    <input type="text" id="numdoc" name="numdoc" maxlength="11" placeholder="V-12345678" class="form-control">
+                    <input type="text" id="numdoc" name="numdoc" maxlength="12" placeholder="V-12345678" class="form-control">
                     <span id="field1"></span>
                 </div>
 
@@ -140,33 +140,52 @@
 
     function validateNumDoc() {
         var numdoc = document.getElementById('numdoc').value;
+        var valor = document.getElementById('numdoc').value.trim();
         if (numdoc.length == 0) {
             return true;
         }
-        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
-        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern = /^([VvEe]){1}(-){1}(\d){3,8}$/;
+        var RegExPattern2 = /^([VvEe]){1}(\d){3,8}$/;
         var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
         var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
-        if (RegExPattern.test(numdoc) == false && RegExPattern2.test(numdoc) == false && RegExPattern3.test(numdoc) == false && RegExPattern4.test(numdoc) == false) {
-            spanMessage('field1', '* Formato Número de Documento/Cédula Incorrecto. (V-12345678)');
+        var RegExPattern5 = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
+        var RegExPattern6 = /^([VvEeJjGg]){1}(\d){9}$/;
+        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false && RegExPattern5.test(valor) == false && RegExPattern6.test(valor) == false) {
+            spanMessage('field1', "* Formato Número de Documento/Cédula Incorrecto. (ejemplos V-12345678, J-123456789, P-ABC1234567)");
             document.getElementById('numdoc').value = "";
             document.getElementById('numdoc').focus();
             return false;
         }
-        else if (RegExPattern.test(numdoc) != false) {
-            document.getElementById('numdoc').value = numdoc.toUpperCase();
+        else if (RegExPattern.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            document.getElementById('field1').value = "";
+            return true;
         }
-        else if (RegExPattern2.test(numdoc) != false) {
-            document.getElementById('numdoc').value = numdoc.substring(0, 1).toUpperCase() + "-" + numdoc.substring(1).toUpperCase();
+        else if (RegExPattern2.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            document.getElementById('field1').value = "";
+            return true;
         }
-        else if (RegExPattern3.test(numdoc) != false) {
-            document.getElementById('numdoc').value = numdoc.toUpperCase();
+        else if (RegExPattern3.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            document.getElementById('field1').value = "";
+            return true;
         }
-        else if (RegExPattern4.test(numdoc) != false) {
-            document.getElementById('numdoc').value = numdoc.substring(0, 1).toUpperCase() + "-" + numdoc.substring(1).toUpperCase();
+        else if (RegExPattern4.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            document.getElementById('field1').value = "";
+            return true;
         }
-        document.getElementById('field1').value = "";
-        return true;
+        else if (RegExPattern5.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            document.getElementById('field1').value = "";
+            return true;
+        }
+        else if (RegExPattern6.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            document.getElementById('field1').value = "";
+            return true;
+        }
     }
 
     function spanMessage(idelemento, mensaje) {

@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="editor-field col-md-8">
-                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="11" placeholder="V-12345678" class="form-control" required>
+                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="12" placeholder="V-12345678" class="form-control" required>
                     <span id="someID"></span>
                 </div>
 
@@ -75,8 +75,8 @@
 <script type="text/javascript">
     function validarDocumento() {
         var valor = document.getElementById('numdoc').value.trim();
-        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
-        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,9}$/;
+        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,9}$/;
         var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
         var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
 

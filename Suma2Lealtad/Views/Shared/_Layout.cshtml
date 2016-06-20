@@ -95,7 +95,7 @@
             date: "Please enter a valid date.",
             dateISO: "Please enter a valid date (ISO).",
             number: "Please enter a valid number.",
-            digits: "Please enter only digits.",
+            digits: "Ingrese sólamente dígitos.",
             equalTo: "Ingrese una confirmación válida.",
             accept: "Please enter a value with a valid extension.",
             maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
@@ -215,7 +215,18 @@
 
                     phone1: {
                         required: true,
-                        minlength: 3
+                        minlength: 3,
+                        digits:true
+                    },
+
+                    phone2: {
+                        minlength: 3,
+                        digits: true
+                    },
+
+                    phone3: {
+                        minlength: 3,
+                        digits: true
                     },
 
                     idClientePrepago: {
@@ -237,7 +248,8 @@
                     phoneCliente:
                     {
                         required: true,
-                        minlength: 3
+                        minlength: 3,
+                        digits: true
                     },
 
                     emailCliente:{

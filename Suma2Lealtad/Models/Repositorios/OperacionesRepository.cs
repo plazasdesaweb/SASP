@@ -44,8 +44,8 @@ namespace Suma2Lealtad.Models.Repositorios
             {
                 montoSinSeparador = monto;
             }
-            //Se intenta la operación 3 veces, antes de fallar
-            for (intentos = 0; intentos <= 3; intentos++)
+            //Se intenta la operación 6 veces, antes de fallar
+            for (intentos = 0; intentos <= 6; intentos++)
             {
                 string RespuestaCardsJson = WSL.Cards.addTransfer(numdocOrigen.Substring(2), numdocDestino.Substring(2), montoSinSeparador, tipoCuenta, (string)HttpContext.Current.Session["login"]);
                 if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
@@ -93,8 +93,8 @@ namespace Suma2Lealtad.Models.Repositorios
             {
                 return respuesta;
             }
-            //Se intenta la operación 3 veces, antes de fallar
-            for (intentos = 0; intentos <= 3; intentos++)
+            //Se intenta la operación 6 veces, antes de fallar
+            for (intentos = 0; intentos <= 6; intentos++)
             {
                 string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(docnumber.Substring(2), Transcode, batchid, (string)HttpContext.Current.Session["login"]);
                 if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))

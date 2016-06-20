@@ -587,9 +587,9 @@ namespace Suma2Lealtad.Models
             {
                 return false;
             }
-            //Se intenta la operación 3 veces, antes de fallar
             string montoSinSeparador = Math.Truncate(detalleorden.montoRecarga * 100).ToString();
-            for (intentos = 0; intentos <= 3; intentos++)
+            //Se intenta la operación 6 veces, antes de fallar
+            for (intentos = 0; intentos <= 6; intentos++)
             {
                 string RespuestaCardsJson = WSL.Cards.addBatch(detalleorden.docnumberAfiliado.Substring(2), montoSinSeparador, Globals.TRANSCODE_RECARGA_PREPAGO, (string)HttpContext.Current.Session["login"]);
                 if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
@@ -639,8 +639,8 @@ namespace Suma2Lealtad.Models
             {
                 return false;
             }
-            //Se intenta la operación 3 veces, antes de fallar
-            for (intentos = 0; intentos <= 3; intentos++)
+            //Se intenta la operación 6 veces, antes de fallar
+            for (intentos = 0; intentos <= 6; intentos++)
             {
                 string RespuestaCardsJson = WSL.Cards.addBatchAnulacion(detalleorden.docnumberAfiliado.Substring(2), Globals.TRANSCODE_ANULACION, detalleorden.batchid, (string)HttpContext.Current.Session["login"]);
                 if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))

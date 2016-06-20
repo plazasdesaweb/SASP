@@ -40,11 +40,11 @@ namespace SumaPlazas.Dispositivos.Escaner
             if (PermisosElevados == true)
             {
                 listBox1.Items.Clear();
-                ElementoHtmlControl.SetProperty("innerHTML", "No Escaneada");            
+                ElementoHtmlControl.SetProperty("innerHTML", "No Escaneada");
                 BackgroundWorker w = new BackgroundWorker();
                 w.DoWork += new DoWorkEventHandler(w_DoWorkEscanear);
                 w.RunWorkerCompleted += new RunWorkerCompletedEventHandler(w_RunWorkerCompletedEscanear);
-                w.RunWorkerAsync();                
+                w.RunWorkerAsync();
             }
             else
             {
@@ -65,10 +65,10 @@ namespace SumaPlazas.Dispositivos.Escaner
             {
                 listBox1.Items.Add("Activado.");
                 listBox1.SelectedIndex = listBox1.Items.Count - 1;
-            });                  
+            });
         }
 
-        private void w_RunWorkerCompletedEscanear(object sender, RunWorkerCompletedEventArgs e) 
+        private void w_RunWorkerCompletedEscanear(object sender, RunWorkerCompletedEventArgs e)
         {
             EscanerWIA EscanerWia = new EscanerWIA();
             string RutaArchivo = EscanerWia.ObtenerImagen(NombreArchivo);
@@ -97,7 +97,7 @@ namespace SumaPlazas.Dispositivos.Escaner
                     scannedImage.Source = BitmapImage;
                 }
                 ElementoHtmlControl.SetProperty("innerHTML", "Escaneada");
-            }             
+            }
         }
 
         [ScriptableMember]
@@ -108,7 +108,7 @@ namespace SumaPlazas.Dispositivos.Escaner
             EscanerWia.LimpiarImagen(NombreArchivo);
             scannedImage.Source = null;
             listBox1.Items.Clear();
-            listBox1.Visibility = System.Windows.Visibility.Visible;            
+            listBox1.Visibility = System.Windows.Visibility.Visible;
         }
 
     }

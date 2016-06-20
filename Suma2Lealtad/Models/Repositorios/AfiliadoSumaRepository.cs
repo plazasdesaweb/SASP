@@ -508,7 +508,7 @@ namespace Suma2Lealtad.Models
             using (LealtadEntities db = new LealtadEntities())
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                AfiliadoSuma datos = new AfiliadoSuma();                
+                AfiliadoSuma datos = new AfiliadoSuma();
                 List<AfiliadoSumaExcel> afiliados = new List<AfiliadoSumaExcel>();
                 var query = (from a in db.Affiliates
                              join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
@@ -764,46 +764,46 @@ namespace Suma2Lealtad.Models
                                   usuarioAfiliacion = q.usuarioAfiliacion
                               }).ToList();
                 afiliados = (from q in query6.AsEnumerable()
-                              join u in db.URBANIZACIONES on q.cod_urbanizacion equals u.COD_URBANIZACION into urbanizaciones
-                              from urbanizacion in urbanizaciones.DefaultIfEmpty()
-                              select new AfiliadoSumaExcel
-                              {
-                                  id = q.id,
-                                  clientid = q.clientid,
-                                  estatus = q.estatus,
-                                  type = q.type,
-                                  docnumber = q.docnumber,
-                                  nationality = q.nationality,
-                                  storeid = q.storeid,
-                                  channelid = q.channelid,
-                                  typedelivery = q.typedelivery,
-                                  storeiddelivery = q.storeiddelivery,
-                                  name = q.name,
-                                  name2 = q.name2,
-                                  lastname1 = q.lastname1,
-                                  lastname2 = q.lastname2,
-                                  birthdate = q.birthdate,
-                                  gender = q.gender,
-                                  edad = q.edad,
-                                  maritalstatus = q.maritalstatus,
-                                  occupation = q.occupation,
-                                  email = q.email,
-                                  phone1 = q.phone1,
-                                  phone2 = q.phone2,
-                                  phone3 = q.phone3,
-                                  twitter_account = q.twitter_account,
-                                  facebook_account = q.facebook_account,
-                                  instagram_account = q.instagram_account,
-                                  cod_estado = q.cod_estado,
-                                  cod_ciudad = q.cod_ciudad,
-                                  cod_municipio = q.cod_municipio,
-                                  cod_parroquia = q.cod_parroquia,
-                                  cod_urbanizacion = urbanizacion == null ? "" : urbanizacion.DESCRIPC_URBANIZACION,
-                                  pan = q.pan,
-                                  estatustarjeta = q.estatustarjeta,
-                                  fechaAfiliacion = q.fechaAfiliacion,
-                                  usuarioAfiliacion = q.usuarioAfiliacion
-                              }).ToList();
+                             join u in db.URBANIZACIONES on q.cod_urbanizacion equals u.COD_URBANIZACION into urbanizaciones
+                             from urbanizacion in urbanizaciones.DefaultIfEmpty()
+                             select new AfiliadoSumaExcel
+                             {
+                                 id = q.id,
+                                 clientid = q.clientid,
+                                 estatus = q.estatus,
+                                 type = q.type,
+                                 docnumber = q.docnumber,
+                                 nationality = q.nationality,
+                                 storeid = q.storeid,
+                                 channelid = q.channelid,
+                                 typedelivery = q.typedelivery,
+                                 storeiddelivery = q.storeiddelivery,
+                                 name = q.name,
+                                 name2 = q.name2,
+                                 lastname1 = q.lastname1,
+                                 lastname2 = q.lastname2,
+                                 birthdate = q.birthdate,
+                                 gender = q.gender,
+                                 edad = q.edad,
+                                 maritalstatus = q.maritalstatus,
+                                 occupation = q.occupation,
+                                 email = q.email,
+                                 phone1 = q.phone1,
+                                 phone2 = q.phone2,
+                                 phone3 = q.phone3,
+                                 twitter_account = q.twitter_account,
+                                 facebook_account = q.facebook_account,
+                                 instagram_account = q.instagram_account,
+                                 cod_estado = q.cod_estado,
+                                 cod_ciudad = q.cod_ciudad,
+                                 cod_municipio = q.cod_municipio,
+                                 cod_parroquia = q.cod_parroquia,
+                                 cod_urbanizacion = urbanizacion == null ? "" : urbanizacion.DESCRIPC_URBANIZACION,
+                                 pan = q.pan,
+                                 estatustarjeta = q.estatustarjeta,
+                                 fechaAfiliacion = q.fechaAfiliacion,
+                                 usuarioAfiliacion = q.usuarioAfiliacion
+                             }).ToList();
                 return afiliados;
             }
         }
@@ -868,7 +868,7 @@ namespace Suma2Lealtad.Models
                         FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         SEXO = afiliado.gender == null ? "" : afiliado.gender,
                         EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus,
-                        OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation,
+                        //OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation.Substring(0, 30),
                         TELEFONO_HAB = afiliado.phone1,
                         TELEFONO_OFIC = afiliado.phone2 == null ? "" : afiliado.phone2,
                         TELEFONO_CEL = afiliado.phone3 == null ? "" : afiliado.phone3,
@@ -880,9 +880,17 @@ namespace Suma2Lealtad.Models
                         COD_URBANIZACION = afiliado.cod_urbanizacion,
                         FECHA_CREACION = DateTime.Now
                     };
-                    if (cliente.OCUPACION.Length > 30)
+                    if (afiliado.occupation == null)
                     {
-                        cliente.OCUPACION = cliente.OCUPACION.Substring(0, 30);
+                        CLIENTE.OCUPACION = afiliado.occupation;
+                    }
+                    else if (afiliado.occupation.Length > 30)
+                    {
+                        CLIENTE.OCUPACION = afiliado.occupation.Substring(0, 30);
+                    }
+                    else
+                    {
+                        CLIENTE.OCUPACION = afiliado.occupation;
                     }
                     db.CLIENTES.Add(CLIENTE);
                 }
@@ -897,7 +905,7 @@ namespace Suma2Lealtad.Models
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     cliente.SEXO = afiliado.gender == null ? "" : afiliado.gender;
                     cliente.EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus;
-                    cliente.OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation;
+                    //cliente.OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation;
                     cliente.TELEFONO_HAB = afiliado.phone1;
                     cliente.TELEFONO_OFIC = afiliado.phone2 == null ? "" : afiliado.phone2;
                     cliente.TELEFONO_CEL = afiliado.phone3 == null ? "" : afiliado.phone3;
@@ -907,6 +915,18 @@ namespace Suma2Lealtad.Models
                     cliente.COD_MUNICIPIO = afiliado.cod_municipio;
                     cliente.COD_PARROQUIA = afiliado.cod_parroquia;
                     cliente.COD_URBANIZACION = afiliado.cod_urbanizacion;
+                    if (afiliado.occupation == null)
+                    {
+                        cliente.OCUPACION = afiliado.occupation;
+                    }
+                    else if (afiliado.occupation.Length > 30)
+                    {
+                        cliente.OCUPACION = afiliado.occupation.Substring(0, 30);
+                    }
+                    else
+                    {
+                        cliente.OCUPACION = afiliado.occupation;
+                    }
                 }
                 //ENTIDAD CustomerInterest
                 foreach (var interes in afiliado.Intereses.Where(x => x.Checked == true))
@@ -1006,7 +1026,6 @@ namespace Suma2Lealtad.Models
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     cliente.SEXO = afiliado.gender;
                     cliente.EDO_CIVIL = afiliado.maritalstatus;
-                    cliente.OCUPACION = afiliado.occupation.Length > 30 ? afiliado.occupation.Substring(0, 30) : afiliado.occupation;
                     cliente.TELEFONO_HAB = afiliado.phone1;
                     cliente.TELEFONO_OFIC = afiliado.phone2;
                     cliente.TELEFONO_CEL = afiliado.phone3;
@@ -1016,7 +1035,19 @@ namespace Suma2Lealtad.Models
                     cliente.COD_MUNICIPIO = afiliado.cod_municipio;
                     cliente.COD_PARROQUIA = afiliado.cod_parroquia;
                     cliente.COD_URBANIZACION = afiliado.cod_urbanizacion;
-                }
+                    if (afiliado.occupation == null)
+                    {
+                        cliente.OCUPACION = afiliado.occupation;
+                    }
+                    else if (afiliado.occupation.Length > 30)
+                    {
+                        cliente.OCUPACION = afiliado.occupation.Substring(0, 30);
+                    }
+                    else
+                    {
+                        cliente.OCUPACION = afiliado.occupation;
+                    }
+                }                
                 // Entida: TARJETA
                 //TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_AFILIACION.Equals(afiliado.id));
                 Decimal pan = Convert.ToDecimal(afiliado.pan);
@@ -1499,8 +1530,8 @@ namespace Suma2Lealtad.Models
             {
                 return respuesta;
             }
-            //Se intenta la operación 3 veces, antes de fallar
-            for (intentos = 0; intentos <= 3; intentos++)
+            //Se intenta la operación 6 veces, antes de fallar
+            for (intentos = 0; intentos <= 6; intentos++)
             {
                 string RespuestaCardsJson = WSL.Cards.addBatch(afiliado.docnumber.Substring(2), monto, Globals.TRANSCODE_ACREDITACION_SUMA, "NULL");
                 if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
@@ -2125,7 +2156,7 @@ namespace Suma2Lealtad.Models
                 else
                 {
                     return db.ESTADOS.Find(id).DESCRIPC_ESTADO;
-                } 
+                }
             }
         }
 
@@ -2152,7 +2183,7 @@ namespace Suma2Lealtad.Models
                 else
                 {
                     return db.CIUDADES.Find(id).DESCRIPC_CIUDAD;
-                } 
+                }
             }
         }
 
@@ -2179,7 +2210,7 @@ namespace Suma2Lealtad.Models
                 else
                 {
                     return db.MUNICIPIOS.Find(id).DESCRIPC_MUNICIPIO;
-                } 
+                }
             }
         }
 

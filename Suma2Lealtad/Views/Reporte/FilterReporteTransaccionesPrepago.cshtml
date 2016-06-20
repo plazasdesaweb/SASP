@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="editor-field col-md-6">
-                    <input type="text" id="numdoc" name="numdoc" maxlength="11" placeholder="V-12345678" class="form-control">
+                    <input type="text" id="numdoc" name="numdoc" maxlength="12" placeholder="V-12345678" class="form-control">
                     <span id="field1"></span>
                 </div>
 
@@ -118,8 +118,8 @@
         if (numdoc.length == 0) {
             return true;
         }
-        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
-        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,9}$/;
+        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,9}$/;
         var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
         var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
         if (RegExPattern.test(numdoc) == false && RegExPattern2.test(numdoc) == false && RegExPattern3.test(numdoc) == false && RegExPattern4.test(numdoc) == false) {

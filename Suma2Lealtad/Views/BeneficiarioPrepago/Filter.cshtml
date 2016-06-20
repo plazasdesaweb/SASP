@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="editor-field col-md-8">
-                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="11" placeholder="V-12345678" class="form-control" required>
+                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="12" placeholder="V-12345678" class="form-control" required>
                     <span id="someID"></span>
                 </div>
 
@@ -73,15 +73,16 @@
 <script type="text/javascript">
     function validarDocumento() {
         var valor = document.getElementById('numdoc').value.trim();
-        var RegExPattern = /^([VvEeJjGg]){1}(-){1}(\d){3,10}$/;
-        var RegExPattern2 = /^([VvEeJjGg]){1}(\d){3,10}$/;
+        var RegExPattern = /^([VvEe]){1}(-){1}(\d){3,8}$/;
+        var RegExPattern2 = /^([VvEe]){1}(\d){3,8}$/;
         var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
         var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
-
-        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false) {
+        var RegExPattern5 = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
+        var RegExPattern6 = /^([VvEeJjGg]){1}(\d){9}$/;
+        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false && RegExPattern5.test(valor) == false && RegExPattern6.test(valor) == false) {
             spanMessage();
-            document.getElementById('numdoc').value = " ";
-            document.form.numdoc.focus();
+            document.getElementById('numdoc').value = "";
+            document.getElementById('numdoc').focus();
             return false;
         }
         else if (RegExPattern.test(valor) != false) {
@@ -100,6 +101,14 @@
             document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
             return true;
         }
+        else if (RegExPattern5.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            return true;
+        }
+        else if (RegExPattern6.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            return true;
+        }
     }
 
     function spanMessage() {
@@ -107,6 +116,6 @@
         while (span.firstChild) {
             span.removeChild(span.firstChild);
         }
-        span.appendChild(document.createTextNode("* Formato Número de Documento/Cédula Incorrecto. (V-12345678)"));
+        span.appendChild(document.createTextNode("* Formato Número de Documento/Cédula Incorrecto. (ejemplos V-12345678, J-123456789, P-ABC1234567)"));
     }
 </script>
