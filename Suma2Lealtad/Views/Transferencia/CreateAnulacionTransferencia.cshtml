@@ -398,19 +398,19 @@
                 </div>
                 <!--// btn btn-success -->
 
-                <div class="editor-label col-md-4 control-label">
-                    Monto a transferir @Model.datosCuentaSumaOrigen.accountname :
+                <div class="editor-label col-md-6 control-label">
+                    Cantidad de más en Transferencia para @Model.datosCuentaSumaOrigen.accountname :
                 </div>
 
-                <div class="editor-form col-md-6">
+                <div class="editor-form col-md-2">
                     <input type="text" id="ResumenTransferenciaSuma" name="ResumenTransferenciaSuma" value="@Model.ResumenTransferenciaSuma" maxlength="10" class="form-control" readonly="true">
                 </div>
 
-                <div class="editor-label col-md-4 control-label">
-                    Monto a transferir @Model.datosCuentaPrepagoOrigen.accountname :
+                <div class="editor-label col-md-6 control-label">
+                    Monto en Transferencia para @Model.datosCuentaPrepagoOrigen.accountname :
                 </div>
 
-                <div class="editor-form col-md-6">
+                <div class="editor-form col-md-2">
                     <input type="text" id="ResumenTransferenciaPrepago" name="ResumenTransferenciaPrepago" value="@Model.ResumenTransferenciaPrepago.Replace(".", "")" maxlength="10" class="form-control" readonly="true">
                 </div>             
   }
