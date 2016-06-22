@@ -21,7 +21,7 @@
                 <br />
             </div>
 
-            <form action="@Url.Action("FilterAnulacion", "OrdenRecargaPrepago")" name="form" method="post" >
+            <form action="@Url.Action("FilterAnulacion", "OrdenRecargaPrepago")" name="form" method="post" onsubmit="return ValidarReferencia();" >
 
             <div class="editor-label col-md-4 control-label"></div>
             <div class="editor-field col-md-8">
@@ -62,7 +62,7 @@
         LimpiarSpanMessage('mensaje');
     });
 
-    $("#Buscar").click(function () {
+    @*$("#Buscar").click(function () {
         var href = '@Url.Content("~/{controller}/{action}/{params}")';
         var batchid = $('#batchid').val();
         if (batchid == "") {
@@ -74,7 +74,25 @@
             href = href.replace("{params}", "?batchid=" + batchid);
             window.location.href = href;
         }
-    });    
+    });*@
+
+    function ValidarReferencia() {
+        @*var href = '@Url.Content("~/{controller}/{action}/{params}")';*@
+        var batchid = $('#batchid').val().trim();
+        if (batchid == "" || !$.isNumeric(batchid)) {
+            $('#batchid').val('');
+            spanMessage('mensaje', '* Debe indicar un número de Referencia...');
+            return false;
+        }
+        else {
+            //href = href.replace("{controller}", "Transferencia");
+            //href = href.replace("{action}", "CreateAnulacionTransferencia");
+            //href = href.replace("{params}", "?orden=" + orden);
+            //window.location.href = href;
+            LimpiarSpanMessage('mensaje');
+            return true;
+        }
+    }
 
     function LimpiarSpanMessage(idelemento) {
         var span = document.getElementById(idelemento);

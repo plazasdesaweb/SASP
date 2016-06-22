@@ -21,32 +21,32 @@
                 <br />
             </div>
 
-            <form action="@Url.Action("FilterAnulacionTransferencia", "Transferencia")" name="form" method="post" >
+            <form action="@Url.Action("FilterAnulacionTransferencia", "Transferencia")" name="form" method="post" onsubmit="return ValidarOrden();" >
 
-            <div class="editor-label col-md-4 control-label"></div>
-            <div class="editor-field col-md-8">
-                <br />
-            </div>
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
 
-            <div class="editor-label col-md-4 control-label">
-                * Número de Orden :
-            </div>
+                <div class="editor-label col-md-4 control-label">
+                    * Número de Orden :
+                </div>
 
-            <div class="editor-field col-md-6">
-                <input type="text" id="orden" name="orden" maxlength="10" placeholder="" class="form-control">
-                <span id="mensaje"></span>
-            </div>
+                <div class="editor-field col-md-6">
+                    <input type="text" id="orden" name="orden" maxlength="10" placeholder="" class="form-control">
+                    <span id="mensaje"></span>
+                </div>
 
-            <div class="form-group">
-                <div class="col-md-12 col-btn">
-                    <div class="pull-right">
-                        <input type="submit" class="btn btn-success btn-lg" value="Buscar" />
-                        @*<a id="Buscar" class="btn btn-success btn-md">Buscar</a>*@
+                <div class="form-group">
+                    <div class="col-md-12 col-btn">
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-success btn-lg" value="Buscar" />
+                            @*<a id="Buscar" class="btn btn-success btn-md">Buscar</a>*@
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            @*</form>*@
+            </form>
 
         </div>
         <!--// panel-body -->
@@ -62,10 +62,11 @@
         LimpiarSpanMessage('mensaje');
     });
 
-    $("#Buscar").click(function () {
+    @*$("#Buscar").click(function () {
         var href = '@Url.Content("~/{controller}/{action}/{params}")';
-        var orden = $('#orden').val();
+        var orden = $('#orden').val().trim();
         if (orden == "") {
+            $('#orden').val('');
             spanMessage('mensaje', '* Debe indicar un número de Orden...');
         }
         else {
@@ -74,7 +75,25 @@
             href = href.replace("{params}", "?orden=" + orden);
             window.location.href = href;
         }
-    });    
+    });*@
+
+    function ValidarOrden() {
+        @*var href = '@Url.Content("~/{controller}/{action}/{params}")';*@
+        var orden = $('#orden').val().trim();
+        if (orden == "" || !$.isNumeric(orden)) {
+            $('#orden').val('');
+            spanMessage('mensaje', '* Debe indicar un número de Orden...');
+            return false;
+        }
+        else {
+            //href = href.replace("{controller}", "Transferencia");
+            //href = href.replace("{action}", "CreateAnulacionTransferencia");
+            //href = href.replace("{params}", "?orden=" + orden);
+            //window.location.href = href;
+            LimpiarSpanMessage('mensaje');
+            return true;
+        }
+    }
 
     function LimpiarSpanMessage(idelemento) {
         var span = document.getElementById(idelemento);
