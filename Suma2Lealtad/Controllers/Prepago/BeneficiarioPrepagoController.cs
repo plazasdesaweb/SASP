@@ -32,7 +32,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 beneficiario = new BeneficiarioPrepago()
                 {
                     Afiliado = repAfiliado.Find(numdoc)
-                };
+                };                
                 //CARGO VALOR POR DEFECTO EN LISTA DE ESTADOS
                 beneficiario.Afiliado.ListaEstados.Insert(0, new ESTADO { COD_ESTADO = " ", DESCRIPC_ESTADO = "Seleccione un Estado" });
                 //SI ES SUMA. VOY A EDIT, SI NO A CREATE
@@ -49,6 +49,18 @@ namespace Suma2Lealtad.Controllers.Prepago
                 }
                 else
                 {
+                    //VERIFICO QUE EL NUMERO DE DOCUMENTO NO EXISTA PARA PODER REGISTRARLO
+                    string validacion = repAfiliado.VerificarNumeroDeDocumentoCrear(numdoc.Substring(2));
+                    if (validacion != null)
+                    {
+                        ViewModel viewmodel = new ViewModel();
+                        viewmodel.Title = "Prepago / Beneficiario / Crear Afiliación";
+                        viewmodel.Message = "El número de documento indicado (" + numdoc + ") ya está registrado como otro tipo de identificación (" + validacion + "), no se puede afiliar.";
+                        viewmodel.ControllerName = "BeneficiarioPrepago";
+                        viewmodel.ActionName = "Filter";
+                        return RedirectToAction("GenericView", viewmodel);
+                    }
+
                     beneficiario.Afiliado.typeid = Globals.ID_TYPE_PREPAGO;
                     beneficiario.Afiliado.type = "Prepago";
                     beneficiario.Afiliado.ListaClientes = repBeneficiario.GetClientes();
@@ -65,7 +77,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                         return RedirectToAction("GenericView", viewmodel);
                     }
                     else
-                    {
+                    {                        
                         return View("Create", beneficiario.Afiliado);
                     }
                 }
@@ -292,6 +304,19 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult CambiarTipoDocumento(int id, string tipoDocumento)
         {
             BeneficiarioPrepago beneficiario = repBeneficiario.Find(id);
+
+            //VERIFICO QUE EL NUMERO DE DOCUMENTO NO EXISTA PARA PODER REGISTRARLO
+            string validacion = repAfiliado.VerificarNumeroDeDocumentoCambiarTipo(tipoDocumento + beneficiario.Afiliado.docnumber.Substring(1));
+            if (validacion != null)
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Prepago / Beneficiario / Revisar Afiliación / Cambiar Tipo de Documento";
+                viewmodel.Message = "La combinación Tipo de Documento-Número de Documento (" + tipoDocumento + beneficiario.Afiliado.docnumber.Substring(1) + ") ya está registrada, no se puede realizar el cambio de Tipo de Documento.";
+                viewmodel.ControllerName = "BeneficiarioPrepago";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+
             if (repAfiliado.CambiarTipoDocumento(beneficiario.Afiliado, tipoDocumento))
             {
                 return RedirectToAction("EditBeneficiario", new { id = id });

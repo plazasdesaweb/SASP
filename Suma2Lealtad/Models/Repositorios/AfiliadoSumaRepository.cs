@@ -2054,6 +2054,56 @@ namespace Suma2Lealtad.Models
                 return 1001;
         }
 
+        public string VerificarNumeroDeDocumentoCrear(string numerodedocumento)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                var query = (from a in db.Affiliates
+                             where a.docnumber.Substring(2) == numerodedocumento
+                             select a.docnumber
+                             ).ToList();
+                if (query.Count > 0)
+                {
+                    return query.First();
+                }
+                var query2 = (from c in db.CLIENTES
+                             where c.NRO_DOCUMENTO == numerodedocumento
+                             select c.TIPO_DOCUMENTO+"-"+c.NRO_DOCUMENTO
+                            ).ToList();
+                if (query2.Count > 0)
+                {
+                    return query2.First();
+                }
+                return null;
+            }           
+        }
+
+        public string VerificarNumeroDeDocumentoCambiarTipo(string numerodedocumento)
+        {
+            using (LealtadEntities db = new LealtadEntities())
+            {
+                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+                var query = (from a in db.Affiliates
+                             where a.docnumber == numerodedocumento
+                             select a.docnumber
+                             ).ToList();
+                if (query.Count > 0)
+                {
+                    return query.First();
+                }
+                var query2 = (from c in db.CLIENTES
+                              where c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO == numerodedocumento
+                              select c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                            ).ToList();
+                if (query2.Count > 0)
+                {
+                    return query2.First();
+                }
+                return null;
+            }
+        }
+
         public class customerInterest
         {
             public int customerID { get; set; }

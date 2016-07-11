@@ -26,6 +26,19 @@ namespace Suma2Lealtad.Controllers.Prepago
             if (afiliado.id == 0)
             {
                 //NO ESTA EN SUMA
+
+                //VERIFICO QUE EL NUMERO DE DOCUMENTO NO EXISTA PARA PODER REGISTRARLO
+                string validacion = repAfiliado.VerificarNumeroDeDocumentoCrear(numdoc.Substring(2));
+                if (validacion != null)
+                {
+                    ViewModel viewmodel = new ViewModel();
+                    viewmodel.Title = "Afiliado / Crear Afiliación";
+                    viewmodel.Message = "El número de documento indicado (" + numdoc + ") ya está registrado como otro tipo de identificación (" + validacion + "), no se puede afiliar.";
+                    viewmodel.ControllerName = "AfiliadoSuma";
+                    viewmodel.ActionName = "Filter";
+                    return RedirectToAction("GenericView", viewmodel);
+                }
+
                 afiliado.typeid = Globals.ID_TYPE_SUMA;
                 afiliado.type = "Suma";
                 //CARGO VALOR POR DEFECTO EN LISTA DE ESTADOS
@@ -233,6 +246,19 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult CambiarTipoDocumento(int id, string tipoDocumento)
         {
             AfiliadoSuma afiliado = repAfiliado.Find(id);
+
+            //VERIFICO QUE EL NUMERO DE DOCUMENTO NO EXISTA PARA PODER REGISTRARLO
+            string validacion = repAfiliado.VerificarNumeroDeDocumentoCambiarTipo(tipoDocumento + afiliado.docnumber.Substring(1));
+            if (validacion != null)
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Afiliado / Revisar Afiliación / Cambiar Tipo de Documento";
+                viewmodel.Message = "La combinación Tipo de Documento-Número de Documento (" + tipoDocumento + afiliado.docnumber.Substring(1) + ") ya está registrada, no se puede realizar el cambio de Tipo de Documento.";
+                viewmodel.ControllerName = "AfiliadoSuma";
+                viewmodel.ActionName = "FilterReview";
+                return RedirectToAction("GenericView", viewmodel);
+            }
+            
             if (repAfiliado.CambiarTipoDocumento(afiliado, tipoDocumento))
             {
                 return RedirectToAction("Edit", new { id = id });
