@@ -162,20 +162,20 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult Edit(int id)
         {
             AfiliadoSuma afiliado = repAfiliado.Find(id);
-            //SI ESTA ELIMINADO, NO SE PUEDE HACER OPERACIONES, SE MUESTRA MENSAJE
-            if (afiliado.estatus == "Eliminada")
-            {
-                ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Afiliado / Crear Afiliación";
-                viewmodel.Message = "El número de documento indicado posee un Afiliación Eliminada. No puede realizar operaciones.";
-                viewmodel.ControllerName = "AfiliadoSuma";
-                viewmodel.ActionName = "FilterReview";
-                return RedirectToAction("GenericView", viewmodel);
-            }
-            else
-            {
+            ////SI ESTA ELIMINADO, NO SE PUEDE HACER OPERACIONES, SE MUESTRA MENSAJE
+            //if (afiliado.estatus == "Eliminada")
+            //{
+            //    ViewModel viewmodel = new ViewModel();
+            //    viewmodel.Title = "Afiliado / Revisar Afiliación";
+            //    viewmodel.Message = "El número de documento indicado posee un Afiliación Eliminada. No puede realizar operaciones.";
+            //    viewmodel.ControllerName = "AfiliadoSuma";
+            //    viewmodel.ActionName = "FilterReview";
+            //    return RedirectToAction("GenericView", viewmodel);
+            //}
+            //else
+            //{
                 return View(afiliado);
-            }
+            //}
         }
 
         [HttpPost]

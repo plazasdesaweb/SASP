@@ -1589,64 +1589,10 @@ namespace Suma2Lealtad.Models
             using (LealtadEntities db = new LealtadEntities())
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                // Entidad: Affiliate
-                Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
-                if (affiliate != null)
-                {
-                    //affiliate.storeid = afiliado.storeid;
-                    //affiliate.channelid = afiliado.channelid;
-                    //affiliate.typeid = afiliado.typeid;
-                    //affiliate.typedelivery = afiliado.typedelivery;
-                    //affiliate.storeiddelivery = afiliado.storeiddelivery;
-                    affiliate.modifieduserid = (int)HttpContext.Current.Session["userid"];
-                    affiliate.modifieddate = System.DateTime.Now;
-                    affiliate.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_ELIMINADA) && (s.tablename == "Affiliatte")).id;
-                    //affiliate.reasonsid = afiliado.reasonsid;
-                    //affiliate.twitter_account = afiliado.twitter_account;
-                    //affiliate.facebook_account = afiliado.facebook_account;
-                    //affiliate.instagram_account = afiliado.instagram_account;
-                    affiliate.comments = observaciones;
-                }
-                // Entidad: TARJETA
-                //TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_AFILIACION.Equals(afiliado.id));
-                //Decimal pan = Convert.ToDecimal(afiliado.pan);
-                //TARJETA tarjeta = db.TARJETAS.FirstOrDefault(t => t.NRO_TARJETA.Equals(pan));
-                //if (tarjeta != null)
-                //{
-                //tarjeta.NRO_AFILIACION = afiliado.id;
-                //tarjeta.ESTATUS_TARJETA = afiliado.estatustarjeta;
-                //tarjeta.COD_USUARIO = (int)HttpContext.Current.Session["userid"];
-                //tarjeta.TRACK2 = afiliado.trackII;
-                //tarjeta.CVV2 = afiliado.cvv2;
-                //tarjeta.FECHA_CREACION = afiliado.printed == null ? new DateTime?() : DateTime.ParseExact(afiliado.printed, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                //}
-                //Entidad: AffiliateAud 
-                int sumastatusidactual = (from a in db.Affiliates
-                                          where a.id.Equals(afiliado.id)
-                                          select a.sumastatusid
-                                         ).SingleOrDefault().Value;
-                //Solo inserto registros cuando hay cambio de estado de Afiliación
-                if (sumastatusidactual != affiliate.sumastatusid)
-                {
-                    var affiliateAuditoria = new AffiliateAud()
-                    {
-                        id = AfilliateAudID(),
-                        affiliateid = afiliado.id,
-                        modifieduserid = (int)HttpContext.Current.Session["userid"],
-                        modifieddate = DateTime.Now,
-                        statusid = affiliate.sumastatusid.Value,
-                        reasonsid = Globals.ID_REASONS_INICIAL,
-                        comments = affiliate.comments
-                    };
-                    db.AffiliateAuds.Add(affiliateAuditoria);
-                }
-                db.SaveChanges();
-                return true;
-                //}
-                //else
-                //{
-                //    return false;
-                //}
+                afiliado.estatus = "Eliminada"; 
+                afiliado.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_AFILIACION_ELIMINADA) && (s.tablename == "Affiliatte")).id;
+                afiliado.comments = observaciones;
+                return SaveChanges(afiliado);                
             }
         }
 
