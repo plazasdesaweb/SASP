@@ -273,11 +273,9 @@ namespace Suma2Lealtad.Models
 
         public List<ReportePrepago> ReporteRecargasConsolidado(string tiporeporte, string fechadesde, string fechahasta, int idCliente, string referencia, string observaciones)
         {
-            string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
-            string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
             //para filtrar las fechas
             DateTime desde = DateTime.ParseExact(fechadesde, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             EncabezadoReporte encabezado = new EncabezadoReporte();
             ReportePrepago linea = new ReportePrepago();
@@ -307,7 +305,7 @@ namespace Suma2Lealtad.Models
                                               where o.prepaidcustomerid == idCliente
                                                     && (o.comments == "Orden de Anulación de Recarga" || o.comments.Contains("Orden de Recarga"))
                                                     && s.name == "Procesada" && (od.comments == "Recarga efectiva" || od.comments.Contains("Anulación efectiva"))
-                                                    && (o.processdate >= desde && o.processdate <= hasta)
+                                                    && (o.processdate >= desde && o.processdate < hasta)
                                               group od by new { o.prepaidcustomerid, o.comments, o.processdate, o.documento, o.observaciones } into g
                                               select new
                                               {
@@ -396,7 +394,7 @@ namespace Suma2Lealtad.Models
                                                   where o.prepaidcustomerid == c.idCliente
                                                         && (o.comments == "Orden de Anulación de Recarga" || o.comments.Contains("Orden de Recarga"))
                                                         && s.name == "Procesada" && (od.comments == "Recarga efectiva" || od.comments.Contains("Anulación efectiva"))
-                                                        && (o.processdate >= desde && o.processdate <= hasta)
+                                                        && (o.processdate >= desde && o.processdate < hasta)
                                                   group od by new { o.prepaidcustomerid, o.comments, o.processdate, o.documento, o.observaciones } into g
                                                   select new
                                                   {
@@ -475,11 +473,9 @@ namespace Suma2Lealtad.Models
 
         public List<ReportePrepago> ReporteRecargasDetallado(string tiporeporte, string fechadesde, string fechahasta, int idCliente, string referencia, string observaciones)
         {
-            string fechasdesdemod = fechadesde.Substring(6, 4) + fechadesde.Substring(3, 2) + fechadesde.Substring(0, 2);
-            string fechahastamod = fechahasta.Substring(6, 4) + fechahasta.Substring(3, 2) + fechahasta.Substring(0, 2);
             //para filtrar las fechas
             DateTime desde = DateTime.ParseExact(fechadesde, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             List<ReportePrepago> reporte = new List<ReportePrepago>();
             EncabezadoReporte encabezado = new EncabezadoReporte();
             ReportePrepago linea = new ReportePrepago();
@@ -507,7 +503,7 @@ namespace Suma2Lealtad.Models
                                         where o.prepaidcustomerid == idCliente
                                               && (o.comments == "Orden de Anulación de Recarga" || o.comments.Contains("Orden de Recarga"))
                                               && s.name == "Procesada" && (od.comments == "Recarga efectiva" || od.comments.Contains("Anulación efectiva"))
-                                              && (o.processdate >= desde && o.processdate <= hasta)
+                                              && (o.processdate >= desde && o.processdate < hasta)
                                         select new ReportePrepago()
                                         {
                                             Beneficiario = new BeneficiarioPrepagoIndex()
@@ -610,7 +606,7 @@ namespace Suma2Lealtad.Models
                                         where o.prepaidcustomerid == idCliente
                                               && (o.comments == "Orden de Anulación de Recarga" || o.comments.Contains("Orden de Recarga"))
                                               && s.name == "Procesada" && (od.comments == "Recarga efectiva" || od.comments.Contains("Anulación efectiva"))
-                                              && (o.processdate >= desde && o.processdate <= hasta)
+                                              && (o.processdate >= desde && o.processdate < hasta)
                                         group od by new { o.prepaidcustomerid, a.docnumber, c.NOMBRE_CLIENTE1, c.APELLIDO_CLIENTE1, o.comments, o.documento, o.observaciones } into g
                                         select new
                                         {
