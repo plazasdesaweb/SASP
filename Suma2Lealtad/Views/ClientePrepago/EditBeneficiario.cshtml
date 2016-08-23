@@ -275,37 +275,78 @@
                         <div class="tab-pane" id="tab2">
                             @*COLOCAREMOS CODIGO PARA PERMITIR ESCANEAR/ADJUNTAR IMAGEN, OPCIONAL, SI EL AFILIADO NO TIENE IMAGEN EN BD*@
                             @{
+<div class="col-md-12" id="cancelar" style="display:none">
+<div class="col-md-12 col-btn">
+   <div class="text-center">
+        <a href="javascript:Cancelar()" class="btn btn-success btn-md" role="button" >Cancelar</a>
+   </div>
+</div>
+</div>
+                        
+                        if (Model.picture != null)
+                        {
+                        @:<div id="divimagen">
+                            }
+                        else
+                        {
+                        @:<div id="divimagen" style="display:none">
+                                }
+                    }
+                    <!-- btn btn-success -->
+                            
+<div class="col-md-12">
+<div class="col-md-12 col-btn">
+   <div class="text-center">
+        <a id="cambiar" href="javascript:Cambiar()" class="btn btn-success btn-md" role="button">Cambiar imagen</a>
+   </div>
+</div>
+</div>
+                          <div class="editor-label col-md-4 control-label"></div>
+                                <div class="editor-field col-md-6">
+                                <br />
+                          </div>
+                               <!--// btn btn-success -->
+                                                                
+                                <div class="editor-label col-md-2 control-label">
+                                </div>
+                                <div class="editor-field col-md-12">
+<img src="@Url.Action("GetImage", "AfiliadoSuma", new { id = Model.id })" style="display:block;margin-left:auto;margin-right:auto" />
+                                    </div>
+</div>
+
+                            @{
                                 if (Model.picture != null)
                                 {
-                                    @:<div class="editor-label col-md-2 control-label">
-                                    @:</div>
-                                    @:<div class="editor-field col-md-10">
-                                        @:<img src="@Url.Action("GetImage", "AfiliadoSuma", new { id = Model.id })" />
-                                    @:</div>
-                                }
+                        @:<div id="divescaner" style="display:none">
+                            }
                                 else
                                 {
-                                    @:<div class="editor-label col-md-10 control-label">
-                                        @:<div class="editor-label col-md-10 control-label">
-                                            @:<p class="text-left text-danger">Escanee el documento de identidad, o seleccione el archivo si ya está escaneado.</p>
-                                        @:</div>
-                                    @:</div>
-                                    @:<div class="col-md-12">
-                                        Html.RenderPartial("SilverlightEscaner");
-                                        @:<div class="editor-label col-md-10">
-                                            @:<p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
-                                        @:</div>
-                                    @:</div>
-                                    @:<div class="col-md-12 col-btn">
-                                        @:<div id="capaarchivo" class="text-left">
-                                            @:<input id="fileNoValidado" type=file name="fileNoValidado" style="visibility:hidden;position:absolute;top:0;left:0" onchange="ActualizaElementoControl('ElementoControl','Seleccionada', this, '@Model.docnumber')">
-                                            @:<input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">
-                                            @:<span id="info" style="border: 0px solid black"></span>
-                                        @:</div>
-                                    @:</div>
-                                }                                                       
-                             }
+                        @:<div id="divescaner">
+                                }
+                    }
+                                  
+                               <div class="editor-label col-md-12 control-label">                       
+                                    <div class="editor-label col-md-12 control-label">
+                                            <p class="text-left text-danger">1. Escanee ó Importe el documento de identidad (formatos permitidos para importar: .jpg, .bmp, .png)</p>
+                                            <p class="text-left text-danger">2. Seleccione el archivo escaneado ó importado.</p>                                        
+                                    </div>
+                               </div>
+                                  
+                                <div class="col-md-12">
+                    @{Html.RenderPartial("SilverlightEscaner");}
+                    <div class="editor-label col-md-10">
+                                            <p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
+                                        </div>
+                                    </div>
+                                <div class="col-md-12 col-btn">
+<div id="capaarchivo" class="text-left">
+                                            <input id="fileNoValidado" type=file name="fileNoValidado" style="visibility:hidden;position:absolute;top:0;left:0" onchange="ActualizaElementoControl('ElementoControl','Seleccionada', this, '@Model.docnumber')">
+                                            <input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">
+                                            <span id="info" style="border: 0px solid black"></span>
+                                    </div>
+                                 </div>                                                                                                                                 
                         </div>
+                            </div>
 
                         <!-- DIRECCIÓN -->
                         <div class="tab-pane" id="tab3">
@@ -535,7 +576,6 @@
 </div>
 <!--// container -->
 
-@*<script src="~/Scripts/jquery-2.1.3.min.js"></script>*@
 <script>
     $(document).ready(function () {
         VerificarTipoDocumento()
@@ -577,4 +617,18 @@
         capa.innerHTML = varHTML;
     }
     //<!-- FIN SECCION PARA VERIFICAR OPERACIONES --> 
+
+    function Cambiar() {
+        $('#divimagen').hide();
+        $('#cambiar').hide();
+        $('#cancelar').show();
+        $('#divescaner').show();
+    }
+
+    function Cancelar() {
+        $('#cancelar').hide();
+        $('#divescaner').hide();
+        $('#divimagen').show();
+        $('#cambiar').show();
+    }
 </script>

@@ -816,6 +816,9 @@
     <Content Include="Views\Reporte\ReporteTransaccionesPrepago.cshtml" />
     <Content Include="Views\Reporte\ReporteTransaccionesPrepagoPDF.cshtml" />
     <Content Include="Views\Reporte\ReporteTransaccionesSumaPDF.cshtml" />
+    <Content Include="Views\Reporte\FilterReporteTarjetas.cshtml" />
+    <Content Include="Views\Reporte\ReporteTarjetas.cshtml" />
+    <Content Include="Views\Reporte\ReporteTarjetasPDF.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

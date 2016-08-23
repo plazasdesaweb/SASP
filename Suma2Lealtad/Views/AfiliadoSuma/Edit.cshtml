@@ -51,20 +51,20 @@
                             </div>
 
                             @Html.HiddenFor(model => model.id)
-                            @Html.HiddenFor(model => model.reasonsid)
-                            @Html.HiddenFor(model => model.sumastatusid)
-                            @Html.HiddenFor(model => model.clientid)
-                            @Html.HiddenFor(model => model.typeid)
-                            @Html.HiddenFor(model => model.WebType)
-                            @Html.HiddenFor(model => model.estatustarjeta)
+                    @Html.HiddenFor(model => model.reasonsid)
+                    @Html.HiddenFor(model => model.sumastatusid)
+                    @Html.HiddenFor(model => model.clientid)
+                    @Html.HiddenFor(model => model.typeid)
+                    @Html.HiddenFor(model => model.WebType)
+                    @Html.HiddenFor(model => model.estatustarjeta)
 
-                            <div class="editor-label col-md-4 control-label">
+                    <div class="editor-label col-md-4 control-label">
                                 * Tipo de Afiliado :
                             </div>
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.type, new { @class = "form-control", @readonly = "true" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Fecha Solicitud de Afiliación :
@@ -72,7 +72,7 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.fechaAfiliacion, new { @class = "form-control", @readonly = "true" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Solicitud de Afiliación creada por :
@@ -80,7 +80,7 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.usuarioAfiliacion, new { @class = "form-control", @readonly = "true" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Número de Documento/Cédula :
@@ -88,25 +88,25 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.docnumber, new { @class = "form-control", @readonly = "true" })
-                            </div>
+                    </div>
 
                             @{if (indicadorMostrar == "Mostrar")
                               {
                                 @:<div class="editor-field col-md-2">
-@:    <a id="CambiarTipoDocumento" href="@Url.Action("CambiarTipoDocumento", "AfiliadoSuma", new { id = Model.id })" class="btn btn-info btn-sm" >                                    
+                                @:    <a id="CambiarTipoDocumento" href="@Url.Action("CambiarTipoDocumento", "AfiliadoSuma", new { id = Model.id })" class="btn btn-info btn-sm" >                                    
                                 @:        <span class="glyphicon glyphicon-edit"></span>
                                 @:    </a>
                                 @:</div>
-                                                              }
+                                                                                                                                                                                              }
                             }
 
-                            <div class="editor-label col-md-4 control-label">
+                    <div class="editor-label col-md-4 control-label">
                                 * Correo Electrónico :
                             </div>
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.email, new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Confirmación Correo Electrónico :
@@ -122,8 +122,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.name, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.name)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.name)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 Segundo Nombre :
@@ -131,8 +131,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.name2, new { @class = "form-control Natural" })
-                                @Html.ValidationMessageFor(model => model.name2)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.name2)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 * Primer Apellido :
@@ -140,8 +140,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.lastname1, new { @class = "form-control Natural" })
-                                @Html.ValidationMessageFor(model => model.lastname1)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.lastname1)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 Segundo Apellido :
@@ -149,8 +149,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.lastname2, new { @class = "form-control Natural" })
-                                @Html.ValidationMessageFor(model => model.lastname2)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.lastname2)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 * Fecha de Nacimiento :
@@ -158,8 +158,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.birthdate, new { @class = "form-control Natural" })
-                                @Html.ValidationMessageFor(model => model.birthdate)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.birthdate)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 * Sexo :
@@ -170,7 +170,7 @@
                                 new SelectList(Model.SexoOptions,
                                 "id", "sexo",
                                 Model.SexoOptions), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 * Estado Civil :
@@ -181,7 +181,7 @@
                                 new SelectList(Model.MaritalStatusOptions,
                                 "id", "maritalstatus",
                                 Model.MaritalStatusOptions), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label Natural">
                                 * Nacionalidad :
@@ -192,7 +192,7 @@
                                 new SelectList(Model.NacionalidadOptions,
                                 "id", "nacionalidad",
                                 Model.NacionalidadOptions), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Teléfono de Casa :
@@ -200,8 +200,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.phone1, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.phone1)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.phone1)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Teléfono de Oficina :
@@ -209,8 +209,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.phone2, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.phone2)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.phone2)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Teléfono de Celular :
@@ -218,8 +218,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.phone3, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.phone3)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.phone3)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Ocupación :
@@ -227,8 +227,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.occupation, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.occupation)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.occupation)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Twitter :
@@ -236,8 +236,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.twitter_account, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.twitter_account)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.twitter_account)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Facebook :
@@ -245,8 +245,8 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.facebook_account, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.facebook_account)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.facebook_account)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Instagram :
@@ -254,46 +254,87 @@
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.instagram_account, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.instagram_account)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.instagram_account)
+                    </div>
 
                         </div>
                         <!--// DATOS BÁSICOS -->
 
                         <div class="tab-pane" id="tab2">
                             @*COLOCAREMOS CODIGO PARA PERMITIR ESCANEAR/ADJUNTAR IMAGEN, OPCIONAL, SI EL AFILIADO NO TIENE IMAGEN EN BD*@
+                    @{
+<div class="col-md-12" id="cancelar" style="display:none">
+<div class="col-md-12 col-btn">
+   <div class="text-center">
+        <a href="javascript:Cancelar()" class="btn btn-success btn-md" role="button" >Cancelar</a>
+   </div>
+</div>
+</div>
+                        
+                        if (Model.picture != null)
+                        {
+                        @:<div id="divimagen">
+                            }
+                        else
+                        {
+                        @:<div id="divimagen" style="display:none">
+                                }
+                    }
+                    <!-- btn btn-success -->
+                            
+<div class="col-md-12">
+<div class="col-md-12 col-btn">
+   <div class="text-center">
+        <a id="cambiar" href="javascript:Cambiar()" class="btn btn-success btn-md" role="button">Cambiar imagen</a>
+   </div>
+</div>
+</div>
+                          <div class="editor-label col-md-4 control-label"></div>
+                                <div class="editor-field col-md-6">
+                                <br />
+                          </div>
+                               <!--// btn btn-success -->
+                                                                
+                                <div class="editor-label col-md-2 control-label">
+                                </div>
+                                <div class="editor-field col-md-12">
+<img src="@Url.Action("GetImage", "AfiliadoSuma", new { id = Model.id })" style="display:block;margin-left:auto;margin-right:auto" />
+                                    </div>
+</div>
+
                             @{
                                 if (Model.picture != null)
                                 {
-                                @:<div class="editor-label col-md-2 control-label">
-@:</div>
-                                @:<div class="editor-field col-md-10">
-@:<img src="@Url.Action("GetImage", "AfiliadoSuma", new { id = Model.id })" />
-                                    @:</div>
-                                                                                                }
+                        @:<div id="divescaner" style="display:none">
+                            }
                                 else
                                 {
-                                @:<div class="editor-label col-md-10 control-label">
-@:<div class="editor-label col-md-10 control-label">
-                                            @:<p class="text-left text-danger">Escanee el documento de identidad, o seleccione el archivo si ya está escaneado.</p>
-                                        @:</div>
-                                    @:</div>
-                                @:<div class="col-md-12">
-Html.RenderPartial("SilverlightEscaner");
-                                        @:<div class="editor-label col-md-10">
-                                            @:<p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
-                                        @:</div>
-                                    @:</div>
-                                @:<div class="col-md-12 col-btn">
-@:<div id="capaarchivo" class="text-left">
-                                            @:<input id="fileNoValidado" type=file name="fileNoValidado" style="visibility:hidden;position:absolute;top:0;left:0" onchange="ActualizaElementoControl('ElementoControl','Seleccionada', this, '@Model.docnumber')">
-                                            @:<input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">
-                                            @:<span id="info" style="border: 0px solid black"></span>
-                                    @:</div>
-                                 @:</div>
-                                                                 }                                                       
-                            }
+                        @:<div id="divescaner">
+                                }
+                    }
+                                  
+                               <div class="editor-label col-md-12 control-label">                       
+                                    <div class="editor-label col-md-12 control-label">
+                                            <p class="text-left text-danger">1. Escanee ó Importe el documento de identidad (formatos permitidos para importar: .jpg, .bmp, .png)</p>
+                                            <p class="text-left text-danger">2. Seleccione el archivo escaneado ó importado.</p>                                        
+                                    </div>
+                               </div>
+
+                                <div class="col-md-12">
+                    @{Html.RenderPartial("SilverlightEscaner");}
+                    <div class="editor-label col-md-10">
+                                            <p class="text-left" id="ElementoControl" style="display: none">ElementoControl</p>
+                                        </div>
+                                    </div>
+                                <div class="col-md-12 col-btn">
+<div id="capaarchivo" class="text-left">
+                                            <input id="fileNoValidado" type=file name="fileNoValidado" style="visibility:hidden;position:absolute;top:0;left:0" onchange="ActualizaElementoControl('ElementoControl','Seleccionada', this, '@Model.docnumber')">
+                                            <input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">
+                                            <span id="info" style="border: 0px solid black"></span>
+                                    </div>
+                                 </div>                                                                                                                                 
                         </div>
+                            </div>
 
                         <!-- DIRECCIÓN -->
                         <div class="tab-pane" id="tab3">
@@ -312,7 +353,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.ListaEstados,
                                 "COD_ESTADO", "DESCRIPC_ESTADO",
                                 Model.ListaEstados), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Ciudad :
@@ -323,7 +364,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.ListaCiudades,
                                 "cod_ciudad", "descripc_ciudad",
                                 Model.ListaCiudades), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Municipio :
@@ -334,7 +375,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.ListaMunicipios,
                                 "cod_municipio", "descripc_municipio",
                                 Model.ListaMunicipios), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Parroquia :
@@ -345,7 +386,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.ListaParroquias,
                                 "cod_parroquia", "descripc_parroquia",
                                 Model.ListaParroquias), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Urbanización :
@@ -356,7 +397,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.ListaUrbanizaciones,
                                 "cod_urbanizacion", "descripc_urbanizacion",
                                 Model.ListaUrbanizaciones), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
@@ -372,7 +413,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.ChannelOptions,
                                 "id", "channel",
                                 Model.ChannelOptions), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 * Sucursal de Afiliación:
@@ -383,8 +424,8 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.StoreOptions,
                                 "id", "sucursal",
                                 Model.StoreOptions), new { @class = "form-control", @disabled = "disabled" })
-                                @Html.HiddenFor(model => model.storeid)
-                            </div>
+                    @Html.HiddenFor(model => model.storeid)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Tipo de Despacho/Entrega :
@@ -395,7 +436,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.TypeDeliveryOptions,
                                 "id", "delivery",
                                 Model.TypeDeliveryOptions), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label">
                                 Sucursal :
@@ -406,7 +447,7 @@ Html.RenderPartial("SilverlightEscaner");
                                 new SelectList(Model.StoreOptions,
                                 "id", "sucursal",
                                 Model.StoreOptions), new { @class = "form-control" })
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
@@ -423,9 +464,9 @@ Html.RenderPartial("SilverlightEscaner");
                                     @Html.CheckBoxFor(m => m.Intereses[i].Checked, new { id = i })
                                     @Html.HiddenFor(m => m.Intereses[i].id)
                                     @Html.DisplayFor(m => m.Intereses[i].name)
-                                    <br />
+<br />
                                 }
-                            </div>
+                    </div>
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
@@ -438,8 +479,8 @@ Html.RenderPartial("SilverlightEscaner");
 
                             <div class="editor-field col-md-6">
                                 @Html.TextAreaFor(model => model.comments, new { @class = "form-control", style = "width: 520px; height: 100px;" })
-                                @Html.ValidationMessageFor(model => model.comments)
-                            </div>
+                    @Html.ValidationMessageFor(model => model.comments)
+                    </div>
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
@@ -483,8 +524,8 @@ Html.RenderPartial("SilverlightEscaner");
                             <br />
                         </div>
 
-                    </div>
-                    <!--// tab-content -->
+                </div>
+                <!--// tab-content -->
 
                 </div>
                 <!--// rootwizard -->
@@ -535,9 +576,23 @@ Html.RenderPartial("SilverlightEscaner");
         varHTML = '';
         capa.innerHTML = varHTML;
         varHTML += '<input id="fileNoValidado" type=file name="fileNoValidado" style="visibility:hidden;position:absolute;top:0;left:0" onchange="' + textofuncion + '" />';
-        varHTML += '<input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">'
-        varHTML += '<span id="info" style="border: 0px solid black"></span>'
+        varHTML += '<input type="button" value="Seleccione Archivo" class="btn btn-success btn-md" onclick="this.form.fileNoValidado.click()">';
+        varHTML += '<span id="info" style="border: 0px solid black"></span>';
         capa.innerHTML = varHTML;
     }
     //<!-- FIN SECCION PARA VERIFICAR OPERACIONES --> 
+
+    function Cambiar() {
+        $('#divimagen').hide();
+        $('#cambiar').hide();
+        $('#cancelar').show();
+        $('#divescaner').show();
+    }
+
+    function Cancelar() {
+        $('#cancelar').hide();
+        $('#divescaner').hide();
+        $('#divimagen').show();
+        $('#cambiar').show();        
+    }
 </script>

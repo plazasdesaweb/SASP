@@ -1127,19 +1127,27 @@ namespace Suma2Lealtad.Models
                         int length = fileNoValidado.ContentLength;
                         byte[] buffer = new byte[length];
                         fileNoValidado.InputStream.Read(buffer, 0, length);
-                        var Photos_Affiliate = new Photos_Affiliate()
+                        Photos_Affiliate photos_affiliate = db.Photos_Affiliates.FirstOrDefault(x => x.Affiliate_id == afiliado.id);
+                        if (photos_affiliate == null)
+                        {
+                            photos_affiliate = new Photos_Affiliate()
                         {
                             photo = buffer,
                             photo_type = fileNoValidado.ContentType,
                             Affiliate_id = afiliado.id
                         };
-                        db.Photos_Affiliates.Add(Photos_Affiliate);
+                            db.Photos_Affiliates.Add(photos_affiliate);
+                        }
+                        else
+                        {
+                            photos_affiliate.photo = buffer;
+                            photos_affiliate.photo_type = fileNoValidado.ContentType;
+                        }
                     }
                     catch
                     {
                     }
                 }
-
                 db.SaveChanges();
                 return true;
                 //}

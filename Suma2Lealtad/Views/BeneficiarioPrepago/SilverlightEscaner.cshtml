@@ -4,6 +4,7 @@
     <div class="text-center">
         <a href="javascript:Escanear()" class="btn btn-success btn-md" role="button">Escanear</a>
         <a href="javascript:Limpiar()" class="btn btn-success btn-md" role="button">Limpiar</a>
+        <a href="javascript:Importar()" class="btn btn-success btn-md" role="button">Importar</a>
     </div>
 </div>
 <!--// btn btn-success -->
@@ -27,6 +28,11 @@
         if (slcontrol) {
             slcontrol.Content.MainPage.Limpiar();
             Borracampofile();
+        }
+    }
+    function Importar() {
+        if (slcontrol) {
+            slcontrol.Content.MainPage.Importar();
         }
     }
 </script>

@@ -111,5 +111,38 @@ namespace SumaPlazas.Dispositivos.Escaner
             listBox1.Visibility = System.Windows.Visibility.Visible;
         }
 
+        [ScriptableMember]
+        public void Importar()
+        {           
+            ElementoHtmlControl.SetProperty("innerHTML", "No Escaneada");
+            listBox1.Items.Clear();
+            listBox1.Visibility = System.Windows.Visibility.Visible;
+            listBox1.Items.Add("Importando imagen....");
+            listBox1.SelectedIndex = listBox1.Items.Count - 1;
+            EscanerWIA EscanerWia = new EscanerWIA();
+            string RutaArchivo = EscanerWia.ImportarImagen(NombreArchivo);
+            if (RutaArchivo.Contains("Error"))
+            //if (RutaArchivo == "")
+            {
+                //listBox1.Items.Add("Resultado de la operación: " + RutaArchivo);
+                //listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                listBox1.Items.Add(RutaArchivo);
+                listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                //MessageBox.Show("Error de Aplicación: No se pudo escanear el documento.", "SumaPlazas.Dispositivos.Escaner.MainPage.Escanear", MessageBoxButton.OK);
+                //listBox1.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                using (Stream Stream = File.OpenRead(RutaArchivo))
+                {
+                    BitmapImage BitmapImage = new BitmapImage();
+                    BitmapImage.SetSource(Stream);
+                    listBox1.Visibility = System.Windows.Visibility.Collapsed;
+                    scannedImage.Source = BitmapImage;
+                }
+                ElementoHtmlControl.SetProperty("innerHTML", "Escaneada");
+            }
+        }
+
     }
 }
