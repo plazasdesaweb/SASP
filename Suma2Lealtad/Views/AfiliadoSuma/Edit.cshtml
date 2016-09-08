@@ -262,7 +262,9 @@
 
                         <div class="tab-pane" id="tab2">
                             @*COLOCAREMOS CODIGO PARA PERMITIR ESCANEAR/ADJUNTAR IMAGEN, OPCIONAL, SI EL AFILIADO NO TIENE IMAGEN EN BD*@
-                    @{
+
+@{if (indicadorMostrar == "Mostrar")
+{                    
 <div class="col-md-12" id="cancelar" style="display:none">
 <div class="col-md-12 col-btn">
    <div class="text-center">
@@ -270,8 +272,10 @@
    </div>
 </div>
 </div>
+}
+}
                         
-                        if (Model.picture != null)
+                        @{if (Model.picture != null)
                         {
                         @:<div id="divimagen">
                             }
@@ -281,7 +285,9 @@
                                 }
                     }
                     <!-- btn btn-success -->
-                            
+
+@{if (indicadorMostrar == "Mostrar")
+{                             
 <div class="col-md-12">
 <div class="col-md-12 col-btn">
    <div class="text-center">
@@ -289,6 +295,8 @@
    </div>
 </div>
 </div>
+}
+}
                           <div class="editor-label col-md-4 control-label"></div>
                                 <div class="editor-field col-md-6">
                                 <br />

@@ -819,6 +819,7 @@
     <Content Include="Views\Reporte\FilterReporteTarjetas.cshtml" />
     <Content Include="Views\Reporte\ReporteTarjetas.cshtml" />
     <Content Include="Views\Reporte\ReporteTarjetasPDF.cshtml" />
+    <Content Include="Views\Reporte\Copy of ReporteRecargasDetalladoPDF.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

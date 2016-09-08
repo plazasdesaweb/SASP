@@ -25,10 +25,12 @@
         <div class="panel-body">
 
             @*@{if (Model.idClientePrepago == 0){*@
-            @{if (Model.type == "Suma"){
+            @{if (Model.type == "Suma")
+              {
                   @:<form id="commentForm" method="post" action="@Url.Action("EditBeneficiarioSuma", "BeneficiarioPrepago")" class="form-horizontal" enctype = "multipart/form-data">                         
               }
-              else{
+              else
+              {
                   @:<form id="commentForm" method="post" action="@Url.Action("EditBeneficiario", "BeneficiarioPrepago")" class="form-horizontal" enctype = "multipart/form-data">                                      
               }
              }  
@@ -83,7 +85,8 @@
                                                       new { @class = "form-control" }
                                                       )
                                   }
-                                  else{
+                                  else
+                                  {
                                       @Html.HiddenFor(model => model.idClientePrepago)
                                       @Html.TextBoxFor(model => model.NombreClientePrepago, new { @class = "form-control", @readonly = "true" })                                
                                   }                                      
@@ -184,9 +187,9 @@
                             <div class="editor-field col-md-6 Natural">
                                 @Html.DropDownListFor(m => m.gender,
                                                       new SelectList(Model.SexoOptions,
-                                                      "id", 
+                                                      "id",
                                                       "sexo",
-                                                      Model.gender), 
+                                                      Model.gender),
                                                       new { @class = "form-control" }
                                                       )
                             </div>
@@ -198,9 +201,9 @@
                             <div class="editor-field col-md-6 Natural">
                                 @Html.DropDownListFor(m => m.maritalstatus,
                                                       new SelectList(Model.MaritalStatusOptions,
-                                                      "id", 
+                                                      "id",
                                                       "maritalstatus",
-                                                      Model.maritalstatus), 
+                                                      Model.maritalstatus),
                                                       new { @class = "form-control" }
                                                       )
                             </div>
@@ -212,9 +215,9 @@
                             <div class="editor-field col-md-6 Natural">
                                 @Html.DropDownListFor(m => m.nationality,
                                                       new SelectList(Model.NacionalidadOptions,
-                                                      "id", 
+                                                      "id",
                                                       "nacionalidad",
-                                                      Model.nationality), 
+                                                      Model.nationality),
                                                       new { @class = "form-control" }
                                                       )
                             </div>
@@ -287,7 +290,9 @@
 
                         <div class="tab-pane" id="tab2">
                             @*COLOCAREMOS CODIGO PARA PERMITIR ESCANEAR/ADJUNTAR IMAGEN, OPCIONAL, SI EL AFILIADO NO TIENE IMAGEN EN BD*@
-                    @{
+                         
+@{if (indicadorMostrar == "Mostrar")
+{  
 <div class="col-md-12" id="cancelar" style="display:none">
 <div class="col-md-12 col-btn">
    <div class="text-center">
@@ -295,18 +300,22 @@
    </div>
 </div>
 </div>
+}
+}
                         
-                        if (Model.picture != null)
-                        {
+                        @{if (Model.picture != null)
+                              {
                         @:<div id="divimagen">
                             }
-                        else
-                        {
+                              else
+                              {
                         @:<div id="divimagen" style="display:none">
                                 }
-                    }
+                          }
                     <!-- btn btn-success -->
-                            
+
+@{if (indicadorMostrar == "Mostrar")
+  {                              
 <div class="col-md-12">
 <div class="col-md-12 col-btn">
    <div class="text-center">
@@ -314,6 +323,8 @@
    </div>
 </div>
 </div>
+  }
+}
                           <div class="editor-label col-md-4 control-label"></div>
                                 <div class="editor-field col-md-6">
                                 <br />
@@ -465,7 +476,7 @@
                                 @Html.DropDownListFor(m => m.storeid,
                                 new SelectList(Model.StoreOptions,
                                 "id", "sucursal",
-                                Model.StoreOptions), new { @class = "form-control" , @disabled = "disabled" })
+                                Model.StoreOptions), new { @class = "form-control", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.storeid)
                             </div>
 
