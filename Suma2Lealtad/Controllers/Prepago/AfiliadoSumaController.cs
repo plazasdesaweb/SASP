@@ -152,10 +152,17 @@ namespace Suma2Lealtad.Controllers.Prepago
             return View(afiliado);
         }
 
-        [HttpPost]
-        public ActionResult FilterReview(string numdoc, string name, string email, string estadoAfiliacion, string estadoTarjeta)
+        public ActionResult FilterReviewCargado(int id)
         {
-            List<AfiliadoSumaIndex> afiliados = repAfiliado.Find(numdoc, name, email, estadoAfiliacion, estadoTarjeta);
+            AfiliadoSuma afiliado = repAfiliado.Find(id);
+            List<AfiliadoSumaIndex> afiliados = repAfiliado.Find(afiliado.docnumber, "", "", "", "");
+            return View("Index", afiliados);
+        }
+
+        [HttpPost]
+        public ActionResult FilterReview(string numdoc, string name, string email, string estadoAfiliacion, string estadoTarjeta, string pan = "", string name2 = "", string lastname1 = "", string lastname2 = "")
+        {
+            List<AfiliadoSumaIndex> afiliados = repAfiliado.Find(numdoc, name, email, estadoAfiliacion, estadoTarjeta, pan, name2, lastname1,lastname2);
             return View("Index", afiliados);
         }
 

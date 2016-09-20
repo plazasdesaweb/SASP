@@ -148,7 +148,7 @@ namespace Suma2Lealtad.Models
             return afiliado;
         }
 
-        public List<AfiliadoSumaIndex> Find(string numdoc, string name, string email, string estadoAfiliacion, string estadoTarjeta)
+        public List<AfiliadoSumaIndex> Find(string numdoc, string name, string email, string estadoAfiliacion, string estadoTarjeta, string pan = "", string name2 = "", string lastname1 ="", string lastname2 ="")
         {
             List<AfiliadoSumaIndex> afiliados = new List<AfiliadoSumaIndex>();
             using (LealtadEntities db = new LealtadEntities())
@@ -158,14 +158,10 @@ namespace Suma2Lealtad.Models
                 {
                     numdoc = null;
                 }
-                if (name == "")
+                if (pan == "")
                 {
-                    name = null;
-                }
-                if (email == "")
-                {
-                    email = null;
-                }
+                    pan = null;
+                }               
                 if (estadoAfiliacion == "")
                 {
                     estadoAfiliacion = null;
@@ -174,83 +170,9 @@ namespace Suma2Lealtad.Models
                 {
                     estadoTarjeta = null;
                 }
-                //BUSCAR POR ESTADO DE TARJETA
-                if (estadoTarjeta != null)
-                {
-                    var query = (from t in db.TARJETAS
-                                 where t.ESTATUS_TARJETA.Equals(estadoTarjeta)
-                                 join a in db.Affiliates on t.NRO_AFILIACION equals a.id
-                                 join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
-                                 select new
-                                 {
-                                     pan = t.NRO_TARJETA,
-                                     estatustarjeta = t.ESTATUS_TARJETA,
-                                     id = t.NRO_AFILIACION,
-                                     docnumber = a.docnumber,
-                                     typeid = a.typeid,
-                                     sumastatusid = a.sumastatusid,
-                                     name = c.NOMBRE_CLIENTE1,
-                                     lastname1 = c.APELLIDO_CLIENTE1,
-                                     email = c.E_MAIL
-                                 }).OrderBy(d => d.docnumber);
-                    afiliados = (from q in query.AsEnumerable()
-                                 join s in db.SumaStatuses on q.sumastatusid equals s.id
-                                 join ty in db.Types on q.typeid equals ty.id
-                                 select new AfiliadoSumaIndex()
-                                 {
-                                     pan = q.pan.ToString(),
-                                     estatustarjeta = q.estatustarjeta,
-                                     id = q.id,
-                                     docnumber = q.docnumber,
-                                     typeid = q.typeid,
-                                     sumastatusid = q.sumastatusid.Value,
-                                     name = q.name,
-                                     lastname1 = q.lastname1,
-                                     email = q.email,
-                                     estatus = s.name,
-                                     type = ty.name
-                                 }).ToList();
-                }
-                //BUSCAR POR ESTADO DE AFILIACION
-                else if (estadoAfiliacion != null)
-                {
-                    var query = (from a in db.Affiliates
-                                 where a.SumaStatu.name.Equals(estadoAfiliacion)
-                                 join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
-                                 join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
-                                 from prue in PRUEBA.DefaultIfEmpty()
-                                 select new
-                                 {
-                                     pan = prue == null ? new decimal() : prue.NRO_TARJETA,
-                                     estatustarjeta = prue == null ? "" : prue.ESTATUS_TARJETA,
-                                     id = a.id,
-                                     docnumber = a.docnumber,
-                                     typeid = a.typeid,
-                                     sumastatusid = a.sumastatusid,
-                                     name = c.NOMBRE_CLIENTE1,
-                                     lastname1 = c.APELLIDO_CLIENTE1,
-                                     email = c.E_MAIL
-                                 }).OrderBy(d => d.docnumber);
-                    afiliados = (from q in query.AsEnumerable()
-                                 join s in db.SumaStatuses on q.sumastatusid equals s.id
-                                 join ty in db.Types on q.typeid equals ty.id
-                                 select new AfiliadoSumaIndex()
-                                 {
-                                     pan = q.pan == 0 ? "" : q.pan.ToString(),
-                                     estatustarjeta = q.estatustarjeta,
-                                     id = q.id,
-                                     docnumber = q.docnumber,
-                                     typeid = q.typeid,
-                                     sumastatusid = q.sumastatusid.Value,
-                                     name = q.name,
-                                     lastname1 = q.lastname1,
-                                     email = q.email,
-                                     estatus = s.name,
-                                     type = ty.name
-                                 }).ToList();
-                }
+
                 //BUSCAR POR NUMERO DE DOCUMENTO
-                else if (numdoc != null)
+                if (numdoc != null)
                 {
                     var query = (from a in db.Affiliates
                                  where a.docnumber.Equals(numdoc)
@@ -287,12 +209,93 @@ namespace Suma2Lealtad.Models
                                      type = ty.name
                                  }).ToList();
                 }
-                //BUSCAR POR NOMBRE O CORREO
-                else if (name != null || email != null)
+                //BUSCAR POR NUMERO DE TARJETA
+                else if (pan != null)
+                {
+                    decimal dpan = Convert.ToDecimal(pan);
+                    var query = (from t in db.TARJETAS
+                                 where t.NRO_TARJETA.Equals(dpan)
+                                 join a in db.Affiliates on t.NRO_AFILIACION equals a.id
+                                 join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                                 select new
+                                 {
+                                     pan = t.NRO_TARJETA,
+                                     estatustarjeta = t.ESTATUS_TARJETA,
+                                     id = t.NRO_AFILIACION,
+                                     docnumber = a.docnumber,
+                                     typeid = a.typeid,
+                                     sumastatusid = a.sumastatusid,
+                                     name = c.NOMBRE_CLIENTE1,
+                                     lastname1 = c.APELLIDO_CLIENTE1,
+                                     email = c.E_MAIL
+                                 }).OrderBy(d => d.docnumber);
+                    afiliados = (from q in query.AsEnumerable()
+                                 join s in db.SumaStatuses on q.sumastatusid equals s.id
+                                 join ty in db.Types on q.typeid equals ty.id
+                                 select new AfiliadoSumaIndex()
+                                 {
+                                     pan = q.pan.ToString(),
+                                     estatustarjeta = q.estatustarjeta,
+                                     id = q.id,
+                                     docnumber = q.docnumber,
+                                     typeid = q.typeid,
+                                     sumastatusid = q.sumastatusid.Value,
+                                     name = q.name,
+                                     lastname1 = q.lastname1,
+                                     email = q.email,
+                                     estatus = s.name,
+                                     type = ty.name
+                                 }).ToList();
+                }
+
+                //BUSCAR POR CAMPOS COMPLEMENTARIOS
+                //name,name2,lastname1,lastname2,email,estadoAfiliacion,estadoTarjeta
+                else if (estadoAfiliacion != null && estadoTarjeta != null)
                 {
                     var query = (from a in db.Affiliates
+                                 where a.SumaStatu.name.Equals(estadoAfiliacion)
                                  join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
-                                 where (c.NOMBRE_CLIENTE1.Contains(name) || c.APELLIDO_CLIENTE1.Contains(name) || c.E_MAIL.Equals(email))
+                                 where c.NOMBRE_CLIENTE1.StartsWith(name) && c.NOMBRE_CLIENTE2.StartsWith(name2) && c.APELLIDO_CLIENTE1.StartsWith(lastname1) && c.APELLIDO_CLIENTE2.StartsWith(lastname2) && c.E_MAIL.StartsWith(email)
+                                 join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
+                                 from prue in PRUEBA.DefaultIfEmpty()
+                                 where prue.ESTATUS_TARJETA.Equals(estadoTarjeta)
+                                 select new
+                                 {
+                                     pan = prue == null ? new decimal() : prue.NRO_TARJETA,
+                                     estatustarjeta = prue == null ? "" : prue.ESTATUS_TARJETA,
+                                     id = a.id,
+                                     docnumber = a.docnumber,
+                                     typeid = a.typeid,
+                                     sumastatusid = a.sumastatusid,
+                                     name = c.NOMBRE_CLIENTE1,
+                                     lastname1 = c.APELLIDO_CLIENTE1,
+                                     email = c.E_MAIL
+                                 }).OrderBy(d => d.docnumber);
+                    afiliados = (from q in query.AsEnumerable()
+                                 join s in db.SumaStatuses on q.sumastatusid equals s.id
+                                 join ty in db.Types on q.typeid equals ty.id
+                                 select new AfiliadoSumaIndex()
+                                 {
+                                     pan = q.pan == 0 ? "" : q.pan.ToString(),
+                                     estatustarjeta = q.estatustarjeta,
+                                     id = q.id,
+                                     docnumber = q.docnumber,
+                                     typeid = q.typeid,
+                                     sumastatusid = q.sumastatusid.Value,
+                                     name = q.name,
+                                     lastname1 = q.lastname1,
+                                     email = q.email,
+                                     estatus = s.name,
+                                     type = ty.name
+                                 }).ToList();
+                }
+                //name,name2,lastname1,lastname2,email,estadoAfiliacion
+                else if (estadoAfiliacion != null)
+                {
+                    var query = (from a in db.Affiliates
+                                 where a.SumaStatu.name.Equals(estadoAfiliacion)
+                                 join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                                 where c.NOMBRE_CLIENTE1.StartsWith(name) && c.NOMBRE_CLIENTE2.StartsWith(name2) && c.APELLIDO_CLIENTE1.StartsWith(lastname1) && c.APELLIDO_CLIENTE2.StartsWith(lastname2) && c.E_MAIL.StartsWith(email)
                                  join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
                                  from prue in PRUEBA.DefaultIfEmpty()
                                  select new
@@ -325,11 +328,50 @@ namespace Suma2Lealtad.Models
                                      type = ty.name
                                  }).ToList();
                 }
-                //BUSCAR TODOS
-                else if (numdoc == null && name == null && email == null && estadoAfiliacion == null && estadoTarjeta == null)
+                //name,name2,lastname1,lastname2,email,estadoTarjeta
+                else if (estadoTarjeta != null)
+                {
+                    var query = (from t in db.TARJETAS
+                                 where t.ESTATUS_TARJETA.Equals(estadoTarjeta)
+                                 join a in db.Affiliates on t.NRO_AFILIACION equals a.id
+                                 join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                                 where c.NOMBRE_CLIENTE1.StartsWith(name) && c.NOMBRE_CLIENTE2.StartsWith(name2) && c.APELLIDO_CLIENTE1.StartsWith(lastname1) && c.APELLIDO_CLIENTE2.StartsWith(lastname2) && c.E_MAIL.StartsWith(email)
+                                 select new
+                                 {
+                                     pan = t.NRO_TARJETA,
+                                     estatustarjeta = t.ESTATUS_TARJETA,
+                                     id = t.NRO_AFILIACION,
+                                     docnumber = a.docnumber,
+                                     typeid = a.typeid,
+                                     sumastatusid = a.sumastatusid,
+                                     name = c.NOMBRE_CLIENTE1,
+                                     lastname1 = c.APELLIDO_CLIENTE1,
+                                     email = c.E_MAIL
+                                 }).OrderBy(d => d.docnumber);
+                    afiliados = (from q in query.AsEnumerable()
+                                 join s in db.SumaStatuses on q.sumastatusid equals s.id
+                                 join ty in db.Types on q.typeid equals ty.id
+                                 select new AfiliadoSumaIndex()
+                                 {
+                                     pan = q.pan.ToString(),
+                                     estatustarjeta = q.estatustarjeta,
+                                     id = q.id,
+                                     docnumber = q.docnumber,
+                                     typeid = q.typeid,
+                                     sumastatusid = q.sumastatusid.Value,
+                                     name = q.name,
+                                     lastname1 = q.lastname1,
+                                     email = q.email,
+                                     estatus = s.name,
+                                     type = ty.name
+                                 }).ToList();
+                }
+                //name,name2,lastname1,lastname2,email
+                else 
                 {
                     var query = (from a in db.Affiliates
                                  join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+                                 where c.NOMBRE_CLIENTE1.StartsWith(name) && c.NOMBRE_CLIENTE2.StartsWith(name2) && c.APELLIDO_CLIENTE1.StartsWith(lastname1) && c.APELLIDO_CLIENTE2.StartsWith(lastname2) && c.E_MAIL.StartsWith(email)
                                  join t in db.TARJETAS on a.id equals t.NRO_AFILIACION into PRUEBA
                                  from prue in PRUEBA.DefaultIfEmpty()
                                  select new

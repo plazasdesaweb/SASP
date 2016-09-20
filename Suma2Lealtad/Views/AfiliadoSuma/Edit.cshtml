@@ -497,7 +497,7 @@
 
                             <div class="editor-label col-md-4 control-label"></div>
                             <div class="editor-field col-md-6">
-                                <input type="submit" class="btn btn-success btn-md" value="Guardar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />
+                                <input id="guardar" type="submit" class="btn btn-success btn-md" value="Guardar" style="padding-right: 15px; padding-left: 15px; margin-left: 0px;" />
                             </div>
 
 
@@ -516,11 +516,10 @@
 
                                 <li class="previous"><a href="#">Anterior</a></li>
                                 <li class="next pull-left"><a href="#">Siguiente</a></li>
+                                <a href="@Url.Action("FilterReviewCargado", "AfiliadoSuma", new { id = @Model.id})" class="pull-right btn btn-danger btn-md">Regresar</a>
+                            
                             </ul>
-                            <!--// BOTONES -->
-                        </div>
-
-
+                            <!--// BOTONES -->                            
 
                         <div class="editor-label col-md-4 control-label"></div>
                         <div class="editor-field col-md-6">

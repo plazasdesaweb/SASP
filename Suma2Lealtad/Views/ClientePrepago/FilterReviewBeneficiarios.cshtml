@@ -58,16 +58,52 @@
 
                 <div class="editor-field col-md-6">
                     <input type="text" id="numdoc" name="numdoc" maxlength="12" placeholder="V-12345678" class="form-control">
-                    <span id="field1"></span>
+                    <span id="documento"></span>
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
-                    Nombre :
+                    Número de Tarjeta :
                 </div>
 
                 <div class="editor-field col-md-6">
-                    <input type="text" id="name" name="name" value="" maxlength="50" placeholder="Escriba el nombre" class="form-control">
-                    <span id="field2"></span>
+                    <input type="text" id="pan" name="pan" maxlength="17" placeholder="98990112345678901" class="form-control">
+                    <span id="tarjeta"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Primer Nombre :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="name" name="name" value="" maxlength="50" placeholder="Escriba el nombre" class="form-control varios">
+                    <span id="nombre1"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Segundo Nombre :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="name2" name="name2" value="" maxlength="50" placeholder="Escriba el nombre" class="form-control varios">
+                    <span id="nombre2"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Primer Apellido :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="lastname1" name="lastname1" value="" maxlength="50" placeholder="Escriba el apellido" class="form-control varios">
+                    <span id="apellido1"></span>
+                </div>
+
+                <div class="editor-label col-md-4 control-label">
+                    Segundo Apellido :
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <input type="text" id="lastname2" name="lastname2" value="" maxlength="50" placeholder="Escriba el apellido" class="form-control varios">
+                    <span id="apellido2"></span>
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
@@ -75,8 +111,8 @@
                 </div>
 
                 <div class="editor-field col-md-6">
-                    <input type="text" id="email" name="email" value="" maxlength="50" placeholder="correo@dominio.com" class="form-control">
-                    <span id="field3"></span>
+                    <input type="text" id="email" name="email" value="" maxlength="50" placeholder="correo@dominio.com" class="form-control varios">
+                    <span id="correo"></span>
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
@@ -89,9 +125,9 @@
                                        "id",
                                        "estado",
                                        Model.EstadoDeAfiliacionOptions),
-                                       new { @class = "form-control" }
+                                       new { @class = "form-control varios" }
                                        )
-                    <span id="field4"></span>
+                    <span id="estadoafiliacion"></span>
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
@@ -104,12 +140,19 @@
                                        "id",
                                        "estado",
                                        Model.EstadoDeTarjetaOptions),
-                                       new { @class = "form-control" }
+                                       new { @class = "form-control varios" }
                                        )
-                    <span id="field5"></span>
+                    <span id="estadotarjeta"></span>
                 </div>
 
                 <br />
+
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-8">
+                    <br />
+                </div>
+
                 <div class="editor-label col-md-4 control-label"></div>
                 <div class="editor-field col-md-8">
                     <span id="fields"></span>
@@ -118,8 +161,8 @@
 
                 <div class="col-md-12 col-btn">
                     <div class="pull-right">
-                        <input type="submit" class="btn btn-success btn-md" value="Buscar Beneficiario" />
-                        <a href="@Url.Action("Index", "ClientePrepago", new { rif = Model.rifCliente })" class="btn btn-danger btn-md">Regresar</a>
+                        <input type="submit" class="btn btn-success btn-md" value="Buscar Afiliado" />
+                        @*<a href="@Url.Action("Index", "ClientePrepago", new { rif = Model.rifCliente })" class="btn btn-danger btn-md">Regresar</a>*@
                     </div>
 
                 </div>
@@ -138,56 +181,6 @@
 
 <script>
 
-    function validateNumDoc() {
-        var numdoc = document.getElementById('numdoc').value;
-        var valor = document.getElementById('numdoc').value.trim();
-        if (numdoc.length == 0) {
-            return true;
-        }
-        var RegExPattern = /^([VvEe]){1}(-){1}(\d){3,8}$/;
-        var RegExPattern2 = /^([VvEe]){1}(\d){3,8}$/;
-        var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
-        var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
-        var RegExPattern5 = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
-        var RegExPattern6 = /^([VvEeJjGg]){1}(\d){9}$/;
-        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false && RegExPattern5.test(valor) == false && RegExPattern6.test(valor) == false) {
-            spanMessage('field1', "* Formato Número de Documento/Cédula Incorrecto. (ejemplos V-12345678, J-123456789, P-ABC1234567)");
-            document.getElementById('numdoc').value = "";
-            document.getElementById('numdoc').focus();
-            return false;
-        }
-        else if (RegExPattern.test(valor) != false) {
-            document.getElementById('numdoc').value = valor.toUpperCase();
-            document.getElementById('field1').value = "";
-            return true;
-        }
-        else if (RegExPattern2.test(valor) != false) {
-            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
-            document.getElementById('field1').value = "";
-            return true;
-        }
-        else if (RegExPattern3.test(valor) != false) {
-            document.getElementById('numdoc').value = valor.toUpperCase();
-            document.getElementById('field1').value = "";
-            return true;
-        }
-        else if (RegExPattern4.test(valor) != false) {
-            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
-            document.getElementById('field1').value = "";
-            return true;
-        }
-        else if (RegExPattern5.test(valor) != false) {
-            document.getElementById('numdoc').value = valor.toUpperCase();
-            document.getElementById('field1').value = "";
-            return true;
-        }
-        else if (RegExPattern6.test(valor) != false) {
-            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
-            document.getElementById('field1').value = "";
-            return true;
-        }
-    }
-
     function spanMessage(idelemento, mensaje) {
         var span = document.getElementById(idelemento);
         while (span.firstChild) {
@@ -196,34 +189,137 @@
         span.appendChild(document.createTextNode(mensaje));
     }
 
-    function validateName() {
-        var name = document.getElementById('name').value;
-        if (name.length == 0)
-            return true;
-        if (!name.match(/^[a-zA-Z''-'\s]*$/)) {
-            spanMessage('field2', '* Formato Nombre Incorrecto.');
-            document.getElementById('name').value = " ";
-            document.getElementById('name').focus();
+    function validateNumDoc() {
+        var numdoc = document.getElementById('numdoc').value;
+        var valor = document.getElementById('numdoc').value.trim();
+        if (numdoc.length == 0) {
             return false;
         }
-        return true;
+        var RegExPattern = /^([VvEe]){1}(-){1}(\d){3,8}$/;
+        var RegExPattern2 = /^([VvEe]){1}(\d){3,8}$/;
+        var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern5 = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
+        var RegExPattern6 = /^([VvEeJjGg]){1}(\d){9}$/;
+        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false && RegExPattern5.test(valor) == false && RegExPattern6.test(valor) == false) {
+            spanMessage('documento', "* Formato Número de Documento/Cédula Incorrecto. (ejemplos V-12345678, J-123456789, P-ABC1234567)");
+            document.getElementById('numdoc').value = "";
+            document.getElementById('numdoc').focus();
+            return false;
+        }
+        else if (RegExPattern.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern2.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern3.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            document.getElementById('documento').value = "";
+            return true;
+        }
+        else if (RegExPattern4.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern5.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern6.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
     }
 
-    function validateEmail() {
-        var email = document.getElementById('email').value;
-        if (email.length == 0)
+    function validatePan() {
+        var pan = document.getElementById('pan').value;
+        var valor = document.getElementById('pan').value.trim();
+        if (pan.length == 0) {
+            return false;
+        }
+        var RegExPattern = /^(\d){17}$/;
+        if (RegExPattern.test(valor) == false) {
+            spanMessage('tarjeta', "* Formato Número de Tarjeta Incorrecto. (ejemplo 98990112345678901)");
+            document.getElementById('pan').value = "";
+            document.getElementById('pan').focus();
+            return false;
+        }
+        else {
+            spanMessage('tarjeta', "");
             return true;
-        return true;
+        }
+    }
+
+    function validateVarios() {
+        if (document.getElementById('name').value.trim() != '' || document.getElementById('name2').value.trim() != '' || document.getElementById('lastname1').value.trim() != '' || document.getElementById('lastname2').value.trim() != '' || document.getElementById('email').value.trim() != '' || document.getElementById('estadoAfiliacion').value.trim() != '' || document.getElementById('estadoTarjeta').value.trim() != '') {
+            spanMessage('fields', "");
+            return true;
+        }
+        else {
+            spanMessage('fields', '* Debe indicar criterio de búsqueda.');
+            return false;
+        }
     }
 
     function validateForm() {
-        if (validateNumDoc() && validateName() && validateEmail()) {
+        if (validateNumDoc() || validatePan() || validateVarios()) {
             return true;
         }
         else {
             return false;
         }
     }
+
+    $("#numdoc").focus(function () {
+        spanMessage('tarjeta', "");
+        spanMessage('fields', "");
+        $("#numdoc").prop('readonly', false);
+        $("#pan").prop('readonly', true);
+        $("#name").prop('readonly', true);
+        $("#name2").prop('readonly', true);
+        $("#lastname1").prop('readonly', true);
+        $("#lastname2").prop('readonly', true);
+        $("#email").prop('readonly', true);
+        $("#estadoAfiliacion").prop('disabled', true);
+        $("#estadoTarjeta").prop('disabled', true);
+    });
+
+    $("#pan").focus(function () {
+        spanMessage('documento', "");
+        spanMessage('fields', "");
+        $("#pan").prop('readonly', false);
+        $("#numdoc").prop('readonly', true);
+        $("#name").prop('readonly', true);
+        $("#name2").prop('readonly', true);
+        $("#lastname1").prop('readonly', true);
+        $("#lastname2").prop('readonly', true);
+        $("#email").prop('readonly', true);
+        $("#estadoAfiliacion").prop('disabled', true);
+        $("#estadoTarjeta").prop('disabled', true);
+    });
+
+    $(".varios").focus(function () {
+        spanMessage('documento', "");
+        spanMessage('tarjeta', "");
+        spanMessage('fields', "");
+        $("#numdoc").prop('readonly', true);
+        $("#pan").prop('readonly', true);
+        $("#name").prop('readonly', false);
+        $("#name2").prop('readonly', false);
+        $("#lastname1").prop('readonly', false);
+        $("#lastname2").prop('readonly', false);
+        $("#email").prop('readonly', false);
+        $("#estadoAfiliacion").prop('disabled', false);
+        $("#estadoTarjeta").prop('disabled', false);
+    });
 
 </script>
 
