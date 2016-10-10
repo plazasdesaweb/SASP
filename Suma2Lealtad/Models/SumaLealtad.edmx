@@ -12,6 +12,7 @@
           <EntitySet Name="Channel" EntityType="SumaLealtad.Store.Channel" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CIUDAD" EntityType="SumaLealtad.Store.CIUDAD" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CIUDAD_MUNICIPIO" EntityType="SumaLealtad.Store.CIUDAD_MUNICIPIO" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Civil_Status" EntityType="SumaLealtad.Store.Civil_Status" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CLIENTE" EntityType="SumaLealtad.Store.CLIENTE" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="SumaLealtad.Store.Company" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CompanyAffiliate" EntityType="SumaLealtad.Store.CompanyAffiliate" store:Type="Tables" Schema="dbo" />
@@ -40,6 +41,7 @@
           <EntitySet Name="Menu" EntityType="SumaLealtad.Store.Menu" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MUNICIPIO" EntityType="SumaLealtad.Store.MUNICIPIO" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MUNICIPIO_PARROQUIA" EntityType="SumaLealtad.Store.MUNICIPIO_PARROQUIA" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Nacionality" EntityType="SumaLealtad.Store.Nacionality" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Object" EntityType="SumaLealtad.Store.Object" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Operations" EntityType="SumaLealtad.Store.Operations" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Orders" EntityType="SumaLealtad.Store.Orders" store:Type="Tables" Schema="dbo" />
@@ -59,6 +61,8 @@
           <EntitySet Name="Role" EntityType="SumaLealtad.Store.Role" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SecurityLevel" EntityType="SumaLealtad.Store.SecurityLevel" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SecurityMenu" EntityType="SumaLealtad.Store.SecurityMenu" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sex" EntityType="SumaLealtad.Store.Sex" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Store" EntityType="SumaLealtad.Store.Store" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SumaStatus" EntityType="SumaLealtad.Store.SumaStatus" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="SumaLealtad.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TARJETA" EntityType="SumaLealtad.Store.TARJETA" store:Type="Tables" Schema="dbo" />
@@ -66,6 +70,22 @@
           <EntitySet Name="URBANIZACION" EntityType="SumaLealtad.Store.URBANIZACION" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="SumaLealtad.Store.User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserRol" EntityType="SumaLealtad.Store.UserRol" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="CLIENTE_CIVIL_STATUS_ID" Association="SumaLealtad.Store.CLIENTE_CIVIL_STATUS_ID">
+            <End Role="Civil_Status" EntitySet="Civil_Status" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTE_NACIONALITY_FK" Association="SumaLealtad.Store.CLIENTE_NACIONALITY_FK">
+            <End Role="Nacionality" EntitySet="Nacionality" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTE_SEX_FK" Association="SumaLealtad.Store.CLIENTE_SEX_FK">
+            <End Role="Sex" EntitySet="Sex" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTE_STORE_FK" Association="SumaLealtad.Store.CLIENTE_STORE_FK">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
           <AssociationSet Name="FK_Affiliate_Channel" Association="SumaLealtad.Store.FK_Affiliate_Channel">
             <End Role="Channel" EntitySet="Channel" />
             <End Role="Affiliate" EntitySet="Affiliate" />
@@ -208,6 +228,14 @@
           <Property Name="COD_CIUDAD" Type="varchar" Nullable="false" MaxLength="12" />
           <Property Name="COD_MUNICIPIO" Type="varchar" Nullable="false" MaxLength="12" />
         </EntityType>
+        <EntityType Name="Civil_Status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="abbrev" Type="varchar" Nullable="false" MaxLength="1" />
+        </EntityType>
         <EntityType Name="CLIENTE">
           <Key>
             <PropertyRef Name="TIPO_DOCUMENTO" />
@@ -235,6 +263,10 @@
           <Property Name="COD_PARROQUIA" Type="varchar" MaxLength="12" />
           <Property Name="COD_URBANIZACION" Type="varchar" MaxLength="12" />
           <Property Name="FECHA_CREACION" Type="datetime" />
+          <Property Name="SEX_ID" Type="int" />
+          <Property Name="STORE_ID" Type="int" />
+          <Property Name="NACIONALITY_ID" Type="int" />
+          <Property Name="CIVIL_STATUS_ID" Type="int" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -370,6 +402,14 @@
           </Key>
           <Property Name="COD_MUNICIPIO" Type="varchar" Nullable="false" MaxLength="12" />
           <Property Name="COD_PARROQUIA" Type="varchar" Nullable="false" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="Nacionality">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="abbrev" Type="varchar" Nullable="false" MaxLength="1" />
         </EntityType>
         <EntityType Name="Object">
           <Key>
@@ -568,6 +608,23 @@
           <Property Name="menuid" Type="int" Nullable="false" />
           <Property Name="securitylevelid" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Sex">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="abbrev" Type="varchar" Nullable="false" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="store_code" Type="varchar" Nullable="false" MaxLength="4" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="abbrev" Type="varchar" Nullable="false" MaxLength="15" />
+        </EntityType>
         <EntityType Name="SumaStatus">
           <Key>
             <PropertyRef Name="id" />
@@ -640,6 +697,54 @@
           <Property Name="userid" Type="int" Nullable="false" />
           <Property Name="roleid" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="CLIENTE_CIVIL_STATUS_ID">
+          <End Role="Civil_Status" Type="SumaLealtad.Store.Civil_Status" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="SumaLealtad.Store.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Civil_Status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="CIVIL_STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTE_NACIONALITY_FK">
+          <End Role="Nacionality" Type="SumaLealtad.Store.Nacionality" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="SumaLealtad.Store.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nacionality">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="NACIONALITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTE_SEX_FK">
+          <End Role="Sex" Type="SumaLealtad.Store.Sex" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="SumaLealtad.Store.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sex">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="SEX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTE_STORE_FK">
+          <End Role="Store" Type="SumaLealtad.Store.Store" Multiplicity="0..1" />
+          <End Role="CLIENTE" Type="SumaLealtad.Store.CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="STORE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Affiliate_Channel">
           <End Role="Channel" Type="SumaLealtad.Store.Channel" Multiplicity="1" />
           <End Role="Affiliate" Type="SumaLealtad.Store.Affiliate" Multiplicity="*" />
@@ -958,6 +1063,26 @@
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="FueraDeLineas" EntityType="SumaLealtad.FueraDeLinea" />
+          <EntitySet Name="Civil_Statuses" EntityType="SumaLealtad.Civil_Status" />
+          <EntitySet Name="Nacionalities" EntityType="SumaLealtad.Nacionality" />
+          <EntitySet Name="Sexes" EntityType="SumaLealtad.Sex" />
+          <EntitySet Name="Stores" EntityType="SumaLealtad.Store" />
+          <AssociationSet Name="CLIENTE_CIVIL_STATUS_ID" Association="SumaLealtad.CLIENTE_CIVIL_STATUS_ID">
+            <End Role="Civil_Status" EntitySet="Civil_Statuses" />
+            <End Role="CLIENTE" EntitySet="CLIENTES" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTE_NACIONALITY_FK" Association="SumaLealtad.CLIENTE_NACIONALITY_FK">
+            <End Role="Nacionality" EntitySet="Nacionalities" />
+            <End Role="CLIENTE" EntitySet="CLIENTES" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTE_SEX_FK" Association="SumaLealtad.CLIENTE_SEX_FK">
+            <End Role="Sex" EntitySet="Sexes" />
+            <End Role="CLIENTE" EntitySet="CLIENTES" />
+          </AssociationSet>
+          <AssociationSet Name="CLIENTE_STORE_FK" Association="SumaLealtad.CLIENTE_STORE_FK">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="CLIENTE" EntitySet="CLIENTES" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Affiliate">
           <Key>
@@ -1056,6 +1181,14 @@
           <Property Name="COD_PARROQUIA" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
           <Property Name="COD_URBANIZACION" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
           <Property Name="FECHA_CREACION" Type="DateTime" Precision="3" />
+          <Property Type="Int32" Name="SEX_ID" />
+          <Property Type="Int32" Name="STORE_ID" />
+          <Property Type="Int32" Name="NACIONALITY_ID" />
+          <Property Type="Int32" Name="CIVIL_STATUS_ID" />
+          <NavigationProperty Name="Civil_Status" Relationship="SumaLealtad.CLIENTE_CIVIL_STATUS_ID" FromRole="CLIENTE" ToRole="Civil_Status" />
+          <NavigationProperty Name="Nacionality" Relationship="SumaLealtad.CLIENTE_NACIONALITY_FK" FromRole="CLIENTE" ToRole="Nacionality" />
+          <NavigationProperty Name="Sex" Relationship="SumaLealtad.CLIENTE_SEX_FK" FromRole="CLIENTE" ToRole="Sex" />
+          <NavigationProperty Name="Store" Relationship="SumaLealtad.CLIENTE_STORE_FK" FromRole="CLIENTE" ToRole="Store" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -1579,6 +1712,91 @@
           <Property Type="String" Name="store_code" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="observaciones" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Civil_Status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="abbrev" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CLIENTEs" Relationship="SumaLealtad.CLIENTE_CIVIL_STATUS_ID" FromRole="Civil_Status" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="Nacionality">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="abbrev" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CLIENTEs" Relationship="SumaLealtad.CLIENTE_NACIONALITY_FK" FromRole="Nacionality" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="Sex">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="abbrev" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CLIENTEs" Relationship="SumaLealtad.CLIENTE_SEX_FK" FromRole="Sex" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="store_code" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="abbrev" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CLIENTEs" Relationship="SumaLealtad.CLIENTE_STORE_FK" FromRole="Store" ToRole="CLIENTE" />
+        </EntityType>
+        <Association Name="CLIENTE_CIVIL_STATUS_ID">
+          <End Type="SumaLealtad.Civil_Status" Role="Civil_Status" Multiplicity="0..1" />
+          <End Type="SumaLealtad.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Civil_Status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="CIVIL_STATUS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTE_NACIONALITY_FK">
+          <End Type="SumaLealtad.Nacionality" Role="Nacionality" Multiplicity="0..1" />
+          <End Type="SumaLealtad.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nacionality">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="NACIONALITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTE_SEX_FK">
+          <End Type="SumaLealtad.Sex" Role="Sex" Multiplicity="0..1" />
+          <End Type="SumaLealtad.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sex">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="SEX_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CLIENTE_STORE_FK">
+          <End Type="SumaLealtad.Store" Role="Store" Multiplicity="0..1" />
+          <End Type="SumaLealtad.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CLIENTE">
+              <PropertyRef Name="STORE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1658,6 +1876,10 @@
           <EntitySetMapping Name="CLIENTES">
             <EntityTypeMapping TypeName="SumaLealtad.CLIENTE">
               <MappingFragment StoreEntitySet="CLIENTE">
+                <ScalarProperty Name="CIVIL_STATUS_ID" ColumnName="CIVIL_STATUS_ID" />
+                <ScalarProperty Name="NACIONALITY_ID" ColumnName="NACIONALITY_ID" />
+                <ScalarProperty Name="STORE_ID" ColumnName="STORE_ID" />
+                <ScalarProperty Name="SEX_ID" ColumnName="SEX_ID" />
                 <ScalarProperty Name="TIPO_DOCUMENTO" ColumnName="TIPO_DOCUMENTO" />
                 <ScalarProperty Name="NRO_DOCUMENTO" ColumnName="NRO_DOCUMENTO" />
                 <ScalarProperty Name="NACIONALIDAD" ColumnName="NACIONALIDAD" />
@@ -2107,6 +2329,43 @@
                 <ScalarProperty Name="observaciones" ColumnName="observaciones" />
                 <ScalarProperty Name="store_code" ColumnName="store_code" />
                 <ScalarProperty Name="batchid" ColumnName="batchid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Civil_Statuses">
+            <EntityTypeMapping TypeName="SumaLealtad.Civil_Status">
+              <MappingFragment StoreEntitySet="Civil_Status">
+                <ScalarProperty Name="abbrev" ColumnName="abbrev" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nacionalities">
+            <EntityTypeMapping TypeName="SumaLealtad.Nacionality">
+              <MappingFragment StoreEntitySet="Nacionality">
+                <ScalarProperty Name="abbrev" ColumnName="abbrev" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sexes">
+            <EntityTypeMapping TypeName="SumaLealtad.Sex">
+              <MappingFragment StoreEntitySet="Sex">
+                <ScalarProperty Name="abbrev" ColumnName="abbrev" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="SumaLealtad.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="abbrev" ColumnName="abbrev" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="store_code" ColumnName="store_code" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

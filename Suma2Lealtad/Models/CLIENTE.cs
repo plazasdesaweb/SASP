@@ -36,5 +36,14 @@ namespace Suma2Lealtad.Models
         public string COD_PARROQUIA { get; set; }
         public string COD_URBANIZACION { get; set; }
         public Nullable<System.DateTime> FECHA_CREACION { get; set; }
+        public Nullable<int> SEX_ID { get; set; }
+        public Nullable<int> STORE_ID { get; set; }
+        public Nullable<int> NACIONALITY_ID { get; set; }
+        public Nullable<int> CIVIL_STATUS_ID { get; set; }
+    
+        public virtual Civil_Status Civil_Status { get; set; }
+        public virtual Nacionality Nacionality { get; set; }
+        public virtual Sex Sex { get; set; }
+        public virtual Store Store { get; set; }
     }
 }

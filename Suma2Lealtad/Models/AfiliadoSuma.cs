@@ -79,14 +79,14 @@ namespace Suma2Lealtad.Models
             public int id { get; set; }
             public string nacionalidad { get; set; }
         }
-
-        public IEnumerable<Nacionalidad> NacionalidadOptions =
-            new List<Nacionalidad>
-        {
-              new Nacionalidad { id = 0, nacionalidad = ""          },
-              new Nacionalidad { id = 1, nacionalidad = "Venezolano" },
-              new Nacionalidad { id = 2, nacionalidad = "Extranjero"  }
-        };
+        //public IEnumerable<Nacionalidad> NacionalidadOptions =
+        //    new List<Nacionalidad>
+        //{
+        //      new Nacionalidad { id = 0, nacionalidad = ""          },
+        //      new Nacionalidad { id = 1, nacionalidad = "Venezolano" },
+        //      new Nacionalidad { id = 2, nacionalidad = "Extranjero"  }
+        //};
+        public List<Nacionalidad> NacionalidadOptions {get;set;}           
         #endregion
 
         #region Listas_Datos_Geográficos
@@ -103,14 +103,14 @@ namespace Suma2Lealtad.Models
             public int id { get; set; }
             public string sexo { get; set; }
         }
-
-        public IEnumerable<Sexo> SexoOptions =
-            new List<Sexo>
-        {
-              new Sexo { id = 0, sexo = ""          },
-              new Sexo { id = 1, sexo = "Masculino" },
-              new Sexo { id = 2, sexo = "Femenino"  }
-        };
+        //public IEnumerable<Sexo> SexoOptions =
+        //    new List<Sexo>
+        //{
+        //      new Sexo { id = 0, sexo = ""          },
+        //      new Sexo { id = 1, sexo = "Masculino" },
+        //      new Sexo { id = 2, sexo = "Femenino"  }
+        //};
+        public IEnumerable<Sexo> SexoOptions { get; set; }
         #endregion
 
         #region Lista_MaritalStatus
@@ -119,16 +119,16 @@ namespace Suma2Lealtad.Models
             public int id { get; set; }
             public string maritalstatus { get; set; }
         }
-
-        public IEnumerable<MaritalStatus> MaritalStatusOptions =
-            new List<MaritalStatus>
-        {
-              new MaritalStatus { id = 0, maritalstatus = "" },
-              new MaritalStatus { id = 1, maritalstatus = "Soltero"     },
-              new MaritalStatus { id = 2, maritalstatus = "Casado"      },
-              new MaritalStatus { id = 3, maritalstatus = "Divorciado"  },
-              new MaritalStatus { id = 4, maritalstatus = "Viudo"       }
-        };
+        //public IEnumerable<MaritalStatus> MaritalStatusOptions =
+        //    new List<MaritalStatus>
+        //{
+        //      new MaritalStatus { id = 0, maritalstatus = "" },
+        //      new MaritalStatus { id = 1, maritalstatus = "Soltero"     },
+        //      new MaritalStatus { id = 2, maritalstatus = "Casado"      },
+        //      new MaritalStatus { id = 3, maritalstatus = "Divorciado"  },
+        //      new MaritalStatus { id = 4, maritalstatus = "Viudo"       }
+        //};
+        public List<MaritalStatus> MaritalStatusOptions { get; set; }
         #endregion
 
         #region Lista_Surcursales
@@ -137,29 +137,29 @@ namespace Suma2Lealtad.Models
             public string id { get; set; }
             public string sucursal { get; set; }
         }
-
-        public IEnumerable<Store> StoreOptions =
-            new List<Store>
-        {
-            new Store {id = null, sucursal = ""                 },
-            new Store {id = "1001", sucursal = "Sede Principal Baruta"  },
-            new Store {id = "1002", sucursal = "Prados del Este"  },
-            new Store {id = "1003", sucursal = "Cafetal"          },
-            new Store {id = "1005", sucursal = "Los Samanes"      },
-            new Store {id = "1006", sucursal = "Avila"            },
-            new Store {id = "1007", sucursal = "Galerías"         },
-            new Store {id = "1008", sucursal = "La Lagunita"      },
-            new Store {id = "1009", sucursal = "Los Cedros"       },
-            new Store {id = "1010", sucursal = "Centro Plaza"     },
-            new Store {id = "1011", sucursal = "Vista Alegre"     },
-            new Store {id = "1012", sucursal = "Los Naranjos"     },
-            new Store {id = "1013", sucursal = "Valle Arriba"     },
-            new Store {id = "1014", sucursal = "El Parral"        },
-            new Store {id = "1016", sucursal = "Veracruz"         },
-            new Store {id = "1017", sucursal = "Los Chaguaramos"  },
-            new Store {id = "1018", sucursal = "Guarenas"         },
-            new Store {id = "1019", sucursal = "Guatire"          }
-        };
+        //public IEnumerable<Store> StoreOptions =
+        //    new List<Store>
+        //{
+        //    new Store {id = null, sucursal = ""                 },
+        //    new Store {id = "1001", sucursal = "Sede Principal Baruta"  },
+        //    new Store {id = "1002", sucursal = "Prados del Este"  },
+        //    new Store {id = "1003", sucursal = "Cafetal"          },
+        //    new Store {id = "1005", sucursal = "Los Samanes"      },
+        //    new Store {id = "1006", sucursal = "Avila"            },
+        //    new Store {id = "1007", sucursal = "Galerías"         },
+        //    new Store {id = "1008", sucursal = "La Lagunita"      },
+        //    new Store {id = "1009", sucursal = "Los Cedros"       },
+        //    new Store {id = "1010", sucursal = "Centro Plaza"     },
+        //    new Store {id = "1011", sucursal = "Vista Alegre"     },
+        //    new Store {id = "1012", sucursal = "Los Naranjos"     },
+        //    new Store {id = "1013", sucursal = "Valle Arriba"     },
+        //    new Store {id = "1014", sucursal = "El Parral"        },
+        //    new Store {id = "1016", sucursal = "Veracruz"         },
+        //    new Store {id = "1017", sucursal = "Los Chaguaramos"  },
+        //    new Store {id = "1018", sucursal = "Guarenas"         },
+        //    new Store {id = "1019", sucursal = "Guatire"          }
+        //};
+        public List<Store> StoreOptions { get; set; }
         #endregion
 
         #region Lista_Canales
@@ -168,15 +168,14 @@ namespace Suma2Lealtad.Models
             public int id { get; set; }
             public string channel { get; set; }
         }
-
-        public IEnumerable<Channel> ChannelOptions =
-            new List<Channel>
-        {
-              new Channel { id = 1, channel = "Sistema Administrador Suma/Prepago" },
-              new Channel { id = 2, channel = "Página Web"   },
-              new Channel { id = 3, channel = "Eventos" },
-        };
-
+        //public IEnumerable<Channel> ChannelOptions =
+        //    new List<Channel>
+        //{
+        //      new Channel { id = 1, channel = "Sistema Administrador Suma/Prepago" },
+        //      new Channel { id = 2, channel = "Página Web"   },
+        //      new Channel { id = 3, channel = "Eventos" },
+        //};
+        public List<Channel> ChannelOptions { get; set; }
         #endregion
 
         #region Lista_TipoDespacho
@@ -226,9 +225,9 @@ namespace Suma2Lealtad.Models
         {
               new EstadoDeTarjeta { id = "", estado = "Seleccione..."          },
               new EstadoDeTarjeta { id = "Nueva", estado = "Nueva" },
-              new EstadoDeTarjeta { id = "Inactiva", estado = "Inactiva"  },
+              //new EstadoDeTarjeta { id = "Inactiva", estado = "Inactiva"  },
               new EstadoDeTarjeta { id = "Activa", estado = "Activa"  },
-              new EstadoDeTarjeta { id = "Eliminada", estado = "Eliminada"  },
+              //new EstadoDeTarjeta { id = "Eliminada", estado = "Eliminada"  },
               new EstadoDeTarjeta { id = "Suspendida", estado = "Suspendida"  }
         };
         #endregion

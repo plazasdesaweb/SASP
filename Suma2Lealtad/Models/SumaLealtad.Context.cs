@@ -66,5 +66,9 @@ namespace Suma2Lealtad.Models
         public DbSet<PrepaidCustomer> PrepaidCustomers { get; set; }
         public DbSet<SumaStatus> SumaStatuses { get; set; }
         public DbSet<FueraDeLinea> FueraDeLineas { get; set; }
+        public DbSet<Civil_Status> Civil_Statuses { get; set; }
+        public DbSet<Nacionality> Nacionalities { get; set; }
+        public DbSet<Sex> Sexes { get; set; }
+        public DbSet<Store> Stores { get; set; }
     }
 }

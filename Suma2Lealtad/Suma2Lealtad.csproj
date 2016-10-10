@@ -289,6 +289,9 @@
     <Compile Include="Models\CIUDAD.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Civil_Status.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CLIENTE.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
@@ -325,6 +328,9 @@
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MUNICIPIO.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Nacionality.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Object.cs">
@@ -405,6 +411,12 @@
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SecurityMenu.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sex.cs">
+      <DependentUpon>SumaLealtad.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Store.cs">
       <DependentUpon>SumaLealtad.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SumaLealtad.Context.cs">
