@@ -14,6 +14,11 @@ namespace Suma2Lealtad.Models
     
     public partial class CLIENTE
     {
+        public CLIENTE()
+        {
+            this.NOMBRE_CLIENTE2 = "(None)";
+        }
+    
         public string TIPO_DOCUMENTO { get; set; }
         public string NRO_DOCUMENTO { get; set; }
         public string NACIONALIDAD { get; set; }

@@ -1163,7 +1163,7 @@
           <Property Name="NRO_DOCUMENTO" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
           <Property Name="NACIONALIDAD" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="NOMBRE_CLIENTE1" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="NOMBRE_CLIENTE2" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="NOMBRE_CLIENTE2" Type="String" MaxLength="100" Unicode="false" FixedLength="false" DefaultValue="(None)" />
           <Property Name="APELLIDO_CLIENTE1" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="APELLIDO_CLIENTE2" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="FECHA_NACIMIENTO" Type="DateTime" Precision="3" />

@@ -1096,9 +1096,9 @@ namespace Suma2Lealtad.Models
                 {
                     cliente.E_MAIL = afiliado.email;
                     cliente.NOMBRE_CLIENTE1 = afiliado.name;
-                    cliente.NOMBRE_CLIENTE2 = afiliado.name2;
-                    cliente.APELLIDO_CLIENTE1 = afiliado.lastname1;
-                    cliente.APELLIDO_CLIENTE2 = afiliado.lastname2;
+                    cliente.NOMBRE_CLIENTE2 = afiliado.name2 == null ? string.Empty : afiliado.name2;
+                    cliente.APELLIDO_CLIENTE1 = afiliado.lastname1 == null ? "" : afiliado.lastname1;
+                    cliente.APELLIDO_CLIENTE2 = afiliado.lastname2 == null ? "" : afiliado.lastname2;
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                     cliente.NACIONALIDAD = afiliado.nationality;                    
