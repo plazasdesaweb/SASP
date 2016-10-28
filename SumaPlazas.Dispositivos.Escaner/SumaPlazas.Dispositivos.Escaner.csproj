@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C4A5D60B5859725F678A133547F22D617F6304F2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>86321C537386597A259285CF3646FA5CE3C3683D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>SumaPlazas.Dispositivos.Escaner_TemporaryKey.pfx</ManifestKeyFile>
@@ -115,6 +115,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
+    <None Include="SumaPlazas.Dispositivos.Escaner_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\InBrowserSettings.xml" />

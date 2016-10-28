@@ -431,7 +431,7 @@ namespace Suma2Lealtad.Models
                                              customerid = a.customerid,
                                              docnumber = a.docnumber,
                                              clientid = a.clientid,
-                                             storeid = a.storeid,
+                                             
                                              channelid = a.channelid,
                                              typeid = a.typeid,
                                              typedelivery = a.typedelivery,
@@ -443,18 +443,19 @@ namespace Suma2Lealtad.Models
                                              instagram_account = a.instagram_account,
                                              comments = a.comments,
                                              //ENTIDAD CLIENTE
-                                             nationality = c.NACIONALIDAD,
                                              name = c.NOMBRE_CLIENTE1,
                                              name2 = c.NOMBRE_CLIENTE2,
                                              lastname1 = c.APELLIDO_CLIENTE1,
                                              lastname2 = c.APELLIDO_CLIENTE2,
-                                             gender = c.SEXO,
-                                             maritalstatus = c.EDO_CIVIL,
                                              occupation = c.OCUPACION,
                                              phone1 = c.TELEFONO_HAB,
                                              phone2 = c.TELEFONO_OFIC,
                                              phone3 = c.TELEFONO_CEL,
                                              email = c.E_MAIL,
+  
+                                             //campo nuevo
+                                             storeid = c.STORE_ID.Value,
+
                                              cod_estado = c.COD_ESTADO,
                                              cod_ciudad = c.COD_CIUDAD,
                                              cod_municipio = c.COD_MUNICIPIO,
@@ -546,6 +547,22 @@ namespace Suma2Lealtad.Models
                                                   where a.id == afiliado.id
                                                   select u.firstname + " " + u.lastname + " (" + u.login + ")"
                                                   ).SingleOrDefault();
+
+                    //leer nuevos campos
+                    var cli = (from c in db.CLIENTES
+                               where c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO == afiliado.docnumber
+                               select c
+                               ).First();
+                    afiliado.nationality = cli.NACIONALITY_ID.ToString();
+                    afiliado.gender = cli.SEX_ID.ToString();
+                    afiliado.maritalstatus = cli.CIVIL_STATUS_ID.ToString();
+                    //leer la sucursal desde el campo nuevo y tabla maestra
+                    var query = (from s in db.Stores
+                                 where s.id == afiliado.storeid
+                                 select s.store_code
+                                 ).First();
+                    afiliado.storeid = Convert.ToInt32(query);
+                    
                 }
                 //cargar listas de selección 
                 afiliado.NacionalidadOptions = GetNacionalidades();
@@ -886,7 +903,7 @@ namespace Suma2Lealtad.Models
                     customerid = afiliado.customerid,
                     docnumber = afiliado.docnumber,
                     clientid = afiliado.clientid,
-                    storeid = afiliado.storeid,
+                    //storeid = afiliado.storeid,
                     channelid = afiliado.channelid,
                     typeid = afiliado.typeid,
                     affiliatedate = System.DateTime.Now,
@@ -913,22 +930,22 @@ namespace Suma2Lealtad.Models
                     {
                         TIPO_DOCUMENTO = afiliado.docnumber.Substring(0, 1),
                         NRO_DOCUMENTO = afiliado.docnumber.Substring(2),
-                        E_MAIL = afiliado.email,                        
+                        E_MAIL = afiliado.email == null ? "" : afiliado.email,                      
                         NOMBRE_CLIENTE1 = afiliado.name,
                         NOMBRE_CLIENTE2 = afiliado.name2 == null ? "" : afiliado.name2,
                         APELLIDO_CLIENTE1 = afiliado.lastname1 == null ? "" : afiliado.lastname1,
                         APELLIDO_CLIENTE2 = afiliado.lastname2 == null ? "" : afiliado.lastname2,
                         FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         
-                        NACIONALIDAD = afiliado.nationality == null ? "" : afiliado.nationality,
-                        SEXO = afiliado.gender == null ? "" : afiliado.gender,
-                        EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus,
-                        COD_SUCURSAL = afiliado.storeid,
+                        //NACIONALIDAD = afiliado.nationality == null ? "" : afiliado.nationality,
+                        //SEXO = afiliado.gender == null ? "" : afiliado.gender,
+                        //EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus,
+                        //COD_SUCURSAL = afiliado.storeid,
 
                         //nuevos campos con claves a tablas nuevas
-                        NACIONALITY_ID = afiliado.nationality == null ? new int?() : Convert.ToInt32(afiliado.nationality),
-                        SEX_ID = afiliado.gender == null ? new int?() : Convert.ToInt32(afiliado.gender),
-                        CIVIL_STATUS_ID = afiliado.maritalstatus == null ? new int?() : Convert.ToInt32(afiliado.maritalstatus),                        
+                        NACIONALITY_ID = afiliado.nationality == null ? 0 : Convert.ToInt32(afiliado.nationality),
+                        SEX_ID = afiliado.gender == null ? 0 : Convert.ToInt32(afiliado.gender),
+                        CIVIL_STATUS_ID = afiliado.maritalstatus == null ? 0 : Convert.ToInt32(afiliado.maritalstatus),                        
 
                         //OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation.Substring(0, 30),
                         TELEFONO_HAB = afiliado.phone1,
@@ -962,22 +979,23 @@ namespace Suma2Lealtad.Models
                 }
                 else
                 {
-                    cliente.E_MAIL = afiliado.email;
+                    cliente.E_MAIL = afiliado.email == null ? "" : afiliado.email;
                     cliente.NOMBRE_CLIENTE1 = afiliado.name;
                     cliente.NOMBRE_CLIENTE2 = afiliado.name2 == null ? "" : afiliado.name2;
                     cliente.APELLIDO_CLIENTE1 = afiliado.lastname1 == null ? "" : afiliado.lastname1;
                     cliente.APELLIDO_CLIENTE2 = afiliado.lastname2 == null ? "" : afiliado.lastname2;
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     
-                    cliente.NACIONALIDAD = afiliado.nationality == null ? "" : afiliado.nationality;
-                    cliente.SEXO = afiliado.gender == null ? "" : afiliado.gender;
-                    cliente.EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus;
-                    cliente.COD_SUCURSAL = afiliado.storeid;
+                    //cliente.NACIONALIDAD = afiliado.nationality == null ? "" : afiliado.nationality;
+                    //cliente.SEXO = afiliado.gender == null ? "" : afiliado.gender;
+                    //cliente.EDO_CIVIL = afiliado.maritalstatus == null ? "" : afiliado.maritalstatus;
+                    //cliente.COD_SUCURSAL = afiliado.storeid;
                     
                     //nuevos campos con claves a tablas nuevas
-                    cliente.NACIONALITY_ID = afiliado.nationality == null ? new int?() : Convert.ToInt32(afiliado.nationality);
-                    cliente.SEX_ID = afiliado.gender == null ? new int?() : Convert.ToInt32(afiliado.gender);
-                    cliente.CIVIL_STATUS_ID = afiliado.maritalstatus == null ? new int?() : Convert.ToInt32(afiliado.maritalstatus);
+                    cliente.NACIONALITY_ID = afiliado.nationality == null ? 0 : Convert.ToInt32(afiliado.nationality);
+                    cliente.SEX_ID = afiliado.gender == null ? 0 : Convert.ToInt32(afiliado.gender);
+                    cliente.CIVIL_STATUS_ID = afiliado.maritalstatus == null ? 0 : Convert.ToInt32(afiliado.maritalstatus);
+                    
                     var query = db.Stores.OrderBy(x => x.store_code);
                     cliente.STORE_ID = (from q in query.AsEnumerable()
                                         where q.store_code == afiliado.storeid.ToString()
@@ -1076,7 +1094,7 @@ namespace Suma2Lealtad.Models
                 Affiliate affiliate = db.Affiliates.FirstOrDefault(a => a.id == afiliado.id);
                 if (affiliate != null)
                 {
-                    affiliate.storeid = afiliado.storeid;
+                    ///affiliate.storeid = afiliado.storeid;
                     affiliate.channelid = afiliado.channelid;
                     affiliate.typeid = afiliado.typeid;
                     affiliate.typedelivery = afiliado.typedelivery;
@@ -1094,27 +1112,27 @@ namespace Suma2Lealtad.Models
                 CLIENTE cliente = db.CLIENTES.FirstOrDefault(c => c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO == afiliado.docnumber);
                 if (cliente != null)
                 {
-                    cliente.E_MAIL = afiliado.email;
+                    cliente.E_MAIL = afiliado.email == null ? "" : afiliado.email;
                     cliente.NOMBRE_CLIENTE1 = afiliado.name;
                     cliente.NOMBRE_CLIENTE2 = afiliado.name2 == null ? string.Empty : afiliado.name2;
                     cliente.APELLIDO_CLIENTE1 = afiliado.lastname1 == null ? "" : afiliado.lastname1;
                     cliente.APELLIDO_CLIENTE2 = afiliado.lastname2 == null ? "" : afiliado.lastname2;
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
-                    cliente.NACIONALIDAD = afiliado.nationality;                    
-                    cliente.SEXO = afiliado.gender;                    
-                    cliente.EDO_CIVIL = afiliado.maritalstatus;
-                    cliente.COD_SUCURSAL = afiliado.storeid;                    
+                    //cliente.NACIONALIDAD = afiliado.nationality;                    
+                    //cliente.SEXO = afiliado.gender;                    
+                    //cliente.EDO_CIVIL = afiliado.maritalstatus;
+                    //cliente.COD_SUCURSAL = afiliado.storeid;                    
 
                     //nuevos campos con claves a tablas nuevas
-                    cliente.NACIONALITY_ID = afiliado.nationality == null ? new int?() : Convert.ToInt32(afiliado.nationality);
-                    cliente.SEX_ID = afiliado.gender == null ? new int?() : Convert.ToInt32(afiliado.gender);
-                    cliente.CIVIL_STATUS_ID = afiliado.maritalstatus == null ? new int?() : Convert.ToInt32(afiliado.maritalstatus);
+                    cliente.NACIONALITY_ID = Convert.ToInt32(afiliado.nationality);
+                    cliente.SEX_ID = Convert.ToInt32(afiliado.gender);
+                    cliente.CIVIL_STATUS_ID = Convert.ToInt32(afiliado.maritalstatus);
+                    
                     var query = db.Stores.OrderBy(x=>x.store_code);
                     cliente.STORE_ID = (from q in query.AsEnumerable()
                                         where q.store_code == afiliado.storeid.ToString()
                                         select q.id).FirstOrDefault();
-
 
                     cliente.TELEFONO_HAB = afiliado.phone1;
                     cliente.TELEFONO_OFIC = afiliado.phone2;
@@ -1269,19 +1287,18 @@ namespace Suma2Lealtad.Models
                         TIPO_DOCUMENTO = tipoDocumento,
                         NRO_DOCUMENTO = cliente.NRO_DOCUMENTO,
                         E_MAIL = cliente.E_MAIL,
-                        NOMBRE_CLIENTE1 = cliente.NOMBRE_CLIENTE1,
                         NOMBRE_CLIENTE2 = cliente.NOMBRE_CLIENTE2,
                         APELLIDO_CLIENTE1 = cliente.APELLIDO_CLIENTE1,
                         APELLIDO_CLIENTE2 = cliente.APELLIDO_CLIENTE2,
                         FECHA_NACIMIENTO = cliente.FECHA_NACIMIENTO,
                         
-                        SEXO = cliente.SEXO,
-                        EDO_CIVIL = cliente.EDO_CIVIL,
-                        COD_SUCURSAL = cliente.COD_SUCURSAL,                        
+                        //SEXO = cliente.SEXO,
+                        //EDO_CIVIL = cliente.EDO_CIVIL,
+                        //COD_SUCURSAL = cliente.COD_SUCURSAL,                        
 
                         //nuevos campos con claves a tablas nuevas
-                        SEX_ID = afiliado.gender == null ? new int?() : Convert.ToInt32(afiliado.gender),
-                        CIVIL_STATUS_ID = afiliado.maritalstatus == null ? new int?() : Convert.ToInt32(afiliado.maritalstatus),                        
+                        SEX_ID = Convert.ToInt32(afiliado.gender),
+                        CIVIL_STATUS_ID = Convert.ToInt32(afiliado.maritalstatus),                        
 
                         OCUPACION = cliente.OCUPACION,
                         TELEFONO_HAB = cliente.TELEFONO_HAB,
@@ -1294,29 +1311,31 @@ namespace Suma2Lealtad.Models
                         COD_URBANIZACION = cliente.COD_URBANIZACION,
                         FECHA_CREACION = cliente.FECHA_CREACION
                     };
+
                     //nuevos campos con claves a tablas nuevas
                     var query = db.Stores.OrderBy(x => x.store_code);
                     cliente.STORE_ID = (from q in query.AsEnumerable()
                                         where q.store_code == afiliado.storeid.ToString()
                                         select q.id).FirstOrDefault();
+
                     clienteNuevo.TIPO_DOCUMENTO = tipoDocumento;
                     //NACIONALIDAD => NINGUNA = "0", VENEZOLANO = "1", EXTRANJERO = "2"
                     if (tipoDocumento == "V")
                     {
-                        clienteNuevo.NACIONALIDAD = "1";
+                        //clienteNuevo.NACIONALIDAD = "1";
                         //nuevos campos con claves a tablas nuevas
                         clienteNuevo.NACIONALITY_ID = 1;
                         
                     }
                     else if (tipoDocumento == "E" || tipoDocumento == "P")
                     {
-                        clienteNuevo.NACIONALIDAD = "2";
+                        //clienteNuevo.NACIONALIDAD = "2";
                         //nuevos campos con claves a tablas nuevas
                         clienteNuevo.NACIONALITY_ID = 2;
                     }
                     else
                     {
-                        clienteNuevo.NACIONALIDAD = "0";
+                        //clienteNuevo.NACIONALIDAD = "0";
                         //nuevos campos con claves a tablas nuevas
                         clienteNuevo.NACIONALITY_ID = 0;
                     }

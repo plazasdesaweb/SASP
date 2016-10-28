@@ -246,6 +246,22 @@ namespace Suma2Lealtad.Controllers.Prepago
                     new SelectListItem{ Text="Cédula de Extranjero", Value="E"}
                 };
             }
+            else if (afiliado.docnumber.Substring(0, 1) == "J")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {           
+                    new SelectListItem{ Text="RIF Persona Gubernamental", Value="G"},
+                  
+                };
+            }
+            else if (afiliado.docnumber.Substring(0, 1) == "G")
+            {
+                ViewData["TipoDocumentoOptions"] = new List<SelectListItem>()
+                {           
+                    new SelectListItem{ Text="RIF Persona Jurídica", Value="J"},
+                  
+                };
+            }
             return View(afiliado);
         }
 

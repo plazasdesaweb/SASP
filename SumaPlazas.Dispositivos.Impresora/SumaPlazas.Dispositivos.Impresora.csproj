@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C4A5D60B5859725F678A133547F22D617F6304F2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>86321C537386597A259285CF3646FA5CE3C3683D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
