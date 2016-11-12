@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Prepago / Reportes / Reporte de Recargas Consolidado";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "";
 }
 
 @{
@@ -23,63 +23,59 @@
                 <br />
             </div>
 
-            <div class="editor-field col-md-8">
-                <br />
-            </div>
-
-            <div class="editor-label col-md-4 control-label">
+            <div>
                 Nombre del Reporte :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.nombreReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div id="TipoConsulta" class="editor-label col-md-4 control-label">
+            <div>
                 Tipo de Consulta :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.tipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div class="editor-label col-md-4 control-label idCliente">
+            <div>
                 Cliente :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.parametrotipoconsultaReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div class="editor-label col-md-4 control-label">
+            <div>
                 Fecha desde :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.fechainicioReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div class="editor-label col-md-4 control-label">
+            <div>
                 Fecha hasta :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.fechafinReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div class="editor-label col-md-4 control-label">
+            <div>
                 Referencia :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.documentoreferenciaReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
-            <div class="editor-label col-md-4 control-label">
+            <div>
                 Observaciones :
             </div>
 
-            <div class="editor-field col-md-6">
+            <div>
                 @Html.TextBoxFor(model => model.First().Encabezado.observacionesReporte, new { @class = "form-control", @readonly = "true" })
             </div>
 
@@ -124,11 +120,11 @@
 
             </table>
 
-            <div class="editor-label col-md-4 control-label">
+            <div>
                 Monto Total :
             </div>
 
-            <div class="editor-form col-md-6">
+            <div>
                 <input type="text" id="MontoTotalTransacciones" name="MontoTotalTransacciones" value="@Math.Round(MontoTotal,2)" class="form-control" readonly="true">
             </div>            
 
