@@ -80,7 +80,8 @@ namespace SumaPlazas.Dispositivos.Escaner
             try
             {
                 OpenFileDialog dialog = new OpenFileDialog();
-                dialog.Filter = "Imagenes |*.jpg;*.png;*.bmp";
+                //Sólo se permiten archivos .jpg
+                dialog.Filter = "Imagenes |*.jpg;";
                 if (dialog.ShowDialog() == true)
                 {
                     if (File.Exists(FilePath))
