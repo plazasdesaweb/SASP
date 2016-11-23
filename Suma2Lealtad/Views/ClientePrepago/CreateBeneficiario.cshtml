@@ -94,7 +94,7 @@
                                 <input type="text" id="confirmacioncorreo" name="confirmacioncorreo" value="@Model.email" placeholder="" class="form-control" required>
                             </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Nombre" class="editor-label col-md-4 control-label">
                                 * Primer Nombre :
                             </div>
 
@@ -181,7 +181,7 @@
                                                       )
                             </div>
                             
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Telefono1" class="editor-label col-md-4 control-label">
                                 * Teléfono de Casa :
                             </div>
 
@@ -190,7 +190,7 @@
                                 @Html.ValidationMessageFor(model => model.phone1)
                             </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Telefono2" class="editor-label col-md-4 control-label">
                                 Teléfono de Oficina :
                             </div>
 
@@ -199,7 +199,7 @@
                                 @Html.ValidationMessageFor(model => model.phone2)
                             </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Telefono3" class="editor-label col-md-4 control-label">
                                 Teléfono de Celular :
                             </div>
 
@@ -553,6 +553,10 @@
         var str = document.getElementById('docnumber').value;
         if (str.search("J") == 0 || str.search("G") == 0) {
             $(".Natural").hide();
+            $("#Nombre").html("* Nombre :");
+            $("#Telefono1").html("* Teléfono :");
+            $("#Telefono2").html("Teléfono 2 :");
+            $("#Telefono3").html("Teléfono 3 :");
         }
     }
 </script>

@@ -116,7 +116,7 @@
                                 <input type="text" id="confirmacioncorreo" name="confirmacioncorreo" value="@Model.email" placeholder="" class="form-control" required>
                             </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Nombre" class="editor-label col-md-4 control-label">
                                 * Primer Nombre :
                             </div>
 
@@ -194,31 +194,31 @@
                                 Model.NacionalidadOptions), new { @class = "form-control" })
                     </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Telefono1" class="editor-label col-md-4 control-label">
                                 * Teléfono de Casa :
                             </div>
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.phone1, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.phone1)
+                                @Html.ValidationMessageFor(model => model.phone1)
                     </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Telefono2" class="editor-label col-md-4 control-label">
                                 Teléfono de Oficina :
                             </div>
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.phone2, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.phone2)
+                                @Html.ValidationMessageFor(model => model.phone2)
                     </div>
 
-                            <div class="editor-label col-md-4 control-label">
+                            <div id="Telefono3" class="editor-label col-md-4 control-label">
                                 Teléfono de Celular :
                             </div>
 
                             <div class="editor-field col-md-6">
                                 @Html.TextBoxFor(model => model.phone3, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.phone3)
+                                @Html.ValidationMessageFor(model => model.phone3)
                     </div>
 
                             <div class="editor-label col-md-4 control-label">
@@ -556,6 +556,10 @@
         var str = document.getElementById('docnumber').value;
         if (str.search("J") == 0 || str.search("G") == 0) {
             $(".Natural").hide();
+            $("#Nombre").html("* Nombre :");
+            $("#Telefono1").html("* Teléfono :");
+            $("#Telefono2").html("Teléfono 2 :");
+            $("#Telefono3").html("Teléfono 3 :");
         }
     }
 
