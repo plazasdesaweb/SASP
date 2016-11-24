@@ -255,14 +255,14 @@ namespace Suma2Lealtad.Modules
                 string req = WSL_WEBPLAZAS_UPDCLIENT;
                 req = req.Replace("{id}", record.clientid.ToString());
                 req = req.Replace("{docnumber}", record.docnumber);
-                req = req.Replace("{nationality}", (record.nationality == null || record.nationality == "") ? "NULO" : record.nationality);// + "");
+                req = req.Replace("{nationality}", (record.nationality == null || record.nationality == 0) ? "NULO" : record.nationality.ToString());// + "");
                 req = req.Replace("{name}", record.name);
                 req = req.Replace("{name2}", (record.name2 == null || record.name2 == "") ? "NULO" : record.name2);
                 req = req.Replace("{lastname1}", record.lastname1);
                 req = req.Replace("{lastname2}", (record.lastname2 == null || record.lastname2 == "") ? "NULO" : record.lastname2);
                 req = req.Replace("{birthdate}", record.birthdate.Substring(6, 4) + record.birthdate.Substring(3, 2) + record.birthdate.Substring(0, 2));// == null ? "19000101" : record.birthdate); 'yyyyMMdd'
-                req = req.Replace("{gender}", record.gender);// + "");
-                req = req.Replace("{maritalstatus}", record.maritalstatus);// + "");
+                req = req.Replace("{gender}", record.gender.ToString());// + "");
+                req = req.Replace("{maritalstatus}", record.maritalstatus.ToString());// + "");
                 req = req.Replace("{occupation}", (record.occupation == null || record.occupation == "") ? "NULO" : record.occupation);// + "");
                 req = req.Replace("{phone1}", record.phone1);
                 req = req.Replace("{phone2}", (record.phone2 == null || record.phone2 == "") ? "NULO" : record.phone2);

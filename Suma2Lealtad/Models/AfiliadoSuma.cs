@@ -10,9 +10,9 @@ namespace Suma2Lealtad.Models
         public int customerid { get; set; }             // id del Afiliado en CARDS                	 
         public string docnumber { get; set; }           // Documento de Identificación del Afiliado
         public int clientid { get; set; }               // id de Cliente del Afiliado en WEBPLAZAS
-        public int storeid { get; set; }                // id de Sucursal de Afiliación
-        public int channelid { get; set; }              // id de Canal de Afiliación
-        public int typeid { get; set; }                 // id de Tipo de Afiliación
+        public int storeid { get; set; }                // id de Sucursal de Afiliación *ok
+        public int channelid { get; set; }              // id de Canal de Afiliación *ok
+        public int typeid { get; set; }                 // id de Tipo de Afiliación *ok
         public string typedelivery { get; set; }        // Tipo de Envío de WEBPLAZAS
         public int? storeiddelivery { get; set; }       // id Sucursal de Envío DE WEBPLAZAS
         public int sumastatusid { get; set; }           // id de Estatus de Afiliación en Sumastatus
@@ -22,14 +22,14 @@ namespace Suma2Lealtad.Models
         public string instagram_account { get; set; }   // cuenta de Instagram
         public string comments { get; set; }            // Coentarios
         //ENTIDAD CLIENTE
-        public string nationality { get; set; }         // Nacionalidad
+        public int  nationality { get; set; }           // Nacionalidad *
         public string name { get; set; }                // Primer Nombre
         public string name2 { get; set; }               // Segundo Nombre 
         public string lastname1 { get; set; }           // Primer Apellido
         public string lastname2 { get; set; }           // Segundo Apellido 
         public string birthdate { get; set; }           // Fecha de Nacimiento
-        public string gender { get; set; }              // Sexo
-        public string maritalstatus { get; set; }       // Estado Civil
+        public int  gender { get; set; }                // Sexo *
+        public int maritalstatus { get; set; }          // Estado Civil *
         public string occupation { get; set; }          // Ocupación
         public string phone1 { get; set; }              // Teléfono Habitación
         public string phone2 { get; set; }              // Teléfono Oficina

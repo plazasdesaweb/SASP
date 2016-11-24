@@ -94,24 +94,34 @@ namespace Suma2Lealtad.Models
                 //afiliado.nationality = clienteWebPlazas.nationality.Replace("/", "").Replace("\\", "");
                 if (afiliado.docnumber.Substring(0, 1).ToUpper() == "V")
                 {
-                    afiliado.nationality = "1";
+                    afiliado.nationality = 1;
                 }
                 else if (afiliado.docnumber.Substring(0, 1).ToUpper() == "E" || afiliado.docnumber.Substring(0, 1).ToUpper() == "P")
                 {
-                    afiliado.nationality = "2";
+                    afiliado.nationality = 2;
                 }
                 else
                 {
-                    afiliado.nationality = "0";
+                    afiliado.nationality = 0;
                 }
                 afiliado.name = clienteWebPlazas.name.Replace("/", "").Replace("\\", "");
                 afiliado.name2 = clienteWebPlazas.name2.Replace("/", "").Replace("\\", "");
                 afiliado.lastname1 = clienteWebPlazas.lastname1.Replace("/", "").Replace("\\", "");
                 afiliado.lastname2 = clienteWebPlazas.lastname2.Replace("/", "").Replace("\\", "");
                 afiliado.birthdate = clienteWebPlazas.birthdate.Value.ToString("dd/MM/yyyy");
-                afiliado.gender = clienteWebPlazas.gender.Replace("/", "").Replace("\\", "");
+                int number1 = 0;
+                bool canConvert = int.TryParse(clienteWebPlazas.gender.Replace("/", "").Replace("\\", ""), out number1);
+                if (canConvert == true)
+                {
+                    afiliado.gender = Convert.ToInt32(clienteWebPlazas.gender.Replace("/", "").Replace("\\", ""));
+                }
                 afiliado.clientid = clienteWebPlazas.id;
-                afiliado.maritalstatus = clienteWebPlazas.maritalstatus.Replace("/", "").Replace("\\", "");
+                int number2 = 0;
+                bool canConvert2 = int.TryParse(clienteWebPlazas.maritalstatus.Replace("/", "").Replace("\\", ""), out number1);
+                if (canConvert2 == true)
+                {
+                    afiliado.maritalstatus = Convert.ToInt32(clienteWebPlazas.maritalstatus.Replace("/", "").Replace("\\", ""));
+                } 
                 afiliado.occupation = clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "").Length > 30 ? clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "").Substring(0, 30) : clienteWebPlazas.occupation.Replace("/", "").Replace("\\", "");
                 afiliado.phone1 = clienteWebPlazas.phone1.Replace("/", "").Replace("\\", "");
                 afiliado.phone2 = clienteWebPlazas.phone2.Replace("/", "").Replace("\\", "");
@@ -455,6 +465,9 @@ namespace Suma2Lealtad.Models
 
                                              //campo nuevo
                                              storeid = c.STORE_ID.Value,
+                                             nationality = c.NACIONALITY_ID.Value,
+                                             gender = c.SEX_ID.Value,
+                                             maritalstatus = c.CIVIL_STATUS_ID.Value,
 
                                              cod_estado = c.COD_ESTADO,
                                              cod_ciudad = c.COD_CIUDAD,
@@ -548,14 +561,6 @@ namespace Suma2Lealtad.Models
                                                   select u.firstname + " " + u.lastname + " (" + u.login + ")"
                                                   ).SingleOrDefault();
 
-                    //leer nuevos campos
-                    var cli = (from c in db.CLIENTES
-                               where c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO == afiliado.docnumber
-                               select c
-                               ).First();
-                    afiliado.nationality = cli.NACIONALITY_ID.ToString();
-                    afiliado.gender = cli.SEX_ID.ToString();
-                    afiliado.maritalstatus = cli.CIVIL_STATUS_ID.ToString();
                     //leer la sucursal desde el campo nuevo y tabla maestra
                     var query = (from s in db.Stores
                                  where s.id == afiliado.storeid
@@ -943,9 +948,9 @@ namespace Suma2Lealtad.Models
                         //COD_SUCURSAL = afiliado.storeid,
 
                         //nuevos campos con claves a tablas nuevas
-                        NACIONALITY_ID = afiliado.nationality == null ? 0 : Convert.ToInt32(afiliado.nationality),
-                        SEX_ID = afiliado.gender == null ? 0 : Convert.ToInt32(afiliado.gender),
-                        CIVIL_STATUS_ID = afiliado.maritalstatus == null ? 0 : Convert.ToInt32(afiliado.maritalstatus),
+                        NACIONALITY_ID = afiliado.nationality == null ? 0 : afiliado.nationality,
+                        SEX_ID = afiliado.gender == null ? 0 : afiliado.gender,
+                        CIVIL_STATUS_ID = afiliado.maritalstatus == null ? 0 : afiliado.maritalstatus,
 
                         //OCUPACION = afiliado.occupation == null ? "" : afiliado.occupation.Substring(0, 30),
                         TELEFONO_HAB = afiliado.phone1,
@@ -992,9 +997,9 @@ namespace Suma2Lealtad.Models
                     //cliente.COD_SUCURSAL = afiliado.storeid;
 
                     //nuevos campos con claves a tablas nuevas
-                    cliente.NACIONALITY_ID = afiliado.nationality == null ? 0 : Convert.ToInt32(afiliado.nationality);
-                    cliente.SEX_ID = afiliado.gender == null ? 0 : Convert.ToInt32(afiliado.gender);
-                    cliente.CIVIL_STATUS_ID = afiliado.maritalstatus == null ? 0 : Convert.ToInt32(afiliado.maritalstatus);
+                    cliente.NACIONALITY_ID = afiliado.nationality == null ? 0 : afiliado.nationality;
+                    cliente.SEX_ID = afiliado.gender == null ? 0 : afiliado.gender;
+                    cliente.CIVIL_STATUS_ID = afiliado.maritalstatus == null ? 0 : afiliado.maritalstatus;
 
                     var query = db.Stores.OrderBy(x => x.store_code);
                     cliente.STORE_ID = (from q in query.AsEnumerable()
@@ -1114,7 +1119,7 @@ namespace Suma2Lealtad.Models
                 {
                     cliente.E_MAIL = afiliado.email == null ? "" : afiliado.email;
                     cliente.NOMBRE_CLIENTE1 = afiliado.name;
-                    cliente.NOMBRE_CLIENTE2 = afiliado.name2 == null ? string.Empty : afiliado.name2;
+                    cliente.NOMBRE_CLIENTE2 = afiliado.name2 == null ? "" : afiliado.name2;
                     cliente.APELLIDO_CLIENTE1 = afiliado.lastname1 == null ? "" : afiliado.lastname1;
                     cliente.APELLIDO_CLIENTE2 = afiliado.lastname2 == null ? "" : afiliado.lastname2;
                     cliente.FECHA_NACIMIENTO = afiliado.birthdate == null ? new DateTime?() : DateTime.ParseExact(afiliado.birthdate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -1125,9 +1130,9 @@ namespace Suma2Lealtad.Models
                     //cliente.COD_SUCURSAL = afiliado.storeid;                    
 
                     //nuevos campos con claves a tablas nuevas
-                    cliente.NACIONALITY_ID = Convert.ToInt32(afiliado.nationality);
-                    cliente.SEX_ID = Convert.ToInt32(afiliado.gender);
-                    cliente.CIVIL_STATUS_ID = Convert.ToInt32(afiliado.maritalstatus);
+                    cliente.NACIONALITY_ID = afiliado.nationality;
+                    cliente.SEX_ID = afiliado.gender;
+                    cliente.CIVIL_STATUS_ID = afiliado.maritalstatus;
 
                     var query = db.Stores.OrderBy(x => x.store_code);
                     cliente.STORE_ID = (from q in query.AsEnumerable()
@@ -1287,6 +1292,7 @@ namespace Suma2Lealtad.Models
                         TIPO_DOCUMENTO = tipoDocumento,
                         NRO_DOCUMENTO = cliente.NRO_DOCUMENTO,
                         E_MAIL = cliente.E_MAIL,
+                        NOMBRE_CLIENTE1 = cliente.NOMBRE_CLIENTE1,
                         NOMBRE_CLIENTE2 = cliente.NOMBRE_CLIENTE2,
                         APELLIDO_CLIENTE1 = cliente.APELLIDO_CLIENTE1,
                         APELLIDO_CLIENTE2 = cliente.APELLIDO_CLIENTE2,
@@ -1297,8 +1303,8 @@ namespace Suma2Lealtad.Models
                         //COD_SUCURSAL = cliente.COD_SUCURSAL,                        
 
                         //nuevos campos con claves a tablas nuevas
-                        SEX_ID = Convert.ToInt32(afiliado.gender),
-                        CIVIL_STATUS_ID = Convert.ToInt32(afiliado.maritalstatus),
+                        SEX_ID = afiliado.gender,
+                        CIVIL_STATUS_ID = afiliado.maritalstatus,
 
                         OCUPACION = cliente.OCUPACION,
                         TELEFONO_HAB = cliente.TELEFONO_HAB,
@@ -1314,11 +1320,10 @@ namespace Suma2Lealtad.Models
 
                     //nuevos campos con claves a tablas nuevas
                     var query = db.Stores.OrderBy(x => x.store_code);
-                    cliente.STORE_ID = (from q in query.AsEnumerable()
-                                        where q.store_code == afiliado.storeid.ToString()
-                                        select q.id).FirstOrDefault();
+                    clienteNuevo.STORE_ID = (from q in query.AsEnumerable()
+                                             where q.store_code == afiliado.storeid.ToString()
+                                             select q.id).FirstOrDefault();
 
-                    clienteNuevo.TIPO_DOCUMENTO = tipoDocumento;
                     //NACIONALIDAD => NINGUNA = "0", VENEZOLANO = "1", EXTRANJERO = "2"
                     if (tipoDocumento == "V")
                     {
@@ -1361,7 +1366,7 @@ namespace Suma2Lealtad.Models
                     modifieddate = DateTime.Now,
                     statusid = afiliado.sumastatusid,
                     reasonsid = Globals.ID_REASONS_INICIAL,
-                    comments = afiliado.comments
+                    comments = "Cambio de Tipo de Documento"
                 };
                 db.AffiliateAuds.Add(affiliateAuditoria);
                 db.SaveChanges();
