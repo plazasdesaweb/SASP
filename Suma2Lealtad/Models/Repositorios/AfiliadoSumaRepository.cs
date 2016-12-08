@@ -2279,23 +2279,24 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        private string GetNombreEstado(string id)
-        {
-            using (LealtadEntities db = new LealtadEntities())
-            {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                if (db.ESTADOS.Find(id) == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return db.ESTADOS.Find(id).DESCRIPC_ESTADO;
-                }
-            }
-        }
+        //private string GetNombreEstado(string id)
+        //{
+        //    using (LealtadEntities db = new LealtadEntities())
+        //    {
+        //        db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+        //        if (db.ESTADOS.Find(id) == null)
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            return db.ESTADOS.Find(id).DESCRIPC_ESTADO;
+        //        }
+        //    }
+        //}
 
         // retornar la lista de Ciudades asociadas al campo clave de la entidad Estado.
+
         public List<CIUDAD> GetCiudades(string id)
         {
             using (LealtadEntities db = new LealtadEntities())
@@ -2306,23 +2307,24 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        private string GetNombreCiudad(string id)
-        {
-            using (LealtadEntities db = new LealtadEntities())
-            {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                if (db.CIUDADES.Find(id) == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return db.CIUDADES.Find(id).DESCRIPC_CIUDAD;
-                }
-            }
-        }
+        //private string GetNombreCiudad(string id)
+        //{
+        //    using (LealtadEntities db = new LealtadEntities())
+        //    {
+        //        db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+        //        if (db.CIUDADES.Find(id) == null)
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            return db.CIUDADES.Find(id).DESCRIPC_CIUDAD;
+        //        }
+        //    }
+        //}
 
         // retornar la lista de Municipios asociadas al campo clave de la entidad Ciudad.
+
         public List<MUNICIPIO> GetMunicipios(string id)
         {
             using (LealtadEntities db = new LealtadEntities())
@@ -2333,23 +2335,24 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        private string GetNombreMunicipio(string id)
-        {
-            using (LealtadEntities db = new LealtadEntities())
-            {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                if (db.MUNICIPIOS.Find(id) == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return db.MUNICIPIOS.Find(id).DESCRIPC_MUNICIPIO;
-                }
-            }
-        }
+        //private string GetNombreMunicipio(string id)
+        //{
+        //    using (LealtadEntities db = new LealtadEntities())
+        //    {
+        //        db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+        //        if (db.MUNICIPIOS.Find(id) == null)
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            return db.MUNICIPIOS.Find(id).DESCRIPC_MUNICIPIO;
+        //        }
+        //    }
+        //}
 
         // retornar la lista de Parroquias asociadas al campo clave de la entidad Municipio.
+
         public List<PARROQUIA> GetParroquias(string id)
         {
             using (LealtadEntities db = new LealtadEntities())
@@ -2360,22 +2363,23 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        private string GetNombreParroquia(string id)
-        {
-            using (LealtadEntities db = new LealtadEntities())
-            {
-                if (db.PARROQUIAS.Find(id) == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return db.PARROQUIAS.Find(id).DESCRIPC_PARROQUIA;
-                }
-            }
-        }
+        //private string GetNombreParroquia(string id)
+        //{
+        //    using (LealtadEntities db = new LealtadEntities())
+        //    {
+        //        if (db.PARROQUIAS.Find(id) == null)
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            return db.PARROQUIAS.Find(id).DESCRIPC_PARROQUIA;
+        //        }
+        //    }
+        //}
 
         // retornar la lista de Urbanizaciones asociadas al campo clave de la entidad Parroquia.
+
         public List<URBANIZACION> GetUrbanizaciones(string id)
         {
             using (LealtadEntities db = new LealtadEntities())
@@ -2386,21 +2390,21 @@ namespace Suma2Lealtad.Models
             }
         }
 
-        private string GetNombreUrbanizacion(string id)
-        {
-            using (LealtadEntities db = new LealtadEntities())
-            {
-                db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                if (db.URBANIZACIONES.Find(id) == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return db.URBANIZACIONES.Find(id).DESCRIPC_URBANIZACION;
-                }
-            }
-        }
+        //private string GetNombreUrbanizacion(string id)
+        //{
+        //    using (LealtadEntities db = new LealtadEntities())
+        //    {
+        //        db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+        //        if (db.URBANIZACIONES.Find(id) == null)
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            return db.URBANIZACIONES.Find(id).DESCRIPC_URBANIZACION;
+        //        }
+        //    }
+        //}
         #endregion
 
         public List<Suma2Lealtad.Models.AfiliadoSuma.Nacionalidad> GetNacionalidades()

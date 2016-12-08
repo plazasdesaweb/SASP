@@ -1,0 +1,411 @@
+﻿@model IList<Suma2Lealtad.Models.DetalleOrdenRecargaPrepago>
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<link href="css/bootstrap.css" rel="stylesheet">*@
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<link href="css/style.css" rel="stylesheet">*@
+@*<link href="~/Content/style.css" rel="stylesheet" />*@
+
+<style type="text/css" media="screen">
+    .table-hover {
+        cursor: pointer;
+    }
+
+    .table tbody tr.active td {
+        background-color: #5e8262; /*#476B6B #29A329;*/
+        color: white;
+    }
+</style>
+
+
+<div class="form-group">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading clearfix panel-gradient">
+            <h3 class="panel-title">Suma / Ordenes de Recarga / Crear @Model.First().tipoOrden</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <div class="editor-label col-md-4 control-label">
+                <br />
+            </div>
+            <div class="editor-field col-md-8">
+                <br />
+            </div>
+
+            <form id="commentForm" method="post" action="@Url.Action("Create", "OrdenRecargaSuma")" class="form-horizontal" onsubmit="return verificarforma();">
+
+                <div class="editor-label col-md-4 control-label">
+                    Número de Documento/Cédula :
+                </div>
+
+                <div class="editor-field col-md-4">
+                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="12" placeholder="V-12345678" class="form-control">
+                    <span id="documento"></span>
+                </div>
+
+                <div class="editor-label col-md-2 control-label">
+                    <a id="BuscarAfiliado" class="btn btn-success btn-md" role="button">Buscar Afiliado</a>
+                </div>
+
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-6">
+                    <br />
+                </div>
+
+                <div class="editor-field col-md-6">
+                    <br />
+                </div>
+
+                <table id="detalleOrden" class="table table-hover ocultar">
+
+                    <thead>
+                        <tr>
+                            <th>Número de Documento/Cédula</th>
+                            <th>Nombre</th>
+                            <th>Monto</th>
+                            <th>Estatus</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{if (Model.First().idAfiliado != 0)
+                          {
+                              for (int i = 0; i < Model.Count; i++)
+                              {     
+                            <tr data-row-key="@Model[i].idAfiliado">
+
+                                @Html.HiddenFor(modelItem => Model[i].idAfiliado)
+                                @Html.HiddenFor(modelItem => Model[i].idOrden)
+                                @Html.HiddenFor(modelItem => Model[i].tipoOrden)
+
+                                @*<td>
+                                    @Html.DisplayFor(modelItem => Model[i].type, new { @class = "form-control" })
+                                </td>*@
+
+                                <td>
+                                    @Html.HiddenFor(modelItem => Model[i].docnumberAfiliado)
+                                    @Html.DisplayFor(modelItem => Model[i].docnumberAfiliado, new { @class = "form-control" })
+                                </td>
+
+                                <td>
+                                    @Html.HiddenFor(modelItem => Model[i].nameAfiliado)
+                                    @Html.HiddenFor(modelItem => Model[i].lastname1Afiliado)
+                                    @Html.DisplayFor(modelItem => Model[i].nameAfiliado) @Html.DisplayFor(modelItem => Model[i].lastname1Afiliado)
+                                </td>
+
+                                <td class="text-right">
+                                    @{if (Model[i].statusDetalleOrden != "No encontrado")
+                                      {
+                                        @Html.TextBoxFor(modelItem => Model[i].montoRecarga, new { @class = "form-control Monto" })
+                                        <span id="field_@Model[i].idAfiliado"></span>
+                                      }
+                                      else
+                                      {
+                                        @Html.HiddenFor(modelItem => Model[i].montoRecarga)
+                                        @Html.DisplayFor(modelItem => Model[i].montoRecarga, new { @class = "form-control" })
+                                        @Html.TextBoxFor(modelItem => Model[i].montoRecarga, new { @class = "Monto hidden" })
+                                      }
+                                    }
+                                </td>
+
+                                <td>
+                                    @Html.HiddenFor(modelItem => Model[i].statusDetalleOrden)
+                                    @Html.DisplayFor(modelItem => Model[i].statusDetalleOrden)
+                                </td>
+
+                            </tr>                 
+                              }
+                          }
+                        }
+                    </tbody>
+
+                </table>
+
+                <div class="editor-label col-md-6 control-label ocultar">
+                    Total Recargas :
+                </div>
+
+                <div class="editor-field col-md-4 ocultar">
+                    <input type="text" id="TotalRecargas" name="TotalRecargas" value="" maxlength="10" class="form-control" readonly="true">
+                </div>
+
+                <div class="editor-label col-md-6 control-label ocultar">
+                    Monto Total Recargas :
+                </div>
+
+                <div class="editor-field col-md-4 ocultar">
+                    <input type="text" id="MontoTotalRecargas" name="MontoTotalRecargas" value="" maxlength="10" class="form-control" readonly="true">
+                </div>
+
+                <div class="editor-label col-md-4 control-label ocultar">
+                    <br />
+                </div>
+                <div class="editor-field col-md-8 ocultar">
+                    <br />
+                </div>
+
+                <!-- SECCION PARA botones de operaciones -->
+
+                <div class="col-md-12 col-tabla-btn ocultar">
+                    <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-md" value="Crear Orden" />
+                        @*<a href="@Url.Action("FilterReviewBeneficiarios", "ClientePrepago", new { id = Model.First().idCliente })" class="btn btn-success btn-sm" > Filtrar Beneficiarios</a>*@
+                        <a href="@Url.Action("FilterReview", "OrdenRecargaSuma")" class="btn btn-danger btn-md">Regresar</a>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+        <!-- SECCION PARA botones de operaciones -->
+
+    </div>
+    <!-- panel-body -->
+
+</div>
+<!-- panel -->
+
+@*<script src="~/Scripts/jquery-2.1.3.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        var idafiliado = parseInt('@Model.First().idAfiliado');
+        if (idafiliado == 0) {
+            $('.ocultar').hide();
+        }
+        ValidarMontos();
+    });
+
+    //var Myinterval = setInterval(function () {
+    //    ValidarMontos()
+    //}, 500);
+
+    $(".Monto").on("input", function () {
+        //alert("Change to " + this.value);
+        ValidarMontos();
+    });
+
+    function ValidarMontos() {
+        var MontoTotalRecargas = parseFloat("0");
+        var TotalRecargas = 0;
+        var resultado = true;
+        $("#detalleOrden tbody tr").each(function (index) {
+            var RegExPattern = /^\d+(\.\d{1,2})?$/;
+            var idrow = $(this).data("row-key");
+            var temp;
+            var campo3 = 0;
+            $(this).children("td").each(function (index2) {
+                switch (index2) {
+                    case 2:
+                        if ($(this).find('.Monto').val() != "") {
+                            temp = $(this).find('.Monto').val().toString();
+                            temp = temp.replace(",", ".");
+                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+                                campo3 = parseFloat(temp);
+                                $(this).find('.Monto').val(temp.replace(".", ","));
+                            }
+                            else {
+                                campo3 = parseFloat(temp).toFixed(0);
+                                $(this).find('.Monto').val(campo3.toString().replace(".", ","));
+                           }
+                        }
+                        break;
+                    case 3:
+                        if ($.trim($(this).text()) != "No encontrado") {
+                            if (campo3 != parseFloat("0")) {
+                                $(this).text("Incluido");
+                                LimpiarSpanMessage('field_' + idrow);
+                                if (RegExPattern.test(campo3) == false) {
+                                    spanMessage('field_' + idrow, '* Monto invalido');
+                                    resultado = false;
+                                }
+                                //PARA VERIFICAR PARAMETROS ESTABLECIDOS - UNA VEZ SE DEFINA EL ESQUEMA
+                                //else if (campo3 > parseFloat("5000")) {
+                                //    spanMessage('field_' + idrow, '* El monto excede el valor máximo permitido (5000)');
+                                //    resultado = false;
+                                //}
+                                TotalRecargas = TotalRecargas + 1;
+                                MontoTotalRecargas = parseFloat(MontoTotalRecargas) + parseFloat(campo3);
+                            } else {
+                                $(this).text("");
+                                spanMessage('field_' + idrow, '* No incluye recarga');
+                            }
+                        }
+                        break;
+                }
+            });
+            document.getElementById('TotalRecargas').value = TotalRecargas;
+            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+                document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas.toFixed(2).toString().replace(".", ",");
+            }
+            else {
+                document.getElementById('MontoTotalRecargas').value = parseFloat(MontoTotalRecargas).toFixed(0).toString();
+            }
+        });
+        return resultado;
+    }
+
+    function spanMessage(idelemento, mensaje) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(mensaje));
+    }
+
+    function LimpiarSpanMessage(idelemento) {
+        var span = document.getElementById(idelemento);
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+    }
+
+    function validateNumDoc() {
+        var numdoc = document.getElementById('numdoc').value;
+        var valor = document.getElementById('numdoc').value.trim();
+        if (numdoc.length == 0) {
+            return false;
+        }
+        var RegExPattern = /^([VvEe]){1}(-){1}(\d){3,8}$/;
+        var RegExPattern2 = /^([VvEe]){1}(\d){3,8}$/;
+        var RegExPattern3 = /^([Pp]){1}(-){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern4 = /^([Pp]){1}([A-Za-z0-9]){3,10}$/;
+        var RegExPattern5 = /^([VvEeJjGg]){1}(-){1}(\d){9}$/;
+        var RegExPattern6 = /^([VvEeJjGg]){1}(\d){9}$/;
+        if (RegExPattern.test(valor) == false && RegExPattern2.test(valor) == false && RegExPattern3.test(valor) == false && RegExPattern4.test(valor) == false && RegExPattern5.test(valor) == false && RegExPattern6.test(valor) == false) {
+            spanMessage('documento', "* Formato Número de Documento/Cédula Incorrecto. (ejemplos V-12345678, J-123456789, P-ABC1234567)");
+            document.getElementById('numdoc').value = "";
+            document.getElementById('numdoc').focus();
+            return false;
+        }
+        else if (RegExPattern.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern2.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern3.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            document.getElementById('documento').value = "";
+            return true;
+        }
+        else if (RegExPattern4.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern5.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+        else if (RegExPattern6.test(valor) != false) {
+            document.getElementById('numdoc').value = valor.substring(0, 1).toUpperCase() + "-" + valor.substring(1).toUpperCase();
+            spanMessage('documento', "");
+            return true;
+        }
+    }
+
+    function verificarforma() {
+        if (!ValidarMontos()) {
+            alert("Hay campos invalidos, verifique.");
+            return false;
+        }
+        if (document.getElementById('MontoTotalRecargas').value.toString() == "0,00") {
+            alert("Debe incluir al menos un benficiario de recarga.");
+            return false;
+        }
+        return true;
+    }
+
+    $("#BuscarAfiliado").on("click", function () {
+        //alert("Change to " + this.value);
+        if (validateNumDoc()) {
+            var docnumber = $('#numdoc').val();
+            incluirfila(docnumber);
+        }
+    });
+
+    function buscarAfiliado(docnumber) {
+        var resultado = false;
+        $("#detalleOrden tbody tr").each(function (index) {
+            var campo1;
+            $(this).children("td").each(function (index2) {
+                switch (index2) {
+                    case 0:
+                        campo1 = $(this).text();
+                        if (campo1 == docnumber){
+                            resultado = true;
+                            break;
+                            //case 1: campo2 = $(this).text();
+                            //    break;
+                            //case 2: campo3 = $(this).text();
+                            //    break;
+                        }
+                }                  
+            });            
+        });
+        return resultado;
+    }
+
+    function incluirfila(docnumber) {
+        var vacio = true;
+        $.getJSON('@Url.Action("/FindAfiliado/")' + '?docnumber=' + docnumber, function (data) {
+            $.each(data, function (i, record) {
+                vacio = false;                    
+                if(buscarAfiliado(docnumber) == true) {
+                    $('#numdoc').val("");
+                    spanMessage('documento', "El Afiliado con  Número de Documento/Cédula " + docnumber + " ya está incluido en la lista");
+                }
+                else {
+                    LimpiarSpanMessage('documento');                
+                    var nuevaFila = $("#detalleOrden tr").length - 1;
+                    if (nuevaFila < 0) {
+                        nuevaFila = 0;
+                    }
+                    $('#detalleOrden').find('tbody:last').append('<tr data-row-key="' + record.id + '">'
+                                                               + '<input data-val="true" data-val-number="The field idAfiliado must be a number." data-val-required="El campo idAfiliado es obligatorio." name="[' + nuevaFila + '].idAfiliado" type="hidden" value=' + record.id + ' />'
+                                                               + '<input data-val="true" data-val-number="The field idOrden must be a number." data-val-required="El campo idOrden es obligatorio." name="[' + nuevaFila + '].idOrden" type="hidden" value="'+ record.idOrden +'" />'
+                                                               + '<input name="[' + nuevaFila + '].tipoOrden" type="hidden" value="@Model.First().tipoOrden" />'
+                                                               + '<td>'
+                                                               + '<input name="[' + nuevaFila + '].docnumberAfiliado" type="hidden" value="' + record.docnumber + '" />' + record.docnumber 
+                                                               + '</td>'
+                                                               + '<td>'
+                                                               + '<input name="[' + nuevaFila + '].nameAfiliado" type="hidden" value="' + record.name + '" />'
+                                                               + '<input name="[' + nuevaFila + '].lastname1Afiliado" type="hidden" value="' + record.lastname1 + '" />' + record.name + ' ' + record.lastname1
+                                                               + '</td>'
+                                                               + '<td class="text-right">'
+                                                               + '<input class="form-control Monto" data-val="true" data-val-number="The field montoRecarga must be a number." data-val-required="El campo montoRecarga es obligatorio." name="[' + nuevaFila + '].montoRecarga" type="text" value="0" />                                        <span id="field_' + record.id + '"></span>'
+                                                               + '</td>'
+                                                               + '<td>'
+                                                               + '<input name="[' + nuevaFila + '].statusDetalleOrden" type="hidden" value="" />'
+                                                               + '</td>'
+                                                               + '</tr>');
+                    $('#numdoc').val("");
+                    $('.ocultar').show();
+                    $('#detalleOrden').on('input', '.Monto', function () { ValidarMontos(); });
+                }
+            });
+            if (vacio) {
+                $('#numdoc').val("");
+                spanMessage('documento', "No se ha encontrado Afiliado con el Número de Documento/Cédula " + docnumber);
+            }
+            ValidarMontos();
+        });
+    }
+</script>
+
+
+
+
+

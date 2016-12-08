@@ -122,7 +122,8 @@
                                 @(String.Format("{0}", Math.Truncate(item.numerotarjeta)))
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.monto)
+                                @(String.Format("{0}", Math.Truncate(item.monto)))
+                                @*@Html.DisplayFor(modelItem => item.monto)*@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.tipo)

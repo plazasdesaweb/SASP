@@ -411,7 +411,6 @@ namespace Suma2Lealtad.Models
                                  emailCliente = c.email
                              }
                          }).FirstOrDefault();
-
                 return orden;
             }
         }
@@ -461,19 +460,37 @@ namespace Suma2Lealtad.Models
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //Actualizar estatus detalleOrden
+                int idbase = OrdersDetailId();                    
                 foreach (var item in detalleOrden)
                 {
                     OrdersDetail ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
+                    //si orderdetail == null hay que crear el order detail y luego modificarlo
+                    if (ordersdetail == null)
+                    {
+                        idbase = idbase + 1;
+                        OrdersDetail OrderDetail = new OrdersDetail()
+                        {
+                            id = idbase,
+                            orderid = item.idOrden,
+                            customerid = item.idAfiliado,
+                            amount = item.montoRecarga,
+                            //sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
+                        };
+                        db.OrdersDetails.Add(OrderDetail);
+                        db.SaveChanges();
+                        ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
+                    }
                     if (item.statusDetalleOrden == "Excluido")
                     {
                         ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_EXCLUIDO) && (s.tablename == "OrdersDetail")).id;
                         ordersdetail.comments = item.observacionesExclusion;
                     }
-                    else if (item.statusDetalleOrden == "Incluido")
+                    else //if (item.statusDetalleOrden == "Incluido")
                     {
                         ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id;
                     }
-                }
+                    db.SaveChanges();
+                }                                        
                 //Actualizar estatus y monto de la Orden
                 Order orden = db.Orders.Find(detalleOrden.First().idOrden);
                 orden.totalamount = MontoTotalRecargas;
@@ -674,7 +691,7 @@ namespace Suma2Lealtad.Models
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 Order orden = db.Orders.Find(id);
-                //PROCESAR ORDENES DE RECARGA
+                //PROCESAR ORDENES DE RECARGA BS
                 if (orden.comments.Contains("Orden de Recarga"))
                 {
                     //Recargar y Actualizar estatus detalleorden
@@ -692,6 +709,30 @@ namespace Suma2Lealtad.Models
                             else
                             {
                                 ordersdetail.comments = "Recarga fallida";
+                                ordersdetail.cardsresponse = item.resultadoRecarga;
+                            }
+                        }
+                        db.SaveChanges();
+                    }
+                }
+                //PROCESAR ORDENES DE RECARGA DE PUNTOS
+                else if (orden.comments == "Orden de Acreditación Suma")
+                {
+                    //Recargar y Actualizar estatus detalleorden
+                    foreach (DetalleOrdenRecargaPrepago item in detalleOrden)
+                    {
+                        OrdersDetail ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
+                        if (item.statusDetalleOrden == "Aprobado")
+                        {
+                            ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_PROCESADO) && (s.tablename == "OrdersDetail")).id;
+                            if (RecargarSuma(item))
+                            {
+                                ordersdetail.comments = "Acreditación efectiva";
+                                ordersdetail.cardsresponse = item.resultadoRecarga;
+                            }
+                            else
+                            {
+                                ordersdetail.comments = "Acreditación fallida";
                                 ordersdetail.cardsresponse = item.resultadoRecarga;
                             }
                         }
@@ -741,6 +782,56 @@ namespace Suma2Lealtad.Models
                 db.SaveChanges();
                 return true;
             }
+        }
+
+        private bool RecargarSuma(DetalleOrdenRecargaPrepago detalleorden)
+        {
+            int intentos;
+            //Se llama al servicio para verificar q este activo. Se intenta la operación 3 veces, antes de fallar
+            for (intentos = 0; intentos <= 3; intentos++)
+            {
+                //SERVICIO WSL.Cards.getClient !
+                string clienteCardsJson = WSL.Cards.getClient(detalleorden.docnumberAfiliado.Substring(2));
+                if (WSL.Cards.ExceptionServicioCards(clienteCardsJson))
+                {
+                    intentos++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if (intentos > 3)
+            {
+                return false;
+            }
+            string montoSinSeparador = Math.Truncate(detalleorden.montoRecarga * 1).ToString();
+            //Se intenta la operación 6 veces, antes de fallar
+            for (intentos = 0; intentos <= 6; intentos++)
+            {
+                string RespuestaCardsJson = WSL.Cards.addBatch(detalleorden.docnumberAfiliado.Substring(2), montoSinSeparador, Globals.TRANSCODE_ACREDITACION_SUMA, (string)HttpContext.Current.Session["login"]);
+                if (WSL.Cards.ExceptionServicioCards(RespuestaCardsJson))
+                {
+                    ExceptionJSON exceptionJson = (ExceptionJSON)JsonConvert.DeserializeObject<ExceptionJSON>(RespuestaCardsJson);
+                    detalleorden.resultadoRecarga = exceptionJson.exdetail + "-" + exceptionJson.exsource;
+                    intentos++;
+                }
+                else
+                {
+                    RespuestaCards RespuestaCards = (RespuestaCards)JsonConvert.DeserializeObject<RespuestaCards>(RespuestaCardsJson);
+                    if ((Convert.ToDecimal(RespuestaCards.excode) < 0))
+                    {
+                        detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                        return false;
+                    }
+                    else
+                    {
+                        detalleorden.resultadoRecarga = RespuestaCards.exdetail;
+                        return true;
+                    }
+                }
+            }
+            return (intentos <= 3);
         }
 
         public List<DetalleOrdenRecargaPrepago> DetalleParaOrden(ClientePrepago cliente, List<BeneficiarioPrepagoIndex> beneficiarios)

@@ -335,6 +335,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult FilterReview()
         {
             OrdenRecargaPrepago orden = new OrdenRecargaPrepago();
+            orden.ClaseDeOrdenOptions = orden.ClaseDeOrdenOptions.Where(x => x.id != "Orden de Acreditación Suma" && x.id != "Orden de Recarga Suma");
             return View(orden);
         }
 
@@ -348,12 +349,19 @@ namespace Suma2Lealtad.Controllers.Prepago
                 orden = repOrden.Find(Convert.ToInt32(numero));
                 if (orden != null)
                 {
-                    ordenes.Add(orden);
+                    if (orden.tipoOrden != "Orden de Acreditación Suma" && orden.tipoOrden != "Orden de Recarga Suma")
+                    {
+                        ordenes.Add(orden);
+                    }                    
                 }
             }
             else
             {
-                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones).OrderBy(x => x.Cliente.nameCliente).ThenBy(y => y.id).ToList();                
+                ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones)
+                                  .Where(o => o.tipoOrden != "Orden de Acreditación Suma" && o.tipoOrden != "Orden de Recarga Suma")
+                                  .OrderBy(x => x.Cliente.nameCliente)
+                                  .ThenBy(y => y.id)
+                                  .ToList();                
             }
             return View("Index", ordenes);
         }

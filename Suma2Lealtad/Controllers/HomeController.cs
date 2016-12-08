@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Linq;
 using Suma2Lealtad.Models.ViewModels.Home;
+using System.Collections.Generic;
 
 
 namespace Suma2Lealtad.Controllers
@@ -161,6 +162,6 @@ namespace Suma2Lealtad.Controllers
         {
             return View(viewmodel);
         }
-
+        
     }
 }

@@ -239,6 +239,7 @@
     <Compile Include="Controllers\Prepago\ClientePrepagoController.cs" />
     <Compile Include="Controllers\Prepago\FueraLineaPrepagoController.cs" />
     <Compile Include="Controllers\Prepago\OrdenRecargaPrepagoController.cs" />
+    <Compile Include="Controllers\Prepago\OrdenRecargaSumaController.cs" />
     <Compile Include="Controllers\Prepago\TransferenciaController.cs" />
     <Compile Include="Controllers\ReasonsBlockController.cs" />
     <Compile Include="Controllers\ReasonsController.cs" />
@@ -832,6 +833,11 @@
     <Content Include="Views\Reporte\ReporteTarjetas.cshtml" />
     <Content Include="Views\Reporte\ReporteTarjetasPDF.cshtml" />
     <Content Include="Views\Reporte\Copy of ReporteRecargasDetalladoPDF.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\Create.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\DetalleOrden.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\FilterReview.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\GenericView.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
