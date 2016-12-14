@@ -448,7 +448,8 @@ namespace Suma2Lealtad.Models
                                     resultadoRecarga = od.cardsresponse,
                                     observacionesExclusion = od.comments,
                                     statusDetalleOrden = s.name,
-                                    batchid = od.cardsresponse
+                                    batchid = od.cardsresponse,
+                                    observacionesDetalle = od.observaciones
                                 }).OrderBy(x => x.id).ToList();
             }
             return detalleorden;
@@ -475,6 +476,7 @@ namespace Suma2Lealtad.Models
                             customerid = item.idAfiliado,
                             amount = item.montoRecarga,
                             //sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
+                            observaciones = item.observacionesDetalle
                         };
                         db.OrdersDetails.Add(OrderDetail);
                         db.SaveChanges();
@@ -484,10 +486,12 @@ namespace Suma2Lealtad.Models
                     {
                         ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_EXCLUIDO) && (s.tablename == "OrdersDetail")).id;
                         ordersdetail.comments = item.observacionesExclusion;
+                        ordersdetail.observaciones = item.observacionesDetalle;
                     }
                     else //if (item.statusDetalleOrden == "Incluido")
                     {
                         ordersdetail.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id;
+                        ordersdetail.observaciones = item.observacionesDetalle;
                     }
                     db.SaveChanges();
                 }                                        
@@ -894,8 +898,25 @@ namespace Suma2Lealtad.Models
             return detalleOrden;
         }
 
-        public List<DetalleOrdenRecargaPrepago> DetalleParaOrdenAnulacion(string batchid)
+        public List<DetalleOrdenRecargaPrepago> DetalleParaOrdenAnulacion(string batchid, string tipoorden = "")
         {
+            string tipodeorden;
+            string tipodeordenbase;
+            if (tipoorden == "")
+            {
+                tipodeorden = "Orden de Anulación de Recarga";
+                tipodeordenbase = "Orden de Recarga";
+            }
+            else if (tipoorden == "Orden de Anulación de Recarga Suma")
+            {
+                tipodeorden = tipoorden;
+                tipodeordenbase = "Orden de Recarga Suma";
+            }
+            else
+            {
+                tipodeorden = tipoorden;
+                tipodeordenbase = "Orden de Acreditación Suma";
+            }
             List<DetalleOrdenRecargaPrepago> detalleorden = new List<DetalleOrdenRecargaPrepago>();
             using (LealtadEntities db = new LealtadEntities())
             {
@@ -930,7 +951,7 @@ namespace Suma2Lealtad.Models
                                         nameCliente = pc.name,
                                         rifCliente = pc.rif,
                                         phoneCliente = pc.phone,
-                                        tipoOrden = "Orden de Anulación de Recarga",
+                                        tipoOrden = o.comments,
                                         batchid = batchid,
                                         statusOrden = "",
                                         idAfiliado = a.id,
@@ -942,6 +963,27 @@ namespace Suma2Lealtad.Models
                                         observacionesExclusion = od.comments,
                                         statusDetalleOrden = s.name
                                     }).ToList();
+                    //verifico que la orden base corresponda con el tipo de orden de anulación que quiero crear
+                    if (detalleorden.Count > 0)
+                    {
+                        if (detalleorden.First().tipoOrden != tipodeordenbase)
+                        {
+                            DetalleOrdenRecargaPrepago d = new DetalleOrdenRecargaPrepago()
+                            {
+                                batchid = "Órdenes no corresponden"
+                            };
+                            detalleorden.Clear();
+                            detalleorden.Add(d);
+                            return detalleorden;
+                        }
+                        else
+                        {
+                            foreach (var o in detalleorden)
+                            {
+                                o.tipoOrden = tipodeorden;
+                            }
+                        }
+                    }
                     return detalleorden;
                 }
             }
@@ -984,7 +1026,7 @@ namespace Suma2Lealtad.Models
                         amount = item.montoRecarga,
                         sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_DETALLEORDEN_INCLUIDO) && (s.tablename == "OrdersDetail")).id
                     };
-                    if (Order.comments.Equals("Orden de Anulación de Recarga"))
+                    if (Order.comments.Equals("Orden de Anulación de Recarga") || Order.comments.Equals("Orden de Anulación de Recarga Suma") || Order.comments.Equals("Orden de Anulación de Acreditación Suma"))
                     {
                         OrderDetail.comments = item.batchid;
                     }

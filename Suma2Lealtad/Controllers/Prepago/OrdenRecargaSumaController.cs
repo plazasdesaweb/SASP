@@ -85,31 +85,63 @@ namespace Suma2Lealtad.Controllers.Prepago
             }
         }
 
-        public ActionResult FilterAnulacion()
+        public ActionResult FilterAnulacionRecarga()
         {
-            return View();
+            DetalleOrdenRecargaPrepago dorden = new DetalleOrdenRecargaPrepago()
+            {
+                tipoOrden = "Orden de Anulación de Recarga Suma"
+            };
+            return View("FilterAnulacion", dorden);
         }
 
-        [HttpPost]
-        public ActionResult FilterAnulacion(string batchid)
+        public ActionResult FilterAnulacionAcreditacion()
         {
-            List<DetalleOrdenRecargaPrepago> detalleOrden = repOrden.DetalleParaOrdenAnulacion(batchid);
-            if (detalleOrden.Count != 1)
+            DetalleOrdenRecargaPrepago dorden = new DetalleOrdenRecargaPrepago()
+            {
+                tipoOrden = "Orden de Anulación de Acreditación Suma"
+            };
+            return View("FilterAnulacion", dorden);
+        }
+
+
+        [HttpPost]
+        public ActionResult FilterAnulacion(string batchid, string tipoorden)
+        {
+            string destino;
+            if (tipoorden == "Orden de Anulación de Recarga Suma")
+            {
+                destino = "FilterAnulacionRecarga";
+            }
+            else
+            {
+                destino = "FilterAnulacionAcreditacion";
+            }
+            List<DetalleOrdenRecargaPrepago> detalleOrden = repOrden.DetalleParaOrdenAnulacion(batchid, tipoorden);
+            if (detalleOrden.Count == 0)
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden de Anulación";
                 viewmodel.Message = "No se encontró Recarga con la Referencia indicada";
-                viewmodel.ControllerName = "OrdenRecargaPrepago";
-                viewmodel.ActionName = "FilterAnulacion";
+                viewmodel.ControllerName = "OrdenRecargaSuma";
+                viewmodel.ActionName = destino;
                 return RedirectToAction("GenericView", viewmodel);
             }
             else if (detalleOrden.First().batchid == "Ya tiene Anulación")
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden de Anulación";
                 viewmodel.Message = "La Referencia indicada ya tiene Orden de Anulación";
-                viewmodel.ControllerName = "OrdenRecargaPrepago";
-                viewmodel.ActionName = "FilterAnulacion";
+                viewmodel.ControllerName = "OrdenRecargaSuma";
+                viewmodel.ActionName = destino;
+                return RedirectToAction("GenericView", viewmodel);
+            }
+            else if (detalleOrden.First().batchid == "Órdenes no corresponden")
+            {
+                ViewModel viewmodel = new ViewModel();
+                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Message = "La Referencia indicada corresponde a otro tipo de orden";
+                viewmodel.ControllerName = "OrdenRecargaSuma";
+                viewmodel.ActionName = destino;
                 return RedirectToAction("GenericView", viewmodel);
             }
             else
@@ -142,10 +174,6 @@ namespace Suma2Lealtad.Controllers.Prepago
                 return RedirectToAction("GenericView", viewmodel);
             }
         }
-
-        
-
-        
 
         public ActionResult DetalleOrden(int id)
         {
@@ -262,7 +290,7 @@ namespace Suma2Lealtad.Controllers.Prepago
         public ActionResult FilterReview()
         {
             OrdenRecargaPrepago orden = new OrdenRecargaPrepago();
-            orden.ClaseDeOrdenOptions = orden.ClaseDeOrdenOptions.Where(x => x.id == "" || x.id == "Orden de Acreditación Suma" || x.id == "Orden de Recarga Suma");
+            orden.ClaseDeOrdenOptions = orden.ClaseDeOrdenOptions.Where(x => x.id == "" || x.id == "Orden de Acreditación Suma" || x.id == "Orden de Recarga Suma" || x.id == "Orden de Anulación de Acreditación Suma" || x.id == "Orden de Anulación de Recarga Suma");
             return View(orden);
         }
 
@@ -282,7 +310,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else
             {
                 ordenes = repOrden.Find(fecha, estadoOrden, Referencia, claseOrden, Observaciones)
-                                  .Where(o => o.tipoOrden == "Orden de Acreditación Suma" || o.tipoOrden == "Orden de Recarga Suma")
+                                  .Where(o => o.tipoOrden == "Orden de Acreditación Suma" || o.tipoOrden == "Orden de Recarga Suma" || o.tipoOrden == "Orden de Anulación de Acreditación Suma" || o.tipoOrden == "Orden de Anulación de Recarga Suma")
                                   .OrderBy(x => x.Cliente.nameCliente)
                                   .ThenBy(y => y.id)
                                   .ToList();

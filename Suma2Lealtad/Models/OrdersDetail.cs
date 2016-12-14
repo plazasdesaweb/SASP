@@ -21,6 +21,7 @@ namespace Suma2Lealtad.Models
         public string comments { get; set; }
         public string cardsresponse { get; set; }
         public Nullable<int> sumastatusid { get; set; }
+        public string observaciones { get; set; }
     
         public virtual Order Order { get; set; }
         public virtual SumaStatus SumaStatu { get; set; }

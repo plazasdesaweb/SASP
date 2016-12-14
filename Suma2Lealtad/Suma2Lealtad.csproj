@@ -838,6 +838,8 @@
     <Content Include="Views\OrdenRecargaSuma\FilterReview.cshtml" />
     <Content Include="Views\OrdenRecargaSuma\GenericView.cshtml" />
     <Content Include="Views\OrdenRecargaSuma\Index.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\FilterAnulacion.cshtml" />
+    <Content Include="Views\OrdenRecargaSuma\CreateAnulacion.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

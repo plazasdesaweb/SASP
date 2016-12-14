@@ -116,13 +116,12 @@
                     Observaciones :
                 </div>
 
-                <div class="editor-form col-md-6">
+                <div class="editor-form col-md-4">
                     @Html.TextBoxFor(model => model.First().observacionesOrden, new { @class = "form-control Observaciones2" })
                 </div>
 
-                <div class="editor-label col-md-4 control-label"></div>
-                <div class="editor-field col-md-6">
-                    <br />
+                <div class="editor-label col-md-2 control-label">
+                    <a id="CopiarMotivo" class="btn btn-success btn-md" role="button">Copiar Motivo</a>                
                 </div>
 
                 <div class="editor-label col-md-4 control-label"></div>
@@ -130,7 +129,13 @@
                     <br />
                 </div>
 
-                @{ if (Model.First().statusOrden == "Nueva") {                
+                <div class="editor-label col-md-4 control-label"></div>
+                <div class="editor-field col-md-6">
+                    <br />
+                </div>
+
+                @{ if (Model.First().statusOrden == "Nueva" && Model.First().tipoOrden != "Orden de Anulación de Recarga Suma" && Model.First().tipoOrden != "Orden de Anulación de Acreditación Suma")
+                   {                
                 <div class="editor-label col-md-4 control-label">
                     Número de Documento/Cédula :
                 </div>
@@ -160,6 +165,7 @@
                             <th>Monto</th>
                             <th>Estatus</th>
                             <th>Observaciones</th>
+                            <th>Motivo</th>
                             <th class="text-center"></th>
                         </tr>
                     </thead>
@@ -190,7 +196,7 @@
 
                                 <td>
                                     @Html.HiddenFor(modelItem => Model[i].montoRecarga)
-                                    @if (Model[i].tipoOrden == "Orden de Recarga Suma")
+                                    @if (Model[i].tipoOrden == "Orden de Recarga Suma" || Model[i].tipoOrden == "Orden de Anulación de Recarga Suma")
                                     {
                                         @Html.DisplayFor(modelItem => Model[i].montoRecarga, new { @class = "form-control Monto" })
                                     }
@@ -230,7 +236,11 @@
                                     }
                                 </td>
 
-                                @{if (Model.First().tipoOrden != "Orden de Anulación de Recarga")
+                                <td>
+                                    @Html.TextBoxFor(modelItem => Model[i].observacionesDetalle, new { @class = "form-control Motivo" }) 
+                                </td>
+
+                                @{if (Model.First().tipoOrden != "Orden de Anulación de Recarga Suma" && Model.First().tipoOrden != "Orden de Anulación de Acreditación Suma")
                                   {
                                       if (Model.First().statusOrden == "Nueva")
                                       {
@@ -353,7 +363,7 @@
                     $(this).children("input").show();
                     $(this).children("input").focus();
                     break;
-                case 5:
+                case 6:
                     $(this).attr("onclick", "Incluir(this)");
                     $(this).html('<a class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span></a>');
                     break;
@@ -379,7 +389,7 @@
                     $(this).children("input").val("");
                     $(this).children("input").hide();
                     break;
-                case 5:
+                case 6:
                     $(this).attr("onclick", "Excluir(this)");
                     $(this).html('<a class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span></a>');
                     break;
@@ -430,7 +440,7 @@
                         if ($(this).find('.Monto').val() != "" && typeof ($(this).find('.Monto').val()) !== "undefined") {
                             temp = $(this).find('.Monto').val().toString();
                             temp = temp.replace(",", ".");
-                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
                                 campo3 = parseFloat(temp);
                                 $(this).find('.Monto').val(temp.replace(".", ","));
                             }
@@ -442,7 +452,7 @@
                         else if (typeof ($(this).find('.Monto').val()) === "undefined") {
                             temp = $(this).text();
                             temp = temp.replace(",", ".");
-                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
                                 campo3 = parseFloat(temp);
                                 //$(this).val(temp.replace(".", ","));
                             }
@@ -462,7 +472,7 @@
                         //    break;
                 }
             });
-            if (campo4 != "Excluido") {
+            if (campo4 != "Excluido" && campo4 != "") {
                 TotalRecargas = TotalRecargas + 1;
                 MontoTotalRecargas = parseFloat(MontoTotalRecargas) + parseFloat(campo3);
             }
@@ -477,7 +487,7 @@
             $("#Aprobar").show();
         }
         document.getElementById('TotalRecargas').value = TotalRecargas;
-        if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+        if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
             document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas.toFixed(2).toString().replace(".", ",");
         }
         else {
@@ -568,7 +578,7 @@
                         if ($(this).find('.Monto').val() != "" && typeof ($(this).find('.Monto').val()) !== "undefined") {
                             temp = $(this).find('.Monto').val().toString();
                             temp = temp.replace(",", ".");
-                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
                                 campo3 = parseFloat(temp);
                                 $(this).find('.Monto').val(temp.replace(".", ","));
                             }
@@ -580,7 +590,7 @@
                         else if (typeof ($(this).find('.Monto').val()) === "undefined") {
                             temp = $(this).text();
                             temp = temp.replace(",", ".");
-                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+                            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
                                 campo3 = parseFloat(temp);
                                 //$(this).val(temp.replace(".", ","));
                             }
@@ -620,7 +630,7 @@
                 }
             });
             document.getElementById('TotalRecargas').value = TotalRecargas;
-            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma") {
+            if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
                 document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas.toFixed(2).toString().replace(".", ",");
             }
             else {
@@ -695,6 +705,11 @@
                                                                + '<p class="ObservacionesInicial"></p>'
                                                                + '<input name="[' + nuevaFila + '].observacionesExclusion" class="form-control Observaciones" style="display: none;" type="text" value="">'
                                                                + '</td>'
+
+                                                               + '<td>'
+                                                               + '<input name="[' + nuevaFila + '].observacionesDetalle" class="form-control Motivo" type="text" value="">'                                    
+                                                               + '</td>'
+
                                                                + '<td class="text-right" onclick="Excluir(this)">'
                                                                + '<a class="btn btn-danger btn-sm">'
                                                                + '<span class="glyphicon glyphicon-remove"></span>'
@@ -713,4 +728,8 @@
         ValidarMontos();
     });
     }
+
+    $('#CopiarMotivo').click(function () {
+        $('.Motivo').val($('.Observaciones2').val());
+    });
 </script>

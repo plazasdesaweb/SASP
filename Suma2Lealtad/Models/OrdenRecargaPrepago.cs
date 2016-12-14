@@ -30,13 +30,15 @@ namespace Suma2Lealtad.Models
             new List<ClaseDeOrden>
         {
               new ClaseDeOrden { id = "", clase = "Seleccione..."          },
-              new ClaseDeOrden { id = "Orden de Recarga", clase = "Orden de Recarga" },
-              new ClaseDeOrden { id = "Orden de Recarga desde Archivo", clase = "Orden de Recarga desde Archivo"  } ,
-              new ClaseDeOrden { id = "Orden de Anulación de Recarga", clase = "Orden de Anulación de Recarga"  },
-              new ClaseDeOrden { id = "Orden de Transferencia", clase = "Orden de Transferencia"  },
-              new ClaseDeOrden { id = "Orden de Anulación de Transferencia", clase = "Orden de Anulación de Transferencia"  },
-              new ClaseDeOrden { id = "Orden de Acreditación Suma", clase = "Orden de Acreditación Suma"  },
-              new ClaseDeOrden { id = "Orden de Recarga Suma", clase = "Orden de Recarga Suma"  }
+              new ClaseDeOrden { id = "Orden de Recarga", clase = "Orden de Recarga" },                                                 //1
+              new ClaseDeOrden { id = "Orden de Recarga desde Archivo", clase = "Orden de Recarga desde Archivo"  } ,                   //2
+              new ClaseDeOrden { id = "Orden de Anulación de Recarga", clase = "Orden de Anulación de Recarga"  },                      //3
+              new ClaseDeOrden { id = "Orden de Transferencia", clase = "Orden de Transferencia"  },                                    //4
+              new ClaseDeOrden { id = "Orden de Anulación de Transferencia", clase = "Orden de Anulación de Transferencia"  },          //5
+              new ClaseDeOrden { id = "Orden de Acreditación Suma", clase = "Orden de Acreditación Suma"  },                            //6
+              new ClaseDeOrden { id = "Orden de Anulación de Acreditación Suma", clase = "Orden de Anulación de Acreditación Suma"  },  //7            
+              new ClaseDeOrden { id = "Orden de Recarga Suma", clase = "Orden de Recarga Suma"  },                                      //8
+              new ClaseDeOrden { id = "Orden de Anulación de Recarga Suma", clase = "Orden de Anulación de Recarga Suma"  }             //9
         };
         #endregion
 

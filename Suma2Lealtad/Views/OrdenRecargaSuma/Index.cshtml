@@ -36,7 +36,7 @@
 
                 <thead>
                     <tr>
-                        <th>Cliente</th>
+                        @*<th>Cliente</th>*@
                         <th>Nro. de Orden</th>
                         <th>Fecha de Creación</th>
                         <th>Estatus</th>
@@ -58,12 +58,12 @@
 
                             @Html.HiddenFor(modelItem => item.statusOrden)
 
-                            <td>
+                           @* <td>
                                 @if (item.tipoOrden != "Orden de Transferencia" && item.tipoOrden != "Orden de Anulación de Transferencia")
                                 {
                                 @Html.DisplayFor(modelItem => item.Cliente.nameCliente)
                                 }
-                            </td>
+                            </td>*@
 
                             <td>
                                 @Html.DisplayFor(modelItem => item.id)
@@ -90,7 +90,7 @@
                             </td>
 
                             <td>
-                                @if (item.tipoOrden == "Orden de Recarga Suma")
+                                @if (item.tipoOrden == "Orden de Recarga Suma" || item.tipoOrden == "Orden de Anulación de Recarga Suma")
                                 {
                                     @Html.DisplayFor(modelItem => item.montoOrden)
                                 }

@@ -21,7 +21,7 @@ namespace Suma2Lealtad.Models
         public string statusOrden { get; set; }
         public string documentoOrden { get; set; }
         public string observacionesOrden { get; set; }
-        public string batchid { get; set; }                    //Para Ordenes de Anulación, aqui se guarda el batchid de la recarga anulada
+        public string batchid { get; set; }                     //Para Ordenes de Anulación, aqui se guarda el batchid de la recarga anulada
         
         public int idAfiliado { get; set; }
         public string docnumberAfiliado { get; set; }
@@ -33,5 +33,7 @@ namespace Suma2Lealtad.Models
         //public bool beneficiarioExcluido {get;set;}           //Indica si un beneficiario fue excluido de la Orden de Recarga en su revisión
         public string observacionesExclusion { get; set; }      //Información relativa a la exclusión (motivos)
         public string statusDetalleOrden { get; set; }          //Estatus del detalle de la orden
+
+        public string observacionesDetalle { get; set; }        //para guardar observaciones en los detalles de la orden, por ahora ordenes suma
     }
 }
