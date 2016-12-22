@@ -966,7 +966,7 @@ namespace Suma2Lealtad.Models
                     //verifico que la orden base corresponda con el tipo de orden de anulación que quiero crear
                     if (detalleorden.Count > 0)
                     {
-                        if (detalleorden.First().tipoOrden != tipodeordenbase)
+                        if (!detalleorden.First().tipoOrden.Contains(tipodeordenbase))
                         {
                             DetalleOrdenRecargaPrepago d = new DetalleOrdenRecargaPrepago()
                             {

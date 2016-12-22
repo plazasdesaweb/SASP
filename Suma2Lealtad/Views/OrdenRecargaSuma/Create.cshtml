@@ -321,7 +321,7 @@
             alert("Hay campos invalidos, verifique.");
             return false;
         }
-        if (document.getElementById('MontoTotalRecargas').value.toString() == "0,00") {
+        if (document.getElementById('MontoTotalRecargas').value.toString() == "0,00" || document.getElementById('MontoTotalRecargas').value.toString() == "0") {
             alert("Debe incluir al menos un benficiario de recarga.");
             return false;
         }
