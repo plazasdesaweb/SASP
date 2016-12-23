@@ -1287,11 +1287,12 @@ namespace Suma2Lealtad.Models
                         TIPO_DOCUMENTO = tipoDocumento,
                         NRO_DOCUMENTO = cliente.NRO_DOCUMENTO,
                         E_MAIL = cliente.E_MAIL,
+                        NOMBRE_CLIENTE1 = cliente.NOMBRE_CLIENTE1,
                         NOMBRE_CLIENTE2 = cliente.NOMBRE_CLIENTE2,
                         APELLIDO_CLIENTE1 = cliente.APELLIDO_CLIENTE1,
                         APELLIDO_CLIENTE2 = cliente.APELLIDO_CLIENTE2,
                         FECHA_NACIMIENTO = cliente.FECHA_NACIMIENTO,
-                        
+
                         //SEXO = cliente.SEXO,
                         //EDO_CIVIL = cliente.EDO_CIVIL,
                         //COD_SUCURSAL = cliente.COD_SUCURSAL,                        
@@ -1314,18 +1315,17 @@ namespace Suma2Lealtad.Models
 
                     //nuevos campos con claves a tablas nuevas
                     var query = db.Stores.OrderBy(x => x.store_code);
-                    cliente.STORE_ID = (from q in query.AsEnumerable()
-                                        where q.store_code == afiliado.storeid.ToString()
-                                        select q.id).FirstOrDefault();
+                    clienteNuevo.STORE_ID = (from q in query.AsEnumerable()
+                                             where q.store_code == afiliado.storeid.ToString()
+                                             select q.id).FirstOrDefault();
 
-                    clienteNuevo.TIPO_DOCUMENTO = tipoDocumento;
                     //NACIONALIDAD => NINGUNA = "0", VENEZOLANO = "1", EXTRANJERO = "2"
                     if (tipoDocumento == "V")
                     {
                         //clienteNuevo.NACIONALIDAD = "1";
                         //nuevos campos con claves a tablas nuevas
                         clienteNuevo.NACIONALITY_ID = 1;
-                        
+
                     }
                     else if (tipoDocumento == "E" || tipoDocumento == "P")
                     {
@@ -1361,7 +1361,7 @@ namespace Suma2Lealtad.Models
                     modifieddate = DateTime.Now,
                     statusid = afiliado.sumastatusid,
                     reasonsid = Globals.ID_REASONS_INICIAL,
-                    comments = afiliado.comments
+                    comments = "Cambio de Tipo de Documento"
                 };
                 db.AffiliateAuds.Add(affiliateAuditoria);
                 db.SaveChanges();
