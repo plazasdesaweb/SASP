@@ -191,8 +191,9 @@ namespace Suma2Lealtad.Controllers.Prepago
             {
                 if (repOrden.GuardarOrden(detalleOrden.ToList(), MontoTotalRecargas))
                 {
-                    if (repOrden.AprobarOrden(detalleOrden.ToList(), MontoTotalRecargas))
+                    if (repOrden.AprobarOrden(repOrden.FindDetalleOrden(detalleOrden.First().idOrden), MontoTotalRecargas))
                     {
+                        
                         viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
                         viewmodel.Message = "Orden Aprobada.";
                         viewmodel.ControllerName = "OrdenRecargaSuma";

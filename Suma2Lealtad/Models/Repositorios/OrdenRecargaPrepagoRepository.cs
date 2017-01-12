@@ -461,7 +461,8 @@ namespace Suma2Lealtad.Models
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
                 //Actualizar estatus detalleOrden
-                int idbase = OrdersDetailId();                    
+                int idbase = OrdersDetailId();
+                detalleOrden = detalleOrden.FindAll(x => x.montoRecarga != 0).ToList(); 
                 foreach (var item in detalleOrden)
                 {
                     OrdersDetail ordersdetail = db.OrdersDetails.FirstOrDefault(x => x.orderid == item.idOrden && x.customerid == item.idAfiliado);
@@ -523,8 +524,6 @@ namespace Suma2Lealtad.Models
             using (LealtadEntities db = new LealtadEntities())
             {
                 db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
-                Order orden = db.Orders.Find(detalleOrden.First().idOrden);
-
                 //Actualizar estatus detalleOrden
                 foreach (var item in detalleOrden)
                 {
@@ -540,6 +539,7 @@ namespace Suma2Lealtad.Models
                     }
                 }
                 //Actualizar estatus y monto de la Orden
+                Order orden = db.Orders.Find(detalleOrden.First().idOrden);
                 orden.sumastatusid = db.SumaStatuses.FirstOrDefault(s => (s.value == Globals.ID_ESTATUS_ORDEN_APROBADA) && (s.tablename == "Orders")).id;
                 orden.totalamount = MontoTotalRecargas;
                 orden.documento = detalleOrden.First().documentoOrden;
