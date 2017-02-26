@@ -732,7 +732,7 @@ namespace Suma2Lealtad.Models
                     };
                     if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_SUMA)
                     {
-                        linea.detalle  = linea.detalle  + " (" + fila.B037 + ")";
+                        linea.detalle = linea.detalle + " (" + fila.B037 + ")";
                     }
                     if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_CANJE_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_TRANSFERENCIA_DEBITO_SUMA || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_SUMA)
                     {
@@ -774,7 +774,7 @@ namespace Suma2Lealtad.Models
                 {
                     consulta = db.PLZ_GETREPORT(fechasdesdemod, fechahastamod, docnumber.Substring(2), Globals.TIPO_CUENTA_PREPAGO, "NULL").ToList();
                 }
-                foreach (PLZ_GETREPORT_Result fila in consulta.Where(x=>x.TRANSCODE != 121))
+                foreach (PLZ_GETREPORT_Result fila in consulta.Where(x => x.TRANSCODE != 121))
                 {
                     linea = new ReportePrepago()
                     {
@@ -793,7 +793,7 @@ namespace Suma2Lealtad.Models
                     if (fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_RECARGA_PREPAGO || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_CREDITO_PREPAGO || fila.TRANSCODE.Value.ToString() == Globals.TRANSCODE_ANULACION_TRANSFERENCIA_DEBITO_PREPAGO)
                     {
                         linea.detalle = linea.detalle + " (" + fila.B037 + ")";
-                    }                    
+                    }
                     if (linea.detalle.Contains("offline"))
                     {
                         //buscar info en FueraDeLinea
@@ -830,5 +830,228 @@ namespace Suma2Lealtad.Models
             return afiliados;
         }
 
+        //public List<ReportePrepago> ReporteTarjetas(string tiporeporte, string fechadesde, string fechahasta, int idCliente = 0, string estadoTarjeta = "")
+        //{
+        //    //para filtrar las fechas
+        //    DateTime desde = DateTime.ParseExact(fechadesde, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        //    DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
+        //    List<ReportePrepago> reporte = new List<ReportePrepago>();
+        //    EncabezadoReporte encabezado = new EncabezadoReporte();
+        //    //ReportePrepago linea = new ReportePrepago();
+        //    using (LealtadEntities db = new LealtadEntities())
+        //    {
+        //        db.Database.Connection.ConnectionString = AppModule.ConnectionString("SumaLealtad");
+        //        #region Por Cliente específico
+        //        if (tiporeporte == "uno")
+        //        {
+        //            if (estadoTarjeta == "")
+        //            {
+        //                reporte = (from a in db.Affiliates
+        //                           join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+        //                           join s in db.SumaStatuses on a.sumastatusid equals s.id
+        //                           join t in db.Types on a.typeid equals t.id
+        //                           join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
+        //                           join p in db.PrepaidCustomers on b.prepaidcustomerid equals p.id
+        //                           join tar in db.TARJETAS on a.id equals tar.NRO_AFILIACION
+        //                           where p.id == idCliente
+        //                                && (tar.FECHA_CREACION >= desde && tar.FECHA_CREACION < hasta)
+        //                           select new ReportePrepago()
+        //                           {
+        //                               Beneficiario = new BeneficiarioPrepagoIndex()
+        //                               {
+        //                                   Afiliado = new AfiliadoSumaIndex()
+        //                                   {
+        //                                       docnumber = a.docnumber,
+        //                                       name = c.NOMBRE_CLIENTE1,
+        //                                       lastname1 = c.APELLIDO_CLIENTE1
+        //                                   },
+        //                                   Cliente = new ClientePrepago()
+        //                                   {
+        //                                       idCliente = idCliente,
+        //                                       nameCliente = p.name
+        //                                   }
+        //                               },
+        //                               fecha = tar.FECHA_CREACION == null ? new DateTime() : tar.FECHA_CREACION.Value,
+        //                               numerotarjeta = tar.NRO_TARJETA,
+        //                               estatustarjeta = tar.ESTATUS_TARJETA,
+        //                               Encabezado = new EncabezadoReporte()
+        //                               {
+        //                                   nombreReporte = "Reporte de Tarjetas",
+        //                                   tipoconsultaReporte = "Por Cliente",
+        //                                   parametrotipoconsultaReporte = p.rif + " " + p.name,
+        //                                   fechainicioReporte = fechadesde,
+        //                                   fechafinReporte = fechahasta,
+        //                                   estatustarjetaReporte = "Todos"
+        //                               }
+        //                           }).ToList();
+        //            }
+        //            else
+        //            {
+        //                reporte = (from a in db.Affiliates
+        //                           join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+        //                           join s in db.SumaStatuses on a.sumastatusid equals s.id
+        //                           join t in db.Types on a.typeid equals t.id
+        //                           join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
+        //                           join p in db.PrepaidCustomers on b.prepaidcustomerid equals p.id
+        //                           join tar in db.TARJETAS on a.id equals tar.NRO_AFILIACION
+        //                           where p.id == idCliente && tar.ESTATUS_TARJETA == estadoTarjeta
+        //                           select new ReportePrepago()
+        //                           {
+        //                               Beneficiario = new BeneficiarioPrepagoIndex()
+        //                               {
+        //                                   Afiliado = new AfiliadoSumaIndex()
+        //                                   {
+        //                                       docnumber = a.docnumber,
+        //                                       name = c.NOMBRE_CLIENTE1,
+        //                                       lastname1 = c.APELLIDO_CLIENTE1
+        //                                   },
+        //                                   Cliente = new ClientePrepago()
+        //                                   {
+        //                                       idCliente = idCliente,
+        //                                       nameCliente = p.name
+        //                                   }
+        //                               },
+        //                               fecha = tar.FECHA_CREACION == null ? new DateTime() : tar.FECHA_CREACION.Value,
+        //                               numerotarjeta = tar.NRO_TARJETA,
+        //                               estatustarjeta = tar.ESTATUS_TARJETA,
+        //                               Encabezado = new EncabezadoReporte()
+        //                               {
+        //                                   nombreReporte = "Reporte de Tarjetas",
+        //                                   tipoconsultaReporte = "Por Cliente",
+        //                                   parametrotipoconsultaReporte = p.rif + " " + p.name,
+        //                                   fechainicioReporte = fechadesde,
+        //                                   fechafinReporte = fechahasta,
+        //                                   estatustarjetaReporte = estadoTarjeta
+        //                               }
+        //                           }).ToList();
+        //            }
+        //            if (reporte.Count() == 0)
+        //            {
+        //                ClientePrepagoRepository repCliente = new ClientePrepagoRepository();
+        //                ClientePrepago Cliente = repCliente.Find(idCliente);
+        //                ReportePrepago r = new ReportePrepago()
+        //                {
+        //                    Encabezado = new EncabezadoReporte()
+        //                    {
+        //                        nombreReporte = "Reporte de Tarjetas",
+        //                        tipoconsultaReporte = "Por Cliente",
+        //                        parametrotipoconsultaReporte = Cliente.rifCliente + " " + Cliente.nameCliente,
+        //                        fechainicioReporte = fechadesde,
+        //                        fechafinReporte = fechahasta,
+        //                        estatustarjetaReporte = estadoTarjeta
+        //                    }
+        //                };
+        //                reporte.Add(r);
+        //            }
+        //        }
+        //        #endregion
+        //        #region Todos los Clientes
+        //        else if (tiporeporte == "todos")
+        //        {
+        //            if (estadoTarjeta == "")
+        //            {
+        //                reporte = (from a in db.Affiliates
+        //                           join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+        //                           join s in db.SumaStatuses on a.sumastatusid equals s.id
+        //                           join t in db.Types on a.typeid equals t.id
+        //                           join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
+        //                           join p in db.PrepaidCustomers on b.prepaidcustomerid equals p.id
+        //                           join tar in db.TARJETAS on a.id equals tar.NRO_AFILIACION
+        //                           select new ReportePrepago()
+        //                           {
+        //                               Beneficiario = new BeneficiarioPrepagoIndex()
+        //                               {
+        //                                   Afiliado = new AfiliadoSumaIndex()
+        //                                   {
+        //                                       docnumber = a.docnumber,
+        //                                       name = c.NOMBRE_CLIENTE1,
+        //                                       lastname1 = c.APELLIDO_CLIENTE1
+        //                                   },
+        //                                   Cliente = new ClientePrepago()
+        //                                   {
+        //                                       idCliente = idCliente,
+        //                                       nameCliente = p.name
+        //                                   }
+        //                               },
+        //                               fecha = tar.FECHA_CREACION == null ? new DateTime() : tar.FECHA_CREACION.Value,
+        //                               numerotarjeta = tar.NRO_TARJETA,
+        //                               estatustarjeta = tar.ESTATUS_TARJETA,
+        //                               Encabezado = new EncabezadoReporte()
+        //                               {
+        //                                   nombreReporte = "Reporte de Tarjetas",
+        //                                   tipoconsultaReporte = "Por Cliente",
+        //                                   parametrotipoconsultaReporte = "Todos",
+        //                                   fechainicioReporte = fechadesde,
+        //                                   fechafinReporte = fechahasta,
+        //                                   estatustarjetaReporte = "Todos"
+        //                               }
+        //                           }).ToList();
+        //            }
+        //            else
+        //            {
+        //                reporte = (from a in db.Affiliates
+        //                           join c in db.CLIENTES on a.docnumber equals c.TIPO_DOCUMENTO + "-" + c.NRO_DOCUMENTO
+        //                           join s in db.SumaStatuses on a.sumastatusid equals s.id
+        //                           join t in db.Types on a.typeid equals t.id
+        //                           join b in db.PrepaidBeneficiaries on a.id equals b.affiliateid
+        //                           join p in db.PrepaidCustomers on b.prepaidcustomerid equals p.id
+        //                           join tar in db.TARJETAS on a.id equals tar.NRO_AFILIACION
+        //                           where tar.ESTATUS_TARJETA == estadoTarjeta
+        //                           select new ReportePrepago()
+        //                           {
+        //                               Beneficiario = new BeneficiarioPrepagoIndex()
+        //                               {
+        //                                   Afiliado = new AfiliadoSumaIndex()
+        //                                   {
+        //                                       docnumber = a.docnumber,
+        //                                       name = c.NOMBRE_CLIENTE1,
+        //                                       lastname1 = c.APELLIDO_CLIENTE1
+        //                                   },
+        //                                   Cliente = new ClientePrepago()
+        //                                   {
+        //                                       idCliente = idCliente,
+        //                                       nameCliente = p.name
+        //                                   }
+        //                               },
+        //                               fecha = tar.FECHA_CREACION == null ? new DateTime() : tar.FECHA_CREACION.Value,
+        //                               numerotarjeta = tar.NRO_TARJETA,
+        //                               estatustarjeta = tar.ESTATUS_TARJETA,
+        //                               Encabezado = new EncabezadoReporte()
+        //                               {
+        //                                   nombreReporte = "Reporte de Tarjetas",
+        //                                   tipoconsultaReporte = "Por Cliente",
+        //                                   parametrotipoconsultaReporte = "Todos",
+        //                                   fechainicioReporte = fechadesde,
+        //                                   fechafinReporte = fechahasta,
+        //                                   estatustarjetaReporte = estadoTarjeta
+        //                               }
+        //                           }).ToList();
+
+        //            }
+        //            if (reporte.Count() == 0)
+        //            {
+        //                ClientePrepagoRepository repCliente = new ClientePrepagoRepository();
+        //                ClientePrepago Cliente = repCliente.Find(idCliente);
+        //                ReportePrepago r = new ReportePrepago()
+        //                {
+        //                    Encabezado = new EncabezadoReporte()
+        //                    {
+        //                        nombreReporte = "Reporte de Tarjetas",
+        //                        tipoconsultaReporte = "Por Cliente",
+        //                        parametrotipoconsultaReporte = "Todos",
+        //                        fechainicioReporte = fechadesde,
+        //                        fechafinReporte = fechahasta,
+        //                        estatustarjetaReporte = estadoTarjeta
+        //                    }
+        //                };
+        //                reporte.Add(r);
+        //            }
+        //        }
+        //        #endregion
+        //    }
+        //    DateTime desde = DateTime.ParseExact(fechadesde, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        //    DateTime hasta = DateTime.ParseExact(fechahasta, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        //    return reporte.Where(x => x.fecha.Date >= desde && x.fecha.Date <= hasta).OrderBy(x => x.fecha).ToList();
+        //}
     }
 }

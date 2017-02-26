@@ -365,59 +365,58 @@ namespace Suma2Lealtad.Controllers
             };
         }
 
-        //OJO ESTE REPORTE CREO QUE LO VOY A ELIMINAR
-        [HttpPost]
-        public ActionResult ReporteTarjetas(string fechadesde, string fechahasta, int idCliente = 0, string estadoTarjeta = "")
-        {
-            List<ReportePrepago> reporte = new List<ReportePrepago>();
-            if (idCliente == 0)
-            {
-                //reporte = repReportes.Tarjetas("todos", fechadesde, fechahasta, idCliente, estadoTarjeta);
-            }
-            else
-            {
-                //reporte = repReportes.Tarjetas("uno", fechadesde, fechahasta, idCliente, estadoTarjeta);
-            }
-            ParametrosReporte p = new ParametrosReporte()
-            {
-                fechadesde = fechadesde,
-                fechahasta = fechahasta,
-                idCliente = idCliente,
-                estatusTarjeta = estadoTarjeta
-            };
-            if (reporte.Count == 0)
-            {
-                ReportePrepago r = new ReportePrepago()
-                {
-                    Parametros = p
-                };
-                reporte.Add(r);
-            }
-            else
-            {
-                reporte.First().Parametros = p;
-            }
-            return View(reporte);
-        }
+        //[HttpPost]
+        //public ActionResult ReporteTarjetas(string fechadesde, string fechahasta, int idCliente = 0, string estadoTarjeta = "")
+        //{
+        //    List<ReportePrepago> reporte = new List<ReportePrepago>();
+        //    if (idCliente == 0)
+        //    {
+        //        //reporte = repReportes.ReporteTarjetas("todos", fechadesde, fechahasta, idCliente, estadoTarjeta);
+        //    }
+        //    else
+        //    {
+        //        //reporte = repReportes.ReporteTarjetas("uno", fechadesde, fechahasta, idCliente, estadoTarjeta);
+        //    }
+        //    ParametrosReporte p = new ParametrosReporte()
+        //    {
+        //        fechadesde = fechadesde,
+        //        fechahasta = fechahasta,
+        //        idCliente = idCliente,
+        //        estatusTarjeta = estadoTarjeta
+        //    };
+        //    if (reporte.Count == 0)
+        //    {
+        //        ReportePrepago r = new ReportePrepago()
+        //        {
+        //            Parametros = p
+        //        };
+        //        reporte.Add(r);
+        //    }
+        //    else
+        //    {
+        //        reporte.First().Parametros = p;
+        //    }
+        //    return View(reporte);
+        //}
 
-        public ActionResult GenerateReporteTarjetasPDF(string fechadesde, string fechahasta, int idCliente = 0, string estadoTarjeta = "")
-        {
-            List<ReportePrepago> reporte = new List<ReportePrepago>();
-            if (idCliente == 0)
-            {
-                //reporte = repReportes.Tarjetas("todos", fechadesde, fechahasta, idCliente, estadoTarjeta);
-            }
-            else
-            {
-                //reporte = repReportes.Tarjetas("uno", fechadesde, fechahasta, idCliente, estadoTarjeta);
-            }
-            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
-            return new Rotativa.ViewAsPdf("ReporteTarjetasPDF", reporte)
-            {
-                FileName = "Reporte de Tarjetas.pdf",
-                CustomSwitches = footer
-            };
-        }
+        //public ActionResult GenerateReporteTarjetasPDF(string fechadesde, string fechahasta, int idCliente = 0, string estadoTarjeta = "")
+        //{
+        //    List<ReportePrepago> reporte = new List<ReportePrepago>();
+        //    if (idCliente == 0)
+        //    {
+        //        //reporte = repReportes.ReporteTarjetas("todos", fechadesde, fechahasta, idCliente, estadoTarjeta);
+        //    }
+        //    else
+        //    {
+        //        //reporte = repReportes.ReporteTarjetas("uno", fechadesde, fechahasta, idCliente, estadoTarjeta);
+        //    }
+        //    string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+        //    return new Rotativa.ViewAsPdf("ReporteTarjetasPDF", reporte)
+        //    {
+        //        FileName = "Reporte de Tarjetas.pdf",
+        //        CustomSwitches = footer
+        //    };
+        //}
 
         public void ExportarDatosAfiliacionesExcel()
         {
