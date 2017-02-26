@@ -26,7 +26,7 @@
     <div class="panel panel-default">
 
         <div class="panel-heading clearfix panel-gradient">
-            <h3 class="panel-title">Suma / Ordenes de Recarga / Crear @Model.First().tipoOrden</h3>
+            <h3 class="panel-title">Suma / Ordenes / Crear @Model.First().tipoOrden</h3>
         </div>
 
         <div class="panel-body">
@@ -128,7 +128,15 @@
                 </table>
 
                 <div class="editor-label col-md-6 control-label ocultar">
-                    Total Recargas :
+                    @{
+                        if (Model.First().tipoOrden == "Orden de Recarga Suma") {
+                            @:Total Recargas :
+                        }
+                        else
+                        {
+                            @:Total Acreditaciones :
+                        }
+                    }
                 </div>
 
                 <div class="editor-field col-md-4 ocultar">
@@ -136,7 +144,15 @@
                 </div>
 
                 <div class="editor-label col-md-6 control-label ocultar">
-                    Monto Total Recargas :
+                    @{
+                        if (Model.First().tipoOrden == "Orden de Recarga Suma") {
+                            @:Monto Total Recargas :
+                        }
+                        else
+                        {
+                            @:Monto Total Acreditaciones :
+                        }
+                    }
                 </div>
 
                 <div class="editor-field col-md-4 ocultar">

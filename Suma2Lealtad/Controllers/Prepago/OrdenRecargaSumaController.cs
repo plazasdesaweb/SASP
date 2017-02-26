@@ -77,7 +77,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden";
+                viewmodel.Title = "Suma / Ordenes / Crear Orden";
                 viewmodel.Message = "Falló el proceso de creación de la Orden.";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = "FilterReview";
@@ -120,7 +120,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             if (detalleOrden.Count == 0)
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Title = "Suma / Ordenes / Crear Orden de Anulación";
                 viewmodel.Message = "No se encontró Recarga con la Referencia indicada";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = destino;
@@ -129,7 +129,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else if (detalleOrden.First().batchid == "Ya tiene Anulación")
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Title = "Suma / Ordenes / Crear Orden de Anulación";
                 viewmodel.Message = "La Referencia indicada ya tiene Orden de Anulación";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = destino;
@@ -138,7 +138,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else if (detalleOrden.First().batchid == "Órdenes no corresponden")
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Suma / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Title = "Suma / Ordenes / Crear Orden de Anulación";
                 viewmodel.Message = "La Referencia indicada corresponde a otro tipo de orden";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = destino;
@@ -167,7 +167,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Prepago / Ordenes de Recarga / Crear Orden de Anulación";
+                viewmodel.Title = "Prepago / Ordenes / Crear Orden de Anulación";
                 viewmodel.Message = "Falló el proceso de creación de la Orden.";
                 viewmodel.ControllerName = "OrdenRecargaPrepago";
                 viewmodel.ActionName = "FilterAnulacion";
@@ -194,7 +194,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                     if (repOrden.AprobarOrden(repOrden.FindDetalleOrden(detalleOrden.First().idOrden), MontoTotalRecargas))
                     {
                         
-                        viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                        viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                         viewmodel.Message = "Orden Aprobada.";
                         viewmodel.ControllerName = "OrdenRecargaSuma";
                         viewmodel.ActionName = "FilterReview";
@@ -203,7 +203,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                     }
                     else
                     {
-                        viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                        viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                         viewmodel.Message = "Falló el proceso de aprobación de la Orden.";
                         viewmodel.ControllerName = "OrdenRecargaSuma";
                         viewmodel.ActionName = "FilterReview";
@@ -212,7 +212,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 }
                 else
                 {
-                    viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                    viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                     viewmodel.Message = "Falló el proceso de guardado para aprobación de la Orden.";
                     viewmodel.ControllerName = "OrdenRecargaSuma";
                     viewmodel.ActionName = "FilterReview";
@@ -223,7 +223,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             {
                 if (repOrden.GuardarOrden(detalleOrden.ToList(), MontoTotalRecargas))
                 {
-                    viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                    viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                     viewmodel.Message = "Datos de la Orden actualizados.";
                     viewmodel.ControllerName = "OrdenRecargaSuma";
                     viewmodel.ActionName = "FilterReview";
@@ -232,7 +232,7 @@ namespace Suma2Lealtad.Controllers.Prepago
                 }
                 else
                 {
-                    viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                    viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                     viewmodel.Message = "Falló el proceso de guardado de la Orden.";
                     viewmodel.ControllerName = "OrdenRecargaSuma";
                     viewmodel.ActionName = "FilterReview";
@@ -246,14 +246,14 @@ namespace Suma2Lealtad.Controllers.Prepago
             ViewModel viewmodel = new ViewModel();
             if (repOrden.RechazarOrden(id))
             {
-                viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                 viewmodel.Message = "Orden Rechazada.";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = "FilterReview";
             }
             else
             {
-                viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden";
+                viewmodel.Title = "Suma / Ordenes / Detalle de la Orden";
                 viewmodel.Message = "Falló el proceso de rechazo de la Orden.";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = "FilterReview";
@@ -280,7 +280,7 @@ namespace Suma2Lealtad.Controllers.Prepago
             else
             {
                 ViewModel viewmodel = new ViewModel();
-                viewmodel.Title = "Suma / Ordenes de Recarga / Detalle de la Orden / Procesar Orden";
+                viewmodel.Title = "Suma / Ordenes / Detalle de la Orden / Procesar Orden";
                 viewmodel.Message = "Falló el procesamiento de la Orden.";
                 viewmodel.ControllerName = "OrdenRecargaSuma";
                 viewmodel.ActionName = "FilterReview";

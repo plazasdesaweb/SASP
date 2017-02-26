@@ -39,7 +39,7 @@
     <div class="panel panel-default">
 
         <div class="panel-heading clearfix panel-gradient">
-            <h3 class="panel-title">Suma / Ordenes de Recarga / Detalle de la Orden</h3>
+            <h3 class="panel-title">Suma / Ordenes / Detalle de la Orden</h3>
         </div>
 
         <div class="panel-body">
@@ -270,7 +270,16 @@
                 </table>
 
                 <div class="editor-label col-md-4 control-label">
-                    Total Recargas :
+                    @{
+                        if (Model.First().tipoOrden == "Orden de Recarga Suma" || @Model.First().tipoOrden == "Orden de Anulación de Recarga Suma")
+                        {
+                            @:Total Recargas :
+                        }
+                        else
+                        {
+                            @:Total Acreditaciones :
+                        }
+                    }
                 </div>
 
                 <div class="editor-form col-md-6">
@@ -278,7 +287,16 @@
                 </div>
 
                 <div class="editor-label col-md-4 control-label">
-                    Monto Total Recargas :
+                    @{
+                        if (Model.First().tipoOrden == "Orden de Recarga Suma" || @Model.First().tipoOrden == "Orden de Anulación de Recarga Suma")
+                        {
+                            @:Monto Total Recargas :
+                        }
+                        else
+                        {
+                            @:Monto Total Acreditaciones :
+                        }
+                    }
                 </div>
 
                 <div class="editor-form col-md-6">
@@ -626,7 +644,7 @@
                                 spanMessage('field_' + idrow, '* No incluye recarga');
                             }
                         }
-                        break;
+                        break;                    
                 }
             });
             document.getElementById('TotalRecargas').value = TotalRecargas;
