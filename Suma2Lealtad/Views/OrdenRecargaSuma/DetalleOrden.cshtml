@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="editor-label col-md-2 control-label">
-                    <a id="CopiarMotivo" class="btn btn-success btn-md" role="button">Copiar Motivo</a>                
+                    <a id="CopiarMotivo" class="btn btn-success btn-md" role="button">Copiar Motivo</a>
                 </div>
 
                 <div class="editor-label col-md-4 control-label"></div>
@@ -136,24 +136,24 @@
 
                 @{ if (Model.First().statusOrden == "Nueva" && Model.First().tipoOrden != "Orden de Anulación de Recarga Suma" && Model.First().tipoOrden != "Orden de Anulación de Acreditación Suma")
                    {                
-                <div class="editor-label col-md-4 control-label">
-                    Número de Documento/Cédula :
-                </div>
+                    <div class="editor-label col-md-4 control-label">
+                        Número de Documento/Cédula :
+                    </div>
 
-                <div class="editor-field col-md-4">
-                    <input type="text" id="numdoc" name="numdoc" value="" maxlength="12" placeholder="V-12345678" class="form-control">
-                    <span id="documento"></span>
-                </div>
+                    <div class="editor-field col-md-4">
+                        <input type="text" id="numdoc" name="numdoc" value="" maxlength="12" placeholder="V-12345678" class="form-control">
+                        <span id="documento"></span>
+                    </div>
 
-                <div class="editor-label col-md-2 control-label">
-                    <a id="BuscarAfiliado" class="btn btn-success btn-md" role="button">Buscar Afiliado</a>
-                </div>
+                    <div class="editor-label col-md-2 control-label">
+                        <a id="BuscarAfiliado" class="btn btn-success btn-md" role="button">Buscar Afiliado</a>
+                    </div>
 
-                <div class="editor-label col-md-4 control-label"></div>
-                <div class="editor-field col-md-6">
-                    <br />
-                </div>
-                }
+                    <div class="editor-label col-md-4 control-label"></div>
+                    <div class="editor-field col-md-6">
+                        <br />
+                    </div>
+                   }
                 }
 
                 <table id="detalleOrden" class="table table-hover">
@@ -237,7 +237,7 @@
                                 </td>
 
                                 <td>
-                                    @Html.TextBoxFor(modelItem => Model[i].observacionesDetalle, new { @class = "form-control Motivo" }) 
+                                    @Html.TextBoxFor(modelItem => Model[i].observacionesDetalle, new { @class = "form-control Motivo" })
                                 </td>
 
                                 @{if (Model.First().tipoOrden != "Orden de Anulación de Recarga Suma" && Model.First().tipoOrden != "Orden de Anulación de Acreditación Suma")
@@ -273,11 +273,11 @@
                     @{
                         if (Model.First().tipoOrden == "Orden de Recarga Suma" || @Model.First().tipoOrden == "Orden de Anulación de Recarga Suma")
                         {
-                            @:Total Recargas :
+                        @:Total Recargas :
                         }
                         else
                         {
-                            @:Total Acreditaciones :
+                        @:Total Acreditaciones :
                         }
                     }
                 </div>
@@ -290,11 +290,11 @@
                     @{
                         if (Model.First().tipoOrden == "Orden de Recarga Suma" || @Model.First().tipoOrden == "Orden de Anulación de Recarga Suma")
                         {
-                            @:Monto Total Recargas :
+                        @:Monto Total Recargas :
                         }
                         else
                         {
-                            @:Monto Total Acreditaciones :
+                        @:Monto Total Acreditaciones :
                         }
                     }
                 </div>
@@ -479,33 +479,33 @@
                                 //$(this).val(campo3.toString().replace(".", ","));
                             }
                         }
-                        break;
-                    case 3:
-                        campo4 = $.trim($(this).text());
-                        break;
-                        //case 4:
-                        //    if ($(this).children("input").val() != "") {
-                        //        $(this).children("input").show();
-                        //    }
-                        //    break;
-                }
+                    break;
+                case 3:
+                    campo4 = $.trim($(this).text());
+                    break;
+                    //case 4:
+                    //    if ($(this).children("input").val() != "") {
+                    //        $(this).children("input").show();
+                    //    }
+                    //    break;
+            }
             });
             if (campo4 != "Excluido" && campo4 != "") {
                 TotalRecargas = TotalRecargas + 1;
                 MontoTotalRecargas = parseFloat(MontoTotalRecargas) + parseFloat(campo3);
             }
         });
-        if (TotalRecargas == 0) {
-            $("#Aprobar").hide();
-        }
-        else if ("@Model.First().statusOrden" == "Aprobada") {
-            $("#Aprobar").hide();
-        }
-        else {
-            $("#Aprobar").show();
-        }
-        document.getElementById('TotalRecargas').value = TotalRecargas;
-        if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
+    if (TotalRecargas == 0) {
+        $("#Aprobar").hide();
+    }
+    else if ("@Model.First().statusOrden" == "Aprobada") {
+        $("#Aprobar").hide();
+    }
+    else {
+        $("#Aprobar").show();
+    }
+    document.getElementById('TotalRecargas').value = TotalRecargas;
+    if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
             document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas.toFixed(2).toString().replace(".", ",");
         }
         else {
@@ -513,7 +513,7 @@
         }
         document.getElementById('DocumentoReferencia').value = $(".Referencia").val();
         document.getElementById('Observaciones').value = $(".Observaciones2").val();
-        return validateReferencia();
+        return validateReferencia() && ValidarObservaciones();
     }
 
     function LimpiarSpanMessage(idelemento) {
@@ -585,6 +585,7 @@
         var TotalRecargas = 0;
         var resultado = true;
         var html;
+        //var motivoLleno = true;
         $("#detalleOrden tbody tr").each(function (index) {
             var RegExPattern = /^\d+(\.\d{1,2})?$/;
             var idrow = $(this).data("row-key");
@@ -617,36 +618,47 @@
                                 //$(this).val(campo3.toString().replace(".", ","));
                             }
                         }
-                        break;
-                    case 3:
-                        if ($.trim($(this).text()) != "No encontrado") {
-                            if (campo3 != parseFloat("0")) {
+                    break;
+                case 3:
+                    if ($.trim($(this).text()) != "No encontrado") {
+                        if (campo3 != parseFloat("0")) {
 
-                                html = '<input name="[' + index + '].statusDetalleOrden" type="hidden" value="Incluido" />Incluido'
-                                $(this).html(html);
+                            html = '<input name="[' + index + '].statusDetalleOrden" type="hidden" value="Incluido" />Incluido'
+                            $(this).html(html);
 
-                                LimpiarSpanMessage('field_' + idrow);
-                                if (RegExPattern.test(campo3) == false) {
-                                    spanMessage('field_' + idrow, '* Monto invalido');
-                                    resultado = false;
-                                }
-                                //PARA VERIFICAR PARAMETROS ESTABLECIDOS - UNA VEZ SE DEFINA EL ESQUEMA
-                                //else if (campo3 > parseFloat("5000")) {
-                                //    spanMessage('field_' + idrow, '* El monto excede el valor máximo permitido (5000)');
-                                //    resultado = false;
-                                //}
-                                TotalRecargas = TotalRecargas + 1;
-                                MontoTotalRecargas = parseFloat(MontoTotalRecargas) + parseFloat(campo3);
+                            LimpiarSpanMessage('field_' + idrow);
+                            if (RegExPattern.test(campo3) == false) {
+                                spanMessage('field_' + idrow, '* Monto invalido');
+                                resultado = false;
                             }
-                            else {
-                                html = '<input name="[' + index + '].statusDetalleOrden" type="hidden" value="" />'
-                                $(this).html(html);
-                                spanMessage('field_' + idrow, '* No incluye recarga');
-                            }
+                            //PARA VERIFICAR PARAMETROS ESTABLECIDOS - UNA VEZ SE DEFINA EL ESQUEMA
+                            //else if (campo3 > parseFloat("5000")) {
+                            //    spanMessage('field_' + idrow, '* El monto excede el valor máximo permitido (5000)');
+                            //    resultado = false;
+                            //}
+                            TotalRecargas = TotalRecargas + 1;
+                            MontoTotalRecargas = parseFloat(MontoTotalRecargas) + parseFloat(campo3);
                         }
-                        break;                    
-                }
+                        else {
+                            html = '<input name="[' + index + '].statusDetalleOrden" type="hidden" value="" />'
+                            $(this).html(html);
+                            spanMessage('field_' + idrow, '* No incluye recarga');
+                        }
+                    }
+                    break;
+                    //case 5:
+                    //    if (campo3 != parseFloat("0")) {
+                    //        if ($(this).find('.Motivo').val() == "") {
+                    //            motivoLleno = false;
+                    //            resultado = false;
+                    //        }
+                    //    }
+                    //    break;
+            }
             });
+            //if (!motivoLeno) {
+            //    alert("Debe ingresar Motivo para los renglones de la orden.");
+            //}
             document.getElementById('TotalRecargas').value = TotalRecargas;
             if ("@Model.First().tipoOrden" == "Orden de Recarga Suma" || "@Model.First().tipoOrden".replace("&#243;", "ó") == "Orden de Anulación de Recarga Suma") {
                 document.getElementById('MontoTotalRecargas').value = MontoTotalRecargas.toFixed(2).toString().replace(".", ",");
@@ -691,21 +703,21 @@
     function incluirfila(docnumber) {
         var vacio = true;
         $.getJSON('@Url.Action("/FindAfiliado/")' + '?docnumber=' + docnumber, function (data) {
-        $.each(data, function (i, record) {
-            vacio = false;
-            if (buscarAfiliado(docnumber) == true) {
-                $('#numdoc').val("");
-                spanMessage('documento', "El Afiliado con  Número de Documento/Cédula " + docnumber + " ya está incluido en la lista");
-            }
-            else {
-                LimpiarSpanMessage('documento');
-                var nuevaFila = $("#detalleOrden tr").length - 1;
-                if (nuevaFila < 0) {
-                    nuevaFila = 0;
+            $.each(data, function (i, record) {
+                vacio = false;
+                if (buscarAfiliado(docnumber) == true) {
+                    $('#numdoc').val("");
+                    spanMessage('documento', "El Afiliado con  Número de Documento/Cédula " + docnumber + " ya está incluido en la lista");
                 }
-                $('#detalleOrden').find('tbody:last').append('<tr data-row-key="' + record.id + '">'
-                                                           + '<input data-val="true" data-val-number="The field idAfiliado must be a number." data-val-required="El campo idAfiliado es obligatorio." name="[' + nuevaFila + '].idAfiliado" type="hidden" value=' + record.id + ' />'
-                                                           + '<input data-val="true" data-val-number="The field idOrden must be a number." data-val-required="El campo idOrden es obligatorio." name="[' + nuevaFila + '].idOrden" type="hidden" value="' + @Model.First().idOrden + '" />'
+                else {
+                    LimpiarSpanMessage('documento');
+                    var nuevaFila = $("#detalleOrden tr").length - 1;
+                    if (nuevaFila < 0) {
+                        nuevaFila = 0;
+                    }
+                    $('#detalleOrden').find('tbody:last').append('<tr data-row-key="' + record.id + '">'
+                                                               + '<input data-val="true" data-val-number="The field idAfiliado must be a number." data-val-required="El campo idAfiliado es obligatorio." name="[' + nuevaFila + '].idAfiliado" type="hidden" value=' + record.id + ' />'
+                                                               + '<input data-val="true" data-val-number="The field idOrden must be a number." data-val-required="El campo idOrden es obligatorio." name="[' + nuevaFila + '].idOrden" type="hidden" value="' + @Model.First().idOrden + '" />'
                                                                + '<td>'
                                                                + '<input name="[' + nuevaFila + '].docnumberAfiliado" type="hidden" value="' + record.docnumber + '" />' + record.docnumber
                                                                + '</td>'
@@ -725,7 +737,7 @@
                                                                + '</td>'
 
                                                                + '<td>'
-                                                               + '<input name="[' + nuevaFila + '].observacionesDetalle" class="form-control Motivo" type="text" value="">'                                    
+                                                               + '<input name="[' + nuevaFila + '].observacionesDetalle" class="form-control Motivo" type="text" value="">'
                                                                + '</td>'
 
                                                                + '<td class="text-right" onclick="Excluir(this)">'
@@ -739,15 +751,51 @@
                     $('#detalleOrden').on('input', '.Monto', function () { ValidarMontos(); });
                 }
             });
-        if (vacio) {
-            $('#numdoc').val("");
-            spanMessage('documento', "No se ha encontrado Afiliado con el Número de Documento/Cédula " + docnumber);
-        }
-        ValidarMontos();
-    });
+            if (vacio) {
+                $('#numdoc').val("");
+                spanMessage('documento', "No se ha encontrado Afiliado con el Número de Documento/Cédula " + docnumber);
+            }
+            ValidarMontos();
+        });
     }
 
     $('#CopiarMotivo').click(function () {
         $('.Motivo').val($('.Observaciones2').val());
     });
+
+    function ValidarObservaciones() {
+        var resultado = true;
+        var MotivoLleno = true;
+        if ($('.Observaciones2').val() == "") {
+            alert("Debe ingresar Observaciones de la orden");
+            return false;
+        }
+        else {
+            $("#detalleOrden tbody tr").each(function (index) {
+                var campo6;
+                $(this).children("td").each(function (index2) {
+                    switch (index2) {
+                        case 5:
+                            campo6 = $(this).find('.Motivo').val();
+                            if (campo6 == "") {
+                                resultado = false;
+                                MotivoLleno = false;
+                                break;
+                                //case 1: campo2 = $(this).text();
+                                //    break;
+                                //case 2: campo3 = $(this).text();
+                                //    break;
+                            }
+                            break;
+                    }
+                });
+            });
+            if (!MotivoLleno) {
+                alert("Debe ingresar Motivo en los renglones de la orden");
+            }
+        }
+        return resultado;
+    }
+
+
 </script>
