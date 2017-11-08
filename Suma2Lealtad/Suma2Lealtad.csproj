@@ -108,6 +108,15 @@
     <Reference Include="Rotativa">
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
     </Reference>
+    <Reference Include="SumaPlazas.Dispositivos.Escaner">
+      <HintPath>..\SumaPlazas.Dispositivos.Escaner\Bin\Release\SumaPlazas.Dispositivos.Escaner.dll</HintPath>
+    </Reference>
+    <Reference Include="SumaPlazas.Dispositivos.Impresora">
+      <HintPath>..\SumaPlazas.Dispositivos.Impresora\Bin\Release\SumaPlazas.Dispositivos.Impresora.dll</HintPath>
+    </Reference>
+    <Reference Include="SumaPlazas.Dispositivos.PinPad">
+      <HintPath>..\SumaPlazas.Dispositivos.PinPad\Bin\Release\SumaPlazas.Dispositivos.PinPad.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -841,7 +850,6 @@
     <Content Include="Views\OrdenRecargaSuma\FilterAnulacion.cshtml" />
     <Content Include="Views\OrdenRecargaSuma\CreateAnulacion.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

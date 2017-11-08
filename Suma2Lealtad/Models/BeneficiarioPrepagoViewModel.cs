@@ -22,7 +22,7 @@ namespace Suma2Lealtad.Models
 
         public decimal saldo { get; set; }
 
-        public string documento { get { return numdoc.Replace("V-", "").Replace("J-", "").Replace("E-", ""); } }
+        public string documento { get { return numdoc.Replace("V-", "").Replace("J-", "").Replace("E-", "").Replace("G-", "").Replace("P-", ""); } }
         public string montotrx { get { return monto.Replace(",", "").Replace(".", ""); } }
 
         public string saldoactual { get { return saldo.ToString(); } }
